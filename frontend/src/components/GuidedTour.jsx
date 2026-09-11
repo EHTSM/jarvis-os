@@ -6,6 +6,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import "./GuidedTour.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const TOUR_KEY = "ooplix_tour_done";
 
@@ -64,6 +66,8 @@ export default function GuidedTour({ onFinish }) {
   const [step,    setStep]    = useState(0);
   const [rect,    setRect]    = useState(null);
   const [visible, setVisible] = useState(false);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, skip);
 
   const current = STEPS[step];
 
@@ -110,7 +114,7 @@ export default function GuidedTour({ onFinish }) {
   const tooltipTop  = rect.bottom + 14;
 
   return (
-    <div className="gt-overlay" onClick={e => { if (e.target === e.currentTarget) skip(); }}>
+    <div className="gt-overlay" {...overlayProps(e => { if (e.target === e.currentTarget) skip(); })}>
       {/* Dark mask with spotlight cutout */}
       <svg className="gt-mask" width="100%" height="100%">
         <defs>

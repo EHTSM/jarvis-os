@@ -2,7 +2,11 @@ import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listAgents } from "../phase18Api";
 import { listManagedAgents } from "../phase20Api";
+import { getWorkforceAgents } from "../workforceOSApi";
 import "./AgentRegistryCenter.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const REG_KEY = "ooplix_agent_registry_v2";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -41,7 +45,7 @@ const SEED = [
     runsToday: 3, totalRuns: 210, errorRate: "0.0%", lastRun: "2h ago", archived: false,
   },
   {
-    id: "ag_support", name: "Support Agent", type: "support", icon: "◎", color: "#52d68a",
+    id: "ag_support", name: "Support Agent", type: "support", icon: "◎", color: "var(--success)",
     status: "active", owner: "System", model: "claude-haiku-4-5-20251001",
     description: "Triages tickets, drafts responses from knowledge base, escalates critical issues.",
     capabilities: ["Query triage","Response drafting","Escalation logic","FAQ generation","Ticket summarisation"],
@@ -61,7 +65,7 @@ const SEED = [
     runsToday: 5, totalRuns: 388, errorRate: "0.5%", lastRun: "1h ago", archived: false,
   },
   {
-    id: "ag_dev", name: "Dev Agent", type: "engineering", icon: "⬡", color: "#e6edf3",
+    id: "ag_dev", name: "Dev Agent", type: "engineering", icon: "⬡", color: "var(--text)",
     status: "idle", owner: "System", model: "claude-opus-4-8",
     description: "Writes code, reviews PRs, generates tests, debugs failures, maintains documentation.",
     capabilities: ["Code generation","PR review","Test writing","Debugging","Documentation","Refactoring"],
@@ -103,8 +107,8 @@ const SEED = [
 ];
 
 const TYPE_COLORS = {
-  marketing: "var(--warning)", content: "var(--accent)", support: "#52d68a",
-  engineering: "#e6edf3", sales: "#da552f", research: "#a78bfa", analytics: "#38bdf8",
+  marketing: "var(--warning)", content: "var(--accent)", support: "var(--success)",
+  engineering: "var(--text)", sales: "#da552f", research: "#a78bfa", analytics: "#38bdf8",
 };
 const STATUS_CFG = {
   active: { color: "var(--success)", pulse: true },
@@ -166,28 +170,28 @@ function AgentDetail({ agent, onClone, onArchive, onToggle }) {
       <div className="arc-detail-section">
         <p className="arc-ds-label">Capabilities</p>
         <div className="arc-chips">
-          {agent.capabilities.map(c => <span key={c} className="arc-cap-chip" style={{ borderColor: agent.color + "33", color: agent.color }}>✓ {c}</span>)}
+          {(agent.capabilities || []).map(c => <span key={c} className="arc-cap-chip" style={{ borderColor: agent.color + "33", color: agent.color }}>✓ {c}</span>)}
         </div>
       </div>
 
       <div className="arc-detail-section">
         <p className="arc-ds-label">Tools</p>
         <div className="arc-chips">
-          {agent.tools.map(t => <span key={t} className="arc-tool-chip arc-mono">{t}</span>)}
+          {(agent.tools || []).map(t => <span key={t} className="arc-tool-chip arc-mono">{t}</span>)}
         </div>
       </div>
 
       <div className="arc-detail-section">
         <p className="arc-ds-label">Permissions</p>
         <div className="arc-chips">
-          {agent.permissions.map(p => <span key={p} className="arc-perm-chip">◎ {p}</span>)}
+          {(agent.permissions || []).map(p => <span key={p} className="arc-perm-chip">◎ {p}</span>)}
         </div>
       </div>
 
       <div className="arc-detail-section">
         <p className="arc-ds-label">Memory links</p>
         <div className="arc-chips">
-          {agent.memoryLinks.map(m => <span key={m} className="arc-mem-chip">{m} memory</span>)}
+          {(agent.memoryLinks || []).map(m => <span key={m} className="arc-mem-chip">{m} memory</span>)}
         </div>
       </div>
 
@@ -204,6 +208,8 @@ function AgentDetail({ agent, onClone, onArchive, onToggle }) {
 
 function CreateModal({ onSave, onClose }) {
   const [form, setForm] = useState({ name: "", type: "support", model: "claude-sonnet-4-6", description: "", capabilities: "", tools: "", permissions: "" });
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
   const handleSubmit = e => {
     e.preventDefault();
     if (!form.name.trim()) return;
@@ -217,9 +223,9 @@ function CreateModal({ onSave, onClose }) {
     });
   };
   return (
-    <div className="arc-modal-overlay" onClick={onClose}>
-      <div className="arc-modal" onClick={e=>e.stopPropagation()}>
-        <h3 className="arc-modal-title">Create agent</h3>
+    <div className="arc-modal-overlay" {...overlayProps(onClose)}>
+      <div className="arc-modal" role="dialog" aria-modal="true" aria-labelledby="arc-modal-title" onClick={e=>e.stopPropagation()}>
+        <h3 className="arc-modal-title" id="arc-modal-title">Create agent</h3>
         <form onSubmit={handleSubmit} className="arc-modal-form">
           <label className="arc-fl">Name</label>
           <input className="arc-fi" value={form.name} onChange={e=>setForm(f=>({...f,name:e.target.value}))} placeholder="My Agent" autoFocus required />
@@ -265,35 +271,57 @@ export default function AgentRegistryCenter({ onNavigate }) {
 
   useEffect(() => { track.event("agent_registry_viewed"); }, []);
 
-  // Merge live agents from backend (p18 + p20) with local registry
+  // Merge live agents from backend (p18 runtime dispatch registry + p20
+  // managed-agent factory + workforce-os skill catalogue) with local registry.
+  // workforce-os agents (skillEngine's 36-entry AGENT_CATALOGUE) previously had
+  // a fully-built backend (36 routes: mission/team/capacity/performance) but no
+  // frontend caller anywhere in the app — merged in here the same way p18/p20
+  // already are, so they surface in the one existing agent-list UI instead of
+  // requiring a new dashboard.
   useEffect(() => {
     let cancelled = false;
-    Promise.all([listAgents(), listManagedAgents()])
-      .then(([p18Res, p20Res]) => {
+    Promise.all([listAgents(), listManagedAgents(), getWorkforceAgents({ limit: 100 })])
+      .then(([p18Res, p20Res, wfRes]) => {
         if (cancelled) return;
         const p18 = p18Res?.agents || [];
         const p20 = p20Res?.agents || [];
-        const all = [...p18, ...p20];
+        const wf  = wfRes?.agents  || [];
+        // p18/p20 already share one shape; workforce-os agents (skillEngine's
+        // AGENT_CATALOGUE) use a different shape (org/skills/specializations/
+        // successCount/failCount) — normalise all three into the one row shape
+        // this component renders.
+        const normalise = a => ({
+          id:          a.id,
+          name:        a.name || a.id,
+          type:        a.type || a.org || "runtime",
+          icon:        a.icon || "▷",
+          color:       a.color || "var(--accent)",
+          status:      a.status || (a.available === false ? "idle" : "active"),
+          description: a.description || (a.specializations ? `${a.specializations.join(", ")} — org: ${a.org}` : ""),
+          capabilities: a.capabilities || a.skills || [],
+          permissions: a.permissions || [],
+          // A.11.1: `tools` and `memoryLinks` were absent from normalise, but the
+          // detail pane renders `agent.tools.map(...)` and
+          // `agent.memoryLinks.map(...)` unconditionally. The seed rows carry
+          // both, so the crash only appeared once REAL agents loaded — measured
+          // live: "TypeError: Cannot read properties of undefined (reading 'map')"
+          // took the whole Registry panel into its ErrorBoundary.
+          // Defaulted the same way as the two fields above; no new mechanism.
+          tools:       a.tools || [],
+          memoryLinks: a.memoryLinks || [],
+          model:       a.model || "—",
+          lastRun:     a.lastRun || a.lastActive || "—",
+          runsToday:   a.runsToday ?? a.successCount ?? 0,
+          errorRate:   a.errorRate || (a.failCount
+            ? `${Math.round((a.failCount / Math.max(1, (a.successCount || 0) + a.failCount)) * 100)}%`
+            : "0%"),
+          archived:    a.archived || false,
+        });
+        const all = [...p18, ...p20, ...wf].map(normalise);
         if (all.length > 0) {
-          const mapped = all.map(a => ({
-            id:          a.id,
-            name:        a.name || a.id,
-            type:        a.type || "runtime",
-            icon:        a.icon || "▷",
-            color:       a.color || "var(--accent)",
-            status:      a.status || "active",
-            description: a.description || "",
-            capabilities: a.capabilities || [],
-            permissions: a.permissions || [],
-            model:       a.model || "—",
-            lastRun:     a.lastRun || "—",
-            runsToday:   a.runsToday ?? 0,
-            errorRate:   a.errorRate || "0%",
-            archived:    a.archived || false,
-          }));
-          setAgents(mapped);
-          _save(REG_KEY, mapped);
-          setSelected(mapped[0]?.id || null);
+          setAgents(all);
+          _save(REG_KEY, all);
+          setSelected(all[0]?.id || null);
         }
       })
       .catch(err => { if (!cancelled) setApiError(err.message); });

@@ -312,6 +312,13 @@ function _rcaHealingCeiling(healing) {
     if (!healing.length) return null;
 
     const allEscalate = healing.every(h => h.strategy === "escalate");
+    // Mission 103 fix: allEscalate was computed but never checked, so this
+    // finding fired whenever healing.length > 0 regardless of actual
+    // strategy mix — a confirmed false positive (Mission 102) against any
+    // healthy, multi-strategy healing history (e.g. this repo's own real
+    // data/healing-history.json: 2000 records, 0 "escalate"). The rule's
+    // own stated evidence/precondition is "all strategy=escalate" — enforce it.
+    if (!allEscalate) return null;
     const ts_list = healing.map(h => h.ts).filter(Boolean).sort();
     const targetTypes = {};
     for (const h of healing) {

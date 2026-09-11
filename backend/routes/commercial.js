@@ -5,7 +5,8 @@
  * GET  /commercial/credits/status          — credit balance for current user
  * POST /commercial/credits/consume         — consume credits (internal)
  * POST /commercial/credits/topup           — add premium credits
- * POST /commercial/credits/refund          — refund a transaction
+ * POST /commercial/credits/refund          — request approval to refund a transaction (does not execute immediately)
+ * POST /commercial/credits/refund/:reqId/execute — execute a refund after approval
  * POST /commercial/credits/byok            — enable/disable BYOK
  * POST /commercial/credits/local           — enable/disable local mode
  * GET  /commercial/credits/ledger          — transaction history
@@ -48,6 +49,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const credits  = require("../services/creditEngine.cjs");
 const router_  = require("../services/smartRouter.cjs");
@@ -56,10 +58,11 @@ const gates    = require("../services/featureGate.cjs");
 const providers= require("../services/providerManager.cjs");
 const analytics= require("../services/costAnalytics.cjs");
 const billing  = require("../services/billingService");
+const approvalQueue = require("../services/approvalQueue.cjs");
 
 router.use("/commercial", requireAuth);
 
-function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _accountId(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req) {
   try {
     const access = billing.checkAccess(_accountId(req));
@@ -83,7 +86,12 @@ router.get("/commercial/credits/status", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/commercial/credits/consume", (req, res) => {
+// Called on every AI-provider request, so this needs a real per-account
+// ceiling rather than a strict throttle — bounds abuse without blocking
+// legitimate rapid-fire usage during a normal working session.
+const _creditsRL = rateLimiter(120, 60_000, "commercial-credits-mutate");
+
+router.post("/commercial/credits/consume", _creditsRL, (req, res) => {
   try {
     const { requestType, missionId, provider, cost } = req.body || {};
     const check = credits.checkCredit(_accountId(req), requestType || "default", _plan(req));
@@ -95,7 +103,7 @@ router.post("/commercial/credits/consume", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.post("/commercial/credits/topup", (req, res) => {
+router.post("/commercial/credits/topup", _creditsRL, (req, res) => {
   try {
     const { amount, expiresAt, reason } = req.body || {};
     if (!amount || amount <= 0) return res.status(400).json({ error: "invalid_amount" });
@@ -104,11 +112,62 @@ router.post("/commercial/credits/topup", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// Refunds move real value and are irreversible once credited, so this route
+// no longer executes the refund immediately — it enqueues an approval
+// request via the existing approvalQueue (reused as-is; see
+// approvalPolicy.cjs wf_refund_credit) and returns the pending request.
+// The refund only actually runs from the /execute route below, and only
+// once that request's status is "approved" or "auto_approved".
+// See 100-COMPANY-GAP-LIST.md P0 #2 / 100-COMPANY-REALITY-AUDIT.md Part 8.
 router.post("/commercial/credits/refund", (req, res) => {
   try {
     const { txId, reason } = req.body || {};
-    const tx = credits.refund(_accountId(req), txId, { reason });
+    if (!txId) return res.status(400).json({ error: "txId required" });
+    const accountId = _accountId(req);
+    const original = credits.getRecord(accountId, _plan(req)).transactions?.find(t => t.id === txId);
+    if (!original) return res.status(404).json({ error: "transaction_not_found" });
+
+    const result = approvalQueue.enqueue({
+      workflowId:  "wf_refund_credit",
+      action:      `Refund credit transaction ${txId} for account ${accountId}`,
+      reason:      reason || "customer_request",
+      approvalType: "PAYMENT_CONFIRM",
+      expectedOutcome: `${Math.abs(original.amount)} ${original.creditType} credits restored to account ${accountId}`,
+      rollbackPlan: "No rollback needed if rejected — no funds move until approved.",
+      confidence:  0,
+      context:     { accountId, txId, reason: reason || "customer_request" },
+      triggeredBy: `account:${accountId}`,
+    });
+
+    res.status(202).json({
+      ok: true,
+      status: result.autoApproved ? "auto_approved" : "pending_approval",
+      reqId: result.reqId,
+      request: result.request,
+      message: result.autoApproved
+        ? "Refund approved automatically by policy — call /commercial/credits/refund/:reqId/execute to complete it."
+        : "Refund requires approval before it will execute. Approve via POST /approval/approve/:reqId, then call /commercial/credits/refund/:reqId/execute.",
+    });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/commercial/credits/refund/:reqId/execute", (req, res) => {
+  try {
+    const accountId = _accountId(req);
+    const reqRecord = approvalQueue.getRequest(req.params.reqId);
+    if (!reqRecord) return res.status(404).json({ error: "approval_request_not_found" });
+    if (reqRecord.context?.accountId !== accountId) return res.status(403).json({ error: "forbidden" });
+    if (reqRecord.status !== "approved" && reqRecord.status !== "auto_approved") {
+      return res.status(409).json({ error: "not_approved", status: reqRecord.status });
+    }
+    if (reqRecord.resumedAt) {
+      return res.status(409).json({ error: "already_executed", executedAt: reqRecord.resumedAt });
+    }
+
+    const tx = credits.refund(reqRecord.context.accountId, reqRecord.context.txId, { reason: reqRecord.context.reason });
     if (!tx) return res.status(404).json({ error: "transaction_not_found" });
+
+    approvalQueue.markResumed(req.params.reqId);
     res.json({ ok: true, tx });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -190,10 +249,29 @@ router.post("/commercial/usage/record", (req, res) => {
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
+// OOPLIX V1 MASTER AUDIT (2026-08-16): all 3 usage routes below previously
+// let a caller read another account's real billing/usage data — a genuine
+// cross-tenant leak, distinct from and more severe than every other route
+// in this file (all of which already correctly use _accountId(req), the
+// real authenticated identity, with no caller override). /usage/summary
+// let req.query.accountId silently override _accountId(req); /usage/history
+// (metering.loadHistory) and /usage/by/:dimension (metering.aggregateCost)
+// took no account filter at all, returning/aggregating the ENTIRE
+// platform's raw usage ledger regardless of caller. Live-reproduced: a real,
+// unrelated authenticated account read real usage events (real accountId,
+// orgId, cost, token counts) belonging to a completely different account via
+// GET /commercial/usage/history. Fixed by pinning all 3 to _accountId(req)
+// — the same real authenticated identity every other route in this file
+// already correctly uses — with no caller-supplied override. metering.query/
+// aggregateCost/summary already correctly filter by accountId when given
+// one (confirmed: usageMetering.cjs's own query() does `if (opts.accountId)
+// events = events.filter(e => e.accountId === opts.accountId)`) — the gap
+// was purely that these 3 call sites never passed it, not a defect in the
+// underlying filtering logic.
 router.get("/commercial/usage/summary", (req, res) => {
   try {
     const opts = {
-      accountId:   req.query.accountId || _accountId(req),
+      accountId:   _accountId(req),
       workspaceId: req.query.workspaceId,
       since:       req.query.since,
       limit:       parseInt(req.query.limit || "500", 10),
@@ -205,7 +283,9 @@ router.get("/commercial/usage/summary", (req, res) => {
 router.get("/commercial/usage/history", (req, res) => {
   try {
     const limit = parseInt(req.query.limit || "200", 10);
-    res.json({ ok: true, events: metering.loadHistory(limit) });
+    const accountId = _accountId(req);
+    const events = metering.loadHistory(limit).filter(e => e.accountId === accountId);
+    res.json({ ok: true, events });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -214,7 +294,7 @@ router.get("/commercial/usage/by/:dimension", (req, res) => {
     const { dimension } = req.params;
     const valid = ["provider","accountId","workspaceId","missionId","model","requestType"];
     if (!valid.includes(dimension)) return res.status(400).json({ error: "invalid_dimension" });
-    const agg = metering.aggregateCost(dimension, { limit: parseInt(req.query.limit || "500", 10) });
+    const agg = metering.aggregateCost(dimension, { limit: parseInt(req.query.limit || "500", 10), accountId: _accountId(req) });
     res.json({ ok: true, dimension, data: agg });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });

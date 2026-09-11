@@ -24,14 +24,14 @@
 .wsp-header-title {
   font-size: 11px;
   font-weight: 700;
-  color: #8994b0;
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.07em;
 }
 
 .wsp-header-meta {
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
 }
 
 .wsp-header-right {
@@ -66,7 +66,7 @@
   background: none;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 5px;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 13px;
   cursor: pointer;
   padding: 2px 6px;
@@ -118,7 +118,7 @@
 
 .wsp-card-desc {
   font-size: 9px;
-  color: #374151;
+  color: var(--text-faint);
   margin-top: 1px;
   white-space: nowrap;
   overflow: hidden;
@@ -146,7 +146,7 @@
 
 .wsp-card-summary {
   font-size: 10px;
-  color: #8994b0;
+  color: var(--text-dim);
   margin-bottom: 6px;
   line-height: 1.4;
 }
@@ -167,7 +167,7 @@
 
 .wsp-card-item-label {
   flex: 1;
-  color: #94a3b8;
+  color: var(--text-dim);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -175,13 +175,13 @@
 
 .wsp-card-item-meta {
   font-size: 9px;
-  color: #374151;
+  color: var(--text-faint);
   flex-shrink: 0;
 }
 
 .wsp-card-rollback {
   font-size: 10px;
-  color: #ef4444;
+  color: var(--danger);
   background: rgba(239,68,68,0.07);
   border: 1px solid rgba(239,68,68,0.2);
   border-radius: 5px;
@@ -203,13 +203,13 @@
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.04);
-  color: #64748b;
+  color: var(--text-dim);
   cursor: pointer;
   transition: all 0.1s;
   font-family: inherit;
   white-space: nowrap;
 }
-.wsp-action-btn:hover { color: #94a3b8; background: rgba(255,255,255,0.07); }
+.wsp-action-btn:hover { color: var(--text-dim); background: rgba(255,255,255,0.07); }
 .wsp-action-btn--primary {
   border-color: rgba(124,111,255,0.3);
   background: rgba(124,111,255,0.09);
@@ -221,7 +221,7 @@
 .wsp-footer {
   padding: 4px 16px 6px;
   font-size: 9px;
-  color: #1e2333;
+  color: var(--text-faint);
   text-align: right;
 }
 
@@ -245,7 +245,7 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #374151;
+  color: var(--text-faint);
 }
 
 .wsp-compact-pct {
@@ -256,7 +256,7 @@
 
 .wsp-compact-warn {
   font-size: 9px;
-  color: #ef4444;
+  color: var(--danger);
   font-weight: 700;
 }
 
@@ -264,7 +264,7 @@
   margin-left: auto;
   background: none;
   border: none;
-  color: #374151;
+  color: var(--text-faint);
   font-size: 12px;
   cursor: pointer;
   font-family: inherit;

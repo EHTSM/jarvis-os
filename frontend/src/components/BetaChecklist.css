@@ -3,8 +3,13 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  background: var(--color-bg, #0d0d0f);
-  color: var(--color-text, #e4e4e7);
+  /* B19.5: --color-bg and --color-text are defined NOWHERE in the codebase, so
+     these always resolved to their hardcoded dark fallbacks. In light mode the
+     surface stayed dark while the app's text tokens turned dark — axe measured
+     76 contrast violations on this one surface. Same undefined-token class as
+     the B19.2 compatibility aliases. Pointed at the real tokens. */
+  background: var(--bg);
+  color: var(--text);
   font-family: var(--font-mono, 'JetBrains Mono', monospace);
   font-size: 13px;
 }
@@ -23,15 +28,22 @@
   flex-direction: column;
   gap: 2px;
 }
+/* Phase A.11.8 — recovered to the app-wide page-header baseline
+   (22px / 800 / var(--text) / -0.3px + 13.5px / var(--text-dim) subtitle), the
+   same recovery A.11.7 applied to Launch Platform and Customer Success. This
+   header also had two hardcoded hex colours where every conformant sibling uses
+   the theme tokens, so it did not follow the light/dark toggle at all. */
 .bc-title {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: #f4f4f5;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  margin: 0;
 }
 .bc-subtitle {
-  font-size: 11px;
-  color: #71717a;
+  font-size: 13.5px;
+  color: var(--text-dim);
+  margin: 4px 0 0;
 }
 .bc-header-right {
   display: flex;
@@ -50,12 +62,12 @@
   letter-spacing: -0.04em;
   line-height: 1;
 }
-.bc-score-pct--all  { color: #22c55e; }
-.bc-score-pct--ok   { color: #3b82f6; }
-.bc-score-pct--warn { color: #f59e0b; }
+.bc-score-pct--all  { color: var(--success); }
+.bc-score-pct--ok   { color: var(--info); }
+.bc-score-pct--warn { color: var(--warning); }
 .bc-score-label {
   font-size: 10px;
-  color: #52525b;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.06em;
 }
@@ -74,9 +86,11 @@
   font-weight: 500;
   white-space: nowrap;
 }
-.bc-chip--pass { background: rgba(34,197,94,0.15); color: #4ade80; }
-.bc-chip--fail { background: rgba(239,68,68,0.15);  color: #f87171; }
-.bc-chip--dim  { background: rgba(255,255,255,0.06); color: #52525b; }
+/* B19.5: #4ade80 is a dark-mode green; on the light tint it measured below
+   4.5:1. --success themes correctly and is the semantic role. */
+.bc-chip--pass { background: var(--success-muted); color: var(--on-success-tint); }
+.bc-chip--fail { background: var(--danger-muted);  color: var(--on-danger-tint); }
+.bc-chip--dim  { background: rgba(255,255,255,0.06); color: var(--text-faint); }
 .bc-chip--sm   { font-size: 11px; padding: 1px 6px; }
 
 /* ── Run button ── */
@@ -85,7 +99,9 @@
   background: rgba(59,130,246,0.15);
   border: 1px solid rgba(59,130,246,0.3);
   border-radius: 6px;
-  color: #60a5fa;
+  /* B19.5: --info on its own blue tint is the exact case --on-info-tint
+     exists for; the base token measured below 4.5:1 here in light mode. */
+  color: var(--on-info-tint);
   font-size: 12px;
   cursor: pointer;
   transition: background 0.15s;
@@ -135,7 +151,8 @@
   background: rgba(255,255,255,0.03);
   border: none;
   cursor: pointer;
-  color: #d4d4d8;
+  /* B19.5: hardcoded light-on-dark; unreadable once .bc-root became themed. */
+  color: var(--text);
   font-family: inherit;
   font-size: 12px;
   font-weight: 500;
@@ -145,7 +162,7 @@
 }
 .bc-section-header:hover { background: rgba(255,255,255,0.06); }
 .bc-section-arrow {
-  color: #52525b;
+  color: var(--text-faint);
   font-size: 10px;
   width: 12px;
   flex-shrink: 0;
@@ -183,16 +200,16 @@
   flex: 1;
   font-size: 12px;
   line-height: 1.4;
-  color: #a1a1aa;
+  color: var(--text-dim);
 }
 
 /* status coloring */
-.bc-pass .bc-item-icon { color: #4ade80; }
-.bc-pass .bc-item-text { color: #d4d4d8; }
-.bc-fail .bc-item-icon { color: #f87171; }
-.bc-fail .bc-item-text { color: #d4d4d8; }
-.bc-running .bc-item-icon { color: #60a5fa; animation: bc-spin 1s linear infinite; }
-.bc-pending .bc-item-icon { color: #3f3f46; }
+.bc-pass .bc-item-icon { color: var(--success); }
+.bc-pass .bc-item-text { color: var(--text); }
+.bc-fail .bc-item-icon { color: var(--danger); }
+.bc-fail .bc-item-text { color: var(--text); }
+.bc-running .bc-item-icon { color: var(--info); animation: bc-spin 1s linear infinite; }
+.bc-pending .bc-item-icon { color: var(--text-faint); }
 
 @keyframes bc-spin {
   0%   { opacity: 1; }
@@ -205,7 +222,10 @@
   padding: 1px 5px;
   border-radius: 3px;
   background: rgba(255,255,255,0.06);
-  color: #52525b;
+  /* B19.5: --text-faint measured 4.37:1 on this 6%-white badge — just under
+     WCAG 1.4.3's 4.5 at 10px. axe flagged 31 nodes. --text-dim is the next
+     role up and clears at 5.59:1; the badge keeps its recessed look. */
+  color: var(--text-dim);
   letter-spacing: 0.04em;
   flex-shrink: 0;
 }
@@ -215,7 +235,8 @@
   border-radius: 4px;
   border: 1px solid rgba(239,68,68,0.3);
   background: rgba(239,68,68,0.1);
-  color: #f87171;
+  /* B19.5: danger-on-danger-tint — same class as .bc-run-btn above. */
+  color: var(--on-danger-tint);
   cursor: pointer;
   font-family: inherit;
   flex-shrink: 0;
@@ -227,7 +248,7 @@
   padding: 8px 20px;
   border-top: 1px solid rgba(255,255,255,0.06);
   font-size: 10px;
-  color: #3f3f46;
+  color: var(--text-faint);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -238,7 +259,9 @@
   background: rgba(102,87,232,0.15);
   border: 1px solid rgba(102,87,232,0.30);
   border-radius: 5px;
-  color: #9d8ff5;
+  /* B19.5: #9d8ff5 is a dark-mode brand tint; on the light brand tint it
+     measured 2.05:1. --on-accent-tint is the themed equivalent. */
+  color: var(--on-accent-tint);
   font-size: 11px;
   cursor: pointer;
   transition: background 0.12s;
@@ -259,24 +282,26 @@
 }
 .bc-feedback-header { display: flex; align-items: center; justify-content: space-between; }
 .bc-feedback-title  { font-size: 14px; font-weight: 700; color: #f9fafb; }
-.bc-feedback-close  { background: none; border: none; color: #6b7280; cursor: pointer; font-size: 16px; padding: 0 2px; }
+.bc-feedback-close  { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 0 2px; }
 .bc-feedback-close:hover { color: #f9fafb; }
 .bc-feedback-input  {
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 7px; padding: 10px 12px; color: rgba(255,255,255,0.85);
+  border-radius: 7px; padding: 10px 12px; color: rgba(var(--fg-rgb), 0.92);
   font-size: 13px; font-family: inherit; resize: vertical; outline: none; width: 100%;
   box-sizing: border-box; line-height: 1.5;
 }
 .bc-feedback-input:focus { border-color: rgba(102,87,232,0.40); }
-.bc-feedback-input::placeholder { color: rgba(255,255,255,0.25); }
+.bc-feedback-input::placeholder { color: rgba(var(--fg-rgb), 0.62); }
 .bc-feedback-actions { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.bc-feedback-hint { font-size: 11px; color: #4b5563; }
+.bc-feedback-hint { font-size: 11px; color: var(--text-faint); }
 .bc-feedback-send {
   padding: 8px 18px; background: rgba(102,87,232,0.20);
   border: 1px solid rgba(102,87,232,0.35); border-radius: 7px;
-  color: #9d8ff5; font-size: 13px; font-family: inherit; cursor: pointer;
+  /* B19.5: #9d8ff5 is a dark-mode brand tint; on the light brand tint it
+     measured 2.05:1. --on-accent-tint is the themed equivalent. */
+  color: var(--on-accent-tint); font-size: 13px; font-family: inherit; cursor: pointer;
   transition: background 0.12s; white-space: nowrap;
 }
 .bc-feedback-send:hover:not(:disabled) { background: rgba(102,87,232,0.32); }
 .bc-feedback-send:disabled { opacity: 0.4; cursor: not-allowed; }
-.bc-feedback-sent { text-align: center; padding: 20px; font-size: 14px; color: #10b981; font-weight: 600; }
+.bc-feedback-sent { text-align: center; padding: 20px; font-size: 14px; color: var(--success); font-weight: 600; }

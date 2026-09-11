@@ -2,63 +2,131 @@
 /**
  * Account routes — registration, profile, account management.
  *
- * Closed Beta gate (Mission 6): Registration requires a valid invite code
- * and enforces a hard cap of 50 beta users. Email verification is sent on
- * successful registration.
+ * Public SaaS: registration is open self-serve (see betaReadiness.isOpenSignup).
+ * An invite code is still accepted and validated if supplied (keeps existing
+ * co3 invite-code links/tracking working), but is no longer required. Set
+ * OPEN_SIGNUP=false in .env to fall back to the closed-beta invite-code +
+ * 50-user cap gate. Email verification is sent on successful registration.
  */
 
 const router   = require("express").Router();
 const accounts = require("../services/accountService");
 const billing  = require("../services/billingService");
 const auditLog = require("../utils/auditLog.cjs");
+const logger   = require("../utils/logger");
 const { requireAuth } = require("../middleware/authMiddleware");
 const rateLimiter = require("../middleware/rateLimiter");
 
 // Lazy-load betaReadiness to avoid circular-require at startup
 const _beta = () => { try { return require("../services/betaReadiness.cjs"); } catch { return null; } };
+const _org  = () => { try { return require("../services/organizationService.cjs"); } catch { return null; } };
+const _ws   = () => { try { return require("../services/workspaceService.cjs"); } catch { return null; } };
 
-// ── POST /accounts/register ───────────────────────────────────────
-// Closed-beta registration — requires inviteCode, enforces 50-user cap,
-// sends email verification on success.
-router.post("/accounts/register",
-  rateLimiter(5, 15 * 60_000), // 5 registrations per 15 min per IP
-  (req, res) => {
-    const { email, password, name, inviteCode } = req.body || {};
-    if (!email || !password) {
-      return res.status(400).json({ error: "email and password are required" });
-    }
+// Every new customer needs a real organization + workspace to land in — signup
+// previously created only the account + trial billing record, leaving the
+// entire org/workspace/RBAC layer (built in prior missions) disconnected from
+// new users. orgName is optional (the onboarding wizard collects business
+// *type*, not a company name); falls back to "<name>'s Organization" or the
+// email's local part. Both are non-fatal: a signup should never fail just
+// because org/workspace provisioning hit an error — the account already
+// exists and the user can create these manually from the app.
+//
+// organizationService.createOrg rejects duplicate slugs (409) — a real
+// collision case, since "<name>'s Organization" is common for shared first
+// names (e.g. two different "Priya"s signing up). On a 409 specifically,
+// retry once with the account id appended so the customer still gets an org
+// rather than silently landing with none.
+function _provisionOrgAndWorkspace(account, orgName) {
+  const displayName = (orgName || "").trim() || (account.name ? `${account.name}'s Organization` : `${account.email.split("@")[0]}'s Organization`);
+  const result = { orgId: null, workspaceId: null };
 
-    // Beta gate: invite code required + hard cap of 50 users
-    const beta = _beta();
-    if (beta) {
-      const gate = beta.checkBetaGate(inviteCode);
-      if (!gate.allowed) {
-        return res.status(403).json({ error: gate.reason });
+  const org = _org();
+  if (org) {
+    try {
+      const created = org.createOrg({ name: displayName }, account.id);
+      result.orgId = created.id;
+    } catch (e) {
+      if (e.status === 409) {
+        try {
+          const retried = org.createOrg({ name: `${displayName} (${account.id.slice(0, 6)})` }, account.id);
+          result.orgId = retried.id;
+        } catch (e2) {
+          logger.warn(`[Register] org provisioning failed for ${account.id} after retry: ${e2.message}`);
+        }
+      } else {
+        logger.warn(`[Register] org provisioning failed for ${account.id}: ${e.message}`);
       }
     }
-
-    const result = accounts.createAccount({ email, password, name, role: "user" });
-    if (!result.success) {
-      return res.status(409).json({ error: result.error });
-    }
-
-    // Mark invite code as used
-    if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
-
-    // Send email verification
-    if (beta) {
-      try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
-      catch { /* non-fatal */ }
-    }
-
-    auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
-    res.status(201).json({
-      success: true,
-      account: result.account,
-      message: "Account created. Check your email to verify your address.",
-    });
   }
-);
+
+  const ws = _ws();
+  if (ws) {
+    try {
+      const created = ws.createWorkspace({ name: displayName, creatorAccountId: account.id });
+      result.workspaceId = created.id;
+      ws.switchWorkspace(created.id, account.id);
+    } catch (e) {
+      logger.warn(`[Register] workspace provisioning failed for ${account.id}: ${e.message}`);
+    }
+  }
+
+  return result;
+}
+
+// ── POST /accounts/register (+ /api/accounts/register alias below) ────────
+// Public self-serve registration — sends email verification, provisions a
+// starter organization + workspace, on success.
+const _registerRL = rateLimiter(5, 15 * 60_000); // 5 registrations per 15 min per IP
+
+function _handleRegister(req, res) {
+  const { email, password, name, inviteCode, orgName } = req.body || {};
+  if (!email || !password) {
+    return res.status(400).json({ error: "email and password are required" });
+  }
+
+  // Beta gate: invite code required + hard cap of 50 users (only enforced
+  // when OPEN_SIGNUP=false; see betaReadiness.isOpenSignup)
+  const beta = _beta();
+  if (beta) {
+    const gate = beta.checkBetaGate(inviteCode);
+    if (!gate.allowed) {
+      return res.status(403).json({ error: gate.reason });
+    }
+  }
+
+  const result = accounts.createAccount({ email, password, name, role: "user" });
+  if (!result.success) {
+    return res.status(409).json({ error: result.error });
+  }
+
+  // Mark invite code as used
+  if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
+
+  // Send email verification — deliberately not awaited: account creation
+  // must not fail or delay just because an email provider hiccups. Email
+  // Ecosystem mission: sendEmailVerification() is now async and internally
+  // records the real send outcome to the audit log (emailSent/emailError)
+  // regardless of whether this caller awaits it — a real send failure is
+  // no longer silently invisible, even though the HTTP response here
+  // still doesn't block on it. .catch() replaces the old synchronous
+  // try/catch, which could never have caught an async rejection anyway.
+  if (beta) {
+    beta.sendEmailVerification(result.account.id, result.account.email, name)
+      .catch(e => logger.warn(`[Accounts] sendEmailVerification failed for ${result.account.email}: ${e.message}`));
+  }
+
+  const provisioned = _provisionOrgAndWorkspace(result.account, orgName);
+
+  auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
+  res.status(201).json({
+    success: true,
+    account: result.account,
+    org: provisioned,
+    message: "Account created. Check your email to verify your address.",
+  });
+}
+
+router.post("/accounts/register", _registerRL, _handleRegister);
 
 // ── GET /accounts/me ──────────────────────────────────────────────
 router.get("/accounts/me", requireAuth, (req, res) => {
@@ -76,6 +144,66 @@ router.get("/accounts/me", requireAuth, (req, res) => {
       graceActive: access.graceActive,
     },
   });
+});
+
+// ── GET /accounts/me/export ─────────────────────────────────────────
+// GDPR self-service data export — Enterprise Capability Expansion mission.
+// Aggregates real records already stored across accountService/billing/
+// organizationService/crmService/creativeAssetLibrary for the calling
+// account (never another account's data — accountId is always derived
+// from the verified JWT, never a request parameter). Persisted as real
+// JSON bytes via the shared exportFileService and served back through the
+// existing GET /exports/global/:filename route.
+router.get("/accounts/me/export", requireAuth, rateLimiter(5, 15 * 60_000), async (req, res) => {
+  const accountId = req.user.sub || req.user.id;
+  if (!accountId) return res.status(401).json({ error: "Unauthorized" });
+  try {
+    const gdpr = require("../services/gdprExportService.cjs");
+    const data = gdpr.gatherAccountData(accountId);
+    const buffer = Buffer.from(JSON.stringify(data, null, 2), "utf8");
+
+    const exportFiles = require("../services/exportFileService.cjs");
+    const result = await exportFiles.persist(buffer, {
+      filename: `gdpr-export-${accountId}-${Date.now()}.json`,
+      mimeType: "application/json",
+      orgId: null,
+      accountId,
+      capability: "gdpr_data_export",
+      tags: ["gdpr", "privacy", "data-export"],
+    });
+    res.json({ success: true, ...result });
+  } catch (e) {
+    res.status(500).json({ error: e.message || "Export failed" });
+  }
+});
+
+// ── POST /accounts/resend-verification ────────────────────────────
+// Email Ecosystem mission: unlike registration (above) and forgot-password
+// (auth.js, correctly anti-enumeration by design), this route has no
+// enumeration concern — the caller is already authenticated and requesting
+// their OWN resend. Its entire purpose is confirming an email was sent, so
+// unconditionally returning success:true regardless of the real outcome
+// was a genuine, user-facing false-success (the same class already fixed
+// once in workspaceService.cjs's invite path, test 61) — a real Resend/
+// SES/SMTP failure was previously reported to the user as "Verification
+// email sent." Now awaits the real result and reports honestly.
+router.post("/accounts/resend-verification", requireAuth, rateLimiter(3, 15 * 60_000), async (req, res) => {
+  const accountId = req.user.sub || req.user.id;
+  const account   = accounts.getById(accountId);
+  if (!account) return res.status(404).json({ error: "Account not found" });
+  if (account.emailVerified) return res.json({ success: true, message: "Email already verified." });
+
+  const beta = _beta();
+  if (!beta) return res.status(503).json({ error: "Email service unavailable" });
+  try {
+    const result = await beta.sendEmailVerification(account.id, account.email, account.name);
+    if (!result.emailSent) {
+      return res.status(502).json({ error: "Could not send verification email — the email provider is unavailable. Please try again shortly." });
+    }
+    res.json({ success: true, message: "Verification email sent." });
+  } catch (e) {
+    res.status(500).json({ error: e.message || "Could not send verification email" });
+  }
 });
 
 // ── PATCH /accounts/me ────────────────────────────────────────────
@@ -99,39 +227,6 @@ router.get("/accounts", requireAuth, (req, res) => {
 });
 
 // ── /api/* aliases — respond before ops.js requireAuth gate ─────────────────
-const _registerRL = rateLimiter(5, 15 * 60_000);
-
-function _handleRegister(req, res) {
-  const { email, password, name, inviteCode } = req.body || {};
-  if (!email || !password) {
-    return res.status(400).json({ error: "email and password are required" });
-  }
-
-  const beta = _beta();
-  if (beta) {
-    const gate = beta.checkBetaGate(inviteCode);
-    if (!gate.allowed) return res.status(403).json({ error: gate.reason });
-  }
-
-  const result = accounts.createAccount({ email, password, name, role: "user" });
-  if (!result.success) {
-    return res.status(409).json({ error: result.error });
-  }
-
-  if (beta && inviteCode) beta.markInviteCodeUsed(inviteCode, result.account.id);
-  if (beta) {
-    try { beta.sendEmailVerification(result.account.id, result.account.email, name); }
-    catch { /* non-fatal */ }
-  }
-
-  auditLog.recordAuth({ action: "register", operator: result.account.id, method: "email" });
-  res.status(201).json({
-    success: true,
-    account: result.account,
-    message: "Account created. Check your email to verify your address.",
-  });
-}
-
 router.post("/api/accounts/register", _registerRL, _handleRegister);
 
 router.get("/api/accounts/me", requireAuth, (req, res) => {

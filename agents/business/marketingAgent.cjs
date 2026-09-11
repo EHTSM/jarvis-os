@@ -5,6 +5,7 @@
 
 const { getLeads, updateLead } = require("../crm.cjs");
 const { sendWhatsApp }         = require("../../utils/whatsapp.cjs");
+const socialPosting            = require("../../backend/services/socialPostingService.cjs");
 
 const CAMPAIGN_TEMPLATES = {
     promo:    (name) => `Hi ${name}! 🚀 We have an exclusive offer for you — AI automation at ₹999/month. Reply YES to grab it!`,
@@ -70,6 +71,17 @@ async function run(task) {
 
         case "list_templates":
             return { success: true, type: "marketingAgent", data: { templates: Object.keys(CAMPAIGN_TEMPLATES) } };
+
+        // Capability Reuse Verification mission — real X (Twitter) posting,
+        // reusing socialPostingService.cjs (vault-scoped credentials, real
+        // API v2 call). Wired here so social posting is reachable through
+        // the same task-dispatch surface as the rest of marketing
+        // automation instead of being an unreachable standalone file.
+        case "post_social": {
+            if (!p.text) return { success: false, type: "marketingAgent", data: { error: "text required" } };
+            const result = await socialPosting.post(p.text, p.orgId || null);
+            return { success: result.success, type: "marketingAgent", data: result };
+        }
 
         default:
             return { success: false, type: "marketingAgent", data: { error: `Unknown marketing task: ${task.type}` } };

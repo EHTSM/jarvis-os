@@ -263,7 +263,7 @@
 }
 .av2-btn--primary {
   background: var(--accent, #7c6fff);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--accent, #7c6fff);
 }
 .av2-btn--primary:hover    { background: #9488ff; }
@@ -277,7 +277,7 @@
 .av2-btn--ghost:disabled { opacity: .4; cursor: not-allowed; }
 .av2-btn--danger {
   background: var(--danger, #f55b5b);
-  color: #fff;
+  color: var(--on-danger);
   border-color: var(--danger, #f55b5b);
 }
 .av2-btn--danger:hover    { background: #e84d4d; }
@@ -461,8 +461,8 @@
   color: var(--text-faint, #4a5470);
   flex-shrink: 0;
 }
-.av2-wizard-step--active .av2-wizard-step-num { background: var(--accent, #7c6fff); color: #fff; border-color: transparent; }
-.av2-wizard-step--done .av2-wizard-step-num   { background: var(--success, #52d68a); color: #fff; border-color: transparent; }
+.av2-wizard-step--active .av2-wizard-step-num { background: var(--accent, #7c6fff); color: var(--on-accent); border-color: transparent; }
+.av2-wizard-step--done .av2-wizard-step-num   { background: var(--success); color: var(--on-success); border-color: transparent; }
 .av2-wizard-step-label { font-size: 12px; color: var(--text-faint, #4a5470); }
 .av2-wizard-step--active .av2-wizard-step-label { color: var(--text, #dde2ec); font-weight: 500; }
 .av2-wizard-step--done .av2-wizard-step-label   { color: var(--success, #52d68a); }
@@ -760,7 +760,7 @@
   border-radius: 10px;
   background: var(--accent, #7c6fff);
   border: none;
-  color: #fff;
+  color: var(--on-accent);
   font-size: 15px;
   cursor: pointer;
   flex-shrink: 0;

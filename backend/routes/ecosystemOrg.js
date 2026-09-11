@@ -5,9 +5,13 @@
  */
 const router = require("express").Router();
 
-const _org = () => require("../services/ecosystemOrg.cjs");
-const _st  = () => require("../services/ecosystemState.cjs");
-const _wf  = () => require("../services/ecosystemWorkflow.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _org = () => _try(() => require("../services/ecosystemOrg.cjs"));
+const _st  = () => _try(() => require("../services/ecosystemState.cjs"));
+const _wf  = () => _try(() => require("../services/ecosystemWorkflow.cjs"));
 
 // ── Management ────────────────────────────────────────────────────────────────
 router.get("/eco/status",     (req, res) => res.json(_org().getOrgStatus()));

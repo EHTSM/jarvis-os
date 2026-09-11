@@ -56,6 +56,14 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+// BI/Search Ecosystem mission: attachOrg is non-blocking (resolves req.org
+// when a real org context exists via the same server-side precedence every
+// other org-scoped route in this repo already uses — :orgId path param,
+// then X-Org-Id header, never trusted blindly — and simply falls through
+// otherwise), so adding it here is safe for D1/D3/D4/D5's existing routes
+// below, which are unaffected since they never read req.org. Only the D2
+// semantic-memory routes were changed to actually use it (see below).
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
 
 const tg  = require("../services/taskGraph.cjs");
 const sms = require("../services/semanticMemorySearch.cjs");
@@ -63,7 +71,7 @@ const re  = require("../services/reasoningEngine.cjs");
 const br  = require("../services/backgroundRuntime.cjs");
 const sdk = require("../services/pluginSDK.cjs");
 
-router.use("/p26", requireAuth);
+router.use("/p26", requireAuth, attachOrg);
 
 // ── D1 Multi-Agent Task Graph ─────────────────────────────────────────────────
 
@@ -119,7 +127,12 @@ router.post("/p26/memory/typed", async (req, res) => {
     try {
         const { type, data, opts } = req.body;
         if (!type || !data) return res.status(400).json({ success: false, error: "type and data required" });
-        res.json({ success: true, ...(await sms.saveTypedMemory(type, data, opts || {})) });
+        // orgId is server-resolved from the verified session (req.org, set
+        // by attachOrg above) and always wins over anything the client put
+        // in opts — a client must never be able to select which tenant a
+        // memory node is stamped with.
+        const safeOpts = { ...(opts || {}), orgId: req.org?.id || null };
+        res.json({ success: true, ...(await sms.saveTypedMemory(type, data, safeOpts)) });
     } catch (e) { res.status(400).json({ success: false, error: e.message }); }
 });
 
@@ -127,7 +140,7 @@ router.post("/p26/memory/search", (req, res) => {
     try {
         const { query, type, minScore, limit, projectId } = req.body;
         if (!query) return res.status(400).json({ success: false, error: "query required" });
-        res.json({ success: true, ...sms.semanticSearch(query, { type, minScore, limit, projectId }) });
+        res.json({ success: true, ...sms.semanticSearch(query, { type, minScore, limit, projectId, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
@@ -135,7 +148,7 @@ router.get("/p26/memory/failures", (req, res) => {
     try {
         const { q, limit } = req.query;
         if (!q) return res.status(400).json({ success: false, error: "q required" });
-        res.json({ success: true, ...sms.searchFailures(q, { limit: parseInt(limit) || 20 }) });
+        res.json({ success: true, ...sms.searchFailures(q, { limit: parseInt(limit) || 20, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
@@ -143,7 +156,7 @@ router.get("/p26/memory/successes", (req, res) => {
     try {
         const { q, limit } = req.query;
         if (!q) return res.status(400).json({ success: false, error: "q required" });
-        res.json({ success: true, ...sms.searchSuccesses(q, { limit: parseInt(limit) || 20 }) });
+        res.json({ success: true, ...sms.searchSuccesses(q, { limit: parseInt(limit) || 20, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
@@ -151,7 +164,7 @@ router.get("/p26/memory/decisions", (req, res) => {
     try {
         const { q, limit } = req.query;
         if (!q) return res.status(400).json({ success: false, error: "q required" });
-        res.json({ success: true, ...sms.searchDecisions(q, { limit: parseInt(limit) || 20 }) });
+        res.json({ success: true, ...sms.searchDecisions(q, { limit: parseInt(limit) || 20, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
@@ -159,21 +172,21 @@ router.post("/p26/memory/cross-project", (req, res) => {
     try {
         const { query, limit } = req.body;
         if (!query) return res.status(400).json({ success: false, error: "query required" });
-        res.json({ success: true, ...sms.crossProjectSearch(query, { limit }) });
+        res.json({ success: true, ...sms.crossProjectSearch(query, { limit, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
 router.get("/p26/memory/knowledge-graph", (req, res) => {
     try {
         const { maxNodes, edgeThreshold } = req.query;
-        res.json({ success: true, ...sms.getKnowledgeGraph({ maxNodes: parseInt(maxNodes) || 200, edgeThreshold: parseFloat(edgeThreshold) || 0.3 }) });
+        res.json({ success: true, ...sms.getKnowledgeGraph({ maxNodes: parseInt(maxNodes) || 200, edgeThreshold: parseFloat(edgeThreshold) || 0.3, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 
 router.post("/p26/memory/evolve", (req, res) => {
     try {
         const { recurrenceThreshold, confidenceCap, dryRun } = req.body;
-        res.json({ success: true, ...sms.evolveKnowledge({ recurrenceThreshold, confidenceCap, dryRun }) });
+        res.json({ success: true, ...sms.evolveKnowledge({ recurrenceThreshold, confidenceCap, dryRun, orgId: req.org?.id || null }) });
     } catch (e) { res.status(500).json({ success: false, error: e.message }); }
 });
 

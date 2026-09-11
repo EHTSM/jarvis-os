@@ -41,7 +41,7 @@
 .mt-card--error   { border-color: rgba(239,68,68,0.35);   background: rgba(239,68,68,0.05);  }
 
 .mt-icon  { font-size: 13px; flex-shrink: 0; transition: color 0.2s; }
-.mt-label { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.72); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mt-label { font-size: 11px; font-weight: 600; color: rgba(var(--fg-rgb), 0.78); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .mt-spinner {
   position: absolute;
@@ -51,7 +51,7 @@
   width: 10px;
   height: 10px;
   border: 1.5px solid rgba(124,111,255,0.3);
-  border-top-color: #7c6fff;
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: mt-spin 0.7s linear infinite;
 }

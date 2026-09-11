@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from "react";
 import "./DOP2Dashboard.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api = (path, opts = {}) =>
-  fetch(`/api${path}`, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
+  fetch(path, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
     .then(r => r.json());
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
@@ -50,7 +51,7 @@ function CheckRow({ check }) {
   const icon = check.pass ? "✓" : check.severity === "warning" ? "⚠" : "✗";
   const ic   = check.pass ? "#34d399" : check.severity === "warning" ? "#fbbf24" : "#f87171";
   return (
-    <div className={`dop2-check ${cls}`} onClick={() => setOpen(o => !o)}>
+    <div className={`dop2-check ${cls}`} {...clickableProps(() => setOpen(o => !o))}>
       <span className="dop2-check-icon" style={{ color: ic }}>{icon}</span>
       <div className="dop2-check-body">
         <div className="dop2-check-label">{check.label}</div>
@@ -349,7 +350,7 @@ function BenchmarkPanel({ onRun, loading }) {
       <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 13, fontWeight: 700 }}>Deployment Benchmark</div>
-          <div style={{ fontSize: 11, color: "#64748b" }}>20 deployment gates — validates full production readiness</div>
+          <div style={{ fontSize: 11, color: "var(--text-dim)" }}>20 deployment gates — validates full production readiness</div>
         </div>
         <button className="dop2-btn-primary" onClick={runBench} disabled={busy}>{busy ? "Running…" : "Run Benchmark"}</button>
       </div>
@@ -408,8 +409,8 @@ function HistoryPanel() {
           <ScoreRing score={h.productionScore} size={36} />
           <div style={{ flex: 1 }}>
             <div style={{ fontWeight: 600 }}><VerdictBadge verdict={h.verdict} /></div>
-            {h.vpsHost && <div style={{ color: "#64748b" }}>VPS: {h.vpsHost}</div>}
-            {h.baseUrl && <div style={{ color: "#64748b" }}>URL: {h.baseUrl}</div>}
+            {h.vpsHost && <div style={{ color: "var(--text-dim)" }}>VPS: {h.vpsHost}</div>}
+            {h.baseUrl && <div style={{ color: "var(--text-dim)" }}>URL: {h.baseUrl}</div>}
           </div>
           <div style={{ color: "#475569", fontSize: 10 }}>{h.runAt ? new Date(h.runAt).toLocaleString() : "—"}</div>
         </div>

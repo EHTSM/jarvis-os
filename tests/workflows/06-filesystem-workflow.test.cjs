@@ -59,7 +59,14 @@ test("terminal: git branch shows current branch", async () => {
 });
 
 test("terminal: node -e simple expression", async () => {
-    const r = await run(`node -e "console.log(2+2)"`);
+    // terminalAgent.run() tokenizes by whitespace only and spawns with
+    // shell:false — a shell-quoted argument like "console.log(2+2)" is
+    // passed to node as a literal argv token including the quote
+    // characters (there's no shell here to strip them), so node evaluates
+    // the string literal `"console.log(2+2)"` rather than executing the
+    // code inside it. An unquoted expression with no spaces works
+    // correctly through this no-shell execution path.
+    const r = await run(`node -e console.log(2+2)`);
     assert.equal(r.success, true, `node -e failed: ${r.error}`);
     assert.ok(r.stdout?.includes("4"), `expected 4, got: ${r.stdout}`);
 });

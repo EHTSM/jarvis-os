@@ -16,7 +16,9 @@
  *     GET    /orgs                            — list my orgs
  *     GET    /orgs/:orgId                     — get org
  *     PATCH  /orgs/:orgId                     — update org
- *     DELETE /orgs/:orgId                     — delete org (org_owner only)
+ *     DELETE /orgs/:orgId                     — archive org (soft-delete, org_owner only)
+ *     POST   /orgs/:orgId/restore             — restore an archived org
+ *     POST   /orgs/:orgId/purge               — permanently delete an archived org (requires { confirm: slug })
  *
  *   Members:
  *     GET    /orgs/:orgId/members             — list members
@@ -44,8 +46,19 @@
  *     GET    /orgs/:orgId/missions            — list org missions
  *     GET    /orgs/:orgId/missions/:missionId/ownership — verify ownership
  *
+ *   Billing (read-only aggregation over billingService.js — no billing
+ *   state is created/modified here; see getOrgBillingOverview):
+ *     GET    /orgs/:orgId/billing             — per-member plan/status/usage
+ *
+ *   Cross-org grants (org_owner or global enterprise_admin only):
+ *     GET    /orgs/me/grants                  — orgs granted to me
+ *     GET    /orgs/:orgId/grants              — list this org's grants
+ *     POST   /orgs/:orgId/grants              — grant { granteeAccountId, permissions[] }
+ *     DELETE /orgs/:orgId/grants/:accountId   — revoke a grant
+ *
  *   Context + RBAC:
  *     GET    /orgs/me/context                 — my org memberships + permissions
+ *     POST   /orgs/switch                     — set my current org (persisted per-account)
  *     GET    /orgs/roles                      — RBAC role definitions
  *     GET    /orgs/actions                    — all defined permission actions
  */
@@ -63,11 +76,14 @@ router.use("/orgs", requireAuth);
 
 // attachOrg() resolves req.org/req.orgRole from the X-Org-Id header, query,
 // or body — it does not read Express route params. Every /orgs/:orgId/* route
-// carries the org id as a URL param, so forward it into req.query.orgId (the
-// param attachOrg already knows how to read) before delegating, unchanged, to
-// the existing middleware.
+// carries the org id as a URL param, so forward it into req.body.orgId (the
+// field attachOrg already knows how to read) before delegating, unchanged, to
+// the existing middleware. NOTE: req.query is a getter in Express 5 —
+// assigning to it does not persist across middleware, so req.body (a plain
+// object set by the JSON body parser) is used instead.
 function _attachOrgFromParam(req, res, next) {
-    if (req.params.orgId && !req.query.orgId) req.query.orgId = req.params.orgId;
+    req.body = req.body || {};
+    if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId;
     return attachOrg(req, res, next);
 }
 router.use("/orgs/:orgId", _attachOrgFromParam);
@@ -88,6 +104,17 @@ router.get("/orgs/me/context", (req, res) => {
     catch (e) { _err(res, e); }
 });
 
+// ── Switch current org (persisted per-account; drives resolveContext's
+// primaryOrg for future requests that don't pass an explicit X-Org-Id) ───────
+router.post("/orgs/switch", (req, res) => {
+    try {
+        const { orgId } = req.body || {};
+        if (!orgId) return res.status(400).json({ ok: false, error: "orgId required" });
+        const result = _svc().setCurrentOrg(req.user.sub, orgId);
+        _ok(res, { ...result, context: _svc().resolveContext(req.user.sub) });
+    } catch (e) { _err(res, e, 400); }
+});
+
 // ── Org CRUD ──────────────────────────────────────────────────────────────────
 router.post("/orgs", (req, res) => {
     try {
@@ -97,11 +124,36 @@ router.post("/orgs", (req, res) => {
 });
 
 router.get("/orgs", (req, res) => {
-    try { _ok(res, _svc().listOrgs(req.user.sub)); }
+    try {
+        const includeArchived = req.query.includeArchived === "true";
+        _ok(res, _svc().listOrgs(req.user.sub, { includeArchived }));
+    }
     catch (e) { _err(res, e); }
 });
 
-router.get("/orgs/:orgId", requireOrgMember, (req, res) => {
+// OOPLIX V1 MASTER AUDIT (2026-08-16, org-deletion lifecycle audit):
+// requireOrgMember now correctly 404s tenant-DATA access (business.js's
+// leads/deals/etc.) for an archived org — but this route only returns the
+// org's own metadata (name, slug, archivedAt), which a real member
+// legitimately needs to see WHILE archived: it's the only practical way to
+// retrieve the org's slug for POST /orgs/:orgId/purge's confirmation token
+// without already having memorized it, and to review an org before deciding
+// whether to restore or permanently delete it. Deliberately bypasses
+// requireOrgMember's archived-org block via a local, narrower membership
+// check that omits it — the one legitimate exception, not a general pattern.
+function _requireOrgMemberIncludingArchived(req, res, next) {
+    const org = _svc().getOrg(req.params.orgId);
+    if (!org) return res.status(404).json({ ok: false, error: "Organization not found" });
+    const accountId = req.user?.sub;
+    const isMember = org.members?.some?.(m => m.accountId === accountId);
+    if (isMember) { req.org = org; return next(); }
+    if (accountId && (_svc().isEnterpriseAdmin(accountId) || _svc().listGrantsForAccount(accountId).some(g => g.orgId === org.id))) {
+        req.org = org; return next();
+    }
+    return res.status(403).json({ ok: false, error: "Not a member of this organization" });
+}
+
+router.get("/orgs/:orgId", _requireOrgMemberIncludingArchived, (req, res) => {
     try {
         const org = _svc().getOrg(req.params.orgId);
         if (!org) return res.status(404).json({ ok: false, error: "Organization not found" });
@@ -115,9 +167,26 @@ router.patch("/orgs/:orgId", requireOrgPermission("update_org"), (req, res) => {
     } catch (e) { _err(res, e, 400); }
 });
 
+// Soft-delete (archive). This is now the safe default behind DELETE — data and
+// membership are preserved and the org can be restored via POST /orgs/:orgId/restore.
 router.delete("/orgs/:orgId", requireOrgPermission("delete_org"), (req, res) => {
     try {
-        _ok(res, _svc().deleteOrg(req.params.orgId, req.user.sub));
+        _ok(res, _svc().archiveOrg(req.params.orgId, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.post("/orgs/:orgId/restore", requireOrgPermission("delete_org"), (req, res) => {
+    try {
+        _ok(res, _svc().restoreOrg(req.params.orgId, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+// Hard delete (irreversible). Requires the org to already be archived and the
+// request body to include { confirm: "<org-slug>" } as an explicit safeguard.
+router.post("/orgs/:orgId/purge", requireOrgPermission("delete_org"), (req, res) => {
+    try {
+        const { confirm } = req.body || {};
+        _ok(res, _svc().purgeOrg(req.params.orgId, req.user.sub, confirm));
     } catch (e) { _err(res, e, 400); }
 });
 
@@ -245,5 +314,57 @@ router.get("/orgs/:orgId/missions/:missionId/ownership", requireOrgMember, (req,
         _ok(res, _svc().assertMissionOwnership(req.params.missionId, req.user.sub, req.params.orgId));
     } catch (e) { _err(res, e, 403); }
 });
+
+// ── Billing overview (read-only — see organizationService.getOrgBillingOverview
+// for why billingService.js itself is untouched) ─────────────────────────────
+router.get("/orgs/:orgId/billing", requireOrgPermission("manage_billing"), (req, res) => {
+    try {
+        _ok(res, _svc().getOrgBillingOverview(req.params.orgId, req.user.sub));
+    } catch (e) { _err(res, e); }
+});
+
+// ── Cross-org grants (Module 6) ───────────────────────────────────────────────
+// Lets an org_owner (or a global enterprise_admin) give another account a fixed
+// set of permissions on this org without adding them as a member. Authorization
+// itself is enforced inside grantOrgAccess/revokeOrgAccess (org_owner-or-admin
+// check), not by route middleware, since a grantee calling GET on an org they
+// don't own must still be blocked — requireOrgMember already allows that org's
+// own grantees through for read paths, so the mutating routes below re-check.
+//
+// /orgs/me/grants must be registered before /orgs/:orgId/grants — otherwise
+// Express would match "me" as :orgId.
+router.get("/orgs/me/grants", (req, res) => {
+    try { _ok(res, { grants: _svc().listGrantsForAccount(req.user.sub) }); }
+    catch (e) { _err(res, e); }
+});
+
+router.get("/orgs/:orgId/grants", requireOrgMember, (req, res) => {
+    try {
+        _assertOrgOwnerOrAdmin(req);
+        _ok(res, { grants: _svc().listOrgGrants(req.params.orgId) });
+    } catch (e) { _err(res, e, 403); }
+});
+
+router.post("/orgs/:orgId/grants", requireOrgMember, (req, res) => {
+    try {
+        const { granteeAccountId, permissions } = req.body || {};
+        if (!granteeAccountId) return res.status(400).json({ ok: false, error: "granteeAccountId required" });
+        _ok(res, _svc().grantOrgAccess(req.params.orgId, granteeAccountId, permissions, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+router.delete("/orgs/:orgId/grants/:accountId", requireOrgMember, (req, res) => {
+    try {
+        _ok(res, _svc().revokeOrgAccess(req.params.orgId, req.params.accountId, req.user.sub));
+    } catch (e) { _err(res, e, 400); }
+});
+
+function _assertOrgOwnerOrAdmin(req) {
+    const accountId = req.user.sub;
+    if (_svc().isEnterpriseAdmin(accountId)) return;
+    if (!_svc().hasPermission(req.params.orgId, accountId, "delete_org")) {
+        throw Object.assign(new Error("Forbidden — requires org owner or enterprise admin"), { status: 403 });
+    }
+}
 
 module.exports = router;

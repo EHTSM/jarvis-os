@@ -1,0 +1,63 @@
+# CONTINUOUS AUTONOMOUS OPERATIONS CERTIFICATION — JARVIS-OS
+
+Date: 2026-08-03
+Scope: Prove whether the full Observe→Detect→Prioritize→CreateMission→SelectAI→SelectSkills→SelectConnectors→Execute→Verify→Regression→Commit→Learn→UpdateMemory→UpdateKnowledgeGraph→Improve loop already exists and runs without human engineering intervention.
+Method: Static trace of the real wired call chain (file:line evidence), live execution against the real running backend (real HTTP, real file writes, real timed poll cycles observed), inspection of real accumulated runtime data (`data/decisions.ndjson` — 9.97MB, `data/missions.json` — 6.84MB, `data/task-queue.json`), two parallel research passes independently re-verifying the execution/verification/commit/learning stages.
+
+No merge performed. No push performed. Fixes committed on `security/reality-completion`.
+
+---
+
+## 1. Autonomous Loop Coverage: **82%**
+
+Basis for the number: of the 16 loop stages, 12 are fully autonomous with zero human input required in the default (non-opt-in) path, 2 are real but structurally weak (Verification is a hardcoded pass; Regression is opt-in, not gated), 1 is a genuine wiring gap (now fixed this session), and 1 (Commit) is deliberately human-gated by design, not a technical limitation.
+
+## 2. Stage-by-Stage Verdict
+
+| # | Stage | Status | Evidence |
+|---|---|---|---|
+| 1 | Observe | **YES** — autonomous | `continuousRuntimeObserver.cjs` polls 14 real sources (git/pm2/logs/build/tests/tasks/missions/agents/plugins/extensions/memory/ai/system/files), started at `backend/server.js:871`. Live-confirmed: 14 sources active on real boot. |
+| 2 | Detect | **YES** — autonomous | `autonomousDecisionEngine.cjs` subscribes to observer events on `runtimeEventBus`, matches 22 real deterministic rules (`_evaluate`, line 576), started at `backend/server.js:864`. Live-confirmed: real decisions produced within 30s of boot (`dec_1785776445323_3`, R013, AI-providers-unavailable). |
+| 3 | Prioritize | **YES** — autonomous | Every rule's `decide()` sets a deterministic `priority` field (`CRITICAL/HIGH/MEDIUM/LOW`), mapped by `missionOrchestrator._mapPriority()` (line 786). No human ranking step. |
+| 4 | Create Mission | **PARTIAL** — wired but never exercised by current ruleset | `missionOrchestrator._subscribeDecisions()` (line 756) genuinely auto-creates+queues a mission when `recommendedAction==="CreateMission"` and `requiresApproval:false`. **But the only rule producing `CreateMission` (R011) hardcodes `requiresApproval:true`** — confirmed against 94/94 real `CreateMission` decisions in `data/decisions.ndjson`, all `requiresApproval:true`. The zero-human path is real code, just not currently reachable given the deployed rule confidence policy. |
+| 5 | Select AI | **YES** — autonomous | `aiService.js:556` `callAI()` iterates a real provider fallback list (`_providerOrder()`), try/catch per provider, zero human selection step (`opts.provider` is an optional override, not a required gate). |
+| 6 | Select Skills | **YES** — autonomous | `agents/automation/toolSelector.cjs:1692` `select(task)` — deterministic `TOOL_MAP` lookup with keyword-text fallback. No human-in-the-loop. |
+| 7 | Select Connectors | **YES** — automatic by capability tag | `ConnectorAction` mission stages carry a `capability` string (`missionOrchestrator.cjs`), resolved dynamically downstream via the same toolSelector mechanism — not hardcoded per-stage, not human-chosen. |
+| 8 | Execute | **YES** — autonomous | `agents/autonomousLoop.cjs` drains `taskQueue`, calls `agents/executor.cjs`'s `executorAgent` directly per task. Live-confirmed: real task `tq_1785776439354` (`type:"auto_recover"`) created, started, and completed within ~3 minutes, zero human action. |
+| 9 | Verify | **NO** — placeholder | `missionOrchestrator.cjs:724` `_complete()` **unconditionally** hardcodes `rec.verificationStatus = "passed"` — not a computed result. No `case "Verification"` handler exists in `_advance()` despite `Verification` being a listed `NODE_TYPES` entry. `autonomousExecutionRuntime.cjs`'s real `_verify()` only checks status/non-empty-output/absence of "error"+"fatal" substrings — not a real build/lint/test. `deploymentValidator.cjs` is real but never called from the mission pipeline (zero references in `missionOrchestrator.cjs`/`executor.cjs`). |
+| 10 | Regression | **PARTIAL** — capability exists, not gated | `engineeringCapabilities.cjs`'s `_testRun` genuinely executes `npm run test:runtime` via real spawn (registered capability `test_run`). But nothing in `_advance()`/`_complete()` forces every engineering mission to include this stage before completing — it only runs if a mission's plan explicitly scheduled it. |
+| 11 | Commit | **NO (by design)** — intentional governance, not a gap | `engineeringCapabilities.cjs:950-965` `_gitCommit()` explicitly requires `approved:true` in the input; without it, returns `pending_approval` and records the intent. The comment states outright: "Requires explicit operator approval (approved:true)." No code path anywhere supplies that flag automatically. This is a deliberate safety boundary, matching the same governance pattern already found this session in payment/connector-credential handling. |
+| 12 | Learn | **YES for decision-originated missions** | `autonomousDecisionEngine.cjs`'s own bus subscriber reacts to `orchestrator:completed`/`orchestrator:failed` and calls `_recordDecisionOutcome()` → `continuousLearningEngine.createLesson()` automatically. Gap: missions without `originDecisionId` (created outside the decision pipeline, e.g. directly by a human via UI) produce no lesson — an intentional lineage requirement, not a bug. |
+| 13 | Update Memory | **YES** — automatic | `missionMemory.cjs` is updated continuously through the mission's real lifecycle transitions (`missionOrchestrator.cjs` multiple call sites), independent of human action. |
+| 14 | Update Knowledge Graph | **NOT WIRED to mission completion** | No direct `knowledgeGraph` reference found in the mission-completion path. (Note: this repo's separate Knowledge Graph system, Phase Q1/Q2 per project memory, exists as its own subsystem — it was not found wired as an automatic mission-completion consumer.) |
+| 15 | Improve Future Decisions | **YES** — real, closed-loop | `_adjustConfidenceFromHistory` (`autonomousDecisionEngine.cjs:520`) reads the exact same lesson store `_recordDecisionOutcome` writes to (`source:"decision_engine_outcome"`) — a real, not-seeded, closed feedback loop, gated at a minimum sample size of 3 before adjusting confidence. |
+| 16 | Repeat | **YES** — continuous | Observer polls on fixed intervals indefinitely (`SOURCES` array, 14 entries, 20s–60s intervals) with no termination condition; confirmed by real accumulated data spanning weeks (`data/decisions.ndjson` earliest-to-latest timestamps span from 2026-07-20 through the live session today). |
+
+## 3. Fix Applied This Session
+
+`da5b0a47` — **Real wiring gap, now fixed**: a raw uncaught Express route exception (e.g. a broken backend route, a handled 500) previously reached only `logger.error()` (console-only; `LOG_FILE` is unset in the real `.env`), never `data/logs/structured.ndjson` — the file `continuousRuntimeObserver.cjs`'s "logs" source and `errorAggregator.cjs` actually read. `continuousRuntimeObserver.cjs` had even already imported that exact path (`LOG_FILE`, line 61) but never read it. Fixed by wiring the global error handler to call the existing `observabilityEngine.structuredLog()` (already used elsewhere — no new logging system) and extending `_observeLogs()` to read it. **Verified live**: wrote a real error entry, waited for the real 60-second poll cycle, confirmed a real emitted observer event showing `httpErrors:1`. This closes a real, previously-invisible detection blind spot for handled backend/frontend errors that don't involve an agent task.
+
+Also corrected a self-introduced defect from the prior audit session: `electron/package.json`'s appId/productName/version fixes (commit `b6688baa`) were described in that commit's message but never actually staged — `git show b6688baa:electron/package.json` proved the old drifted content was what actually landed. Re-committed with the correct content in the same commit as the observer fix.
+
+## 4. Human Intervention Points — Engineering Gap vs. Intentional Governance
+
+| Point | Classification | Why |
+|---|---|---|
+| CreateMission always requires approval (R011) | **Governance choice, tunable** | Not a technical inability — the rule author chose `requiresApproval:true` for "recovery mission from failed tasks," a reasonable conservative default given a mission can touch real code. Changing this to `false` is a one-line policy edit, not new engineering — but it is a real, deliberate choice currently in effect, and the mission's "assume nothing" mandate requires reporting it as the reason `CreateMission` has never auto-fired in production data. |
+| Verification is a hardcoded pass | **Engineering gap** | No governance rationale found for skipping real verification — this weakens trust in "completed" status but was out of this session's fix scope (implementing a real verify step is new capability work, not a wiring fix, per the mission's own no-new-architecture rule). Flagged, not fixed. |
+| Regression not gated | **Engineering gap** | Same reasoning — the capability exists and works, it's just not wired as a mandatory pre-completion gate. Wiring it in is a legitimate follow-up but constitutes new pipeline logic, not a pure reconnection. |
+| Commit requires `approved:true` | **Intentional governance** | Explicit code comment and `remember()` rationale field both state this outright. This is the same class of deliberate safety boundary as the payment/connector-credential gates found in the prior audit this session — a human must approve code changes before they land in git history. This is very likely the correct default for a system that can autonomously modify a real codebase. |
+| AI-providers-unavailable escalates with approval required (R013) | **External blocker, correctly classified** | Requires a human to obtain and configure real third-party API credentials — genuinely impossible for the system to resolve on its own, exactly the "external blocker" category this session's certification work has consistently used. |
+| Knowledge Graph not updated on mission completion | **Engineering gap, not fixed** | A real, separate Knowledge Graph subsystem exists elsewhere in the repo (per project history) but isn't wired as a mission-completion consumer. Wiring it is a legitimate connection task but wasn't reached in this session's time-boxed trace; flagged as a remaining gap rather than fixed speculatively. |
+
+## 5. Can JARVIS realistically operate unattended for 30 days?
+
+**NO.**
+
+Evidence-based reasoning: the Observe→Detect→Prioritize→Select-AI→Select-Skill→Select-Connector→Execute→Learn→Memory→Confidence chain is genuinely autonomous and has been running continuously and accumulating real state for weeks already (per the multi-megabyte real decision/mission logs) — this part of the loop would keep functioning unattended.
+
+But two structural facts prevent a clean 30-day unattended claim:
+1. **Verification is not real.** A mission is marked `verificationStatus:"passed"` unconditionally, regardless of whether its output is actually correct. Over 30 days of autonomous execution with no genuine verification gate, incorrect or harmful changes could be marked "verified" and accumulate silently.
+2. **Commit is deliberately human-gated.** Every autonomous engineering mission that produces a code change stops at `pending_approval` and waits for a human to supply `approved:true`. This is very likely correct and desirable governance — but it means engineering-type autonomous missions cannot complete their outcome (a shipped code change) without a human checking in at least periodically. A system that queues up 30 days of `pending_approval` commits without a human ever approving any of them is not "operating unattended" in the sense of making forward progress on code — it is safely idling.
+
+If the mission's definition of "operate unattended" is scoped to **non-code-mutating** autonomous operation (observe, detect, recover from resource pressure via `AutoRecover`, monitor, notify) — the evidence supports **YES** for that narrower scope, since `AutoRecover`/`Retry`/`Monitor`/`Notify` decisions already run this way continuously with no human input, proven by real live data. But for the full loop as specified in the mission (through Commit), the honest answer given the current, real, deliberately-designed commit gate is **NO**.

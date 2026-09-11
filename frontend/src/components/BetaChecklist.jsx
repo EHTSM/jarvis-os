@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { _fetch } from '../_client';
 import './BetaChecklist.css';
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Checklist definition ──────────────────────────────────────────────────────
 const SECTIONS = [
@@ -140,6 +143,8 @@ export default function BetaChecklist({ onNavigate }) {
   const [feedbackText,  setFeedbackText]  = useState('');
   const [feedbackSent,  setFeedbackSent]  = useState(false);
   const [feedbackSending, setFeedbackSending] = useState(false);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setFeedbackOpen(false));
 
   const runAll = useCallback(async () => {
     setRunning(true);
@@ -188,7 +193,7 @@ export default function BetaChecklist({ onNavigate }) {
   return (
     <div className="bc-root">
       {feedbackOpen && (
-        <div className="bc-feedback-overlay" onClick={() => setFeedbackOpen(false)}>
+        <div className="bc-feedback-overlay" {...overlayProps(() => setFeedbackOpen(false))}>
           <div className="bc-feedback-panel" onClick={e => e.stopPropagation()}>
             <div className="bc-feedback-header">
               <span className="bc-feedback-title">Send Beta Feedback</span>
@@ -218,9 +223,14 @@ export default function BetaChecklist({ onNavigate }) {
         </div>
       )}
       <div className="bc-header">
+        {/* Phase A.11.8 — the page title was a <span>, so this surface rendered
+            no heading element at all (measured live: zero h1/h2/h3 in the pane).
+            Every conformant sibling uses a real <h1> + <p>; recovered to that
+            same shape so the page is navigable by heading like the rest of the
+            app. Class names, layout and text are unchanged. */}
         <div className="bc-header-left">
-          <span className="bc-title">Beta Launch Checklist</span>
-          <span className="bc-subtitle">{allItems.length} checks · {autoItems.length} automated</span>
+          <h1 className="bc-title">Beta Launch Checklist</h1>
+          <p className="bc-subtitle">{allItems.length} checks · {autoItems.length} automated</p>
         </div>
         <div className="bc-header-right">
           <div className="bc-score">

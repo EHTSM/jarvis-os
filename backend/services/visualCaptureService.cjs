@@ -13,6 +13,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const SCREENSHOTS_DIR = path.join(__dirname, "../../data/odi/screenshots");
 
@@ -82,6 +83,8 @@ async function captureFromPage({ pageId, fullPage = false, url } = {}) {
     page = r.page;
 
     if (url) {
+      const safety = await assertSafeNavigationTarget(url);
+      if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
       try { await page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 }); }
       catch (e) { return { ok: false, error: `Navigation failed: ${e.message}` }; }
     }
@@ -123,35 +126,113 @@ async function captureFromPage({ pageId, fullPage = false, url } = {}) {
 // a base64 PNG string.  If not available we return an error rather than crash.
 
 async function captureDesktop({ label } = {}) {
-  // Server-side: Electron is the host process — use desktopCapturer if available
+  // Server-side: Electron is the host process — use desktopCapturer if
+  // available. Real, confirmed bug: require("electron") does NOT throw in a
+  // plain `node` process that merely has the `electron` package installed
+  // (a well-known Node/Electron footgun) — it resolves to a STRING (the
+  // path to the Electron binary), not the API object, so the old
+  // `if (!electron)` check was always false whenever the `electron`
+  // package was present in node_modules, regardless of whether this code
+  // was actually running inside Electron's main process. Combined with the
+  // real architectural fact that the backend runs as a SEPARATE spawned
+  // child process in production (electron/main.cjs's
+  // spawn(nodeBin, [serverEntry], {stdio:["ignore",...]}), no Node
+  // integration into Electron's process, no existing backend→Electron-main
+  // IPC channel to reach real desktopCapturer — building one is new
+  // architecture, out of scope here) — captureDesktop() was unconditionally
+  // broken in every real environment, not just "outside Electron" as
+  // originally assumed. Checking for the real API shape (an object with a
+  // desktopCapturer property), not just resolution success, and falling
+  // back to a real native OS screenshot when it's absent.
   let electron;
-  try { electron = require("electron"); } catch { /* not in Electron */ }
-
-  if (!electron) {
-    return { ok: false, error: "Not running inside Electron" };
-  }
-
-  let buffer;
   try {
-    const { desktopCapturer } = electron;
-    const sources = await desktopCapturer.getSources({ types: ["screen"], thumbnailSize: { width: 1920, height: 1080 } });
-    if (!sources.length) return { ok: false, error: "No desktop source found" };
+    const e = require("electron");
+    if (e && typeof e === "object" && e.desktopCapturer) electron = e;
+  } catch { /* not in Electron */ }
 
-    const thumbnail = sources[0].thumbnail;
-    buffer = thumbnail.toPNG();
-  } catch (e) {
-    return { ok: false, error: `Desktop capture failed: ${e.message}` };
+  if (electron) {
+    let buffer;
+    try {
+      const { desktopCapturer } = electron;
+      const sources = await desktopCapturer.getSources({ types: ["screen"], thumbnailSize: { width: 1920, height: 1080 } });
+      if (!sources.length) return { ok: false, error: "No desktop source found" };
+
+      const thumbnail = sources[0].thumbnail;
+      buffer = thumbnail.toPNG();
+    } catch (e) {
+      return { ok: false, error: `Desktop capture failed: ${e.message}` };
+    }
+
+    const meta = {
+      source:    "electron-desktop",
+      label:     label || "desktop",
+      timestamp: new Date().toISOString(),
+      capturedAt: Date.now(),
+    };
+
+    const saved = _writeScreenshot(buffer, meta);
+    return { ok: true, source: "electron-desktop", ...saved, path: _relPath(saved.path), meta };
   }
 
+  return _captureDesktopNative({ label });
+}
+
+// ── Native OS screenshot fallback (no Electron process available) ────────────
+async function _captureDesktopNative({ label } = {}) {
+  const { execFileSync } = require("child_process");
+  const os = require("os");
+  const platform = process.platform;
+
+  _ensureDir();
+  const slug     = _slug();
+  const filename = `screenshot-${slug}.png`;
+  const filepath = path.join(SCREENSHOTS_DIR, filename);
+  const metaname = `screenshot-${slug}.json`;
+  const metapath = path.join(SCREENSHOTS_DIR, metaname);
+
+  try {
+    if (platform === "darwin") {
+      // -x: no sound, -T 0: no delay. Native macOS CLI, no dependency.
+      execFileSync("screencapture", ["-x", "-T", "0", filepath], { timeout: 10_000 });
+    } else if (platform === "linux") {
+      // Try common Linux screenshot tools in order; none installed is a
+      // real, honest failure, not a silent skip.
+      const tools = [
+        ["gnome-screenshot", ["-f", filepath]],
+        ["scrot",            [filepath]],
+        ["import",           ["-window", "root", filepath]],  // ImageMagick
+      ];
+      let captured = false, lastErr = null;
+      for (const [bin, args] of tools) {
+        try { execFileSync(bin, args, { timeout: 10_000 }); captured = true; break; }
+        catch (e) { lastErr = e; }
+      }
+      if (!captured) return { ok: false, error: `No screenshot tool available (tried gnome-screenshot/scrot/import): ${lastErr?.message || "unknown"}` };
+    } else {
+      return { ok: false, error: `Native desktop capture not implemented for platform: ${platform}` };
+    }
+  } catch (e) {
+    return { ok: false, error: `Native desktop capture failed: ${e.message}` };
+  }
+
+  if (!fs.existsSync(filepath)) return { ok: false, error: "Screenshot command reported success but produced no file" };
+
+  const buffer = fs.readFileSync(filepath);
   const meta = {
-    source:    "electron-desktop",
+    source:    "native-os",
+    platform,
     label:     label || "desktop",
     timestamp: new Date().toISOString(),
     capturedAt: Date.now(),
   };
+  fs.writeFileSync(metapath, JSON.stringify(meta, null, 2));
 
-  const saved = _writeScreenshot(buffer, meta);
-  return { ok: true, source: "electron-desktop", ...saved, path: _relPath(saved.path), meta };
+  return {
+    ok: true, source: "native-os",
+    filename, path: _relPath(filepath), metaPath: _relPath(metapath),
+    sizeBytes: buffer.length, sizeKb: Math.round(buffer.length / 1024),
+    timestamp: meta.timestamp, meta,
+  };
 }
 
 // ── capture browser viewport (Playwright page opened at a URL) ────────────────
@@ -161,6 +242,8 @@ async function captureViewport({ url, width = 1280, height = 900, fullPage = fal
   if (!session) return { ok: false, error: "Playwright not available" };
 
   if (!url) return { ok: false, error: "url required for viewport capture" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   if (!session.isRunning()) {
     const launch = await session.launch({ headless: true });

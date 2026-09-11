@@ -15,6 +15,7 @@ const router = require("express").Router();
 const fs     = require("fs");
 const path   = require("path");
 const logger = require("../utils/logger");
+const { operatorOnly } = require("../middleware/authMiddleware");
 
 // ── Lazy service refs ────────────────────────────────────────────────────────
 
@@ -970,13 +971,19 @@ function _scenario() { return _try(() => require("../services/autonomousEngineer
  * Body: { goal, approved?, requireApproval? }
  * Runs an end-to-end autonomous engineering scenario from a user goal string.
  */
-router.post("/engineering/scenario/run", async (req, res) => {
+// Mission 51 (2026-08-26): real repo-committing operation, previously
+// requireAuth only — matches deployment.js/dependencyAudit.js's existing
+// operatorOnly pattern for equivalent repo-mutating routes. `approved` was
+// also trusted straight from the client body; now that operatorOnly has
+// already run, "operator explicitly called this route" IS the approval —
+// no separate approval-service integration needed (per the mission plan).
+router.post("/engineering/scenario/run", operatorOnly, async (req, res) => {
     try {
         const engine = _scenario();
         if (!engine) return res.status(503).json({ ok: false, error: "scenario engine unavailable" });
-        const { goal, approved, requireApproval } = req.body;
+        const { goal, requireApproval } = req.body;
         if (!goal) return res.status(400).json({ ok: false, error: "goal field required" });
-        const report = await engine.run(goal, { approved, requireApproval });
+        const report = await engine.run(goal, { approved: true, requireApproval });
         res.json(report);
     } catch (err) {
         logger.error(`[Scenario] run failed: ${err.message}`);
@@ -1007,7 +1014,9 @@ function _bench() { return _try(() => require("../services/engineeringBenchmark.
  * Run the full 10-scenario benchmark suite against the live repository.
  * Warning: this commits real changes. Use in dev only.
  */
-router.post("/engineering/benchmark/run", async (req, res) => {
+// Mission 51 (2026-08-26): "commits real changes" per this route's own
+// comment — same operatorOnly gate as scenario/run above.
+router.post("/engineering/benchmark/run", operatorOnly, async (req, res) => {
     try {
         const b = _bench();
         if (!b) return res.status(503).json({ ok: false, error: "benchmark engine unavailable" });
@@ -1044,7 +1053,7 @@ router.get("/engineering/benchmark/scenarios", (req, res) => {
 });
 
 /** POST /engineering/benchmark/scenario/:id — run a single scenario */
-router.post("/engineering/benchmark/scenario/:id", async (req, res) => {
+router.post("/engineering/benchmark/scenario/:id", operatorOnly, async (req, res) => {
     try {
         const b = _bench();
         if (!b) return res.status(503).json({ ok: false, error: "benchmark engine unavailable" });

@@ -183,11 +183,16 @@ async function parse(intent, opts = {}) {
   try {
     const aiService = require("./aiService");
     const prompt    = buildPrompt(intent, opts);
-    const result    = await aiService.callAI(
-      [{ role: "user", content: prompt }],
-      { maxTokens: 1000 }
-    );
-    const text = result?.content || result?.text || String(result || "");
+    // Real-bug fix: callAI(prompt, opts) takes a plain string prompt and
+    // builds its own {role:"user"} message internally (confirmed by
+    // reading aiService.js:556-559) — passing a messages array here
+    // produced a malformed nested { role, content: [...] } payload sent
+    // to every provider, silently degrading every AI-parsed browser
+    // intent to the navigate+screenshot Google-search fallback below
+    // (caught by this function's own try/catch, so it never surfaced as
+    // an error — just always-wrong step plans).
+    const result = await aiService.callAI(prompt, { maxTokens: 1000 });
+    const text = typeof result === "string" ? result : (result?.content || result?.text || String(result || ""));
     // Extract JSON array from response
     const match = text.match(/\[[\s\S]*\]/);
     if (match) {

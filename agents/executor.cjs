@@ -32,13 +32,15 @@ const systemHealth       = require("./system/systemHealth.cjs");
 // dev/business/internet/content handlers ARE reachable via agentExecutorMod.
 // All other layers (businessPro, social, education, life, enterprise,
 //   health, media) produce no planner task types — excluded from startup load.
-// dev/index.cjs belonged to a legacy dev-agent subsystem that has since been
-// superseded (agents/dev/ now holds the current AI Coding Program tooling —
-// apiFactory.cjs, productAssembly.cjs, etc. — with no index.cjs entrypoint).
-// Guarded so a genuinely-removed legacy module degrades this handler set
-// instead of crashing the process, same pattern used for _legacyExecutor
-// elsewhere in this codebase.
-try { require("./dev/index.cjs"); } catch { /* legacy dev-agent subsystem removed */ }
+// V6-V10 Production Realization: dev/index.cjs belonged to a legacy
+// dev-agent subsystem that has since been superseded (agents/dev/ now holds
+// the current AI Coding Program tooling — apiFactory.cjs, productAssembly.cjs,
+// etc — with no index.cjs entrypoint, confirmed via `ls agents/dev/`). The
+// require() that used to sit here was a permanently-failing guarded no-op
+// (the target file cannot exist under the new layout) — removed rather than
+// kept as a phantom reference; the 3 lines below remain guarded because
+// business/internet/content DO still have real index.cjs entrypoints, just
+// superseded ones, which is a different situation.
 // business/internet/content wrappers depend on legacy agents/paymentAgent.cjs,
 // agents/crm.cjs, agents/core/groqClient.cjs, backend/utils/payment.cjs, and
 // backend/utils/whatsapp.cjs — all superseded by backend/services/paymentService.js,
@@ -48,6 +50,24 @@ try { require("./dev/index.cjs"); } catch { /* legacy dev-agent subsystem remove
 try { require("./business/index.cjs"); } catch { /* superseded by backend/services/* */ }
 try { require("./internet/index.cjs"); } catch { /* superseded by backend/services/* */ }
 try { require("./content/index.cjs"); } catch { /* superseded by backend/services/* */ }
+
+// Zero Blind Spot Certification — honest-failure helper for task types whose
+// `require("../modules/<layer>/...")` target genuinely does not exist
+// anywhere in the repo (confirmed: modules/infrastructure/, modules/metaverse/,
+// modules/futureTech/ are all empty directories). These task types WERE
+// reachable from real user input via toolSelector.cjs's keyword matching, so
+// this is not dead code from the caller's perspective — a real user could
+// trigger a raw "Cannot find module" internal stack trace. Returns the same
+// {success:false, error, nonRetriable} shape errorHandler.handle() already
+// uses elsewhere in this file, so callers see one consistent honest-failure
+// contract instead of an internal Node.js error leaking through.
+function _capabilityUnavailable(taskType, note) {
+    return async () => ({
+        success: false,
+        error: `"${taskType}" is not implemented — ${note}`,
+        nonRetriable: true,
+    });
+}
 
 // ── Tool Handlers — built once, reused on every task ────────────
 // Handlers are pure async functions; no per-call state needed.
@@ -85,14 +105,55 @@ function _buildHandlers() {
             const { callAI } = require("../backend/services/aiService.js");
             const query = task.payload?.query || task.input || task.label || "";
             const reply = await callAI(query);
-            return { type: "ai", result: reply, message: reply, success: !!reply };
+            // `success: !!reply` treated aiService's own failure sentinel as a
+            // success: callAI() returns the literal string "AI backend unavailable.
+            // Check provider API keys in your .env file." (aiService.js:650) when
+            // every provider fails, and a non-empty string is truthy. The identical
+            // check in agents/runtime/bootstrapRuntime.cjs:224 already excludes that
+            // sentinel, so the same reply was reported success here and failure
+            // there. Consequence: mission stages whose only output was
+            // "AI backend unavailable" were stamped "completed" — a fake success one
+            // layer below autonomousLoop's allFailed guard, which reads this flag.
+            // Match the existing correct handler rather than inventing a new rule.
+            const unavailable = typeof reply === "string" && reply.startsWith("AI backend unavailable");
+            return { type: "ai", result: reply, message: reply, success: !!reply && !unavailable, ...(unavailable ? { error: reply } : {}) };
         },
 
         research: async (task) => {
-            const researchAgent = require("./researchAgent.cjs");
+            // Agent Civilization Unification (module 4): this handler used
+            // to require("./researchAgent.cjs") — a file that only exists
+            // in _archive/20260520_010917/agents/, not the live tree. Every
+            // call here has thrown MODULE_NOT_FOUND since that archive move,
+            // with no test coverage to catch it. Redirect to the real,
+            // already-registered "news" capability (agents/internet/
+            // newsAggregatorAgent.cjs — id: internet_news), which takes the
+            // same free-text query/topic/keyword contract the old
+            // researchAgent(query) call expected. Deliberately NOT the
+            // shared "research" tag several internet/* agents also carry
+            // (internet_web_scraper, internet_browser_automation, ...) —
+            // those need a url/target, not a free-text query, and would
+            // silently mis-serve this handler's callers if findForCapability
+            // happened to pick one of them first (verified: it does, by
+            // registration order, findForCapability has no shape-awareness).
+            // taskRouter.cjs's own header comment documents this exact
+            // pattern: "each agent's first capability is a unique tag so
+            // TASK_TYPE_MAP can deterministically address one specific
+            // agent" — applying that same discipline here.
+            const agentRegistry = require("./runtime/agentRegistry.cjs");
+            const agent = agentRegistry.findForCapability("news");
+            if (!agent) {
+                return { type: "research", success: false, error: "No research-capable agent available" };
+            }
             const query = task.payload?.query || task.input || "";
-            const result = await researchAgent(query);
-            return { type: "research", result, success: true };
+            agent.acquireSlot();
+            try {
+                const result = await agent.handler({ ...task, payload: { ...(task.payload || {}), query, topic: query, keyword: query } });
+                agent.recordSuccess();
+                return { type: "research", result, success: result?.success !== false, agentId: agent.id };
+            } catch (err) {
+                agent.recordFailure();
+                return { type: "research", success: false, error: err.message, agentId: agent.id };
+            }
         },
 
         dev: async (task) => {
@@ -250,11 +311,17 @@ function _buildHandlers() {
         funnelBuilder:           async (task) => agentExecutorMod.run("funnelBuilderAgent",      task),
         upsell:                  async (task) => agentExecutorMod.run("upsellAgent",             task),
         crossSell:               async (task) => agentExecutorMod.run("crossSellAgent",          task),
-        pricingOptimizer:        async (task) => agentExecutorMod.run("pricingOptimizer",        task),
+        // Recovered during module 6 classification — real backing exists:
+        // backend/services/pricingIntelligenceEngine.cjs (POST-Ω P15),
+        // registered as "business_pricing".
+        pricingOptimizer:        async (task) => agentExecutorMod.run("business_pricing",         task),
         adCopy:                  async (task) => agentExecutorMod.run("adCopyAgent",             task),
         adCampaign:              async (task) => agentExecutorMod.run("adCampaignMonitor",       task),
         retargeting:             async (task) => agentExecutorMod.run("retargetingEngine",       task),
-        emailAutomation:         async (task) => agentExecutorMod.run("emailAutomationPro",      task),
+        // Recovered during module 6 classification — real backing exists:
+        // backend/services/emailService.cjs's sendMarketing(),
+        // registered as "business_email_automation".
+        emailAutomation:         async (task) => agentExecutorMod.run("business_email_automation", task),
         whatsappBot:             async (task) => agentExecutorMod.run("whatsappBotPro",          task),
         ecommerce:               async (task) => agentExecutorMod.run("ecommerceManager",        task),
         productListing:          async (task) => agentExecutorMod.run("productListingAgent",     task),
@@ -263,7 +330,12 @@ function _buildHandlers() {
         orderAutomation:         async (task) => agentExecutorMod.run("orderAutomationAgent",    task),
         supplierFinder:          async (task) => agentExecutorMod.run("supplierFinderAgent",     task),
         dropshipping:            async (task) => agentExecutorMod.run("dropshippingAgent",       task),
-        affiliate:               async (task) => agentExecutorMod.run("affiliateAgent",          task),
+        // Agent Civilization Unification (module 6): was routed to
+        // agentExecutorMod.run("affiliateAgent", task) — a name never
+        // registered anywhere. The real capability exists and is already
+        // live at /revenue/affiliates/* (backend/services/revenueOS.cjs) —
+        // registered as "business_affiliate" in bootstrapRuntime.cjs.
+        affiliate:               async (task) => agentExecutorMod.run("business_affiliate",       task),
         commissionOptimizer:     async (task) => agentExecutorMod.run("commissionOptimizer",     task),
         profitForecast:          async (task) => agentExecutorMod.run("profitForecastAgent",     task),
 
@@ -364,71 +436,128 @@ function _buildHandlers() {
         knowledgePortal:          async (task) => agentExecutorMod.run("knowledgePortalAgent",      task),
 
         // ── Infrastructure Modules (Phase A) ─────────────────────
-        // Maps
-        maps: async (task) => {
-            const maps = require("../modules/infrastructure/mapsAgent.cjs");
-            const p    = task.payload || {};
-            if (p.from && p.to) return maps.getDirections(p.from, p.to, p.mode || "driving");
-            return maps.getLocation(p.query || p.location || p.input || task.input || "");
-        },
-        mapLocation:   async (task) => {
-            const { getLocation } = require("../modules/infrastructure/mapsAgent.cjs");
-            const p = task.payload || {};
-            return getLocation(p.query || p.location || p.input || task.input || "");
-        },
-        mapDirections: async (task) => {
-            const { getDirections } = require("../modules/infrastructure/mapsAgent.cjs");
-            const p = task.payload || {};
-            return getDirections(p.from, p.to, p.mode || "driving");
-        },
+        // Zero Blind Spot Certification: maps/GPS/wallet never had a real
+        // backing implementation anywhere in the repo (modules/infrastructure/
+        // is an empty directory — confirmed) and no equivalent capability
+        // exists elsewhere to reuse (unlike payments/notifications below).
+        // Building real maps/GPS/wallet providers would be new capability
+        // expansion, explicitly out of scope for this certification mission.
+        // These now fail honestly instead of leaking a raw
+        // "Cannot find module" stack trace to a real user who reached them
+        // via toolSelector.cjs's keyword matching (e.g. "my location",
+        // "wallet balance").
+        maps:          _capabilityUnavailable("maps", "no maps/geocoding provider is wired in this deployment"),
+        mapLocation:   _capabilityUnavailable("mapLocation", "no maps/geocoding provider is wired in this deployment"),
+        mapDirections: _capabilityUnavailable("mapDirections", "no maps/geocoding provider is wired in this deployment"),
+        gps:           _capabilityUnavailable("gps", "no device-location provider is wired in this deployment"),
+        gpsLocation:   _capabilityUnavailable("gpsLocation", "no device-location provider is wired in this deployment"),
+        wallet:        _capabilityUnavailable("wallet", "no internal wallet ledger exists in this deployment"),
+        walletBalance: _capabilityUnavailable("walletBalance", "no internal wallet ledger exists in this deployment"),
+        walletAdd:     _capabilityUnavailable("walletAdd", "no internal wallet ledger exists in this deployment"),
+        walletDeduct:  _capabilityUnavailable("walletDeduct", "no internal wallet ledger exists in this deployment"),
+        walletHistory: _capabilityUnavailable("walletHistory", "no internal wallet ledger exists in this deployment"),
 
-        // GPS
-        gps: async (task) => {
-            const gps = require("../modules/infrastructure/gpsAgent.cjs");
-            const p   = task.payload || {};
-            return gps.getCurrentLocation(p.userId || p.user || "anonymous", p);
-        },
-        gpsLocation: async (task) => {
-            const { getCurrentLocation } = require("../modules/infrastructure/gpsAgent.cjs");
-            const p = task.payload || {};
-            return getCurrentLocation(p.userId || "anonymous", p);
-        },
-
-        // Payments (infrastructure layer — wraps existing Razorpay util)
+        // Payments — a real backing service DOES exist (backend/services/
+        // paymentService.js, real Razorpay integration with its own honest
+        // failure modes for missing config/localhost BASE_URL) — reused here
+        // instead of inventing a second payment agent.
         infraPayment: async (task) => {
-            const { createPayment } = require("../modules/infrastructure/paymentAgent.cjs");
-            return createPayment(task.payload || {});
+            const payments = require("../backend/services/paymentService.js");
+            const p = task.payload || {};
+            return payments.createPaymentLink({
+                amount: p.amount, name: p.name, phone: p.phone,
+                description: p.description, accountId: p.accountId, orgId: p.orgId,
+            });
         },
-        paymentStatus: async (task) => {
-            const { getPaymentStatus } = require("../modules/infrastructure/paymentAgent.cjs");
-            return getPaymentStatus((task.payload || {}).paymentId);
-        },
+        // No real payment-status-lookup-by-id capability exists anywhere in
+        // this codebase (paymentService.js only creates links and verifies
+        // webhooks) — honest failure rather than a fabricated status.
+        paymentStatus: _capabilityUnavailable("paymentStatus", "paymentService.js supports creating payment links and verifying webhooks, not querying status by paymentId"),
 
-        // Wallet
-        wallet: async (task) => {
-            const wallet = require("../modules/infrastructure/walletAgent.cjs");
-            const p      = task.payload || {};
-            if (task.type === "wallet_add")     return wallet.addFunds(p);
-            if (task.type === "wallet_deduct")  return wallet.deductFunds(p);
-            if (task.type === "wallet_history") return wallet.getHistory(p);
-            return wallet.checkBalance(p);
+        // Notifications — real backing services already exist and are wired
+        // elsewhere (backend/services/whatsappService.js,
+        // backend/services/telegramService.js). Reused directly instead of
+        // inventing a third "notificationAgent" wrapper — this was the one
+        // infrastructure-layer capability where a real implementation
+        // genuinely existed to reuse rather than requiring an honest-failure
+        // stub.
+        notifyWhatsApp: async (task) => {
+            const wa = require("../backend/services/whatsappService.js");
+            const p = task.payload || {};
+            return wa.sendMessage(p.phone, p.text || p.message || task.input, p.retries, p.orgId);
         },
-        walletBalance:  async (task) => { const { checkBalance }  = require("../modules/infrastructure/walletAgent.cjs"); return checkBalance(task.payload  || {}); },
-        walletAdd:      async (task) => { const { addFunds }      = require("../modules/infrastructure/walletAgent.cjs"); return addFunds(task.payload      || {}); },
-        walletDeduct:   async (task) => { const { deductFunds }   = require("../modules/infrastructure/walletAgent.cjs"); return deductFunds(task.payload   || {}); },
-        walletHistory:  async (task) => { const { getHistory }    = require("../modules/infrastructure/walletAgent.cjs"); return getHistory(task.payload     || {}); },
-
-        // Notifications (infrastructure layer — wraps existing WA + TG utils)
+        notifyTelegram: async (task) => {
+            const tg = require("../backend/services/telegramService.js");
+            const p = task.payload || {};
+            return tg.sendMessage(p.chatId, p.text || p.message || task.input);
+        },
+        notifyBroadcast: async (task) => {
+            const wa = require("../backend/services/whatsappService.js");
+            const tg = require("../backend/services/telegramService.js");
+            const p = task.payload || {};
+            const text = p.text || p.message || task.input;
+            const [waResult, tgResult] = await Promise.all([
+                p.phone  ? wa.sendMessage(p.phone, text, p.retries, p.orgId) : null,
+                p.chatId ? tg.sendMessage(p.chatId, text) : null,
+            ]);
+            return { success: !!(waResult?.success || tgResult?.sent), whatsapp: waResult, telegram: tgResult };
+        },
         infraNotify: async (task) => {
-            const notify = require("../modules/infrastructure/notificationAgent.cjs");
-            const p      = task.payload || {};
-            if (p.phone && p.chatId) return notify.sendBroadcast(p);
-            if (p.chatId)            return notify.sendTelegram(p);
-            return notify.sendWhatsApp(p);
+            const p = task.payload || {};
+            const handlers = _buildHandlers();
+            if (p.phone && p.chatId) return handlers.notifyBroadcast(task);
+            if (p.chatId)            return handlers.notifyTelegram(task);
+            return handlers.notifyWhatsApp(task);
         },
-        notifyWhatsApp: async (task) => { const { sendWhatsApp } = require("../modules/infrastructure/notificationAgent.cjs"); return sendWhatsApp(task.payload || {}); },
-        notifyTelegram: async (task) => { const { sendTelegram } = require("../modules/infrastructure/notificationAgent.cjs"); return sendTelegram(task.payload || {}); },
-        notifyBroadcast: async (task) => { const { sendBroadcast } = require("../modules/infrastructure/notificationAgent.cjs"); return sendBroadcast(task.payload || {}); },
+
+        // ── Org-Level Pipelines (Levels 6-10) ────────────────────────
+        // Real backend/services/*Workflow.cjs command pipelines (executive/
+        // enterprise/ecosystem/civilization/autonomous), confirmed real
+        // (not stub) and self-ticking via agentRuntimeSupervisor at boot —
+        // previously reachable only via raw authenticated HTTP with zero
+        // path from the autonomous mission pipeline. Reused directly here,
+        // same require()-the-service-module pattern as infraPayment/
+        // notifyWhatsApp above, not duplicated.
+        execOS: async (task) => {
+            const wf = require("../backend/services/executiveWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runFullPipeline(p.command || task.input, { priority: p.priority, kpis: p.kpis, deadline: p.deadline });
+        },
+        entOS: async (task) => {
+            const wf = require("../backend/services/enterpriseWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runEnterprisePipeline(p.command || task.input, { companyId: p.companyId, portfolioId: p.portfolioId, priority: p.priority, amountUsd: p.amountUsd, autoApprove: p.autoApprove });
+        },
+        ecoOS: async (task) => {
+            const wf = require("../backend/services/ecosystemWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runEcosystemPipeline(p.command || task.input, { tenantId: p.tenantId, companyId: p.companyId, portfolioId: p.portfolioId, priority: p.priority, amountUsd: p.amountUsd });
+        },
+        civOS: async (task) => {
+            const wf = require("../backend/services/civilizationWorkflow.cjs");
+            const p = task.payload || {};
+            return wf.runCivilizationPipeline(p.command || task.input, { memberId: p.memberId, tenantId: p.tenantId, priority: p.priority, domain: p.domain, resources: p.resources, amountUsd: p.amountUsd });
+        },
+        autoOS: async (task) => {
+            const st = require("../backend/services/autonomousState.cjs");
+            const lp = require("../backend/services/autonomousLoop.cjs");
+            const p = task.payload || {};
+            if (p.mode) st.setMode(p.mode);
+            if (p.autonomyLevel !== undefined) st.setAutonomyLevel(p.autonomyLevel);
+            const cycle = await lp.runCycle();
+            // Core Runtime Engines audit (2026-08-20): runCycle() genuinely
+            // returns { ok:false, reason:"paused" } when the loop is paused
+            // (backend/services/autonomousLoop.cjs:505) — a real no-op
+            // signal this handler previously discarded by hardcoding
+            // success:true regardless. Same bug class as the already-fixed
+            // "ai" handler sentinel-exclusion a few hundred lines above:
+            // a sub-call's own failure/no-op result was being reported as
+            // success. Any caller checking result.success (autonomousLoop's
+            // own allFailed guard, executionEngine's softFailed check) would
+            // never see that the cycle did nothing.
+            const cycleOk = cycle?.ok !== false;
+            return { success: cycleOk, command: p.command || task.input, cycle, ...(cycleOk ? {} : { error: cycle?.reason || "cycle did not run" }) };
+        },
 
         // ── Health Layer ─────────────────────────────────────────────
         healthSymptom: async (task) => {
@@ -821,28 +950,29 @@ function _buildHandlers() {
             return pe.createEditPlan({ userId: p.userId, episodeId: p.episodeId, episodeTitle: p.episodeTitle || task.input, targetPlatforms: p.targetPlatforms, operations: p.operations, durationSec: p.durationSec });
         },
 
-        mediaAudioClean: async (task) => {
-            const ac = require("./media/audioCleaner.cjs");
-            const p  = task.payload || {};
-            if (task.type === "media_noise_types")   return ac.getNoiseTypes();
-            if (task.type === "media_audio_targets") return ac.getAudioTargets();
-            return ac.analyseAudio({ userId: p.userId, fileId: p.fileId, fileName: p.fileName, noiseType: p.noiseType, targetUse: p.targetUse, measuredLufs: p.measuredLufs });
-        },
-
-        mediaSubtitle: async (task) => {
-            const sub = require("./media/subtitleGenerator.cjs");
-            const p   = task.payload || {};
-            if (task.type === "media_subtitle_formats") return sub.getFormats();
-            if (task.type === "media_subtitle_langs")   return sub.getLanguages();
-            return sub.createSubtitleJob({ userId: p.userId, videoId: p.videoId, videoTitle: p.videoTitle, language: p.language, format: p.format, speakerDiarisation: p.speakerDiarisation });
-        },
-
-        mediaDubbing: async (task) => {
-            const dub = require("./media/dubbingAgent.cjs");
-            const p   = task.payload || {};
-            if (task.type === "media_dub_langs") return dub.getSupportedLanguages();
-            return dub.createDubbingJob({ userId: p.userId, videoId: p.videoId, videoTitle: p.videoTitle, sourceLang: p.sourceLang, targetLang: p.targetLang, consent: p.consent, watermark: p.watermark, lipSync: p.lipSync });
-        },
+        // Video/Audio Ecosystem mission (2026-08-31): these three handlers
+        // required ./media/{audioCleaner,subtitleGenerator,dubbingAgent}.cjs,
+        // which do not exist in agents/media/ (that directory itself does not
+        // exist) — moved to _archive/20260520_010917/ and never updated here,
+        // so any real request reaching one of these (e.g. via the runtime
+        // dispatcher classifying "clean this audio"/"add subtitles"/"dub
+        // this video") threw an uncaught MODULE_NOT_FOUND that propagated as
+        // a raw internal error string instead of an honest failure. The
+        // archived originals were inspected before deciding this fix:
+        // they never executed real noise reduction/STT/dubbing — each just
+        // returned a static "here's the ffmpeg/Whisper command a human could
+        // run" recommendation with status:"pending" that was never advanced,
+        // since no real ffmpeg/STT backend exists anywhere in this repo (see
+        // this mission's own FFmpeg/STT discovery). Restoring them would
+        // trade one dishonest failure (a crash) for a subtler one (a job
+        // that looks queued but can never complete) — not a real fix.
+        // _capabilityUnavailable is the same established pattern already
+        // used elsewhere in this file (e.g. maps/gps/wallet, above) for
+        // exactly this situation: an honest, non-retriable "not implemented"
+        // response instead of a leaked Node internal error.
+        mediaAudioClean: _capabilityUnavailable("mediaAudioClean", "no real audio noise-reduction/mastering backend (ffmpeg or otherwise) exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        mediaSubtitle:   _capabilityUnavailable("mediaSubtitle", "no real speech-to-text or subtitle-burn-in backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        mediaDubbing:    _capabilityUnavailable("mediaDubbing", "no real dubbing/voice-translation/lip-sync backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
 
         mediaVideoEdit: async (task) => {
             const ve = require("./media/videoEditorPro.cjs");
@@ -1547,371 +1677,59 @@ function _buildHandlers() {
             return assessEQ({ userId: p.userId, consent: p.consent, selfResponses: p.selfResponses });
         },
 
-        // ── Metaverse Layer ───────────────────────────────────────────
-        metaWorld: async (task) => {
-            const { createWorld, getWorld, updateWorld, deleteWorld, listWorlds } = require("../modules/metaverse/metaverseBuilder.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_world_get")    return getWorld({ worldId: p.worldId });
-            if (task.type === "meta_world_update") return updateWorld({ userId: p.userId, worldId: p.worldId, updates: p.updates });
-            if (task.type === "meta_world_delete") return deleteWorld({ userId: p.userId, worldId: p.worldId, confirm: p.confirm });
-            if (task.type === "meta_world_list")   return listWorlds({ userId: p.userId, worldType: p.worldType, theme: p.theme, status: p.status });
-            return createWorld({ userId: p.userId, worldName: p.worldName || task.input, worldType: p.worldType, theme: p.theme, maxUsers: p.maxUsers, physics: p.physics, settings: p.settings });
-        },
-
-        metaScene: async (task) => {
-            const { generateScene, getSceneTemplate, addSceneObject } = require("../modules/metaverse/worldGenerator3D.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_scene_template") return getSceneTemplate({ worldType: p.worldType, theme: p.theme });
-            if (task.type === "meta_scene_add_obj")  return addSceneObject({ worldId: p.worldId, userId: p.userId, objectType: p.objectType, position: p.position, color: p.color, metadata: p.metadata });
-            return generateScene({ worldId: p.worldId, objectCount: p.objectCount });
-        },
-
-        metaAvatar: async (task) => {
-            const { createAvatar, getAvatar, updateTransform, setAnimation, equipAccessory, leaveWorld } = require("../modules/metaverse/avatarController3D.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_avatar_get")       return getAvatar({ userId: p.userId, worldId: p.worldId });
-            if (task.type === "meta_avatar_move")      return updateTransform({ userId: p.userId, worldId: p.worldId, position: p.position, rotation: p.rotation, scale: p.scale });
-            if (task.type === "meta_avatar_animate")   return setAnimation({ userId: p.userId, worldId: p.worldId, animation: p.animation });
-            if (task.type === "meta_avatar_equip")     return equipAccessory({ userId: p.userId, worldId: p.worldId, slot: p.slot, itemId: p.itemId });
-            if (task.type === "meta_avatar_leave")     return leaveWorld({ userId: p.userId, worldId: p.worldId });
-            return createAvatar({ userId: p.userId, worldId: p.worldId, displayName: p.displayName || task.input, model: p.model, color: p.color, accessories: p.accessories });
-        },
-
-        metaVR: async (task) => {
-            const { dispatchInteraction, getInteractionHistory, getXRCapabilities, sendHapticFeedback } = require("../modules/metaverse/vrInteractionAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_vr_history")  return getInteractionHistory({ worldId: p.worldId, userId: p.userId, eventType: p.eventType, limit: p.limit });
-            if (task.type === "meta_vr_caps")     return getXRCapabilities({ xrMode: p.xrMode });
-            if (task.type === "meta_vr_haptic")   return sendHapticFeedback({ userId: p.userId, worldId: p.worldId, intensity: p.intensity, durationMs: p.durationMs, hand: p.hand });
-            return dispatchInteraction({ userId: p.userId, worldId: p.worldId, inputType: p.inputType, eventType: p.eventType, targetObjectId: p.targetObjectId, position: p.position, payload: p.payload });
-        },
-
-        metaOffice: async (task) => {
-            const { createOffice, setPresenceStatus, postAnnouncement, getOfficeState } = require("../modules/metaverse/virtualOfficeAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_office_presence")    return setPresenceStatus({ userId: p.userId, officeId: p.officeId, status: p.status, roomId: p.roomId });
-            if (task.type === "meta_office_announce")    return postAnnouncement({ userId: p.userId, officeId: p.officeId, message: p.message || task.input, priority: p.priority });
-            if (task.type === "meta_office_state")       return getOfficeState({ officeId: p.officeId });
-            return createOffice({ userId: p.userId, officeName: p.officeName || task.input, teamSize: p.teamSize, rooms: p.rooms, tools: p.tools });
-        },
-
-        metaClassroom: async (task) => {
-            const { createClassroom, enrollStudent, startSession, submitAssignment, getClassroomState } = require("../modules/metaverse/virtualClassroom.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_class_enroll")   return enrollStudent({ classroomId: p.classroomId, studentId: p.studentId, displayName: p.displayName });
-            if (task.type === "meta_class_session")  return startSession({ classroomId: p.classroomId, instructorId: p.instructorId, sessionTitle: p.sessionTitle || task.input, mediaType: p.mediaType, mediaUrl: p.mediaUrl });
-            if (task.type === "meta_class_submit")   return submitAssignment({ classroomId: p.classroomId, studentId: p.studentId, sessionId: p.sessionId, content: p.content || task.input });
-            if (task.type === "meta_class_state")    return getClassroomState({ classroomId: p.classroomId });
-            return createClassroom({ userId: p.userId, className: p.className || task.input, subject: p.subject, maxStudents: p.maxStudents, roomMode: p.roomMode, seatLayout: p.seatLayout });
-        },
-
-        metaMarket: async (task) => {
-            const { listAsset, searchListings, purchaseAsset, delistAsset } = require("../modules/metaverse/digitalMarketplace.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_market_search")    return searchListings({ query: p.query || task.input, category: p.category, currency: p.currency, maxPrice: p.maxPrice, limit: p.limit, offset: p.offset });
-            if (task.type === "meta_market_buy")       return purchaseAsset({ buyerId: p.buyerId, listingId: p.listingId, quantity: p.quantity });
-            if (task.type === "meta_market_delist")    return delistAsset({ sellerId: p.sellerId, listingId: p.listingId });
-            return listAsset({ sellerId: p.sellerId, assetId: p.assetId, assetName: p.assetName || task.input, category: p.category, price: p.price, currency: p.currency, description: p.description, imageUrl: p.imageUrl, quantity: p.quantity });
-        },
-
-        metaNFT: async (task) => {
-            const { generateNFT, createCollection, getUserNFTs } = require("../modules/metaverse/nftGeneratorAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_nft_collection") return createCollection({ creatorId: p.creatorId, collectionName: p.collectionName || task.input, symbol: p.symbol, maxSupply: p.maxSupply, description: p.description, royaltyPercent: p.royaltyPercent });
-            if (task.type === "meta_nft_list")       return getUserNFTs({ userId: p.userId, limit: p.limit });
-            return generateNFT({ creatorId: p.creatorId, collectionId: p.collectionId, name: p.name || task.input, description: p.description, externalUrl: p.externalUrl, traitOverrides: p.traitOverrides, standard: p.standard, royaltyPercent: p.royaltyPercent });
-        },
-
-        metaNFTTrade: async (task) => {
-            const { createListing, buyNFT, placeBid, getTradeHistory } = require("../modules/metaverse/nftTradingAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_nft_buy")     return buyNFT({ buyerId: p.buyerId, orderId: p.orderId });
-            if (task.type === "meta_nft_bid")     return placeBid({ bidderId: p.bidderId, orderId: p.orderId, bidAmount: p.bidAmount, currency: p.currency });
-            if (task.type === "meta_nft_trades")  return getTradeHistory({ userId: p.userId, limit: p.limit });
-            return createListing({ sellerId: p.sellerId, tokenId: p.tokenId, price: p.price, currency: p.currency, orderType: p.orderType, auctionEndAt: p.auctionEndAt });
-        },
-
-        metaLand: async (task) => {
-            const { claimLand, listLandForSale, purchaseLand, getUserLands } = require("../modules/metaverse/virtualLandManager.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_land_sell")     return listLandForSale({ ownerId: p.ownerId, plotId: p.plotId, salePrice: p.salePrice, currency: p.currency });
-            if (task.type === "meta_land_buy")      return purchaseLand({ buyerId: p.buyerId, plotId: p.plotId });
-            if (task.type === "meta_land_list")     return getUserLands({ userId: p.userId, worldId: p.worldId });
-            return claimLand({ userId: p.userId, worldId: p.worldId, x: p.x, z: p.z, width: p.width, depth: p.depth, plotName: p.plotName, zone: p.zone });
-        },
-
-        metaGesture: async (task) => {
-            const { recogniseGesture, getGestureLibrary, mapGestureToAction } = require("../modules/metaverse/gestureRecognition.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_gesture_library") return getGestureLibrary();
-            if (task.type === "meta_gesture_map")     return mapGestureToAction({ gesture: p.gesture || task.input });
-            return recogniseGesture({ userId: p.userId, worldId: p.worldId, gestureData: p.gestureData, handedness: p.handedness });
-        },
-
-        metaMocap: async (task) => {
-            const { ingestFrame, detectMotionAction, getSessionRecap } = require("../modules/metaverse/motionCaptureAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_mocap_detect") return detectMotionAction({ userId: p.userId, worldId: p.worldId });
-            if (task.type === "meta_mocap_recap")  return getSessionRecap({ userId: p.userId, worldId: p.worldId });
-            return ingestFrame({ userId: p.userId, worldId: p.worldId, frameData: p.frameData });
-        },
-
-        metaEvent: async (task) => {
-            const { createEvent, buyTicket, updateEventStatus, listEvents } = require("../modules/metaverse/virtualEventManager.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_event_ticket")  return buyTicket({ userId: p.userId, eventId: p.eventId, tier: p.tier });
-            if (task.type === "meta_event_status")  return updateEventStatus({ hostId: p.hostId, eventId: p.eventId, status: p.status });
-            if (task.type === "meta_event_list")    return listEvents({ eventType: p.eventType, status: p.status, limit: p.limit });
-            return createEvent({ hostId: p.hostId, eventName: p.eventName || task.input, eventType: p.eventType, worldId: p.worldId, startAt: p.startAt, endAt: p.endAt, description: p.description, maxAttendees: p.maxAttendees, ticketTiers: p.ticketTiers });
-        },
-
-        metaEconomy: async (task) => {
-            const { getEconomySnapshot, runEconomicSimulation, getPriceHistory } = require("../modules/metaverse/metaverseEconomyAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_econ_simulate") return runEconomicSimulation({ scenarioName: p.scenarioName || task.input, policyChanges: p.policyChanges });
-            if (task.type === "meta_econ_price")    return getPriceHistory({ assetType: p.assetType, periods: p.periods });
-            return getEconomySnapshot({ worldId: p.worldId });
-        },
-
-        metaCurrency: async (task) => {
-            const { getWallet, transfer, mint, getTransactionHistory } = require("../modules/metaverse/virtualCurrencySystem.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_mvc_transfer") return transfer({ fromUserId: p.fromUserId, toUserId: p.toUserId, amount: p.amount });
-            if (task.type === "meta_mvc_mint")     return mint({ adminId: p.adminId, recipientId: p.recipientId, amount: p.amount, reason: p.reason });
-            if (task.type === "meta_mvc_history")  return getTransactionHistory({ userId: p.userId, limit: p.limit });
-            return getWallet({ userId: p.userId });
-        },
-
-        metaSync: async (task) => {
-            const { exportUserState, importUserState, syncFriendsList, getUserPresence } = require("../modules/metaverse/crossWorldSync.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_sync_import")   return importUserState({ userId: p.userId, targetWorldId: p.targetWorldId, snapshotId: p.snapshotId, dataTypes: p.dataTypes });
-            if (task.type === "meta_sync_friends")  return syncFriendsList({ userId: p.userId, friendId: p.friendId, action: p.action });
-            if (task.type === "meta_sync_presence") return getUserPresence({ userId: p.userId });
-            return exportUserState({ userId: p.userId, worldId: p.worldId, dataTypes: p.dataTypes });
-        },
-
-        metaAsset: async (task) => {
-            const { uploadAsset, getAsset, listUserAssets, deleteAsset, transferAssetOwnership } = require("../modules/metaverse/digitalAssetManager.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_asset_get")      return getAsset({ assetId: p.assetId });
-            if (task.type === "meta_asset_list")     return listUserAssets({ ownerId: p.ownerId, assetType: p.assetType, format: p.format, limit: p.limit });
-            if (task.type === "meta_asset_delete")   return deleteAsset({ ownerId: p.ownerId, assetId: p.assetId, confirm: p.confirm });
-            if (task.type === "meta_asset_transfer") return transferAssetOwnership({ fromId: p.fromId, toId: p.toId, assetId: p.assetId });
-            return uploadAsset({ ownerId: p.ownerId, assetName: p.assetName || task.input, assetType: p.assetType, format: p.format, fileSizeMB: p.fileSizeMB, metadata: p.metadata, worldId: p.worldId, tags: p.tags });
-        },
-
-        metaSecurity: async (task) => {
-            const { reportThreat, enforceAction, scanWorldForAnomalies, getSecurityLog } = require("../modules/metaverse/virtualSecurityAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_sec_enforce") return enforceAction({ moderatorId: p.moderatorId, targetId: p.targetId, worldId: p.worldId, action: p.action, durationMinutes: p.durationMinutes, reason: p.reason });
-            if (task.type === "meta_sec_scan")    return scanWorldForAnomalies({ worldId: p.worldId });
-            if (task.type === "meta_sec_log")     return getSecurityLog({ worldId: p.worldId, threatType: p.threatType, severity: p.severity, limit: p.limit });
-            return reportThreat({ reporterId: p.reporterId, targetId: p.targetId, worldId: p.worldId, threatType: p.threatType, evidence: p.evidence, severity: p.severity });
-        },
-
-        metaReality: async (task) => {
-            const { setPhysicsRules, setWeather, setTimeCycle, addEnvironmentEffect, getWorldEnvironment } = require("../modules/metaverse/realitySimulationEngine.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_env_weather")  return setWeather({ worldId: p.worldId, weatherState: p.weatherState, intensity: p.intensity, transitionSeconds: p.transitionSeconds });
-            if (task.type === "meta_env_time")     return setTimeCycle({ worldId: p.worldId, cycle: p.cycle, speedMultiplier: p.speedMultiplier, currentHour: p.currentHour });
-            if (task.type === "meta_env_effect")   return addEnvironmentEffect({ worldId: p.worldId, effectType: p.effectType, zone: p.zone, durationSeconds: p.durationSeconds, magnitude: p.magnitude });
-            if (task.type === "meta_env_state")    return getWorldEnvironment({ worldId: p.worldId });
-            return setPhysicsRules({ worldId: p.worldId, preset: p.preset, overrides: p.overrides });
-        },
-
-        metaAR: async (task) => {
-            const { createOverlay, updateOverlay, removeOverlay, getUserOverlays, getARCapabilities } = require("../modules/metaverse/arOverlayAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "meta_ar_update")  return updateOverlay({ userId: p.userId, overlayId: p.overlayId, worldId: p.worldId, updates: p.updates });
-            if (task.type === "meta_ar_remove")  return removeOverlay({ userId: p.userId, overlayId: p.overlayId, worldId: p.worldId });
-            if (task.type === "meta_ar_list")    return getUserOverlays({ userId: p.userId, worldId: p.worldId });
-            if (task.type === "meta_ar_caps")    return getARCapabilities();
-            return createOverlay({ userId: p.userId, overlayType: p.overlayType, anchorType: p.anchorType, position: p.position, content: p.content || task.input, worldId: p.worldId, arMode: p.arMode, style: p.style });
-        },
-
-        govTokenize: async (task) => {
-            const { tokenizeAsset, recordFractionPurchase, approveToken, getTokenRegistry } = require("./governance/tokenizationAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "gov_token_list")     return getTokenRegistry({ userId: p.userId, assetClass: p.assetClass, status: p.status });
-            if (task.type === "gov_token_approve")  return approveToken({ userId: p.userId, tokenId: p.tokenId, legalApprovalRef: p.legalApprovalRef });
-            if (task.type === "gov_token_purchase") return recordFractionPurchase({ userId: p.userId, tokenId: p.tokenId, investorId: p.investorId, fractionCount: p.fractionCount });
-            return tokenizeAsset({ userId: p.userId, assetName: p.assetName || task.input, assetClass: p.assetClass, totalValue: p.totalValue, currency: p.currency, totalFractions: p.totalFractions, jurisdiction: p.jurisdiction, description: p.description, legalDocumentRef: p.legalDocumentRef });
-        },
-
-        // ── futureTech layer handlers ────────────────────────────────────
-
-        ftSatellite: async (task) => {
-            const { processSatellitePass, analyseRegion, getSupportedProducts } = require("../modules/futureTech/satelliteDataAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_satellite_products") return getSupportedProducts();
-            if (task.type === "ft_satellite_region")   return analyseRegion({ userId: p.userId, latitude: p.latitude, longitude: p.longitude, product: p.product, resolution: p.resolution });
-            return processSatellitePass({ userId: p.userId, satelliteId: p.satelliteId, satelliteType: p.satelliteType, orbitType: p.orbitType, product: p.product, targetRegion: p.targetRegion });
-        },
-
-        ftSpaceTrack: async (task) => {
-            const { trackObject, getConjunctionAlerts, getCatalogStats } = require("../modules/futureTech/spaceTrackingAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_space_catalog")     return getCatalogStats({ userId: p.userId });
-            if (task.type === "ft_space_conjunction") return getConjunctionAlerts({ userId: p.userId, objectId: p.objectId, windowHours: p.windowHours });
-            return trackObject({ userId: p.userId, objectId: p.objectId, objectType: p.objectType });
-        },
-
-        ftAstronomy: async (task) => {
-            const { queryObject, searchByTopic, calculateDistance, getVisibilityForecast } = require("../modules/futureTech/astronomyAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_astro_topic")      return searchByTopic({ userId: p.userId, topic: p.topic || task.input });
-            if (task.type === "ft_astro_distance")   return calculateDistance({ userId: p.userId, fromObject: p.fromObject, toObject: p.toObject });
-            if (task.type === "ft_astro_visibility") return getVisibilityForecast({ userId: p.userId, objectName: p.objectName, latitude: p.latitude, longitude: p.longitude, days: p.days });
-            return queryObject({ userId: p.userId, objectName: p.objectName || task.input, includeHistory: p.includeHistory });
-        },
-
-        ftSpaceWeather: async (task) => {
-            const { getCurrentConditions, getSolarFlareForecast, getGeomagneticStormHistory } = require("../modules/futureTech/spaceWeatherAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_spacewx_flare")   return getSolarFlareForecast({ userId: p.userId, horizonHours: p.horizonHours });
-            if (task.type === "ft_spacewx_history") return getGeomagneticStormHistory({ userId: p.userId, days: p.days });
-            return getCurrentConditions({ userId: p.userId });
-        },
-
-        ftMars: async (task) => {
-            const { getEnvironmentReading, simulateResourceSurvey, planBaseLocation } = require("../modules/futureTech/marsSimulationAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_mars_survey")   return simulateResourceSurvey({ userId: p.userId, site: p.site, resources: p.resources });
-            if (task.type === "ft_mars_base")     return planBaseLocation({ userId: p.userId, requirements: p.requirements });
-            return getEnvironmentReading({ userId: p.userId, site: p.site });
-        },
-
-        ftMission: async (task) => {
-            const { createMission, advanceMissionPhase, selectLaunchVehicle, getMissionList } = require("../modules/futureTech/spaceMissionPlanner.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_mission_list")    return getMissionList({ userId: p.userId, status: p.status });
-            if (task.type === "ft_mission_vehicle") return selectLaunchVehicle({ userId: p.userId, payloadMass_kg: p.payloadMass_kg, targetOrbit: p.targetOrbit });
-            if (task.type === "ft_mission_advance") return advanceMissionPhase({ userId: p.userId, missionId: p.missionId });
-            return createMission({ userId: p.userId, missionName: p.missionName || task.input, missionType: p.missionType, destination: p.destination, payloadMass_kg: p.payloadMass_kg, launchYear: p.launchYear });
-        },
-
-        ftDrone: async (task) => {
-            const { suggestMission, executeControl, getDroneStatus } = require("../modules/futureTech/droneControlAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_drone_status")  return getDroneStatus({ userId: p.userId, droneId: p.droneId });
-            if (task.type === "ft_drone_control") return executeControl({ userId: p.userId, droneId: p.droneId, command: p.command, parameters: p.parameters, approved: p.approved });
-            return suggestMission({ userId: p.userId, droneId: p.droneId, droneType: p.droneType, objective: p.objective || task.input });
-        },
-
-        ftRobotics: async (task) => {
-            const { simulateTask, executeRobotCommand, getCapabilityMatrix } = require("../modules/futureTech/roboticsControlSystem.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_robot_caps")    return getCapabilityMatrix({ userId: p.userId });
-            if (task.type === "ft_robot_control") return executeRobotCommand({ userId: p.userId, robotId: p.robotId, command: p.command, parameters: p.parameters, approved: p.approved });
-            return simulateTask({ userId: p.userId, robotId: p.robotId, robotType: p.robotType, taskType: p.taskType || task.input });
-        },
-
-        ftAV: async (task) => {
-            const { planRoute, simulateScenario, activateAutonomousMode } = require("../modules/futureTech/autonomousVehicleAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_av_scenario")  return simulateScenario({ userId: p.userId, scenario: p.scenario, vehicleType: p.vehicleType, saeLevel: p.saeLevel, conditions: p.conditions });
-            if (task.type === "ft_av_activate")  return activateAutonomousMode({ userId: p.userId, vehicleId: p.vehicleId, saeLevel: p.saeLevel, routeId: p.routeId, approved: p.approved });
-            return planRoute({ userId: p.userId, origin: p.origin || task.input, destination: p.destination, vehicleType: p.vehicleType, saeLevel: p.saeLevel, preferences: p.preferences });
-        },
-
-        ftSmartCity: async (task) => {
-            const { getCityHealthScore, optimiseDistrict, getInfrastructureAlerts } = require("../modules/futureTech/smartCityAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_city_alerts")   return getInfrastructureAlerts({ userId: p.userId, cityId: p.cityId, severity: p.severity });
-            if (task.type === "ft_city_district") return optimiseDistrict({ userId: p.userId, districtId: p.districtId, districtType: p.districtType, objectives: p.objectives });
-            return getCityHealthScore({ userId: p.userId, cityId: p.cityId || task.input, domains: p.domains });
-        },
-
-        ftTraffic: async (task) => {
-            const { analyseNetworkCongestion, optimiseSignalTiming, applySignalControl, getTrafficForecast } = require("../modules/futureTech/trafficOptimization.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_traffic_forecast") return getTrafficForecast({ userId: p.userId, cityId: p.cityId, hours: p.hours });
-            if (task.type === "ft_traffic_signal")   return optimiseSignalTiming({ userId: p.userId, junctionId: p.junctionId, junctionType: p.junctionType, mode: p.mode, volumes: p.volumes });
-            if (task.type === "ft_traffic_control")  return applySignalControl({ userId: p.userId, junctionId: p.junctionId, phaseConfig: p.phaseConfig, approved: p.approved });
-            return analyseNetworkCongestion({ userId: p.userId, cityId: p.cityId || task.input, sectorIds: p.sectorIds });
-        },
-
-        ftEnergyGrid: async (task) => {
-            const { getGridStatus, optimiseDistribution, applyGridControl, forecastDemand } = require("../modules/futureTech/energyGridAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_grid_forecast")  return forecastDemand({ userId: p.userId, gridId: p.gridId, hours: p.hours });
-            if (task.type === "ft_grid_optimise")  return optimiseDistribution({ userId: p.userId, gridId: p.gridId, zones: p.zones, peakShaving: p.peakShaving });
-            if (task.type === "ft_grid_control")   return applyGridControl({ userId: p.userId, gridId: p.gridId, controlActions: p.controlActions, approved: p.approved });
-            return getGridStatus({ userId: p.userId, gridId: p.gridId });
-        },
-
-        ftRenewable: async (task) => {
-            const { getSolarForecast, getWindForecast, optimiseStorageDispatch, getRenewableMix } = require("../modules/futureTech/renewableEnergyManager.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_renewable_wind")    return getWindForecast({ userId: p.userId, latitude: p.latitude, longitude: p.longitude, turbineCapacityKW: p.turbineCapacityKW, hubHeight_m: p.hubHeight_m, forecastType: p.forecastType });
-            if (task.type === "ft_renewable_storage") return optimiseStorageDispatch({ userId: p.userId, storageType: p.storageType, capacityKWh: p.capacityKWh, currentSOC_pct: p.currentSOC_pct });
-            if (task.type === "ft_renewable_mix")     return getRenewableMix({ userId: p.userId, region: p.region });
-            return getSolarForecast({ userId: p.userId, latitude: p.latitude, longitude: p.longitude, capacityKWp: p.capacityKWp, forecastType: p.forecastType });
-        },
-
-        ftClimate: async (task) => {
-            const { predictClimate, analyseExtremeEvents, getTippingPointRisk, getClimateScenarioComparison } = require("../modules/futureTech/climatePredictionAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_climate_extreme")   return analyseExtremeEvents({ userId: p.userId, region: p.region, eventType: p.eventType, periodYears: p.periodYears });
-            if (task.type === "ft_climate_tipping")   return getTippingPointRisk({ userId: p.userId, elements: p.elements });
-            if (task.type === "ft_climate_compare")   return getClimateScenarioComparison({ userId: p.userId, region: p.region, scenarios: p.scenarios });
-            return predictClimate({ userId: p.userId, region: p.region || task.input, scenario: p.scenario, model: p.model, timescale: p.timescale, horizonYears: p.horizonYears });
-        },
-
-        ftCarbon: async (task) => {
-            const { trackEmissions, calculateCarbonFootprint, getOffsetOpportunities, generateEmissionReport } = require("../modules/futureTech/carbonTrackingAgent.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_carbon_footprint") return calculateCarbonFootprint({ userId: p.userId, activities: p.activities });
-            if (task.type === "ft_carbon_offsets")   return getOffsetOpportunities({ userId: p.userId, targetTCO2e: p.targetTCO2e, offsetTypes: p.offsetTypes, budget_USD: p.budget_USD });
-            if (task.type === "ft_carbon_report")    return generateEmissionReport({ userId: p.userId, entityId: p.entityId, standard: p.standard, year: p.year });
-            return trackEmissions({ userId: p.userId, entityId: p.entityId, entityType: p.entityType, period: p.period, scopes: p.scopes });
-        },
-
-        ftEnvironment: async (task) => {
-            const { monitorEcosystem, analyseAirQuality, monitorWaterQuality, assessSoilHealth } = require("../modules/futureTech/environmentalAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_env_air")    return analyseAirQuality({ userId: p.userId, locationId: p.locationId, latitude: p.latitude, longitude: p.longitude, pollutants: p.pollutants });
-            if (task.type === "ft_env_water")  return monitorWaterQuality({ userId: p.userId, waterbodyId: p.waterbodyId, waterbodyType: p.waterbodyType, params: p.params });
-            if (task.type === "ft_env_soil")   return assessSoilHealth({ userId: p.userId, plotId: p.plotId, soilType: p.soilType, depth_cm: p.depth_cm });
-            return monitorEcosystem({ userId: p.userId, ecosystemId: p.ecosystemId, ecosystemType: p.ecosystemType, metrics: p.metrics });
-        },
-
-        ftDisaster: async (task) => {
-            const { predictDisasterRisk, getEarlyWarning, issueEvacuationAlert, getHistoricalDisasterData } = require("../modules/futureTech/disasterPredictionAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_disaster_warning")   return getEarlyWarning({ userId: p.userId, region: p.region, disasterType: p.disasterType });
-            if (task.type === "ft_disaster_evacuate")  return issueEvacuationAlert({ userId: p.userId, regionId: p.regionId, disasterType: p.disasterType, severity: p.severity, approved: p.approved });
-            if (task.type === "ft_disaster_history")   return getHistoricalDisasterData({ userId: p.userId, region: p.region, disasterType: p.disasterType, yearRange: p.yearRange });
-            return predictDisasterRisk({ userId: p.userId, region: p.region || task.input, disasterTypes: p.disasterTypes, horizonDays: p.horizonDays });
-        },
-
-        ftOcean: async (task) => {
-            const { getOceanStatus, analyseMarineEcosystem, trackOceanCurrents, forecastSeaLevelRise } = require("../modules/futureTech/oceanMonitoringAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_ocean_marine")  return analyseMarineEcosystem({ userId: p.userId, habitatId: p.habitatId, habitatType: p.habitatType, threats: p.threats });
-            if (task.type === "ft_ocean_currents") return trackOceanCurrents({ userId: p.userId, currentSystem: p.currentSystem });
-            if (task.type === "ft_ocean_slr")     return forecastSeaLevelRise({ userId: p.userId, coastalCity: p.coastalCity, scenario: p.scenario, horizonYears: p.horizonYears });
-            return getOceanStatus({ userId: p.userId, basinId: p.basinId, layer: p.layer });
-        },
-
-        ftAgriculture: async (task) => {
-            const { getCropRecommendation, monitorCropHealth, optimiseIrrigation, predictHarvest } = require("../modules/futureTech/agriculturalAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_agri_health")    return monitorCropHealth({ userId: p.userId, farmId: p.farmId, cropType: p.cropType, fieldId: p.fieldId, imagingSource: p.imagingSource });
-            if (task.type === "ft_agri_irrigation") return optimiseIrrigation({ userId: p.userId, farmId: p.farmId, cropType: p.cropType, soilMoisture_pct: p.soilMoisture_pct, irrigationType: p.irrigationType });
-            if (task.type === "ft_agri_harvest")   return predictHarvest({ userId: p.userId, farmId: p.farmId, cropType: p.cropType, plantingDate: p.plantingDate, fieldArea_ha: p.fieldArea_ha, farmingSystem: p.farmingSystem });
-            return getCropRecommendation({ userId: p.userId, farmId: p.farmId, soilType: p.soilType, climate: p.climate, cropHistory: p.cropHistory, season: p.season, waterAvailability_mm: p.waterAvailability_mm });
-        },
-
-        ftFoodChain: async (task) => {
-            const { traceProduct, assessSupplyChainRisk, optimiseInventory, getFoodSafetyAlerts } = require("../modules/futureTech/foodSupplyChainAI.cjs");
-            const p = task.payload || {};
-            if (task.type === "ft_food_risk")     return assessSupplyChainRisk({ userId: p.userId, chainId: p.chainId, categories: p.categories, region: p.region });
-            if (task.type === "ft_food_inventory") return optimiseInventory({ userId: p.userId, warehouseId: p.warehouseId, products: p.products, storageCondition: p.storageCondition });
-            if (task.type === "ft_food_safety")   return getFoodSafetyAlerts({ userId: p.userId, region: p.region, category: p.category, severity: p.severity });
-            return traceProduct({ userId: p.userId, productId: p.productId || task.input, batchId: p.batchId, category: p.category });
-        }
+        // ── Metaverse / futureTech / governance Layers ─────────────────
+        // Zero Blind Spot Certification: every handler below required a real
+        // module under "../modules/metaverse/", "../modules/futureTech/", or
+        // "./governance/" — none of those directories contain any files
+        // (confirmed: modules/metaverse/, modules/futureTech/ are empty; no
+        // governance/ dir exists under agents/ at all). These were real,
+        // user-reachable task types (toolSelector.cjs keyword-matches e.g.
+        // "create world" to metaWorld), so a real user could trigger a raw
+        // "Cannot find module" stack-trace leak instead of a clean answer.
+        // Building real metaverse/space/climate/tokenization backends here
+        // would be new capability expansion — explicitly out of scope for
+        // this certification mission — so these fail honestly instead.
+        metaWorld: _capabilityUnavailable("metaWorld", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaScene: _capabilityUnavailable("metaScene", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaAvatar: _capabilityUnavailable("metaAvatar", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaVR: _capabilityUnavailable("metaVR", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaOffice: _capabilityUnavailable("metaOffice", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaClassroom: _capabilityUnavailable("metaClassroom", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaMarket: _capabilityUnavailable("metaMarket", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaNFT: _capabilityUnavailable("metaNFT", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaNFTTrade: _capabilityUnavailable("metaNFTTrade", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaLand: _capabilityUnavailable("metaLand", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaGesture: _capabilityUnavailable("metaGesture", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaMocap: _capabilityUnavailable("metaMocap", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaEvent: _capabilityUnavailable("metaEvent", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaEconomy: _capabilityUnavailable("metaEconomy", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaCurrency: _capabilityUnavailable("metaCurrency", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaSync: _capabilityUnavailable("metaSync", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaAsset: _capabilityUnavailable("metaAsset", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaSecurity: _capabilityUnavailable("metaSecurity", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaReality: _capabilityUnavailable("metaReality", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        metaAR: _capabilityUnavailable("metaAR", "no real metaverse/3D-world backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        govTokenize: _capabilityUnavailable("govTokenize", "no real asset-tokenization backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftSatellite: _capabilityUnavailable("ftSatellite", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftSpaceTrack: _capabilityUnavailable("ftSpaceTrack", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftAstronomy: _capabilityUnavailable("ftAstronomy", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftSpaceWeather: _capabilityUnavailable("ftSpaceWeather", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftMars: _capabilityUnavailable("ftMars", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftMission: _capabilityUnavailable("ftMission", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftDrone: _capabilityUnavailable("ftDrone", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftRobotics: _capabilityUnavailable("ftRobotics", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftAV: _capabilityUnavailable("ftAV", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftSmartCity: _capabilityUnavailable("ftSmartCity", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftTraffic: _capabilityUnavailable("ftTraffic", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftEnergyGrid: _capabilityUnavailable("ftEnergyGrid", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftRenewable: _capabilityUnavailable("ftRenewable", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftClimate: _capabilityUnavailable("ftClimate", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftCarbon: _capabilityUnavailable("ftCarbon", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftEnvironment: _capabilityUnavailable("ftEnvironment", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftDisaster: _capabilityUnavailable("ftDisaster", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftOcean: _capabilityUnavailable("ftOcean", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftAgriculture: _capabilityUnavailable("ftAgriculture", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
+        ftFoodChain: _capabilityUnavailable("ftFoodChain", "no real satellite/space/climate/disaster-monitoring backend exists in this deployment — building one would be new capability expansion, not a wiring fix"),
     };
     return _handlers;
 }

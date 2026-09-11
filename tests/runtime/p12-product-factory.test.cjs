@@ -20,6 +20,16 @@ const pve  = require("../../backend/services/productValidationEngine.cjs");
 const pre  = require("../../backend/services/productReleaseEngine.cjs");
 const pfd  = require("../../backend/services/productFactoryDashboard.cjs");
 
+// Mission 60A: the ECOSYSTEM OS RECOVERY pass (2026-08-15) made orgId a
+// required, tenant-scoping parameter on every data-access function across
+// all 5 P12 engines (productPlannerEngine.cjs's own header comment
+// documents this, matching the Developer OS / C10-003 precedent) — this
+// test file predates that change and never passed one, so every call threw
+// "orgId is required" at test time (46 of this file's own assertions).
+// One fixed synthetic org for this whole file, matching how other runtime
+// test files already scope their own synthetic test data.
+const TEST_ORG_ID = `t60a_p12_test_org_${Date.now()}`;
+
 let passed = 0;
 let failed = 0;
 const promises = [];
@@ -62,13 +72,13 @@ test("PLAN_STEPS contains all 8 stages", () => {
 });
 
 test("createPlan fails without objective", () => {
-  const r = ppe.createPlan({});
+  const r = ppe.createPlan({ orgId: TEST_ORG_ID });
   assert.strictEqual(r.ok, false);
   assert.ok(r.error);
 });
 
 test("createPlan succeeds with objective", () => {
-  const r = ppe.createPlan({ objective: "Build a SaaS customer feedback portal with AI analysis", skipResearch: true });
+  const r = ppe.createPlan({ objective: "Build a SaaS customer feedback portal with AI analysis", skipResearch: true, orgId: TEST_ORG_ID });
   assert.ok(r.ok, JSON.stringify(r));
   planId1 = r.plan.id;
   assert.ok(planId1.startsWith("pp_"));
@@ -81,25 +91,25 @@ test("createPlan succeeds with objective", () => {
 });
 
 test("all 8 plan steps populated", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(plan, "plan not found");
   ppe.PLAN_STEPS.forEach(s => assert.ok(plan.steps[s]?.done, `step not done: ${s}`));
 });
 
 test("requirements contain at least 5 entries", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(plan.requirements.length >= 5, `only ${plan.requirements.length} requirements`);
 });
 
 test("complexity has score and level", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(typeof plan.complexity.score  === "number");
   assert.ok(["low","medium","high","complex"].includes(plan.complexity.level));
   assert.ok(typeof plan.complexity.signals === "object");
 });
 
 test("dependencies reference platform capabilities", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   plan.dependencies.forEach(d => {
     assert.ok(d.id,      "dep missing id");
     assert.ok(d.label,   "dep missing label");
@@ -108,7 +118,7 @@ test("dependencies reference platform capabilities", () => {
 });
 
 test("roadmap has phases with hours", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(plan.roadmap.phases.length >= 2);
   assert.ok(plan.roadmap.totalHours > 0);
   assert.ok(plan.roadmap.estimatedDays > 0);
@@ -121,40 +131,40 @@ test("roadmap has phases with hours", () => {
 });
 
 test("twin_review sets status to approved or needs_revision", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(["approved","needs_revision"].includes(plan.status));
   assert.ok(plan.twinDecision, "missing twinDecision");
 });
 
 test("createPlan with AI objective detects ml signal", () => {
-  const r = ppe.createPlan({ objective: "AI-powered product recommendation engine with ML predictions", skipResearch: true });
+  const r = ppe.createPlan({ objective: "AI-powered product recommendation engine with ML predictions", skipResearch: true, orgId: TEST_ORG_ID });
   assert.ok(r.ok);
   planId2 = r.plan.id;
   assert.ok(r.plan.complexity.signals.ml, "AI objective should set ml signal");
 });
 
 test("getPlan returns stored plan", () => {
-  const p = ppe.getPlan(planId1);
+  const p = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(p && p.id === planId1);
 });
 
 test("listPlans returns list", () => {
-  const r = ppe.listPlans({ limit: 10 });
+  const r = ppe.listPlans(TEST_ORG_ID, { limit: 10 });
   assert.ok(r.ok && Array.isArray(r.plans));
   assert.ok(r.total >= 2);
 });
 
 test("listPlans filtered by status", () => {
-  const r = ppe.listPlans({ status: "approved" });
+  const r = ppe.listPlans(TEST_ORG_ID, { status: "approved" });
   assert.ok(r.ok);
   r.plans.forEach(p => assert.ok(["approved","needs_revision"].includes(p.status)));
 });
 
 test("updatePlanStatus changes status", () => {
-  const r = ppe.updatePlanStatus(planId1, "in_progress");
+  const r = ppe.updatePlanStatus(TEST_ORG_ID, planId1, "in_progress");
   assert.ok(r.ok);
-  assert.strictEqual(ppe.getPlan(planId1).status, "in_progress");
-  ppe.updatePlanStatus(planId1, "approved"); // restore
+  assert.strictEqual(ppe.getPlan(TEST_ORG_ID, planId1).status, "in_progress");
+  ppe.updatePlanStatus(TEST_ORG_ID, planId1, "approved"); // restore
 });
 
 test("getStats has total and PLAN_STEPS", () => {
@@ -165,7 +175,7 @@ test("getStats has total and PLAN_STEPS", () => {
 });
 
 test("minutesSaved is positive", () => {
-  const plan = ppe.getPlan(planId1);
+  const plan = ppe.getPlan(TEST_ORG_ID, planId1);
   assert.ok(plan.minutesSaved > 0, `minutesSaved: ${plan.minutesSaved}`);
 });
 
@@ -200,13 +210,13 @@ test("each layer has label and services array", () => {
 });
 
 test("design fails for unknown plan", () => {
-  const r = pae.design("nonexistent_plan");
+  const r = pae.design(TEST_ORG_ID, "nonexistent_plan");
   assert.strictEqual(r.ok, false);
   assert.ok(r.error);
 });
 
 test("design succeeds for valid plan", () => {
-  const r = pae.design(planId1, { skipReasoning: true });
+  const r = pae.design(TEST_ORG_ID, planId1, { skipReasoning: true });
   assert.ok(r.ok, JSON.stringify(r));
   archId1 = r.architecture.id;
   assert.ok(archId1.startsWith("pa_"));
@@ -216,50 +226,50 @@ test("design succeeds for valid plan", () => {
 });
 
 test("reuseRatio is between 0 and 100", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   assert.ok(arch.reuseRatio >= 0 && arch.reuseRatio <= 100, `reuseRatio: ${arch.reuseRatio}`);
 });
 
 test("duplicationScore = 100 - reuseRatio", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   assert.strictEqual(arch.duplicationScore, 100 - arch.reuseRatio);
 });
 
 test("componentMap includes 6 new P12 services", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   const newSvcs = arch.componentMap.filter(c => c.new === true);
   assert.strictEqual(newSvcs.length, 6, `expected 6 new services, got ${newSvcs.length}`);
 });
 
 test("componentMap new services are all in product_factory layer", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   arch.componentMap.filter(c => c.new).forEach(c =>
     assert.strictEqual(c.layer, "product_factory", `wrong layer: ${c.layer}`)
   );
 });
 
 test("foundation layer always selected", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   assert.ok(arch.selectedLayers.includes("foundation"), "foundation must always be selected");
 });
 
 test("deployment layer always selected", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   assert.ok(arch.selectedLayers.includes("deployment"), "deployment must always be selected");
 });
 
 test("newServicesCreated is 6", () => {
-  const arch = pae.getArchitecture(archId1);
+  const arch = pae.getArchitecture(TEST_ORG_ID, archId1);
   assert.strictEqual(arch.newServicesCreated, 6);
 });
 
 test("getArchitectureForPlan returns same arch", () => {
-  const a = pae.getArchitectureForPlan(planId1);
+  const a = pae.getArchitectureForPlan(TEST_ORG_ID, planId1);
   assert.ok(a && a.planId === planId1);
 });
 
 test("listArchitectures returns list", () => {
-  const r = pae.listArchitectures({ limit: 10 });
+  const r = pae.listArchitectures(TEST_ORG_ID, { limit: 10 });
   assert.ok(r.ok && Array.isArray(r.architectures) && r.total >= 1);
 });
 
@@ -297,14 +307,14 @@ test("DOMAIN_SKILLS has skills for each stage", () => {
 });
 
 atest("assemble fails for unknown plan", async () => {
-  const r = await pasm.assemble("nonexistent_plan", null, { skipExecute: true });
+  const r = await pasm.assemble(TEST_ORG_ID, "nonexistent_plan", null, { skipExecute: true });
   assert.strictEqual(r.ok, false);
   assert.ok(r.error);
 });
 
 atest("assemble + verify stages + stats (sequenced)", async () => {
   // 1. assemble
-  const r = await pasm.assemble(planId1, archId1, { skipExecute: true });
+  const r = await pasm.assemble(TEST_ORG_ID, planId1, archId1, { skipExecute: true });
   assert.ok(r.ok, JSON.stringify(r));
   asmId1 = r.assembly.id;
   assert.ok(asmId1.startsWith("asm_"));
@@ -312,7 +322,7 @@ atest("assemble + verify stages + stats (sequenced)", async () => {
   assert.strictEqual(r.assembly.status, "completed");
 
   // 2. all 6 stages completed
-  const a = pasm.getAssembly(asmId1);
+  const a = pasm.getAssembly(TEST_ORG_ID, asmId1);
   assert.ok(a, "assembly not found after write");
   pasm.ASSEMBLY_STAGES.forEach(s => {
     assert.ok(a.stages[s], `stage missing: ${s}`);
@@ -330,11 +340,11 @@ atest("assemble + verify stages + stats (sequenced)", async () => {
   assert.ok(a.minutesSaved > 0, `minutesSaved: ${a.minutesSaved}`);
 
   // 5. listAssemblies
-  const listR = pasm.listAssemblies({ limit: 10 });
+  const listR = pasm.listAssemblies(TEST_ORG_ID, { limit: 10 });
   assert.ok(listR.ok && Array.isArray(listR.assemblies) && listR.total >= 1);
 
   // 6. filtered by status
-  const filtR = pasm.listAssemblies({ status: "completed" });
+  const filtR = pasm.listAssemblies(TEST_ORG_ID, { status: "completed" });
   assert.ok(filtR.ok);
   filtR.assemblies.forEach(x => assert.strictEqual(x.status, "completed"));
 
@@ -372,14 +382,14 @@ test("DIMENSION_WEIGHTS sum to 1.0", () => {
 });
 
 atest("validate fails for unknown plan", async () => {
-  const r = await pve.validate("nonexistent_plan");
+  const r = await pve.validate(TEST_ORG_ID, "nonexistent_plan");
   assert.strictEqual(r.ok, false);
   assert.ok(r.error);
 });
 
 atest("validate + verify all dimensions + stats (sequenced)", async () => {
   // 1. validate
-  const r = await pve.validate(planId1, { skipExecute: true });
+  const r = await pve.validate(TEST_ORG_ID, planId1, { skipExecute: true });
   assert.ok(r.ok, JSON.stringify(r));
   valId1 = r.validation.id;
   assert.ok(valId1.startsWith("pv_"));
@@ -388,7 +398,7 @@ atest("validate + verify all dimensions + stats (sequenced)", async () => {
   assert.ok(["passed","failed"].includes(r.validation.status));
 
   // 2. all 6 dimensions present
-  const v = pve.getValidation(valId1);
+  const v = pve.getValidation(TEST_ORG_ID, valId1);
   assert.ok(v, "validation not found after write");
   pve.VALIDATION_DIMENSIONS.forEach(dim =>
     assert.ok(v.dimensions[dim], `missing dimension: ${dim}`)
@@ -426,7 +436,7 @@ atest("validate + verify all dimensions + stats (sequenced)", async () => {
   assert.ok(v.dimensions.bible_compliance.compliant <= v.dimensions.bible_compliance.workflows);
 
   // 8. listValidations
-  const listR = pve.listValidations({ limit: 10 });
+  const listR = pve.listValidations(TEST_ORG_ID, { limit: 10 });
   assert.ok(listR.ok && Array.isArray(listR.validations) && listR.total >= 1);
 
   // 9. stats
@@ -452,13 +462,13 @@ test("module exports", () => {
 });
 
 atest("prepare fails for unknown plan", async () => {
-  const r = await pre.prepare("nonexistent_plan", { skipExecute: true });
+  const r = await pre.prepare(TEST_ORG_ID, "nonexistent_plan", { skipExecute: true });
   assert.strictEqual(r.ok, false);
   assert.ok(r.error);
 });
 
 atest("prepare succeeds with skipExecute", async () => {
-  const r = await pre.prepare(planId1, { skipExecute: true });
+  const r = await pre.prepare(TEST_ORG_ID, planId1, { skipExecute: true });
   assert.ok(r.ok, JSON.stringify(r));
   assert.ok(r.release.id.startsWith("pr_"));
   assert.ok(r.release.planId === planId1);
@@ -467,7 +477,7 @@ atest("prepare succeeds with skipExecute", async () => {
 });
 
 atest("releaseNotes has all required fields", async () => {
-  const r = pre.getReleaseForPlan(planId1);
+  const r = pre.getReleaseForPlan(TEST_ORG_ID, planId1);
   assert.ok(r, "release not found");
   assert.ok(r.releaseNotes.version,   "missing version");
   assert.ok(r.releaseNotes.title,     "missing title");
@@ -478,7 +488,7 @@ atest("releaseNotes has all required fields", async () => {
 });
 
 atest("deploymentPlan has steps with automated flag", async () => {
-  const r = pre.getReleaseForPlan(planId1);
+  const r = pre.getReleaseForPlan(TEST_ORG_ID, planId1);
   assert.ok(Array.isArray(r.deploymentPlan.steps) && r.deploymentPlan.steps.length > 0);
   r.deploymentPlan.steps.forEach(s => {
     assert.ok(s.step,    "step missing number");
@@ -492,7 +502,7 @@ atest("deploymentPlan has steps with automated flag", async () => {
 });
 
 atest("rollbackPlan has trigger and steps", async () => {
-  const r = pre.getReleaseForPlan(planId1);
+  const r = pre.getReleaseForPlan(TEST_ORG_ID, planId1);
   assert.ok(r.rollbackPlan.trigger, "missing trigger");
   assert.ok(Array.isArray(r.rollbackPlan.steps) && r.rollbackPlan.steps.length > 0);
   assert.ok(typeof r.rollbackPlan.automatedRollback === "boolean");
@@ -500,7 +510,7 @@ atest("rollbackPlan has trigger and steps", async () => {
 });
 
 atest("monitoringPlan has 5 metric checks and alert channels", async () => {
-  const r = pre.getReleaseForPlan(planId1);
+  const r = pre.getReleaseForPlan(TEST_ORG_ID, planId1);
   assert.ok(Array.isArray(r.monitoringPlan.checks) && r.monitoringPlan.checks.length === 5);
   r.monitoringPlan.checks.forEach(c => {
     assert.ok(c.metric,    "check missing metric");
@@ -513,7 +523,7 @@ atest("monitoringPlan has 5 metric checks and alert channels", async () => {
 });
 
 atest("twinDecision is set to a valid value", async () => {
-  const r = pre.getReleaseForPlan(planId1);
+  const r = pre.getReleaseForPlan(TEST_ORG_ID, planId1);
   assert.ok(r, "release not found");
   assert.ok(r.twinDecision, "missing twinDecision");
   // Accept canonical values OR fallback strings from the twin's raw decision
@@ -522,12 +532,12 @@ atest("twinDecision is set to a valid value", async () => {
 });
 
 atest("minutesSaved is positive", async () => {
-  const r = pre.getReleaseForPlan(planId1);
+  const r = pre.getReleaseForPlan(TEST_ORG_ID, planId1);
   assert.ok(r.minutesSaved > 0, `minutesSaved: ${r.minutesSaved}`);
 });
 
 atest("listReleases returns list", async () => {
-  const r = pre.listReleases({ limit: 10 });
+  const r = pre.listReleases(TEST_ORG_ID, { limit: 10 });
   assert.ok(r.ok && Array.isArray(r.releases) && r.total >= 1);
 });
 
@@ -613,13 +623,13 @@ test("validationStatus has dimensions list", () => {
 });
 
 test("getProductView fails without planId", () => {
-  const r = pfd.getProductView(null);
+  const r = pfd.getProductView(TEST_ORG_ID, null);
   assert.strictEqual(r.ok, false);
   assert.ok(r.error);
 });
 
 test("getProductView returns data for known plan", () => {
-  const r = pfd.getProductView(planId1);
+  const r = pfd.getProductView(TEST_ORG_ID, planId1);
   assert.ok(r.ok, JSON.stringify(r));
   assert.ok(r.planId === planId1);
   assert.ok(r.objective);
@@ -631,17 +641,17 @@ test("getProductView returns data for known plan", () => {
 });
 
 test("completionPct reflects stages done", () => {
-  const r = pfd.getProductView(planId1);
+  const r = pfd.getProductView(TEST_ORG_ID, planId1);
   assert.strictEqual(r.completionPct, Math.round((r.stagesDone / 5) * 100));
 });
 
 test("getProductView reuseRatio is non-negative", () => {
-  const r = pfd.getProductView(planId1);
+  const r = pfd.getProductView(TEST_ORG_ID, planId1);
   assert.ok(r.reuseRatio >= 0);
 });
 
 test("getProductView pipeline stages are all present", () => {
-  const r = pfd.getProductView(planId1);
+  const r = pfd.getProductView(TEST_ORG_ID, planId1);
   ["plan","arch","assembly","validation","release"].forEach(s =>
     assert.ok(r.pipeline[s] !== undefined, `missing pipeline stage: ${s}`)
   );
@@ -671,40 +681,40 @@ console.log("\n── End-to-End Pipeline ──");
 
 atest("full pipeline: plan → arch → assemble → validate → release", async () => {
   // 1. Plan
-  const planR = ppe.createPlan({ objective: "Build an autonomous sales CRM with AI lead scoring", skipResearch: true });
+  const planR = ppe.createPlan({ objective: "Build an autonomous sales CRM with AI lead scoring", skipResearch: true, orgId: TEST_ORG_ID });
   assert.ok(planR.ok);
   const pid = planR.plan.id;
 
   // 2. Architecture
-  const archR = pae.design(pid, { skipReasoning: true });
+  const archR = pae.design(TEST_ORG_ID, pid, { skipReasoning: true });
   assert.ok(archR.ok, JSON.stringify(archR));
   assert.ok(archR.architecture.reuseRatio > 0);
 
   // 3. Assembly
-  const asmR = await pasm.assemble(pid, archR.architecture.id, { skipExecute: true });
+  const asmR = await pasm.assemble(TEST_ORG_ID, pid, archR.architecture.id, { skipExecute: true });
   assert.ok(asmR.ok);
   assert.strictEqual(asmR.assembly.status, "completed");
 
   // 4. Validation
-  const valR = await pve.validate(pid, { skipExecute: true });
+  const valR = await pve.validate(TEST_ORG_ID, pid, { skipExecute: true });
   assert.ok(valR.ok);
   assert.ok(valR.validation.overallScore > 0);
 
   // 5. Release
-  const relR = await pre.prepare(pid, { skipExecute: true });
+  const relR = await pre.prepare(TEST_ORG_ID, pid, { skipExecute: true });
   assert.ok(relR.ok);
   assert.ok(relR.release.version);
 
   // 6. Dashboard product view
-  const view = pfd.getProductView(pid);
+  const view = pfd.getProductView(TEST_ORG_ID, pid);
   assert.ok(view.ok);
   assert.ok(view.stagesDone >= 3, `only ${view.stagesDone} stages done`);
   assert.ok(view.minutesSaved > 0);
 });
 
 atest("pipeline preserves reuse-not-duplicate constraint", async () => {
-  const planR = ppe.createPlan({ objective: "Analytics dashboard for startup metrics", skipResearch: true });
-  const archR = pae.design(planR.plan.id, { skipReasoning: true });
+  const planR = ppe.createPlan({ objective: "Analytics dashboard for startup metrics", skipResearch: true, orgId: TEST_ORG_ID });
+  const archR = pae.design(TEST_ORG_ID, planR.plan.id, { skipReasoning: true });
   assert.ok(archR.ok);
   const arch = archR.architecture;
   // Must have 0 duplicated services — all new services are exactly the 6 P12 ones
@@ -715,7 +725,7 @@ atest("pipeline preserves reuse-not-duplicate constraint", async () => {
 });
 
 atest("validation dimensions use real platform data (not all 100)", async () => {
-  const valR = await pve.validate(planId1, { skipExecute: false });
+  const valR = await pve.validate(TEST_ORG_ID, planId1, { skipExecute: false });
   assert.ok(valR.ok);
   // At least some dimensions should not be exactly 80/85/88/90 (mock defaults)
   // — they should read from live services. Just verify scores are reasonable.
@@ -724,8 +734,8 @@ atest("validation dimensions use real platform data (not all 100)", async () => 
 });
 
 atest("second full product has independent plan + arch", async () => {
-  const planR = ppe.createPlan({ objective: "Real-time team collaboration workspace", skipResearch: true });
-  const archR = pae.design(planR.plan.id, { skipReasoning: true });
+  const planR = ppe.createPlan({ objective: "Real-time team collaboration workspace", skipResearch: true, orgId: TEST_ORG_ID });
+  const archR = pae.design(TEST_ORG_ID, planR.plan.id, { skipReasoning: true });
   assert.ok(planR.ok && archR.ok);
   // Plans should be independent
   assert.notStrictEqual(planR.plan.id, planId1);
@@ -733,7 +743,7 @@ atest("second full product has independent plan + arch", async () => {
 });
 
 atest("listPlans shows all created plans", async () => {
-  const r = ppe.listPlans({ limit: 100 });
+  const r = ppe.listPlans(TEST_ORG_ID, { limit: 100 });
   assert.ok(r.ok && r.total >= 4, `expected >= 4 plans, got ${r.total}`);
 });
 

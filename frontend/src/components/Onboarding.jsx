@@ -63,7 +63,7 @@ function ChipGrid({ options, selected, onSelect, multi = false }) {
 }
 
 // ── Root Onboarding ───────────────────────────────────────────────────────────
-export default function Onboarding({ onComplete }) {
+export default function Onboarding({ onComplete, onLogin }) {
   const [step,     setStep]     = useState(0); // 0=biz 1=team 2=goals 3=done
   const [bizType,  setBizType]  = useState("");
   const [teamSize, setTeamSize] = useState("");
@@ -128,6 +128,11 @@ export default function Onboarding({ onComplete }) {
             <span className="ob-title-brand">Quick setup</span>
             <span className="ob-step-label">Step {step + 1} of 3</span>
           </div>
+          {onLogin && (
+            <button type="button" className="ob-login-link" onClick={onLogin}>
+              Already have an account? Log in
+            </button>
+          )}
         </div>
 
         {/* Progress bar */}

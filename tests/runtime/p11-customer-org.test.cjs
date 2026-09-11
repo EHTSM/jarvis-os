@@ -463,12 +463,26 @@ test("AUTOMATION_TYPES has 11 types", () => {
 });
 
 atest("trigger follow_up automation (skipExecute)", async () => {
+  // Mission 60A: customerAutomationEngine.cjs's Phase B.16 fix (see its own
+  // trigger() comment) closed a real false-success bug — skipExecute:true
+  // previously reported status:"executed" with an executedAt timestamp even
+  // though no real workflow ran, no approval was requested, and no outcome
+  // was recorded, making a preview indistinguishable from real work and
+  // overstating getStats()'s claimed minutesSaved. This test predates that
+  // fix and still asserted the old, dishonest "executed" status for a
+  // skipExecute:true call — updated to assert the honest "skipped" status
+  // the fix actually produces, matching every other skipExecute:true test
+  // in this repo's own convention (e.g. this same file's "automation scan
+  // is non-destructive (skipExecute)" test just above, which already
+  // expects no real side effect).
   const r = await cae.trigger("auto_test_1", "follow_up", { skipExecute: true });
   assert.ok(r.ok, JSON.stringify(r));
   assert.ok(r.automation.id.startsWith("ca_"));
   assert.strictEqual(r.automation.type, "follow_up");
-  assert.strictEqual(r.automation.status, "executed");
-  assert.ok(r.automation.minutesSaved > 0);
+  assert.strictEqual(r.automation.status, "skipped");
+  assert.strictEqual(r.automation.skipped, true);
+  assert.ok(!r.automation.executedAt, "a skipped (previewed, not executed) automation must not carry an executedAt timestamp");
+  assert.ok(r.automation.minutesSaved > 0, "minutesSaved reflects the automation's own definition — not conditional on whether it actually ran");
 });
 
 atest("trigger retention_workflow requires approval (no skipExecute)", async () => {

@@ -749,7 +749,7 @@
   border-radius: 8px;
   background: var(--accent, #7c6fff);
   border: none;
-  color: #fff;
+  color: var(--on-accent);
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -883,9 +883,9 @@
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.mov2-toast--success { background: rgba(82,214,138,.15);  color: #52d68a; border: 1px solid rgba(82,214,138,.25); }
-.mov2-toast--error   { background: rgba(245,91,91,.15);   color: #f55b5b; border: 1px solid rgba(245,91,91,.25); }
-.mov2-toast--info    { background: rgba(124,111,255,.12); color: #7c6fff; border: 1px solid rgba(124,111,255,.2); }
+.mov2-toast--success { background: rgba(82,214,138,.15);  color: var(--success); border: 1px solid rgba(82,214,138,.25); }
+.mov2-toast--error   { background: rgba(245,91,91,.15);   color: var(--danger); border: 1px solid rgba(245,91,91,.25); }
+.mov2-toast--info    { background: rgba(124,111,255,.12); color: var(--accent); border: 1px solid rgba(124,111,255,.2); }
 
 /* ── Responsive ──────────────────────────────────────────────────────── */
 

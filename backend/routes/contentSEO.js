@@ -15,20 +15,52 @@ const g               = require("../services/contentSEOEngine.cjs");
 
 router.use("/content", requireAuth);
 
+// Tenant isolation — mirrors growthOS.js's req.orgId middleware (see that
+// file for the full incident writeup). Resolved once per request, threaded
+// into every service call below.
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path require — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const org = () => _try(() => require("../services/organizationService.cjs"));
+router.use("/content", (req, res, next) => {
+  try {
+    const ctx = org().resolveContext(req.user.sub);
+    req.orgId = ctx?.primaryOrg?.orgId || null;
+  } catch { req.orgId = null; }
+  next();
+});
+
 function _ok(res, data)            { res.json({ ok: true, ...data }); }
-function _err(res, e, code = 500)  { res.status(code).json({ error: e.message || e }); }
+
+/**
+ * Phase OS-2: same defect class as growthOS.js — mutating routes let the
+ * service throw on a missing entity and every throw became HTTP 500.
+ * Measured: POST /content/articles/nope/publish and PATCH
+ * /content/calendar/nope both returned 500 "… not found", while the
+ * equivalent GET routes correctly returned 404.
+ *
+ * A 500 tells a client to retry; a 404 tells it the id does not exist.
+ * Classifying by the error the service already raises keeps this to one
+ * helper and leaves genuine faults as 500.
+ */
+function _err(res, e, code) {
+  const msg = e && e.message ? e.message : String(e);
+  const status = code !== undefined ? code : (/\bnot found\b/i.test(msg) ? 404 : 500);
+  res.status(status).json({ error: msg });
+}
 
 // ══════════════════════════════════════════════════════════════════
 // MODULE 1: AI Blog Studio
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/content/articles",                   (req, res) => {
-  try { _ok(res, { articles: g.listArticles(req.query.type, req.query.status), types: g.ARTICLE_TYPES }); }
+  try { _ok(res, { articles: g.listArticles(req.query.type, req.query.status, req.orgId), types: g.ARTICLE_TYPES }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/content/articles",                  (req, res) => {
-  try { _ok(res, { article: g.createArticle(req.body || {}) }); }
+  try { _ok(res, { article: g.createArticle(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -42,19 +74,19 @@ router.get("/content/articles/prompt",            (req, res) => {
 
 router.get("/content/articles/:id",               (req, res) => {
   try {
-    const a = g.getArticle(req.params.id);
+    const a = g.getArticle(req.params.id, req.orgId);
     if (!a) return res.status(404).json({ error: "Article not found" });
     _ok(res, { article: a });
   } catch (e) { _err(res, e); }
 });
 
 router.patch("/content/articles/:id",             (req, res) => {
-  try { _ok(res, { article: g.updateArticle(req.params.id, req.body || {}) }); }
+  try { _ok(res, { article: g.updateArticle(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/content/articles/:id/publish",      (req, res) => {
-  try { _ok(res, { article: g.publishArticle(req.params.id) }); }
+  try { _ok(res, { article: g.publishArticle(req.params.id, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -73,17 +105,17 @@ router.get("/content/seo/checks",                 (req, res) => {
 });
 
 router.get("/content/seo/clusters",               (req, res) => {
-  try { _ok(res, { clusters: g.listTopicClusters() }); }
+  try { _ok(res, { clusters: g.listTopicClusters(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/content/seo/clusters",              (req, res) => {
-  try { _ok(res, { cluster: g.createTopicCluster(req.body || {}) }); }
+  try { _ok(res, { cluster: g.createTopicCluster(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.patch("/content/seo/clusters/:id",         (req, res) => {
-  try { _ok(res, { cluster: g.updateTopicCluster(req.params.id, req.body || {}) }); }
+  try { _ok(res, { cluster: g.updateTopicCluster(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -91,7 +123,7 @@ router.post("/content/seo/clusters/:id/link",     (req, res) => {
   try {
     const { from, to, anchorText } = req.body || {};
     if (!from || !to) return res.status(400).json({ error: "from and to required" });
-    _ok(res, { cluster: g.addInternalLink(req.params.id, from, to, anchorText || "") });
+    _ok(res, { cluster: g.addInternalLink(req.params.id, from, to, anchorText || "", req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
@@ -127,13 +159,13 @@ router.post("/content/repurpose",                 (req, res) => {
     if (!content) return res.status(400).json({ error: "content required" });
     const targetIds = targets || g.REPURPOSE_TARGETS.map(t => t.id);
     const prompts   = g.buildRepurposePrompts(content, targetIds, { brandVoice, videoDuration });
-    const job       = g.storeRepurposeJob(null, targetIds, prompts.map(p => ({ target: p.targetId, prompt: p.prompt })));
+    const job       = g.storeRepurposeJob(null, targetIds, prompts.map(p => ({ target: p.targetId, prompt: p.prompt })), req.orgId);
     _ok(res, { job, prompts, total: prompts.length });
   } catch (e) { _err(res, e); }
 });
 
 router.get("/content/repurpose/jobs",             (req, res) => {
-  try { _ok(res, { jobs: g.listRepurposeJobs() }); }
+  try { _ok(res, { jobs: g.listRepurposeJobs(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -142,17 +174,17 @@ router.get("/content/repurpose/jobs",             (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/content/landing-pages",              (req, res) => {
-  try { _ok(res, { landingPages: g.listLandingPages(req.query.status), sections: g.LP_SECTIONS }); }
+  try { _ok(res, { landingPages: g.listLandingPages(req.query.status, req.orgId), sections: g.LP_SECTIONS }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/content/landing-pages",             (req, res) => {
-  try { _ok(res, { landingPage: g.createLandingPage(req.body || {}) }); }
+  try { _ok(res, { landingPage: g.createLandingPage(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.patch("/content/landing-pages/:id",        (req, res) => {
-  try { _ok(res, { landingPage: g.updateLandingPage(req.params.id, req.body || {}) }); }
+  try { _ok(res, { landingPage: g.updateLandingPage(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -169,12 +201,12 @@ router.get("/content/landing-pages/prompt",       (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/content/docs",                       (req, res) => {
-  try { _ok(res, { docs: g.listDocs(req.query.type, req.query.status), types: g.DOC_TYPES }); }
+  try { _ok(res, { docs: g.listDocs(req.query.type, req.query.status, req.orgId), types: g.DOC_TYPES }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/content/docs",                      (req, res) => {
-  try { _ok(res, { doc: g.createDoc(req.body || {}) }); }
+  try { _ok(res, { doc: g.createDoc(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -188,14 +220,14 @@ router.get("/content/docs/prompt",                (req, res) => {
 
 router.get("/content/docs/:id",                   (req, res) => {
   try {
-    const d = g.getDoc(req.params.id);
+    const d = g.getDoc(req.params.id, req.orgId);
     if (!d) return res.status(404).json({ error: "Doc not found" });
     _ok(res, { doc: d });
   } catch (e) { _err(res, e); }
 });
 
 router.patch("/content/docs/:id",                 (req, res) => {
-  try { _ok(res, { doc: g.updateDoc(req.params.id, req.body || {}) }); }
+  try { _ok(res, { doc: g.updateDoc(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -206,31 +238,31 @@ router.patch("/content/docs/:id",                 (req, res) => {
 router.get("/content/calendar",                   (req, res) => {
   try {
     const { month, channel, status } = req.query;
-    _ok(res, { entries: g.listCalendarEntries(month, channel, status), stats: g.getCalendarStats(), approvalStates: g.APPROVAL_STATES });
+    _ok(res, { entries: g.listCalendarEntries(month, channel, status, req.orgId), stats: g.getCalendarStats(req.orgId), approvalStates: g.APPROVAL_STATES });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/content/calendar",                  (req, res) => {
-  try { _ok(res, { entry: g.createCalendarEntry(req.body || {}) }); }
+  try { _ok(res, { entry: g.createCalendarEntry(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.patch("/content/calendar/:id",             (req, res) => {
-  try { _ok(res, { entry: g.updateCalendarEntry(req.params.id, req.body || {}) }); }
+  try { _ok(res, { entry: g.updateCalendarEntry(req.params.id, req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.post("/content/calendar/:id/approve",      (req, res) => {
   try {
     const { notes, approved } = req.body || {};
-    _ok(res, { entry: g.approveCalendarEntry(req.params.id, notes || "", approved !== false) });
+    _ok(res, { entry: g.approveCalendarEntry(req.params.id, notes || "", approved !== false, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/content/calendar/:id/reject",       (req, res) => {
   try {
     const { notes } = req.body || {};
-    _ok(res, { entry: g.approveCalendarEntry(req.params.id, notes || "Rejected", false) });
+    _ok(res, { entry: g.approveCalendarEntry(req.params.id, notes || "Rejected", false, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
@@ -241,23 +273,23 @@ router.post("/content/calendar/:id/reject",       (req, res) => {
 router.get("/content/keywords",                   (req, res) => {
   try {
     const { intent, minOpportunity } = req.query;
-    _ok(res, { keywords: g.listKeywords(intent, minOpportunity ? Number(minOpportunity) : null) });
+    _ok(res, { keywords: g.listKeywords(intent, minOpportunity ? Number(minOpportunity) : null, req.orgId) });
   } catch (e) { _err(res, e); }
 });
 
 router.post("/content/keywords",                  (req, res) => {
-  try { _ok(res, { keyword: g.addKeyword(req.body || {}) }); }
+  try { _ok(res, { keyword: g.addKeyword(req.body || {}, req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/content/keywords/intelligence",      (req, res) => {
-  try { _ok(res, { intelligence: g.getKeywordIntelligence() }); }
+  try { _ok(res, { intelligence: g.getKeywordIntelligence(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
 router.get("/content/keywords/:id",               (req, res) => {
   try {
-    const kw = g.getKeywordById(req.params.id);
+    const kw = g.getKeywordById(req.params.id, req.orgId);
     if (!kw) return res.status(404).json({ error: "Keyword not found" });
     _ok(res, { keyword: kw });
   } catch (e) { _err(res, e); }
@@ -269,14 +301,14 @@ router.get("/content/keywords/:id",               (req, res) => {
 
 router.get("/content/brand-voice",                (req, res) => {
   try {
-    const accountId = req.query.accountId || req.user?.accountId || "global";
+    const accountId = req.query.accountId || req.user?.sub || req.user?.accountId || "global";
     _ok(res, { brandVoice: g.getBrandVoice(accountId) });
   } catch (e) { _err(res, e); }
 });
 
 router.patch("/content/brand-voice",              (req, res) => {
   try {
-    const accountId = req.body?.accountId || req.user?.accountId || "global";
+    const accountId = req.body?.accountId || req.user?.sub || req.user?.accountId || "global";
     _ok(res, { brandVoice: g.updateBrandVoice(accountId, req.body || {}) });
   } catch (e) { _err(res, e); }
 });
@@ -307,7 +339,7 @@ router.post("/content/brand-voice/check",         (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/content/dashboard",                  (req, res) => {
-  try { _ok(res, { dashboard: g.getContentDashboard() }); }
+  try { _ok(res, { dashboard: g.getContentDashboard(req.orgId) }); }
   catch (e) { _err(res, e); }
 });
 
@@ -316,7 +348,7 @@ router.get("/content/dashboard",                  (req, res) => {
 // ══════════════════════════════════════════════════════════════════
 
 router.get("/content/benchmark",                  (req, res) => {
-  try { _ok(res, g.runBenchmark()); }
+  try { _ok(res, g.runBenchmark(req.orgId)); }
   catch (e) { _err(res, e); }
 });
 

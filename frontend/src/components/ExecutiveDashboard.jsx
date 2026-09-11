@@ -125,10 +125,15 @@ const LC_COLORS = {
   heal:'#94a3b8', learn:'#94a3b8',
 };
 
-function LifecycleIntelligence({ missions }) {
+function LifecycleIntelligence({ missions, missionsLive }) {
   const [stages, setStages] = useState([]);
 
   useEffect(() => {
+    // Don't fire real /runtime/stage/:id calls against seed-data mission
+    // IDs (m1/m2/m3) — always-404s, and wasted requests on every account
+    // that hasn't gotten real mission data back yet (see the missionsLive
+    // fix in fetchAll above).
+    if (!missionsLive) { setStages([]); return; }
     const running = missions.filter(m =>
       m.status === 'active' || m.status === 'running'
     ).slice(0, 3);
@@ -148,7 +153,7 @@ function LifecycleIntelligence({ missions }) {
       setStages(rows);
     });
     return () => { mounted = false; };
-  }, [missions]);
+  }, [missions, missionsLive]);
 
   if (stages.length === 0) return null;
 
@@ -157,7 +162,7 @@ function LifecycleIntelligence({ missions }) {
       <div className="ed-section__title">Lifecycle Runtime</div>
       <div className="ed-lc-grid">
         {stages.map(({ mission, stageData: s }) => {
-          const color = LC_COLORS[s.stage] || '#6b7280';
+          const color = LC_COLORS[s.stage] || 'var(--text-dim)';
           return (
             <div key={mission.id} className="ed-lc-card">
               <div className="ed-lc-card__obj" title={mission.objective}>
@@ -207,7 +212,7 @@ function IntelligenceInsights() {
       <div className="ed-section__title">Cross-Domain Intelligence</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {top.map((ins, i) => {
-          const sevColor = ins.severity === "high" ? "#ef4444" : ins.severity === "medium" ? "#eab308" : "#22c55e";
+          const sevColor = ins.severity === "high" ? "var(--danger)" : ins.severity === "medium" ? "#eab308" : "var(--success)";
           return (
             <div key={ins.domain ?? i} style={{
               display: "flex", gap: 10, alignItems: "flex-start",
@@ -216,7 +221,7 @@ function IntelligenceInsights() {
             }}>
               <div style={{ width: 3, alignSelf: "stretch", background: sevColor, borderRadius: 2, flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 9, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 3 }}>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 3 }}>
                   {(ins.domain || "").replace(/_/g, " → ")}
                 </div>
                 <div style={{ fontSize: 12, color: "#e2e8f0" }}>{ins.insight}</div>
@@ -230,7 +235,7 @@ function IntelligenceInsights() {
         })}
       </div>
       {data.summary?.avgCorrelationStrength != null && (
-        <div style={{ fontSize: 10, color: "#64748b", marginTop: 6 }}>
+        <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 6 }}>
           {data.summary.totalDomains} domains · avg correlation {data.summary.avgCorrelationStrength}%
           {data.summary.highPriorityCount > 0 && ` · ${data.summary.highPriorityCount} high priority`}
         </div>
@@ -260,13 +265,13 @@ function DeploymentFeed() {
         {deploys.map((d, i) => {
           const ok    = d.status === 'passed' || d.status === 'ok' || d.passed === true || d.overallStatus === 'passed';
           const ts    = d.timestamp || d.checkedAt || d.createdAt;
-          const color = ok ? '#22c55e' : '#ef4444';
+          const color = ok ? 'var(--success)' : 'var(--danger)';
           return (
             <div key={d.id || i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '6px 10px', background: '#0f1117', border: `1px solid ${color}22`, borderRadius: 5 }}>
               <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: 11, color: '#e2e8f0' }}>{d.pipeline || d.environment || d.name || `Deployment ${i + 1}`}</div>
-                {d.summary && <div style={{ fontSize: 10, color: '#64748b', marginTop: 1 }}>{String(d.summary).slice(0, 60)}</div>}
+                {d.summary && <div style={{ fontSize: 10, color: 'var(--text-dim)', marginTop: 1 }}>{String(d.summary).slice(0, 60)}</div>}
               </div>
               <span style={{ fontSize: 9, fontWeight: 700, color, padding: '1px 6px', borderRadius: 8, background: color + '18' }}>
                 {ok ? 'PASSED' : 'FAILED'}
@@ -313,9 +318,9 @@ function ObserverStatus() {
         <div style={{ marginBottom: 8 }}>
           {activeAl.slice(0, 4).map((a, i) => (
             <div key={a.name || i} style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: 11 }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: '#ef4444', background: '#ef444418', padding: '1px 5px', borderRadius: 6 }}>ALERT</span>
+              <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--danger)', background: '#ef444418', padding: '1px 5px', borderRadius: 6 }}>ALERT</span>
               <span style={{ color: '#e2e8f0' }}>{a.name || a.metric}</span>
-              {a.value != null && <span style={{ color: '#64748b', marginLeft: 'auto' }}>{a.value}</span>}
+              {a.value != null && <span style={{ color: 'var(--text-dim)', marginLeft: 'auto' }}>{a.value}</span>}
             </div>
           ))}
         </div>
@@ -327,7 +332,7 @@ function ObserverStatus() {
             const last = Array.isArray(m?.values) ? m.values[m.values.length - 1]?.value : m?.last ?? null;
             return (
               <div key={key} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 4, padding: '5px 7px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <div style={{ fontSize: 9, color: '#64748b', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{key}</div>
+                <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 2 }}>{key}</div>
                 <div style={{ fontSize: 13, fontWeight: 700, color: '#e2e8f0', fontFamily: 'monospace' }}>{last ?? '—'}</div>
               </div>
             );
@@ -339,13 +344,15 @@ function ObserverStatus() {
 }
 
 // ── J5: Recommendation Approval Cards ────────────────────────────────
-function RecommendationApprovalCards({ missions }) {
+function RecommendationApprovalCards({ missions, missionsLive }) {
   const [items,    setItems]    = useState([]);
   const [acting,   setActing]   = useState({});
   const [aiReply,  setAiReply]  = useState(null);
 
   useEffect(() => {
-    if (!missions.length) return;
+    // Don't fire /collaboration/history/:id against a seed-data mission ID
+    // — see the matching fix in LifecycleIntelligence above.
+    if (!missionsLive || !missions.length) return;
     // Collect the first active mission with a history
     const active = missions.find(m => m.status === 'active' || m.status === 'running' || m.status === 'planned');
     if (!active) return;
@@ -358,7 +365,7 @@ function RecommendationApprovalCards({ missions }) {
       })
       .catch(() => {});
     return () => { mounted = false; };
-  }, [missions]);
+  }, [missions, missionsLive]);
 
   const doAction = useCallback(async (act, missionId, itemId, reason) => {
     const key = `${missionId}_${itemId}_${act}`;
@@ -402,7 +409,7 @@ function RecommendationApprovalCards({ missions }) {
             <div style={{ fontSize: 12, fontWeight: 700, color: '#e2e8f0', marginBottom: 4 }}>
               {item.title || item.description || `Recommendation ${i + 1}`}
             </div>
-            {item.rationale && <div style={{ fontSize: 11, color: '#64748b', marginBottom: 8 }}>{item.rationale}</div>}
+            {item.rationale && <div style={{ fontSize: 11, color: 'var(--text-dim)', marginBottom: 8 }}>{item.rationale}</div>}
             <div style={{ display: 'flex', gap: 6 }}>
               <button
                 onClick={() => doAction('approve', mId, item.id, 'Approved from executive dashboard')}
@@ -465,10 +472,24 @@ export default function ExecutiveDashboard({ onNavigate }) {
     };
 
     // Mission status
+    // Workflow Coverage Completion finding: /metrics/dashboard's real
+    // response (backend/routes/metrics.js) never includes a `missions`
+    // field at all — not empty, absent — so this condition has never once
+    // passed for any account, and the component's initial useState(
+    // SEED_MISSIONS) (5 fabricated missions with fake MRR/SEO/support-SLA
+    // objectives and fake "2m ago" timestamps) stays permanently displayed
+    // as if real. The dashboard's own "showing example data" disclosure
+    // banner exists but was gated on dataError (fetch threw), not on this
+    // "real data field never arrived" case — a successful fetch with no
+    // missions field isn't a thrown error, so the banner never fired
+    // either. Widening dataError to also cover this closes the gap using
+    // the disclosure mechanism that already exists, not a new one.
     const mOk = await safe("/metrics/dashboard", data => {
       if (data?.missions && Array.isArray(data.missions)) {
         setMissions(data.missions.slice(0, 5));
         setMissionsLive(true);
+      } else {
+        anyError = true;
       }
     });
 
@@ -521,7 +542,11 @@ export default function ExecutiveDashboard({ onNavigate }) {
           })));
         }
       } catch (_) {
-        // keep seed recs
+        // keep seed recs — but flag it the same way the missions seed-data
+        // gap above is flagged, so the existing "showing example data"
+        // banner actually fires instead of silently presenting
+        // SEED_RECOMMENDATIONS' fabricated objectives as real.
+        anyError = true;
       }
     }
 
@@ -590,12 +615,19 @@ export default function ExecutiveDashboard({ onNavigate }) {
         </div>
       )}
 
-      {/* ── Header ── */}
+      {/* ── Header ──
+          A.11.1 UX consistency fix: this block used to re-render the exact
+          same "Executive Dashboard" title + subtitle the <PageHeader> above
+          already renders (verbatim duplicate <h1>, same string) — the only
+          real, non-duplicated content here is the refresh timestamp + LIVE
+          badge, which every other PageHeader-based screen in this audit's
+          scope keeps as the page's own status strip. Kept exactly that,
+          removed the redundant second title/subtitle so this screen matches
+          the established single-title pattern used by ExecutionCenter,
+          GuardrailsDashboard, IntelligencePanel, RecommendationCenter,
+          PredictionPanel, and ReliabilityCenter (6 of 9 PageHeader
+          consumers) — not restyled, not redesigned, just de-duplicated. */}
       <motion.div className="ed-header" {...fadeUp(0)}>
-        <div>
-          <h1 className="ed-header__title">Executive Dashboard</h1>
-          <p className="ed-header__subtitle">CEO-level view of missions, engineering throughput, runtime health and strategic intelligence.</p>
-        </div>
         <div className="ed-header__right">
           <span className="ed-ts">Refreshed {lastRefresh}</span>
           <div className="ed-live-badge">
@@ -700,7 +732,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
       </motion.div>
 
       {/* ── Lifecycle Runtime Intelligence ── */}
-      <LifecycleIntelligence missions={missions} />
+      <LifecycleIntelligence missions={missions} missionsLive={missionsLive} />
 
       {/* ── Cross-Domain Intelligence ── */}
       <IntelligenceInsights />
@@ -712,7 +744,7 @@ export default function ExecutiveDashboard({ onNavigate }) {
       <ObserverStatus />
 
       {/* ── Recommendation Approvals (J5) ── */}
-      <RecommendationApprovalCards missions={missions} />
+      <RecommendationApprovalCards missions={missions} missionsLive={missionsLive} />
 
       {/* ── Row 4: Active Missions ── */}
       <motion.div className="ed-section" {...fadeUp(0.2)}>
@@ -732,10 +764,10 @@ export default function ExecutiveDashboard({ onNavigate }) {
             <div
               key={m.id ?? m.objective}
               className="ed-mission-row"
-              onClick={() => onNavigate && onNavigate("missionMemory")}
+              onClick={() => onNavigate && onNavigate("mission")}
               role="button"
               tabIndex={0}
-              onKeyDown={e => e.key === "Enter" && onNavigate && onNavigate("missionMemory")}
+              onKeyDown={e => e.key === "Enter" && onNavigate && onNavigate("mission")}
               title={m.objective}
             >
               <div className="ed-mission-obj">{m.objective}</div>
@@ -784,13 +816,13 @@ export default function ExecutiveDashboard({ onNavigate }) {
             <div className="ed-improve-lbl">Rec. Acceptance Rate</div>
           </div>
           <div className="ed-improve-cell">
-            <div className="ed-improve-val" style={{ color: "#22c55e" }}>
+            <div className="ed-improve-val" style={{ color: "var(--success)" }}>
               {pct(impMetrics?.missionCompletionRate)}
             </div>
             <div className="ed-improve-lbl">Mission Completion</div>
           </div>
           <div className="ed-improve-cell">
-            <div className="ed-improve-val" style={{ color: "#f59e0b" }}>
+            <div className="ed-improve-val" style={{ color: "var(--warning)" }}>
               {impMetrics?.selfImprovementScore !== null && impMetrics?.selfImprovementScore !== undefined
                 ? `${Number(impMetrics.selfImprovementScore).toFixed(1)}`
                 : "—"}
@@ -836,7 +868,7 @@ function GraphReasoningSection() {
       <div className="ed-section__title">
         Graph Reasoning
         {health != null && (
-          <span style={{ marginLeft: 8, fontSize: 11, color: health >= 70 ? '#22c55e' : health >= 40 ? '#f59e0b' : '#ef4444', fontWeight: 600 }}>
+          <span style={{ marginLeft: 8, fontSize: 11, color: health >= 70 ? 'var(--success)' : health >= 40 ? 'var(--warning)' : 'var(--danger)', fontWeight: 600 }}>
             Health {health}/100
           </span>
         )}
@@ -848,7 +880,7 @@ function GraphReasoningSection() {
           <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4, color: 'var(--text-dim)' }}>TOP RISKS</div>
           {risks.slice(0, 3).map((r, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
-              <span style={{ background: r.risk === 'critical' || r.severity === 'critical' ? '#ef4444' : '#f59e0b', borderRadius: 3, padding: '1px 5px', fontSize: 10, color: '#fff', flexShrink: 0 }}>
+              <span style={{ background: r.risk === 'critical' || r.severity === 'critical' ? 'var(--danger)' : 'var(--warning)', borderRadius: 3, padding: '1px 5px', fontSize: 10, color: '#fff', flexShrink: 0 }}>
                 {r.type?.replace(/_/g,' ')}
               </span>
               <span style={{ fontSize: 11, color: 'var(--text)' }}>{r.explanation || r.description || r.objective || r.id}</span>
@@ -873,7 +905,7 @@ function GraphReasoningSection() {
           <div style={{ fontSize: 11, fontWeight: 600, marginBottom: 4, color: 'var(--text-dim)' }}>RECOMMENDED MISSIONS</div>
           {recs.slice(0, 3).map((r, i) => (
             <div key={i} style={{ fontSize: 11, color: 'var(--text)', marginBottom: 3 }}>
-              <span style={{ color: '#22c55e', marginRight: 6 }}>+</span>{r.title}
+              <span style={{ color: 'var(--success)', marginRight: 6 }}>+</span>{r.title}
             </div>
           ))}
         </div>

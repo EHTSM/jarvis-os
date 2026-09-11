@@ -10,6 +10,7 @@ import {
 } from "./operatorApi";
 import { useConfirm } from "../ConfirmDialog";
 import "./OperatorCommandLayer.css";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 // ── Built-in slash commands ────────────────────────────────────────────
 const COMMANDS = [
@@ -59,7 +60,7 @@ const ResultItem = memo(({ item }) => {
 
 // ── Autocomplete suggestion ────────────────────────────────────────────
 const Suggestion = memo(({ cmd, active, onClick }) => (
-  <div className={`ocl-suggestion${active ? " ocl-suggestion--active" : ""}`} onClick={onClick}>
+  <div className={`ocl-suggestion${active ? " ocl-suggestion--active" : ""}`} {...clickableProps(onClick)}>
     <span className="ocl-sug-cmd">{cmd.cmd}</span>
     <span className="ocl-sug-usage">{cmd.usage.slice(cmd.cmd.length)}</span>
     <span className="ocl-sug-desc">{cmd.desc}</span>

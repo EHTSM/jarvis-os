@@ -13,7 +13,7 @@
 
 const fs   = require("fs");
 const path = require("path");
-const { execSync } = require("child_process");
+const { execFileSync } = require("child_process");
 
 const STORE_PATH = path.join(__dirname, "../../data/multi-repo.json");
 
@@ -33,12 +33,22 @@ function registerRepo(repoId, localPath, meta = {}) {
     const abs   = path.resolve(localPath);
     if (!fs.existsSync(abs)) throw new Error(`Path not found: ${abs}`);
 
-    // Collect git info if available
+    // Collect git info if available.
+    // Command Injection & Process Execution Deep Security Sweep
+    // (2026-08-21): JSON.stringify(abs) is a JS-string escaper, not a shell
+    // one — /bin/sh still performs $()/backtick command substitution
+    // inside the double quotes JSON.stringify produces. Gated on the
+    // fs.existsSync(abs) check above (a directory literally named
+    // "$(...)" would have to exist), but that is a precondition, not a
+    // fix — reached the same way as this mission's other findings via
+    // POST /p24/multirepo/repos (requireAuth-only). Fixed with the same
+    // execFileSync argument-array pattern used elsewhere in this mission.
     let gitInfo = {};
     try {
-        const remote = execSync(`git -C ${JSON.stringify(abs)} remote get-url origin 2>/dev/null`, { encoding: "utf8" }).trim();
-        const branch = execSync(`git -C ${JSON.stringify(abs)} branch --show-current 2>/dev/null`, { encoding: "utf8" }).trim();
-        const lastCommit = execSync(`git -C ${JSON.stringify(abs)} log -1 --format="%H %s" 2>/dev/null`, { encoding: "utf8" }).trim();
+        const _git = (...args) => execFileSync("git", ["-C", abs, ...args], { encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+        const remote = _git("remote", "get-url", "origin");
+        const branch = _git("branch", "--show-current");
+        const lastCommit = _git("log", "-1", "--format=%H %s");
         gitInfo = { remote, branch, lastCommit };
     } catch { /* not a git repo — still register */ }
 

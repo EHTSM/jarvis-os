@@ -59,7 +59,7 @@
 .tw-member-avatar {
   width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.8);
+  font-size: 12px; font-weight: 800; color: rgba(var(--fg-rgb), 0.92);
 }
 .tw-member-info { flex: 1; min-width: 0; }
 .tw-member-name  { display: block; font-size: 13.5px; font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -168,7 +168,7 @@
 .tw-ptd { padding: 9px 14px; text-align: center; }
 .tw-ptd--action { text-align: left; color: var(--text-dim); font-weight: 500; }
 .tw-perm-yes { font-size: 13px; font-weight: 800; }
-.tw-perm-no  { font-size: 13px; color: rgba(255,255,255,0.12); }
+.tw-perm-no  { font-size: 13px; color: rgba(var(--fg-rgb), 0.62); }
 
 /* Activity */
 .tw-activity-section { display: flex; flex-direction: column; gap: 10px; }
@@ -232,6 +232,17 @@
 }
 .tw-empty-cta:hover { background: rgba(124,111,255,0.18); }
 
+/* Loading / error states — same convention as WorkspaceSettings.css's
+   k2-loading/k2-error, duplicated here since this file doesn't import
+   that stylesheet. */
+.k2-loading { color: var(--text-dim); font-size: 13px; padding: 24px 0; }
+.k2-error   { color: var(--error); font-size: 13px; padding: 16px 0; display: flex; align-items: center; gap: 10px; }
+.k2-error-retry {
+  background: transparent; border: 1px solid var(--error); color: var(--error);
+  border-radius: 6px; padding: 3px 10px; font-size: 12px; cursor: pointer;
+}
+.k2-error-retry:hover { background: rgba(245, 91, 91, 0.1); }
+
 /* Toast */
 .tw-toast {
   position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%);
@@ -280,7 +291,7 @@
 .tw-ws-create-input::placeholder { color: var(--text-faint); }
 .tw-ws-create-confirm {
   padding: 7px 16px; background: var(--accent); border: none; border-radius: var(--radius-sm);
-  color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+  color: var(--on-accent); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .tw-ws-create-confirm:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -299,7 +310,7 @@
 .tw-ws-card-info { font-size: 11px; color: var(--text-faint); }
 .tw-ws-active-badge {
   padding: 3px 10px; background: rgba(82,214,138,0.12); border: 1px solid rgba(82,214,138,0.3);
-  border-radius: var(--radius-pill); color: #52d68a; font-size: 11px; font-weight: 700;
+  border-radius: var(--radius-pill); color: var(--success); font-size: 11px; font-weight: 700;
 }
 .tw-ws-switch-btn {
   padding: 5px 12px; background: none; border: 1px solid var(--border);
@@ -327,7 +338,7 @@
 }
 .tw-ws-invite-btn {
   padding: 7px 16px; background: var(--accent); border: none; border-radius: var(--radius-sm);
-  color: #fff; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
+  color: var(--on-accent); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit;
 }
 .tw-ws-invite-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .tw-ws-members-list { display: flex; flex-direction: column; gap: 6px; }

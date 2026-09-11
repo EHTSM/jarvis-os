@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listCycles, cycleStats, listActions } from "../phase18Api";
+import SampleDataNotice from "./SampleDataNotice";
 import "./ExecutionOrchestratorCenter.css";
 
 const EXC_KEY = "ooplix_exec_chains";
@@ -9,8 +10,8 @@ function _save(k,v){localStorage.setItem(k,JSON.stringify(v));}
 
 // ── Agent colours ─────────────────────────────────────────────────────
 const AGENT_COLORS = {
-  "SEO Agent":"#4ecdc4","Marketing Agent":"#f0b429","Content Agent":"#7c6fff",
-  "Support Agent":"#52d68a","Sales Agent":"#da552f","Dev Agent":"#e6edf3",
+  "SEO Agent":"var(--accent2)","Marketing Agent":"var(--warning)","Content Agent":"var(--accent)",
+  "Support Agent":"var(--success)","Sales Agent":"#da552f","Dev Agent":"var(--text)",
   "DevOps Agent":"#fc6d26","Research Agent":"#a78bfa","Analytics Agent":"#38bdf8",
 };
 
@@ -130,6 +131,12 @@ function ChainCard({ chain, selected, onSelect }) {
 
 export default function ExecutionOrchestratorCenter({ onNavigate }) {
   const [chains,   setChains]   = useState(() => _load(EXC_KEY, SEED_CHAINS));
+  // Nothing in localStorage yet AND the real /p18/cycles API hasn't returned
+  // any recorded cycles below = still showing the illustrative SEED_CHAINS
+  // example, not a real execution history. Tracked separately from `chains`
+  // itself so switching away from sample data (real localStorage write or a
+  // real API response) is unambiguous rather than inferred from array identity.
+  const [isSample, setIsSample] = useState(() => localStorage.getItem(EXC_KEY) === null);
   const [selected, setSelected] = useState("ec1");
   const [section,  setSection]  = useState("chains");
   const [toast,    setToast]    = useState(null);
@@ -163,6 +170,7 @@ export default function ExecutionOrchestratorCenter({ onNavigate }) {
             })),
           }));
           setChains(mapped);
+          setIsSample(false);
           _save(EXC_KEY, mapped);
           if (mapped.length && !mapped.find(c => c.id === selected)) setSelected(mapped[0].id);
         }
@@ -187,6 +195,7 @@ export default function ExecutionOrchestratorCenter({ onNavigate }) {
     <div className="execution-orchestrator-center page-enter">
       {toast && <div className="eoc-toast">{toast}</div>}
       {apiError && <div className="ac-api-banner ac-api-banner--error">⚠ Live cycle data unavailable — showing cached data ({apiError})</div>}
+      {isSample && <SampleDataNotice label="a sample execution chain — run a real mission to replace it" />}
 
       <div className="eoc-header">
         <div>

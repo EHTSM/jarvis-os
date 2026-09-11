@@ -86,7 +86,7 @@
 }
 .eod-suggestion-num {
   flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
-  background: var(--accent); color: #fff; font-size: 9px; font-weight: 800;
+  background: var(--accent); color: var(--on-accent); font-size: 9px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
 }
 
@@ -102,5 +102,5 @@
   font-family: inherit; font-size: 12px; font-weight: 700;
   cursor: pointer; transition: background var(--dur-fast);
 }
-.eod-btn--primary { background: var(--accent); color: #fff; }
+.eod-btn--primary { background: var(--accent); color: var(--on-accent); }
 .eod-btn--primary:hover { background: var(--accent-hover); }

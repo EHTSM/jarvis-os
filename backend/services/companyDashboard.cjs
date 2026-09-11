@@ -16,6 +16,7 @@ const _cwb   = () => _try(() => require("./companyWorkspaceBuilder.cjs"));
 const _wm    = () => _try(() => require("./workforceManager.cjs"));
 const _pe    = () => _try(() => require("./performanceEngine.cjs"));
 const _bte   = () => _try(() => require("./businessTemplateEngine.cjs"));
+const _org   = () => _try(() => require("./organizationService.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 
@@ -48,8 +49,23 @@ function _calcProgress(company) {
 
 // ── Main dashboard ────────────────────────────────────────────────────────────
 
-function getDashboard() {
-  const companies  = _cle_e()?.listCompanies?.({ limit: 100 })?.companies || [];
+// Workflow Simplification Certification finding: this function previously
+// called listCompanies({ limit: 100 }) with no orgId, returning EVERY
+// company across the entire platform's shared store (test/simulation data
+// accumulated across many prior sessions) as if it belonged to whichever
+// founder happened to be viewing /company-factory/dashboard — a real
+// account, brand new, with zero companies of their own, saw "74 COMPANIES
+// / 21 LAUNCHED / 40% AVG READINESS" in the summary cards directly above a
+// correctly-scoped "No companies yet" empty state in the list below it,
+// self-contradicting on one screen. listCompanies() already supported an
+// orgId filter (used correctly by the separate, already-existing
+// /company-factory/founder/dashboard route) — this just threads that same
+// existing parameter through the route the frontend actually calls.
+// blueprints/workspaces/workforce/perf stats below remain platform-wide
+// (their underlying services have no orgId concept to filter by without a
+// larger change than this fix's scope) — out of scope for this pass.
+function getDashboard(orgId) {
+  const companies  = _cle_e()?.listCompanies?.({ orgId, limit: 100 })?.companies || [];
   const blueprints = _cbe()?.listBlueprints?.({ limit: 100 })?.blueprints || [];
   const workspaces = _cwb()?.listWorkspaces?.({ limit: 100 })?.workspaces || [];
   const wfStats    = _wm()?.getStats?.()     || {};
@@ -137,17 +153,106 @@ function getCompanyDetail(companyId) {
   if (!company) return { ok: false, error: "company not found" };
   const blueprint = company.blueprintId ? _cbe()?.getBlueprint?.(company.blueprintId) : null;
   const workspace = company.workspaceId ? _cwb()?.getWorkspace?.(company.workspaceId) : null;
+  // Departments: real org department records (100-COMPANY P1 mission Phase 7 —
+  // companyFactory.cjs now genuinely instantiates these via the existing,
+  // unmodified organizationService.createDepartment() API). Reused here via
+  // the existing organizationService.getOrg() read path — no new storage.
+  const org = company.orgId ? _org()?.getOrg?.(company.orgId) : null;
+  const departments = (org?.departments || []).map(d => ({ id: d.id, name: d.name, description: d.description, composition: d.composition || null }));
   return {
     ok: true,
     company,
     blueprint: blueprint ? { id: blueprint.id, name: blueprint.name, templateId: blueprint.templateId, skills: blueprint.skills, techStack: blueprint.techStack } : null,
     workspace: workspace ? { id: workspace.id, readinessScore: workspace.readinessScore, repos: workspace.repositories?.repositories?.length, missions: workspace.registeredMissions?.length } : null,
+    departments,
     riskScore:   _companyRiskScore(company),
     progress:    _calcProgress(company),
+  };
+}
+
+// ── Composition Inspector (Universal Composition Engine — Completion
+// Gaps Phase 6) — pure aggregation, no new storage. Assembles the real
+// backend composition state a founder can inspect: Company, Departments
+// (with their real, already-persisted composition — skills/connectors/
+// permissions/approvalPolicies/kpis, Phase 3 of the prior mission),
+// Skills (resolved against the real skillRegistry.cjs, Phase 5),
+// Connectors (real composition status, Phase 7), Credential readiness
+// (real secretVault.cjs state, never a value), Approval policies
+// (department-declared, real approvalPolicy.cjs ids), and Capability
+// gaps (re-derived honestly via templateInferenceEngine.cjs against the
+// company's own stored templateId — never fabricated, always the
+// engine's own live classification). Every field here reflects real,
+// already-computed backend state; nothing is invented for display.
+function getCompanyComposition(companyId) {
+  const detail = getCompanyDetail(companyId);
+  if (!detail.ok) return detail;
+
+  const bte = _bte();
+  const skillReg = _try(() => require("./skillRegistry.cjs"));
+  const connReg = _try(() => require("./integrationConnectors.cjs"));
+  const vault = _try(() => require("./secretVault.cjs"));
+  const inferenceEngine = _try(() => require("./templateInferenceEngine.cjs"));
+
+  const template = bte?.getTemplate?.(detail.company.templateId);
+
+  // Skills — every skill name declared across this company's real,
+  // persisted department composition, resolved against the real
+  // Skill Registry (Phase 5). A skill name with no registry entry is
+  // honestly reported as unresolved, never silently dropped.
+  const declaredSkillNames = [...new Set(detail.departments.flatMap(d => d.composition?.skills || []))];
+  const skills = declaredSkillNames.map(name => {
+    const real = skillReg?.getSkill?.(name);
+    return real
+      ? { id: real.id, name: real.name, category: real.category, riskLevel: real.riskLevel, healthStatus: real.healthStatus, resolved: true }
+      : { id: name, name, resolved: false, note: "declared by a department template but not found in skillRegistry.cjs" };
+  });
+
+  // Connectors — every connector id declared across departments, with
+  // REAL composition status (Phase 7) — never fabricated as connected.
+  const declaredConnectorIds = [...new Set(detail.departments.flatMap(d => d.composition?.connectors || []))];
+  const connectors = declaredConnectorIds.map(id => {
+    const status = _try(() => connReg?.getCompositionStatus?.(id));
+    return { connectorId: id, status: status?.status || "NOT_CONFIGURED", capabilities: status?.capabilities || [] };
+  });
+
+  // Credential readiness — real secretVault state (org-scoped), never a
+  // secret value — only whether a reference exists and its rotation
+  // metadata.
+  const credentials = (_try(() => vault?.listSecrets?.({ orgId: detail.company.orgId })) || [])
+    .map(s => ({ connectorId: s.connectorId, type: s.type, configured: true, rotationDueAt: s.rotationDueAt || null }));
+
+  // Approval policies — declared across departments (real
+  // approvalPolicy.cjs workflow ids where one exists per
+  // departmentTemplateRegistry.cjs).
+  const approvalPolicies = [...new Set(detail.departments.flatMap(d => d.composition?.approvalPolicies || []))];
+
+  // Capability gaps — re-derived HONESTLY via the real
+  // templateInferenceEngine.cjs against this company's own stored
+  // template, not fabricated from the (possibly stale) department list
+  // alone. This surfaces gaps even if departments were composed before
+  // this phase existed.
+  const inferenceResult = template && inferenceEngine
+    ? inferenceEngine.analyzeCompanyDefinition({ niche: detail.company.name, businessModel: detail.company.templateId })
+    : null;
+
+  return {
+    ok: true,
+    company: detail.company,
+    departments: detail.departments,
+    skills,
+    connectors,
+    credentials,
+    approvalPolicies,
+    workflows: [], // No per-company workflow instances exist yet — honestly empty rather than fabricated (missionOrchestrator.cjs workflows are process-level, not yet company-scoped)
+    capabilityStatus: inferenceResult?.status || null,
+    capabilityGap: inferenceResult?.capabilityGap || null,
+    externalInfrastructureRequirements: inferenceResult?.externalInfrastructureRequirements || [],
+    generatedAt: _ts(),
   };
 }
 
 module.exports = {
   getDashboard,
   getCompanyDetail,
+  getCompanyComposition,
 };

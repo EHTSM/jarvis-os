@@ -167,10 +167,16 @@ function requireUsageQuota(req, res, next) {
   if (!accountId) return next();   // let requireAuth handle missing identity
   const quota = checkUsageQuota(accountId);
   if (!quota.allowed) {
+    // `error` carries the human-readable message — every frontend error path
+    // (_client.js's _fetch, sendMessage's catch) surfaces `.error` as the
+    // displayed message, not `.message`; a previous version put the machine
+    // code ("usage_quota_exceeded") in `.error`, so a customer hitting their
+    // quota saw that raw code as the chat reply instead of a real explanation.
+    // `code` keeps the machine-readable value for any caller that wants it.
     return res.status(429).json({
-      error: "usage_quota_exceeded",
+      code: "usage_quota_exceeded",
+      error: `Monthly AI request limit reached (${quota.used}/${quota.limit}) for the ${quota.plan} plan. Upgrade to keep going.`,
       plan: quota.plan, used: quota.used, limit: quota.limit,
-      message: `Monthly AI request limit reached (${quota.used}/${quota.limit}) for the ${quota.plan} plan.`,
       upgradeUrl: `${process.env.BASE_URL || ""}/pricing`,
     });
   }
@@ -249,6 +255,22 @@ async function createRazorpaySubscription(accountId, plan, customerEmail) {
 
   try {
     const rz = new Razorpay({ key_id: key, key_secret: secret });
+
+    // A plan change (upgrade OR downgrade) while an existing Razorpay
+    // subscription is already active must cancel the old one first — this
+    // previously always called subscriptions.create() unconditionally, which
+    // would leave the customer with TWO concurrent Razorpay subscriptions
+    // (and double-billing) on any plan change made after their first upgrade.
+    const existing = getRecord(accountId);
+    if (existing.razorpaySubId && existing.status === "active") {
+      try {
+        await rz.subscriptions.cancel(existing.razorpaySubId, { cancel_at_cycle_end: 0 });
+        logger.info(`[Billing] Cancelled prior Razorpay subscription ${existing.razorpaySubId} for ${accountId} (plan change to ${plan})`);
+      } catch (cancelErr) {
+        logger.warn(`[Billing] Could not cancel prior subscription ${existing.razorpaySubId} for ${accountId}: ${cancelErr.message}`);
+      }
+    }
+
     const sub = await rz.subscriptions.create({
       plan_id:       planId,
       total_count:   120,  // 10 years max — effectively unlimited

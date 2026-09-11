@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { getProductivitySummary, getRetentionAnalytics, getOperationalAnalytics, getBottleneckSummary } from "../../../hooks/useProductivityAnalytics";
+import { _fetch } from "../../../_client";
 
 function fmtUptime(secs) {
   if (!secs) return "—";
@@ -88,8 +89,20 @@ export const RuntimeHealthCard = React.memo(({ ops, rtStatus }) => {
   const [betaGate, setBetaGate] = useState(null);
   useEffect(() => {
     let cancelled = false;
-    fetch("/api/runtime/beta-candidate", { credentials: "include" })
-      .then(r => r.ok ? r.json() : null)
+    // OOPLIX V1 MASTER AUDIT (2026-08-16, known-defect-family recovery): same
+    // defect found and fixed across 4 sibling components — this called bare
+    // fetch("/api/runtime/beta-candidate", ...), but the real route is
+    // /runtime/beta-candidate with no /api prefix. Live-confirmed:
+    // GET /api/runtime/beta-candidate -> 404; GET /runtime/beta-candidate
+    // (real route) -> 200, real beta-readiness gate data. credentials was
+    // already correctly set here (this file's own pre-existing behavior was
+    // already better than the other 3 fixed components in that respect) —
+    // only the path was wrong. Replaced with the canonical _fetch
+    // (_client.js), which already throws on a non-2xx response, so the
+    // .then(data => ...)/.catch(() => {}) shape below is preserved as-is —
+    // this was already an honest "leave betaGate null on failure" path, not
+    // a fake-success one.
+    _fetch("/runtime/beta-candidate")
       .then(data => { if (!cancelled && data) setBetaGate(data); })
       .catch(() => {});
     return () => { cancelled = true; };

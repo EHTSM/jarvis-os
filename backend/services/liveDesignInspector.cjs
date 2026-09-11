@@ -17,6 +17,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const INSP_DIR = path.join(__dirname, "../../data/odi/inspector");
 function _ensureDir() { if (!fs.existsSync(INSP_DIR)) fs.mkdirSync(INSP_DIR, { recursive: true }); }
@@ -126,6 +127,8 @@ async function inspectElement({ url, pageId, selector } = {}) {
     page = session.getPage?.(pageId);
     if (!page) return { ok: false, error: `Page ${pageId} not found` };
   } else if (url) {
+    const safety = await assertSafeNavigationTarget(url);
+    if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
     if (!session.isRunning()) {
       const r = await session.launch({ headless: true });
       if (!r.ok) return { ok: false, error: r.error };
@@ -163,6 +166,8 @@ async function inspectElement({ url, pageId, selector } = {}) {
 async function inspectMultiple({ url, selectors = [] } = {}) {
   if (!selectors.length) return { ok: false, error: "selectors[] required" };
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

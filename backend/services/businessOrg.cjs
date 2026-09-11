@@ -215,12 +215,18 @@ async function _growthTick(s) {
   _setObj(s, "Running growth experiments and capturing leads");
   try {
     const campaigns = _st()?.listCampaigns({ status: "active" }) || [];
-    // Capture leads for active campaigns
+    // Capture leads for active campaigns.
+    // Zero-Trust Competitor Remediation, Phase 2: these are fictional
+    // demo company names, not real leads — synthetic:true (and
+    // source:"demo_simulation") is threaded through so every downstream
+    // consumer (dashboard, exports) can tell this apart from a real
+    // HTTP-triggered lead capture. See businessOrgWorkflow.cjs's
+    // growthCaptureLead() for the full incident writeup.
     for (const c of campaigns.slice(0, 2)) {
       if (c.actualLeads < c.targetLeads) {
         const companies = ["Prospect Alpha", "Beta Dynamics", "Gamma Solutions", "Delta Systems"];
         const co = companies[Math.floor(Math.random() * companies.length)] + ` ${Date.now().toString(36).slice(-4)}`;
-        _wf()?.growthCaptureLead({ campaignId: c.id, company: co, value: 1200 + Math.floor(Math.random() * 3600) });
+        _wf()?.growthCaptureLead({ campaignId: c.id, company: co, value: 1200 + Math.floor(Math.random() * 3600), source: "demo_simulation", synthetic: true });
       }
     }
     const kpi = _st()?.getKpi(s.id) || {};
@@ -235,10 +241,30 @@ async function _crmTick(s) {
   _setObj(s, "Qualifying leads and managing CRM pipeline");
   try {
     const prospects = _st()?.listDeals({ stage: "prospect" }) || [];
-    // Qualify up to 3 prospects
+    // Qualify up to 3 prospects.
+    //
+    // Phase OS-5: the score here is Math.random(), not a computed lead score —
+    // this tick has no scoring model, no enrichment data and no CRM signal to
+    // derive one from. It was written straight into the deal's stage note as
+    // `Score: 87` and into agent memory, and surfaced verbatim on
+    // GET /bizorg/v3/deals (measured live: "Score: 82", "Score: 79",
+    // "Score: 86"). A founder reading that sees a qualification score that
+    // looks measured and is not.
+    //
+    // The synthetic lead-capture two functions above already solves this
+    // correctly — it threads `synthetic: true` and `source: "demo_simulation"`
+    // so downstream consumers can tell demo data apart. This mirrors that
+    // convention rather than inventing a new one: the simulation still runs
+    // (the autonomous org demo depends on it), but the value is now labelled
+    // for what it is instead of impersonating a measurement.
     for (const deal of prospects.slice(0, 3)) {
       const score = 60 + Math.floor(Math.random() * 40);
-      _wf()?.crmQualifyLead(deal.id, { score, qualified: score >= 65 });
+      _wf()?.crmQualifyLead(deal.id, {
+        score,
+        qualified: score >= 65,
+        synthetic: true,
+        notes: "simulated qualification — no scoring model is configured; score is not measured",
+      });
     }
     // CRM service stats
     const stats = _crm()?.getStats?.() || {};
@@ -271,10 +297,24 @@ async function _csTick(s) {
 async function _financeTick(s) {
   _setObj(s, "Reviewing financial performance and P&L");
   try {
-    const dash    = _st()?.getDashboard?.() || {};
-    const kpis    = _st()?.getAllKpis?.() || [];
-    const totalMrr = kpis.reduce((s, k) => s + (k.mrr || 0), 0);
-    const totalWon = kpis.reduce((s, k) => s + (k.dealValueWon || 0), 0);
+    // Business Org Financial Integrity Certification: this used to compute
+    // its own kpis.reduce((s,k) => s + (k.mrr||0), 0) across every
+    // department's KPI, INCLUDING bizorg_finance's own — then wrote that
+    // sum back into bizorg_finance.mrr via updateKpi(s.id, ...) below
+    // (s.id === "bizorg_finance" here). Since this tick runs on a real
+    // 300s interval forever, each run's output became part of the next
+    // run's input — the same real, confirmed recursive self-accumulation
+    // bug already found and fixed in bizorg_revops's revenueOpsUpdate()
+    // (businessOrgWorkflow.cjs). Confirmed via direct execution: one
+    // simulated tick doubled bizorg_finance.mrr from 2.9e+258 to
+    // 5.8e+258 with zero real deals involved. Now reuses
+    // getDashboard().revenue.mrr, which already correctly excludes
+    // bizorg_finance/bizorg_revops/bizorg_billing from its own sum (see
+    // businessOrgState.cjs's MRR_REPORTING_DEPTS) — one source of truth,
+    // not a second independently-diverging reduce.
+    const dash     = _st()?.getDashboard?.() || {};
+    const totalMrr = dash.revenue?.mrr || 0;
+    const totalWon = dash.pipeline?.totalWonValue || 0;
     _st()?.updateKpi(s.id, { mrr: totalMrr, arr: totalMrr * 12 });
     if (totalMrr === 0) {
       _mission(s.id, {
@@ -301,9 +341,16 @@ async function _billingTick(s) {
     for (const deal of won.filter(d => !billedDeals.has(d.id)).slice(0, 2)) {
       _wf()?.billingProcessPayment(deal.id);
     }
-    const kpi = _st()?.getKpi(s.id) || {};
-    s.v2Billing = { mrr: kpi.mrr };
-    _lesson(s.id, { type: "billing_review", severity: "info", title: `Billing: MRR=$${kpi.mrr || 0}`, detail: `Won deals: ${won.length}`, tags: ["billing"] });
+    // Business Org Financial Integrity Certification: bizorg_billing's own
+    // kpi.mrr was a duplicate accumulator (removed from billingProcessPayment
+    // in businessOrgWorkflow.cjs — see that fix's comment for the full
+    // trace) and would now always read 0/undefined here. The real, single
+    // source of truth for global MRR is getDashboard().revenue.mrr (summed
+    // once, correctly, across each deal's own department KPI) — read that
+    // instead of a per-department field that never had independent meaning.
+    const globalMrr = _st()?.getDashboard()?.revenue?.mrr || 0;
+    s.v2Billing = { mrr: globalMrr };
+    _lesson(s.id, { type: "billing_review", severity: "info", title: `Billing: MRR=$${globalMrr}`, detail: `Won deals: ${won.length}`, tags: ["billing"] });
   } catch {}
   _setObj(s, "Billing processed");
 }

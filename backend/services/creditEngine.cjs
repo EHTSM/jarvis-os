@@ -136,8 +136,17 @@ function getRecord(accountId, plan = "trial") {
 /**
  * Check available credit for an account.
  * Returns { canProceed, source, balance, cost }
+ *
+ * `local.enabled` only waives cost when the caller confirms (via
+ * opts.localProviderAvailable) that the request will actually be served by a
+ * real local/free provider for the requested capability. Without that
+ * confirmation the flag is ignored and normal billing applies — local mode
+ * is "route this to my free local model," not a blanket billing waiver, and
+ * whether a local provider exists for a given capability is a routing-layer
+ * fact (capabilityRouter/creativeRouter), not something this ledger can
+ * verify on its own.
  */
-function checkCredit(accountId, requestType = "default", plan = "trial") {
+function checkCredit(accountId, requestType = "default", plan = "trial", opts = {}) {
   const records = _load();
   const rec = _ensureRecord(records, accountId, plan);
   _refreshFree(rec, plan);
@@ -145,9 +154,11 @@ function checkCredit(accountId, requestType = "default", plan = "trial") {
 
   const cost = CREDIT_COSTS[requestType] || CREDIT_COSTS.default;
 
-  // BYOK / local never consume credits
+  // BYOK never consumes credits — billed directly to the user's own key.
   if (rec.byok.enabled) return { canProceed: true, source: "byok",  balance: Infinity, cost: 0 };
-  if (rec.local.enabled) return { canProceed: true, source: "local", balance: Infinity, cost: 0 };
+  if (rec.local.enabled && opts.localProviderAvailable) {
+    return { canProceed: true, source: "local", balance: Infinity, cost: 0 };
+  }
 
   // Premium credits (check expiry)
   if (rec.premium.balance > 0) {
@@ -166,7 +177,41 @@ function checkCredit(accountId, requestType = "default", plan = "trial") {
 }
 
 /**
+ * Reserve (check-and-deduct in one synchronous pass) credits for a request
+ * that is about to start slow work (e.g. a real paid provider call).
+ *
+ * checkCredit() and consume() are each individually atomic (this module has
+ * no `await` between its own load/save calls, so under Node's single-threaded
+ * event loop no other request can interleave mid-call) — but a caller that
+ * calls checkCredit(), then `await`s slow work, then calls consume()
+ * afterward reintroduces a real TOCTOU gap: N concurrent requests can all
+ * pass the check against the same starting balance before any of their slow
+ * awaits finish and their consume() calls fire, letting all N proceed even
+ * when the account can only afford a fraction of them (verified: 25
+ * concurrent check→await→consume-style calls against a balance of 20 all
+ * proceeded). reserve() closes that gap by doing the check and the deduction
+ * in the same synchronous pass, before the caller's slow work starts — call
+ * this instead of checkCredit() whenever slow/async work happens between the
+ * check and the eventual consume.
+ *
+ * Returns { ok, tx?, creditType?, cost, canProceed, source, balance }.
+ * If ok is false, no state was mutated (nothing to refund).
+ */
+function reserve(accountId, requestType = "default", opts = {}) {
+  const check = checkCredit(accountId, requestType, opts.plan || "trial", opts);
+  if (!check.canProceed) return { ok: false, canProceed: false, ...check };
+  const result = consume(accountId, requestType, opts);
+  return { ok: true, canProceed: true, ...result, ...check, cost: result.cost };
+}
+
+/**
  * Consume credits for a request. Returns the transaction entry.
+ * Same localProviderAvailable gate as checkCredit — see its doc comment.
+ *
+ * NOTE: consume() alone does not re-check the balance — a caller that
+ * checked earlier and now wants to commit that reservation after slow work
+ * completed should use reserve() up front instead so the check and the
+ * deduction happen in the same atomic pass (see reserve() doc comment).
  */
 function consume(accountId, requestType = "default", opts = {}) {
   const records  = _load();
@@ -177,7 +222,7 @@ function consume(accountId, requestType = "default", opts = {}) {
 
   let creditType = "free";
   if (rec.byok.enabled) { creditType = "byok"; }
-  else if (rec.local.enabled) { creditType = "local"; }
+  else if (rec.local.enabled && opts.localProviderAvailable) { creditType = "local"; }
   else if (rec.premium.balance >= cost && !(rec.premium.expiresAt && new Date(rec.premium.expiresAt) < new Date())) {
     creditType = "premium";
     rec.premium.balance = Math.max(0, rec.premium.balance - cost);
@@ -291,6 +336,7 @@ function getAllSummary() {
 module.exports = {
   getRecord,
   checkCredit,
+  reserve,
   consume,
   topup,
   refund,

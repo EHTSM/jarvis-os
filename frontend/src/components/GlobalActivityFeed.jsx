@@ -6,22 +6,23 @@ import { listDeployments } from '../phase25Api';
 import { listPatches, getRuntimeHistory } from '../runtimeApi';
 import { getLeads } from '../api';
 import './GlobalActivityFeed.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Domain colours / icons ────────────────────────────────────────────────────
 const DOMAIN = {
-  mission:        { icon: '🎯', color: '#7c6fff', label: 'Mission'        },
-  planning:       { icon: '🗺️', color: '#7c6fff', label: 'Planning'       },
-  execution:      { icon: '⚡', color: '#4ecdc4', label: 'Execution'      },
+  mission:        { icon: '🎯', color: 'var(--accent)', label: 'Mission'        },
+  planning:       { icon: '🗺️', color: 'var(--accent)', label: 'Planning'       },
+  execution:      { icon: '⚡', color: 'var(--accent2)', label: 'Execution'      },
   deployment:     { icon: '◈',  color: '#3b82f6', label: 'Deploy'         },
-  patch:          { icon: '⬡',  color: '#64748b', label: 'Patch'          },
-  healing:        { icon: '✦',  color: '#22c55e', label: 'Healing'        },
+  patch:          { icon: '⬡',  color: 'var(--text-dim)', label: 'Patch'          },
+  healing:        { icon: '✦',  color: 'var(--success)', label: 'Healing'        },
   memory:         { icon: '🧠', color: '#a78bfa', label: 'Memory'         },
-  recommendation: { icon: '✦',  color: '#f0b429', label: 'Recommendation' },
-  crm:            { icon: '👤', color: '#4ecdc4', label: 'CRM'            },
-  payment:        { icon: '✦',  color: '#52d68a', label: 'Payment'        },
-  runtime:        { icon: '◎',  color: '#64748b', label: 'Runtime'        },
+  recommendation: { icon: '✦',  color: 'var(--warning)', label: 'Recommendation' },
+  crm:            { icon: '👤', color: 'var(--accent2)', label: 'CRM'            },
+  payment:        { icon: '✦',  color: 'var(--success)', label: 'Payment'        },
+  runtime:        { icon: '◎',  color: 'var(--text-dim)', label: 'Runtime'        },
   reasoning:      { icon: '◈',  color: '#818cf8', label: 'Reasoning'      },
-  approval:       { icon: '◉',  color: '#f0b429', label: 'Approval'       },
+  approval:       { icon: '◉',  color: 'var(--warning)', label: 'Approval'       },
 };
 
 const ALL_DOMAINS = Object.keys(DOMAIN);
@@ -152,7 +153,7 @@ function EventRow({ ev, onNavigate }) {
   return (
     <div
       className="gaf-row"
-      onClick={() => ev.tab && onNavigate?.(ev.tab)}
+      {...clickableProps(() => ev.tab && onNavigate?.(ev.tab))}
       title={ev.tab ? `Navigate to ${ev.tab}` : undefined}
       style={{ cursor: ev.tab ? 'pointer' : 'default' }}
     >
@@ -218,6 +219,16 @@ export default function GlobalActivityFeed({ onNavigate, maxItems = 50 }) {
 
   return (
     <div className="gaf-root">
+      {/* A.11 UX consistency: this was the only measured surface of 25 with no
+          page header — it opened straight onto a filter toolbar, so the screen
+          never named itself. Recovered from the sibling pattern in
+          SystemHealthDashboard.jsx:393 (header → title + timestamp), reusing
+          this component's own gaf- namespace. No new component. */}
+      <div className="gaf-header">
+        <span className="gaf-page-title">Global Activity</span>
+        <span className="gaf-page-sub">{events.length} events across all surfaces</span>
+      </div>
+
       {/* Toolbar */}
       <div className="gaf-toolbar">
         <input

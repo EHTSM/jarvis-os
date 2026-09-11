@@ -156,7 +156,7 @@ function marketingLaunchCampaign({ objectiveId, title, channel = "email", target
 // STEP 4 — Growth/Lead Gen captures leads from campaign
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, source = "campaign" } = {}) {
+function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, source = "campaign", synthetic = false } = {}) {
   if (!company) return null;
   const deal = st().createDeal({
     title:       `${company} — inbound lead`,
@@ -167,6 +167,21 @@ function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, so
     deptId:      "bizorg_crm",
     campaignId,
     leadSource:  source,
+    // Zero-Trust Competitor Remediation, Phase 2: this function is shared
+    // by a real HTTP-triggered lead-capture route (backend/routes/
+    // businessOrg.js:254) and by businessOrg.cjs's/this file's own
+    // autonomous demo tick (_growthTick, and the setTimeout cascade
+    // below), which generates fictional company names and Math.random()
+    // values on a real setInterval that starts automatically on every
+    // server boot (server.js's Level 3 registration). Reproduced live:
+    // confirmed real "Acme Corp" records were already written to
+    // data/business-leads.json / business-contacts.json /
+    // business-opportunities.json from prior server runs. Explicitly
+    // tagging fabricated records at the source (rather than deleting the
+    // demo pipeline outright, which is out of scope for this remediation)
+    // is what lets every downstream consumer — the dashboard, exports,
+    // any future integration — tell real leads from simulated ones.
+    synthetic,
   });
   if (!deal.ok) return null;
 
@@ -187,20 +202,33 @@ function growthCaptureLead({ campaignId, company, contactEmail, value = 1200, so
 // STEP 5 — CRM qualifies lead
 // ═══════════════════════════════════════════════════════════════════════════════
 
-function crmQualifyLead(dealId, { score = 75, notes = "", qualified = true } = {}) {
+/**
+ * @param {object} opts
+ * @param {boolean} [opts.synthetic] — true when `score` was simulated rather
+ *   than derived from a scoring model. Phase OS-5: the autonomous CRM tick
+ *   passes a Math.random() score, which previously landed in the deal's stage
+ *   note as a bare `Score: 87` and surfaced on GET /bizorg/v3/deals looking
+ *   like a measurement. When set, the score is labelled at every place it is
+ *   persisted or emitted, matching the `synthetic: true` convention already
+ *   used by growthCaptureLead().
+ */
+function crmQualifyLead(dealId, { score = 75, notes = "", qualified = true, synthetic = false } = {}) {
   const deal = st().getDeal(dealId);
   if (!deal) return { ok: false, error: "Deal not found" };
+  // Rendered wherever the score is written, so a simulated value can never be
+  // mistaken for a computed one.
+  const scoreLabel = synthetic ? `Score: ${score} (simulated — not measured)` : `Score: ${score}`;
   if (!qualified) {
     st().advanceDeal(dealId, { stage: "closed_lost", actor: "bizorg_crm", note: "Failed qualification" });
     _mem("bizorg_crm", "lead_disqualified", `Disqualified: ${deal.company}`, notes, { dealId });
     _emit("bizorg:lead:disqualified", { dealId, company: deal.company, notes });
     return { ok: true, qualified: false };
   }
-  st().advanceDeal(dealId, { stage: "qualified", actor: "bizorg_crm", note: `Score: ${score}. ${notes}` });
+  st().advanceDeal(dealId, { stage: "qualified", actor: "bizorg_crm", note: `${scoreLabel}. ${notes}` });
   _kpiUp("bizorg_crm", { leadsQualified: (st().getKpi("bizorg_crm").leadsQualified || 0) + 1 });
-  _mem("bizorg_crm", "lead_qualified", `Qualified: ${deal.company}`, `Score: ${score}`, { dealId });
-  _emit("bizorg:lead:qualified", { dealId, company: deal.company, score, value: deal.value });
-  return { ok: true, qualified: true, deal };
+  _mem("bizorg_crm", "lead_qualified", `Qualified: ${deal.company}`, scoreLabel, { dealId, synthetic });
+  _emit("bizorg:lead:qualified", { dealId, company: deal.company, score, scoreSynthetic: synthetic, value: deal.value });
+  return { ok: true, qualified: true, deal, scoreSynthetic: synthetic };
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -221,6 +249,22 @@ function salesAdvanceDeal(dealId, { toStage, notes = "" } = {}) {
   return { ok: true, deal: r.deal };
 }
 
+/**
+ * MASTER RECOVERY (2026-08-15, C10-029): closeWon has always been reachable
+ * (above) with a real MRR increment; nothing symmetric existed for a won
+ * customer later churning — no route, no workflow step, no MRR decrement.
+ * Mirrors salesAdvanceDeal's real event/memory/KPI pattern exactly.
+ */
+function salesChurnDeal(dealId, { reason = "" } = {}) {
+  const deal = st().getDeal(dealId);
+  if (!deal) return { ok: false, error: "Deal not found" };
+  const r = st().churnDeal(dealId, { actor: "bizorg_sales", reason });
+  if (!r.ok) return r;
+  _mem("bizorg_sales", "deal_churned", `Deal churned: ${deal.company}`, reason, { dealId });
+  _emit("bizorg:deal:churned", { dealId, company: deal.company, value: deal.value, reason });
+  return { ok: true, deal: r.deal };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // STEP 7 — Billing processes payment
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -229,8 +273,23 @@ function billingProcessPayment(dealId, { plan = "pro", amount } = {}) {
   const deal = st().getDeal(dealId);
   if (!deal) return { ok: false, error: "Deal not found" };
   const paymentAmount = amount || deal.value;
+  // Business Org Financial Integrity Certification: this used to also
+  // increment bizorg_billing's own `mrr` KPI by Math.round(paymentAmount/12)
+  // — the SAME real-world revenue event businessOrgState.cjs's advanceDeal()
+  // already records once, correctly, on the deal's own department KPI when
+  // it transitions to closed_won. getDashboard()'s totalMrr sums `mrr`
+  // across every department's KPI (businessOrgState.cjs:639), so every
+  // closed deal's MRR was counted twice in the reported global figure —
+  // confirmed with a real direct test: a single $12,000 deal added $1,000
+  // to the deal's department AND a separate $1,000 to bizorg_billing,
+  // summing to $2,000 reported instead of the real $1,000. No other code
+  // anywhere reads bizorg_billing.mrr as its own distinct metric (confirmed
+  // via repository search) — it existed only as a duplicate accumulator,
+  // not a genuinely separate billing-department view. Removed; billing's
+  // real, non-duplicative activity (tasksCompleted, the payment-processed
+  // memory record, and the bizorg:payment:processed event other
+  // departments subscribe to) is unchanged.
   _kpiUp("bizorg_billing", {
-    mrr:          (st().getKpi("bizorg_billing").mrr || 0) + Math.round(paymentAmount / 12),
     tasksCompleted: (st().getKpi("bizorg_billing").tasksCompleted || 0) + 1,
   });
   _mem("bizorg_billing", "payment_processed", `Payment: ${deal.company}`, `Amount: $${paymentAmount} | Plan: ${plan}`, { dealId });
@@ -297,9 +356,22 @@ function revenueOpsUpdate() {
   let revData = null;
   try { revData = rev()?.getRevenueDashboard?.(); } catch {}
 
-  const kpis    = st().getAllKpis();
-  const totalMrr = kpis.reduce((s, k) => s + (k.mrr || 0), 0);
-  const totalWon = kpis.reduce((s, k) => s + (k.dealsWon || 0), 0);
+  // Business Org Financial Integrity Certification: this used to compute
+  // its own kpis.reduce((s,k) => s + (k.mrr||0), 0) across every
+  // department's KPI, INCLUDING bizorg_revops's own — then wrote that sum
+  // back into bizorg_revops.mrr. Since this function runs on a real
+  // 240s interval forever, each run's output became part of the next
+  // run's input: a real, confirmed recursive self-accumulation bug
+  // (verified via direct execution: bizorg_revops.mrr grew by a fresh
+  // ~totalMrr-sized delta on every call with zero real business activity
+  // involved). Reusing getDashboard().revenue.mrr instead — the single
+  // source of truth for total MRR, which now correctly excludes
+  // bizorg_revops/bizorg_billing from its own sum (see
+  // businessOrgState.cjs's MRR_REPORTING_DEPTS) — rather than duplicating
+  // (and re-diverging from) that reduce logic here.
+  const dash     = st().getDashboard();
+  const totalMrr = dash.revenue.mrr;
+  const totalWon = dash.leads.won;
 
   _kpiUp("bizorg_revops", { mrr: totalMrr, arr: totalMrr * 12, tasksCompleted: (st().getKpi("bizorg_revops").tasksCompleted || 0) + 1 });
   _mem("bizorg_revops", "revenue_update", `Revenue update: MRR=$${totalMrr}`, `ARR=$${totalMrr * 12} | Deals won: ${totalWon}`, { metrics: { mrr: totalMrr, arr: totalMrr * 12 } });
@@ -443,11 +515,14 @@ function subscribeWorkflowEvents() {
   b.subscribe("bizorg_wf_growth", (evt) => {
     if (evt.type !== "bizorg:campaign:launched") return;
     const { campaignId, title } = evt.payload || {};
-    // Simulate 2-3 leads per campaign launch
+    // Simulate 2-3 leads per campaign launch — synthetic:true makes this
+    // code's own pre-existing "Simulate" intent honest in the persisted
+    // data too, not just the comment (Zero-Trust Competitor Remediation,
+    // Phase 2).
     const companies = ["Acme Corp", "TechStart Inc", "GlobalSMB Ltd"];
     const n = 1 + Math.floor(Math.random() * 2);
     for (const co of companies.slice(0, n)) {
-      growthCaptureLead({ campaignId, company: co, value: 1200 + Math.floor(Math.random() * 2400) });
+      growthCaptureLead({ campaignId, company: co, value: 1200 + Math.floor(Math.random() * 2400), source: "demo_simulation", synthetic: true });
     }
   });
 
@@ -586,6 +661,7 @@ module.exports = {
   growthCaptureLead,
   crmQualifyLead,
   salesAdvanceDeal,
+  salesChurnDeal,
   billingProcessPayment,
   csOnboardCustomer,
   retentionMonitor,

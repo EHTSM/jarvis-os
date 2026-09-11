@@ -1,23 +1,48 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
+import { _fetch } from "../_client";
 import "./RepositoryMapPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Fixed by delegating to the
+// canonical _client.js _fetch, which already throws on !res.ok and preserves
+// the backend's own message + status — so callers can surface the real
+// reason. Do not re-add a local `if (!r.ok)` check here: _fetch() never
+// returns a non-ok response, it throws before returning, so that check would
+// be unreachable dead code, not a real guard.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same defect found and fixed in the
+// sibling component EngineeringMemoryPanel.jsx — this helper called a bare
+// fetch() against `/api${path}` (e.g. /api/repo-viz/stats), but the real
+// backend mounts these routes at /repo-viz/* with NO /api prefix (confirmed:
+// only /api/auth/*, /api/accounts/*, and /api/status are real duplicate-
+// mounted routes across the entire codebase). Live-confirmed: GET
+// /api/repo-viz/stats with real auth -> 404 "Not Found: GET
+// /api/repo-viz/stats"; GET /repo-viz/stats (the real route) -> 200, real
+// data. Every one of this panel's 8 API calls (stats, map build, module
+// graph, dep graph, hotspots, critical paths, AI nav, benchmark, node
+// detail) was equally broken — the entire "Repository" tab (ACP-9 Visual
+// Repository Intelligence) has been completely non-functional. The bare
+// fetch() also omitted credentials:"include", a second compounding defect
+// identical to EngineeringMemoryPanel.jsx's. Replaced with the canonical
+// _fetch (_client.js), preserving this file's existing API(method, path,
+// body) call-site signature and Error{message,status} contract so none of
+// its other call sites needed to change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
+    return _fetch(path, {
         method,
-        headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    return r.json();
 };
 
 function badge(status) {
     const map = {
-        completed: "#10b981", in_progress: "#60a5fa", pending: "#f59e0b",
-        failed: "#ef4444", cancelled: "#6b7280",
+        completed: "var(--success)", in_progress: "#60a5fa", pending: "var(--warning)",
+        failed: "var(--danger)", cancelled: "var(--text-dim)",
     };
-    return { background: `${map[status] || "#6b7280"}20`, borderColor: map[status] || "#6b7280", color: map[status] || "#6b7280" };
+    return { background: `${map[status] || "var(--text-dim)"}20`, borderColor: map[status] || "var(--text-dim)", color: map[status] || "var(--text-dim)" };
 }
 
 function typeIcon(type) {
@@ -92,7 +117,7 @@ function SVGGraph({ nodes, edges, positions, selectedId, highlightIds, onNodeCli
                 if (!s || !t) return null;
                 return (
                     <line key={e.id} x1={s.x} y1={s.y} x2={t.x} y2={t.y}
-                        stroke="#ef4444" strokeWidth={1.2} strokeOpacity={0.7}
+                        stroke="var(--danger)" strokeWidth={1.2} strokeOpacity={0.7}
                         strokeDasharray="3 2"
                     />
                 );
@@ -128,16 +153,16 @@ function SVGGraph({ nodes, edges, positions, selectedId, highlightIds, onNodeCli
                         />
                         {n.inCycle && (
                             <circle cx={p.x} cy={p.y} r={n.size + 3}
-                                fill="none" stroke="#ef4444" strokeWidth={1} strokeDasharray="2 2" />
+                                fill="none" stroke="var(--danger)" strokeWidth={1} strokeDasharray="2 2" />
                         )}
                         {n.isHot && (
                             <circle cx={p.x} cy={p.y} r={n.size + 2}
-                                fill="none" stroke="#f59e0b" strokeWidth={0.8} strokeOpacity={0.6} />
+                                fill="none" stroke="var(--warning)" strokeWidth={0.8} strokeOpacity={0.6} />
                         )}
                         {(isSelected || isHighlit || n.size >= 10) && (
                             <text x={p.x} y={p.y + n.size + 9}
                                 textAnchor="middle" fontSize={8}
-                                fill={isSelected ? "#e5e7eb" : "#6b7280"}
+                                fill={isSelected ? "#e5e7eb" : "var(--text-dim)"}
                                 style={{ pointerEvents: "none", userSelect: "none" }}>
                                 {n.name.length > 18 ? n.name.slice(0, 16) + "…" : n.name}
                             </text>
@@ -319,12 +344,12 @@ function BenchmarkView({ onBack }) {
                 <>
                     <div className="rmp-bench-kpis">
                         {[
-                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
-                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
+                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
+                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
                             { k: "Total Time", v: formatMs(result.totalMs),           c: "#60a5fa" },
                             { k: "Files",      v: result.stats?.totalFiles || 0,      c: "#d1d5db" },
                             { k: "Smells",     v: result.stats?.totalSmells || 0,     c: "#a78bfa" },
-                            { k: "Health",     v: `${result.stats?.healthScore || 0}%`, c: "#10b981" },
+                            { k: "Health",     v: `${result.stats?.healthScore || 0}%`, c: "var(--success)" },
                         ].map(kpi => (
                             <div key={kpi.k} className="rmp-bench-kpi">
                                 <div className="rmp-bench-kpi-val" style={{ color: kpi.c }}>{kpi.v}</div>
@@ -336,7 +361,7 @@ function BenchmarkView({ onBack }) {
                         {(result.scenarios || []).map((s, i) => (
                             <div key={i} className={`rmp-bench-row rmp-bench-row--${s.ok ? "ok" : "fail"}`}>
                                 <span className="rmp-bench-num">{i + 1}.</span>
-                                <span className="rmp-bench-dot" style={{ background: s.ok ? "#10b981" : "#ef4444" }} />
+                                <span className="rmp-bench-dot" style={{ background: s.ok ? "var(--success)" : "var(--danger)" }} />
                                 <span className="rmp-bench-goal">{s.name}</span>
                                 <span className="rmp-bench-val">{s.value}</span>
                                 <span className="rmp-bench-ms">{formatMs(s.elapsedMs)}</span>
@@ -364,12 +389,12 @@ function StatsView({ stats }) {
         { k: "Total Files",     v: stats.totalFiles,       c: "#d1d5db" },
         { k: "Code Files",      v: stats.codeFiles,        c: "#60a5fa" },
         { k: "Import Edges",    v: stats.totalEdges,       c: "#60a5fa" },
-        { k: "Circular Deps",   v: stats.circularDeps,     c: stats.circularDeps > 0 ? "#ef4444" : "#10b981" },
-        { k: "Hotspot Files",   v: stats.hotspots,         c: "#f59e0b" },
+        { k: "Circular Deps",   v: stats.circularDeps,     c: stats.circularDeps > 0 ? "var(--danger)" : "var(--success)" },
+        { k: "Hotspot Files",   v: stats.hotspots,         c: "var(--warning)" },
         { k: "Total Smells",    v: stats.totalSmells,      c: "#a78bfa" },
-        { k: "Decisions",       v: stats.totalDecisions,   c: "#f59e0b" },
-        { k: "Critical Files",  v: stats.criticalPathCount, c: "#ef4444" },
-        { k: "Health Score",    v: `${stats.healthScore || 0}%`, c: "#10b981" },
+        { k: "Decisions",       v: stats.totalDecisions,   c: "var(--warning)" },
+        { k: "Critical Files",  v: stats.criticalPathCount, c: "var(--danger)" },
+        { k: "Health Score",    v: `${stats.healthScore || 0}%`, c: "var(--success)" },
     ];
 
     return (
@@ -426,7 +451,7 @@ function HotspotsView({ data }) {
                     <span className="rmp-hs-rank">{i + 1}</span>
                     <span className="rmp-hs-dot" style={{ background: h.color }} />
                     <span className="rmp-hs-path">{h.path}</span>
-                    <span className="rmp-hs-score" style={{ color: h.hotScore > 50 ? "#ef4444" : "#f59e0b" }}>
+                    <span className="rmp-hs-score" style={{ color: h.hotScore > 50 ? "var(--danger)" : "var(--warning)" }}>
                         {Math.round(h.hotScore)}
                     </span>
                     <span className="rmp-hs-commits">{h.commits}c</span>
@@ -454,7 +479,7 @@ function HotspotsView({ data }) {
                         <div key={i} className="rmp-hs-row">
                             <span className="rmp-hs-rank">{i + 1}</span>
                             <span className="rmp-hs-path">{h.file}</span>
-                            <span className="rmp-hs-commits" style={{ color: "#f59e0b" }}>{h.commits}</span>
+                            <span className="rmp-hs-commits" style={{ color: "var(--warning)" }}>{h.commits}</span>
                         </div>
                     ))}
                 </>
@@ -550,7 +575,8 @@ export default function RepositoryMapPanel() {
             const r = await API("POST", "/repo-viz/ai-nav", { query: aiQuery });
             setAiResult(r);
             if (r.nodes?.length) setHighlightIds(new Set(r.nodes.map(n => n.id)));
-        } catch {}
+        // A.11.2: AI-nav failure was invisible; surface the backend reason.
+        } catch (e) { setAiResult({ error: e?.message || 'AI navigation failed.' }); }
         setAiLoading(false);
     };
 
@@ -641,7 +667,10 @@ export default function RepositoryMapPanel() {
                         <button className="rmp-ai-btn" onClick={runAiNav} disabled={aiLoading || !mapData}>
                             {aiLoading ? "…" : "Navigate"}
                         </button>
-                        {aiResult && (
+                        {aiResult?.error && (
+                            <div className="rmp-err">{aiResult.error}</div>
+                        )}
+                        {aiResult && !aiResult.error && (
                             <span className="rmp-ai-result">
                                 {aiResult.nodes?.length} files · {aiResult.explanation?.slice(0, 60)}
                             </span>
@@ -718,10 +747,10 @@ export default function RepositoryMapPanel() {
                     {mapData && (
                         <div className="rmp-legend">
                             {[
-                                { c: "#60a5fa", l: "Routes" }, { c: "#10b981", l: "Services" },
-                                { c: "#f59e0b", l: "Middleware" }, { c: "#a78bfa", l: "Models" },
-                                { c: "#ec4899", l: "Frontend" }, { c: "#ef4444", l: "Auth" },
-                                { c: "#ef4444", l: "Circular", dashed: true }, { c: "#f59e0b", l: "Hot", ring: true },
+                                { c: "#60a5fa", l: "Routes" }, { c: "var(--success)", l: "Services" },
+                                { c: "var(--warning)", l: "Middleware" }, { c: "#a78bfa", l: "Models" },
+                                { c: "#ec4899", l: "Frontend" }, { c: "var(--danger)", l: "Auth" },
+                                { c: "var(--danger)", l: "Circular", dashed: true }, { c: "var(--warning)", l: "Hot", ring: true },
                             ].map(item => (
                                 <div key={item.l} className="rmp-legend-item">
                                     <svg width={12} height={12}>
@@ -764,7 +793,7 @@ export default function RepositoryMapPanel() {
                                     <span className="rmp-crit-dot" style={{ background: f.color }} />
                                     <span className="rmp-crit-path">{f.path}</span>
                                     <span className="rmp-crit-dep">{f.dependents} dep</span>
-                                    <span className="rmp-crit-risk" style={{ color: f.riskScore > 50 ? "#ef4444" : "#f59e0b" }}>
+                                    <span className="rmp-crit-risk" style={{ color: f.riskScore > 50 ? "var(--danger)" : "var(--warning)" }}>
                                         {f.riskScore}%
                                     </span>
                                     {f.isCritical && <span className="rmp-crit-tag">CRITICAL</span>}

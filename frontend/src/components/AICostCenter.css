@@ -139,7 +139,7 @@
 .acc-opt-saving{font-size:14px;font-weight:800;}
 .acc-opt-effort{font-size:11.5px;font-weight:700;}
 .acc-opt-detail{font-size:13px;color:var(--text-dim);margin:0;line-height:1.55;}
-.acc-opt-btn{align-self:flex-start;padding:5px 16px;background:var(--accent2);color:#000;border:none;border-radius:var(--radius-sm);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;transition:opacity var(--dur-fast) var(--ease-out);}
+.acc-opt-btn{align-self:flex-start;padding:5px 16px;background:var(--accent2);color: var(--on-accent2);border:none;border-radius:var(--radius-sm);font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;transition:opacity var(--dur-fast) var(--ease-out);}
 .acc-opt-btn:hover{opacity:.85;}
 
 @media(max-width:680px){
@@ -153,8 +153,17 @@
 
 /* ── Live active provider indicator ─────────────────── */
 .acc-active-provider { display:flex; align-items:center; gap:6px; padding:6px 12px; background:#52d68a18; border:1px solid #52d68a40; border-radius:8px; }
-.acc-ap-dot          { width:7px; height:7px; border-radius:50%; background:#52d68a; flex-shrink:0; animation:pulse-dot 2s infinite; }
-.acc-ap-label        { font-size:12px; color:#8994b0; }
-.acc-ap-label strong { color:#52d68a; }
+.acc-ap-dot          { width:7px; height:7px; border-radius:50%; background:var(--success); flex-shrink:0; animation:pulse-dot 2s infinite; }
+.acc-ap-label        { font-size:12px; color:var(--text-dim); }
+.acc-ap-label strong { color:var(--success); }
 @keyframes pulse-dot { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ── C.9 honesty fix: real-data empty/example/loading states ─────────── */
+.acc-loading        { padding:24px; text-align:center; color:var(--text-dim); font-size:13.5px; }
+.acc-empty-banner    { padding:14px 16px; background:var(--surface-base); border:1px solid var(--border); border-left:3px solid var(--accent2); border-radius:var(--radius-sm); color:var(--text-dim); font-size:13px; line-height:1.55; margin-bottom:14px; }
+.acc-example-banner  { padding:14px 16px; background:var(--warning-bg, #f5a62318); border:1px solid var(--warning); border-radius:var(--radius-sm); color:var(--text-dim); font-size:13px; line-height:1.55; margin-bottom:14px; }
+.acc-errors-note     { margin-top:12px; font-size:12.5px; color:var(--text-dim); }
+.acc-prov-health      { font-size:12.5px; font-weight:700; }
+.acc-prov-health--ok  { color:var(--success); }
+.acc-prov-health--down{ color:var(--danger, var(--warning)); }
 

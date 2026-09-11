@@ -12,7 +12,7 @@
 
 .ecc-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
 .ecc-tab { padding: 7px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-raised); color: var(--text-dim); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; transition: all var(--dur-std); }
-.ecc-tab.active { background: var(--accent); color: #06080e; border-color: var(--accent); }
+.ecc-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 
 .ecc-connector-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px,1fr)); gap: 12px; }
 .ecc-connector-card { background: var(--surface-base); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; display: flex; flex-direction: column; gap: 10px; }

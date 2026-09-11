@@ -8,7 +8,7 @@ const SCORES = [
   { icon:"🧠", name:"Memory",       score:74, prev:71, color:"var(--accent)", circumference:188.5 },
   { icon:"⚡", name:"Execution",    score:91, prev:88, color:"var(--accent2)", circumference:188.5 },
   { icon:"📚", name:"Learning",     score:67, prev:60, color:"var(--warning)", circumference:188.5 },
-  { icon:"🤝", name:"Coordination", score:78, prev:78, color:"#7c6fff",   circumference:188.5 },
+  { icon:"🤝", name:"Coordination", score:78, prev:78, color:"var(--accent)",   circumference:188.5 },
 ];
 
 const WEEKLY_TREND = [

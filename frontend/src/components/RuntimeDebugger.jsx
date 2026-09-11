@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import './RuntimeDebugger.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function apiFetch(path) {
   return _fetch(path);
@@ -89,7 +90,7 @@ function APIMonitor() {
               <tr
                 key={i}
                 className={`rd-table-row${selected === i ? ' rd-table-row--selected' : ''}`}
-                onClick={() => setSelected(i === selected ? null : i)}
+                {...clickableProps(() => setSelected(i === selected ? null : i))}
               >
                 <td><span className={`rd-method rd-method--${(r.method||'GET').toLowerCase()}`}>{r.method}</span></td>
                 <td className="rd-path">{r.path}</td>
@@ -133,10 +134,8 @@ function WebhookInspector() {
       </div>
       <div className="rd-inspector__list">
         {hooks.map((h, i) => (
-          <div
-            key={i}
-            className={`rd-webhook-row${selected === i ? ' rd-webhook-row--selected' : ''}`}
-            onClick={() => setSelected(i === selected ? null : i)}
+          <div key={i}
+            className={`rd-webhook-row${selected === i ? ' rd-webhook-row--selected' : ''}`} {...clickableProps(() => setSelected(i === selected ? null : i))}
           >
             <span className="rd-webhook-event">{h.event || h.type || '?'}</span>
             <span className="rd-webhook-source">{h.source || h.provider || '—'}</span>
@@ -180,7 +179,7 @@ function RequestTimeline() {
           <div className="rd-timeline-bar-wrap">
             <div
               className="rd-timeline-bar"
-              style={{ width: `${(e.duration / max) * 100}%`, background: e.duration > 500 ? '#ef4444' : e.duration > 200 ? '#f59e0b' : '#10b981' }}
+              style={{ width: `${(e.duration / max) * 100}%`, background: e.duration > 500 ? 'var(--danger)' : e.duration > 200 ? 'var(--warning)' : 'var(--success)' }}
             />
             <span className="rd-timeline-dur">{e.duration}ms</span>
           </div>
@@ -269,10 +268,8 @@ function AgentTimeline() {
         <button className="rd-btn" onClick={refresh}>↻</button>
       </div>
       {agents.map((a, i) => (
-        <div
-          key={i}
-          className={`rd-agent-row${selected === i ? ' rd-agent-row--selected' : ''}`}
-          onClick={() => setSelected(i === selected ? null : i)}
+        <div key={i}
+          className={`rd-agent-row${selected === i ? ' rd-agent-row--selected' : ''}`} {...clickableProps(() => setSelected(i === selected ? null : i))}
         >
           <div className="rd-agent-row__header">
             <span className="rd-agent-id" title={a.id}>{a.id?.slice(0, 12) || '?'}</span>
@@ -331,14 +328,14 @@ function MemoryGraph() {
       <svg className="rd-memory__chart" viewBox={`0 0 ${WIDTH} ${HEIGHT}`} preserveAspectRatio="none">
         <defs>
           <linearGradient id="mem-grad" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#10b981" stopOpacity="0.3" />
-            <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--success)" stopOpacity="0.3" />
+            <stop offset="100%" stopColor="var(--success)" stopOpacity="0" />
           </linearGradient>
         </defs>
         <polyline
           points={pts}
           fill="none"
-          stroke="#10b981"
+          stroke="var(--success)"
           strokeWidth="1.5"
           vectorEffect="non-scaling-stroke"
         />
@@ -372,7 +369,8 @@ function EventReplay() {
         method: 'POST',
         body: JSON.stringify({ eventId: event.id, eventType: event.type, payload: event.payload }),
       });
-    } catch {}
+      // A.11.2: replay failure was invisible. setError() is this file's mechanism.
+    } catch (e) { setError(e?.message || 'Could not replay the event.'); }
     setTimeout(() => setReplaying(null), 2000);
   }, []);
 

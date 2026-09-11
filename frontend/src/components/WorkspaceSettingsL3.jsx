@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { _fetch } from "../_client";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
+import { useConfirm } from "./ConfirmDialog";
 
 // ── Shared panel constants ────────────────────────────────────────
-const HEALTH_COLOR_SH = { ok: "#52d68a", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
+const HEALTH_COLOR_SH = { ok: "var(--success)", degraded: "var(--warning)", error: "var(--error)", unknown: "var(--text-faint)" };
 const DIAG_COLOR_SH   = { info: "var(--accent)", warn: "var(--warning)", error: "var(--error)" };
 
 // ── L3 Extension Runtime Panels ──────────────────────────────────
 const EXT_STATE_COLOR = {
-  active:    "#52d68a",
+  active:    "var(--success)",
   suspended: "var(--warning)",
   error:     "var(--error)",
   loaded:    "var(--accent)",
@@ -15,17 +19,33 @@ const EXT_STATE_COLOR = {
   installed: "var(--text-dim)",
 };
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function L3ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 function ExtRuntimePanel() {
   const [exts,    setExts]    = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [busy,    setBusy]    = useState(null);
   const [detail,  setDetail]  = useState(null);
   const [loadForm, setLoadForm] = useState(false);
   const [loadOpts, setLoadOpts] = useState({ extId: "", hooks: "", subscriptions: "", restartPolicy: "on_crash" });
+  const [confirm, ConfirmUI] = useConfirm();
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setDetail(null));
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/extensions/runtime").then(r => setExts(r.extensions || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/extensions/runtime").then(r => setExts(r.extensions || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
 
@@ -33,6 +53,21 @@ function ExtRuntimePanel() {
     setBusy(extId);
     await _fetch(endpoint, { method: "POST", body: JSON.stringify({ extId }) }).catch(() => {});
     setBusy(null); reload();
+  };
+
+  // Mission 46 P1: Unload removes the extension from the runtime with no
+  // auto-recovery (unlike Suspend/Resume/Restart, all reversible in place)
+  // — same risk class as WorkspaceSettingsL1's plugin Uninstall, which
+  // already gates on useConfirm. This panel had no confirmation at all.
+  const handleUnload = async (extId) => {
+    const ok = await confirm({
+      title: `Unload "${extId}"?`,
+      message: "This removes the extension from the runtime. You can load it again afterward, but it stops running immediately.",
+      danger: true,
+      confirmLabel: "Unload",
+    });
+    if (!ok) return;
+    action("/extensions/unload", extId);
   };
 
   const handleLoad = async () => {
@@ -54,9 +89,11 @@ function ExtRuntimePanel() {
   };
 
   if (loading) return <div className="k2-loading">Loading extension runtime…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l3-panel">
+      {ConfirmUI}
       <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
         <button className="k2-form-btn" onClick={() => setLoadForm(f => !f)}>{loadForm ? "Cancel" : "+ Load Extension"}</button>
         <button className="k2-form-btn" style={{ background: "none", color: "var(--text-dim)" }} onClick={reload}>↺ Refresh</button>
@@ -94,7 +131,7 @@ function ExtRuntimePanel() {
       ) : (
         <div className="l3-ext-list">
           {exts.map(ext => (
-            <div key={ext.id} className="l3-ext-row" onClick={() => openDetail(ext)} style={{ cursor: "pointer" }}>
+            <div key={ext.id} className="l3-ext-row" {...clickableProps(() => openDetail(ext))} style={{ cursor: "pointer" }}>
               <span className="l3-ext-dot" style={{ background: EXT_STATE_COLOR[ext.state] || "var(--text-faint)" }} />
               <div className="l3-ext-meta">
                 <span className="l3-ext-name">{ext.id}</span>
@@ -108,7 +145,7 @@ function ExtRuntimePanel() {
                 {ext.state === "active"    && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/suspend", ext.id)}>Suspend</button>}
                 {ext.state === "suspended" && <button className="k5-toggle-btn k5-toggle-btn--on" disabled={busy === ext.id} onClick={() => action("/extensions/resume", ext.id)}>Resume</button>}
                 {(ext.state === "error" || ext.state === "suspended") && <button className="k5-toggle-btn" disabled={busy === ext.id} onClick={() => action("/extensions/restart", ext.id)}>Restart</button>}
-                {ext.state !== "unloaded" && <button className="k2-revoke-btn" disabled={busy === ext.id} onClick={() => action("/extensions/unload", ext.id)}>Unload</button>}
+                {ext.state !== "unloaded" && <button className="k2-revoke-btn" disabled={busy === ext.id} onClick={() => handleUnload(ext.id)}>Unload</button>}
               </div>
             </div>
           ))}
@@ -116,7 +153,7 @@ function ExtRuntimePanel() {
       )}
 
       {detail && (
-        <div className="ws-modal-overlay" onClick={() => setDetail(null)}>
+        <div className="ws-modal-overlay" {...overlayProps(() => setDetail(null))}>
           <div className="ws-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 540, maxHeight: "80vh", overflowY: "auto" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
               <strong style={{ fontSize: 15 }}>{detail.id}</strong>
@@ -152,10 +189,14 @@ function ExtRuntimePanel() {
 function ExtMetricsPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   useEffect(() => {
-    _fetch("/extensions/metrics").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/extensions/metrics").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
   if (loading) return <div className="k2-loading">Loading metrics…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No metrics available.</div>;
   const { extensions, hooks, subs, crashes, restarts, eventBus } = data;
   return (
@@ -204,10 +245,14 @@ function ExtMetricsPanel() {
 function ExtHooksPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   useEffect(() => {
-    _fetch("/extensions/hooks").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/extensions/hooks").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
   if (loading) return <div className="k2-loading">Loading hooks…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No hooks registered.</div>;
   return (
     <div className="l3-panel">
@@ -234,10 +279,14 @@ function ExtHooksPanel() {
 function ExtQuotasPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   useEffect(() => {
-    _fetch("/extensions/quotas").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/extensions/quotas").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
   if (loading) return <div className="k2-loading">Loading quotas…</div>;
+  if (error) return <L3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No quota data.</div>;
   const quotas = data.quotas || [];
   return (

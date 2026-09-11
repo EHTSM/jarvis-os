@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import "./ConfirmDialog.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 /**
  * In-app confirm dialog — replaces all window.confirm() calls.

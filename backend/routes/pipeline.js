@@ -20,12 +20,14 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
+const { assertOwnable } = require("../services/resourceOwnership.cjs");
 
 function _pc() { return require("../services/engineeringPipelineCoordinator.cjs"); }
 function _ok(res, data)     { res.json({ ok: true, ...data }); }
 function _err(res, e, code) { res.status(code || 500).json({ ok: false, error: e?.message || String(e) }); }
 
-router.use("/pipeline", requireAuth);
+router.use("/pipeline", requireAuth, attachOrg);
 
 // Must register specific routes BEFORE /:id
 
@@ -68,7 +70,7 @@ router.post("/pipeline/run", async (req, res) => {
         const { goal, patchSpec, requireApproval, priority } = req.body || {};
         if (!goal?.trim()) return _err(res, new Error("goal is required"), 400);
         // Run async — return pipeline ID immediately, client polls /pipeline/:id
-        const pipelinePromise = _pc().runPipeline(goal, { patchSpec, requireApproval, priority });
+        const pipelinePromise = _pc().runPipeline(goal, { patchSpec, requireApproval, priority, orgId: req.org?.id });
         // Return the pipeline immediately as it starts
         pipelinePromise.catch(err => require("../utils/logger").warn(`[PipelineRoute] pipeline error: ${err.message}`));
         // Give the pipeline 50ms to initialise before we return
@@ -89,17 +91,25 @@ router.post("/pipeline/validate", async (req, res) => {
 });
 
 // GET /pipeline/:id
+// Mission 51 (2026-08-26): cross-tenant IDOR — caller-supplied pipeline ID,
+// no ownership check. assertOwnable() allows orgId-less pipelines (the
+// existing default for every pipeline run with no resolved org) unchanged;
+// denies only when the pipeline has a real orgId the caller doesn't belong
+// to. Thrown message matches this route's own existing "not found" 404
+// convention.
 router.get("/pipeline/:id", (req, res) => {
     try {
         const p = _pc().getPipeline(req.params.id);
         if (!p) return res.status(404).json({ ok: false, error: "Pipeline not found" });
+        assertOwnable(req, p, "Pipeline not found");
         _ok(res, { pipeline: p });
-    } catch (e) { _err(res, e); }
+    } catch (e) { _err(res, e, e.message?.includes("not found") ? 404 : 500); }
 });
 
 // POST /pipeline/:id/approve
 router.post("/pipeline/:id/approve", (req, res) => {
     try {
+        assertOwnable(req, _pc().getPipeline(req.params.id), "Pipeline not found");
         const p = _pc().approvePipeline(req.params.id);
         _ok(res, { pipeline: p });
     } catch (e) { _err(res, e, e.message?.includes("not found") ? 404 : 400); }
@@ -108,6 +118,7 @@ router.post("/pipeline/:id/approve", (req, res) => {
 // POST /pipeline/:id/cancel
 router.post("/pipeline/:id/cancel", (req, res) => {
     try {
+        assertOwnable(req, _pc().getPipeline(req.params.id), "Pipeline not found");
         const p = _pc().cancelPipeline(req.params.id);
         _ok(res, { pipeline: p });
     } catch (e) { _err(res, e, e.message?.includes("not found") ? 404 : 400); }

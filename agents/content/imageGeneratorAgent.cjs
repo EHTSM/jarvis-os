@@ -121,7 +121,16 @@ async function generate({ topic, style = "photorealistic", mood = "", size = "10
             result.generated = true;
             result.via       = "dall-e-3";
         } catch (err) {
-            result.generationError = err.message;
+            // Client Error Sanitization Deep Sweep (2026-08-21): err.message
+            // here is the raw axios/OpenAI failure text — live-reproduced
+            // via POST /creative/image/generate, an authenticated customer
+            // received "generationError":"Request failed with status code
+            // 401" in the response body, confirming a real provider-call
+            // attempt and its auth outcome to the customer. Full detail
+            // logged server-side; the field is preserved (some callers key
+            // off its presence) but its value is now a fixed safe string.
+            try { require("../../backend/utils/logger").warn(`[ImageGen] DALL-E 3 call failed: ${err.message}`); } catch { /* non-fatal */ }
+            result.generationError = "Image generation failed";
         }
     }
 

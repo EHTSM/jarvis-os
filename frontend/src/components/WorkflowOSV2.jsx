@@ -1,11 +1,15 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { sendMessage } from "../api";
 import { getRuntimeHistory, dispatchTask, emergencyStop } from "../runtimeApi";
 import { getOpsData, getHealStatus } from "../telemetryApi";
-import { startCycle, listCycles, cycleStats } from "../phase18Api";
+import { startCycle, listCycles, cycleStats, listAgents, getAgentHistory } from "../phase18Api";
 import EmptyState from "./EmptyState";
 import "./WorkflowOSV2.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -40,26 +44,30 @@ const ROUTING_RULES = [
 ];
 
 const ROUTER_AGENTS = [
-  { id: "ag_seo",       name: "SEO Agent",       icon: "⌕", color: "#4ecdc4" },
-  { id: "ag_marketing", name: "Marketing",        icon: "◉", color: "#f0b429" },
-  { id: "ag_content",   name: "Content Agent",    icon: "◈", color: "#7c6fff" },
-  { id: "ag_support",   name: "Support Agent",    icon: "◎", color: "#52d68a" },
+  { id: "ag_seo",       name: "SEO Agent",       icon: "⌕", color: "var(--accent2)" },
+  { id: "ag_marketing", name: "Marketing",        icon: "◉", color: "var(--warning)" },
+  { id: "ag_content",   name: "Content Agent",    icon: "◈", color: "var(--accent)" },
+  { id: "ag_support",   name: "Support Agent",    icon: "◎", color: "var(--success)" },
   { id: "ag_sales",     name: "Sales Agent",      icon: "◇", color: "#da552f" },
-  { id: "ag_dev",       name: "Dev Agent",        icon: "⬡", color: "#dde2ec" },
+  { id: "ag_dev",       name: "Dev Agent",        icon: "⬡", color: "var(--text)" },
   { id: "ag_devops",    name: "DevOps Agent",     icon: "⬟", color: "#fc6d26" },
   { id: "ag_analytics", name: "Analytics Agent",  icon: "▣", color: "#38bdf8" },
 ];
 
-const SEED_TASKS = [
-  { id: "rt1", title: "Generate meta descriptions for Phase 10 blog post",   priority: "high",     status: "completed",  agentId: "ag_seo",       category: "seo",        createdAt: "10:02", duration: "720ms" },
-  { id: "rt2", title: "Triage 3 inbound support tickets",                    priority: "critical", status: "completed",  agentId: "ag_support",   category: "support",    createdAt: "10:08", duration: "180ms" },
-  { id: "rt3", title: "Draft LinkedIn post about Phase 9 AI OS release",     priority: "medium",   status: "in_progress",agentId: "ag_marketing", category: "marketing",  createdAt: "10:15", duration: null   },
-  { id: "rt4", title: "Analyse keyword gap vs competitors",                  priority: "medium",   status: "queued",     agentId: "ag_seo",       category: "seo",        createdAt: "10:18", duration: null   },
-  { id: "rt5", title: "Write blog: WhatsApp Automation for Agencies",        priority: "high",     status: "queued",     agentId: "ag_content",   category: "content",    createdAt: "10:20", duration: null   },
-  { id: "rt6", title: "Check deploy health after v9.4.0 push",              priority: "critical", status: "completed",  agentId: "ag_devops",    category: "devops",     createdAt: "09:58", duration: "92ms" },
-  { id: "rt7", title: "Qualify 5 new leads from yesterday sign-ups",        priority: "high",     status: "in_progress",agentId: "ag_sales",     category: "sales",      createdAt: "10:10", duration: null   },
-  { id: "rt8", title: "Weekly analytics summary report",                    priority: "medium",   status: "completed",  agentId: "ag_analytics", category: "analytics",  createdAt: "09:00", duration: "310ms" },
-];
+// Maps real agent execution history (same source TaskRouterCenter.jsx uses:
+// listAgents + getAgentHistory from phase18Api) into this tab's task-row shape.
+function historyToRouterTask(agentId, r, i) {
+  return {
+    id: `live_${agentId}_${i}`,
+    title: r.input?.slice(0, 80) || "Agent task",
+    priority: "medium",
+    status: r.status === "completed" ? "completed" : r.status === "running" ? "in_progress" : "queued",
+    agentId,
+    category: "runtime",
+    createdAt: r.startedAt ? new Date(r.startedAt).toLocaleTimeString() : "—",
+    duration: r.durationMs != null ? `${r.durationMs}ms` : null,
+  };
+}
 
 const DEPARTMENTS = [
   {
@@ -70,28 +78,28 @@ const DEPARTMENTS = [
     outcomes: ["3 leads qualified as hot this week", "₹7,497 pipeline added", "1 deal closed at ₹2,499/mo"],
   },
   {
-    id: "marketing", name: "Marketing", icon: "◉", color: "#f0b429",
+    id: "marketing", name: "Marketing", icon: "◉", color: "var(--warning)",
     mission: "Run campaigns, manage content distribution, track channel performance.",
     activeWork: ["LinkedIn post: Phase 9 AI OS release", "Keyword gap analysis vs competitors", "Email subject line review — CTR drop -12%"],
     metrics: { throughput: 22, rate: "99%", open: 5, closed: 18 },
     outcomes: ["12 keywords tracked, 3 moved to page 1", "Email: 24.1% open rate", "LinkedIn: 840 impressions, 42 clicks"],
   },
   {
-    id: "support", name: "Support", icon: "◎", color: "#52d68a",
+    id: "support", name: "Support", icon: "◎", color: "var(--success)",
     mission: "Triage tickets, draft responses from knowledge base, escalate critical issues.",
     activeWork: ["Ticket #1024: WhatsApp QR not scanning", "Ticket #1025: Payment confirmation missing", "FAQ update: 4 new entries"],
     metrics: { throughput: 31, rate: "98.8%", open: 2, closed: 28 },
     outcomes: ["28 tickets resolved (avg 8 min TTR)", "2 bugs escalated to Dev Agent", "1 upsell routed to Sales"],
   },
   {
-    id: "operations", name: "Operations", icon: "⬟", color: "#7c6fff",
+    id: "operations", name: "Operations", icon: "⬟", color: "var(--accent)",
     mission: "System health, deploy pipelines, infrastructure monitoring, incident response.",
     activeWork: ["Monitor v9.4.0 deploy health", "DB query optimisation pass", "Scale review: API rate limits"],
     metrics: { throughput: 12, rate: "100%", open: 1, closed: 9 },
     outcomes: ["Zero incidents this week", "Deploy automation: 4 pushes shipped", "API uptime: 99.97%"],
   },
   {
-    id: "engineering", name: "Engineering", icon: "⬡", color: "#dde2ec",
+    id: "engineering", name: "Engineering", icon: "⬡", color: "var(--text)",
     mission: "Code review, PR management, architecture decisions, dev tooling.",
     activeWork: ["Review PR #48: DevOps monitoring improvements", "Research: AI model cost benchmarks", "Phase 44 Memory OS implementation"],
     metrics: { throughput: 7, rate: "92%", open: 4, closed: 6 },
@@ -204,7 +212,7 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
     try {
       const r = await sendMessage(`run ${wf.name}`, "exec");
       addToast(`✓ "${wf.label}" dispatched`, "success");
-      track("wf_library_run", { name: wf.name });
+      track.event("wf_library_run", { name: wf.name });
     } catch (e) {
       addToast(`Failed to dispatch: ${e.message}`, "error");
     } finally {
@@ -219,7 +227,7 @@ function TabLibrary({ addToast, runningId, setRunningId }) {
       const r = await startCycle(triggerInput.trim(), "general", "ui");
       addToast(`✓ Cycle started: ${r?.cycleId || "dispatched"}`, "success");
       setTriggerInput("");
-      track("wf_quick_trigger");
+      track.event("wf_quick_trigger");
     } catch (e) {
       addToast(`Could not dispatch — ${e.message}`, "error");
     } finally {
@@ -363,7 +371,7 @@ function TabDesigner({ addToast, onViewLibrary }) {
     try {
       await startCycle(`design:${wfName}`, "workflow", "designer");
       setStep(3);
-      track("wf_designer_saved", { name: wfName });
+      track.event("wf_designer_saved", { name: wfName });
     } catch {
       addToast("Could not save workflow draft", "error");
     } finally {
@@ -488,6 +496,8 @@ function TabRunning({ addToast }) {
   const [stopping, setStopping] = useState(false);
   const [elapsed,  setElapsed]  = useState({});
   const [logItem,  setLogItem]  = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setLogItem(null));
   const timerRef = useRef(null);
 
   useEffect(() => {
@@ -523,7 +533,7 @@ function TabRunning({ addToast }) {
     try {
       await emergencyStop("operator_stop_running");
       addToast("Emergency stop dispatched — all workflows halting", "info");
-      track("wf_emergency_stop");
+      track.event("wf_emergency_stop");
       setTimeout(loadHistory, 2000);
     } catch (e) {
       addToast(`Stop failed: ${e.message}`, "error");
@@ -540,7 +550,7 @@ function TabRunning({ addToast }) {
 
   if (running.length === 0) return (
     <div className="wov2-empty" style={{ flex: 1 }}>
-      <span className="wov2-empty-icon" style={{ color: "#52d68a" }}>✓</span>
+      <span className="wov2-empty-icon" style={{ color: "var(--success)" }}>✓</span>
       <p className="wov2-empty-title">No workflows currently running</p>
       <p className="wov2-empty-sub">All workflows are idle. Trigger one from the Library tab.</p>
     </div>
@@ -589,7 +599,7 @@ function TabRunning({ addToast }) {
       })}
 
       {logItem && (
-        <div className="wov2-log-overlay" onClick={() => setLogItem(null)}>
+        <div className="wov2-log-overlay" {...overlayProps(() => setLogItem(null))}>
           <div className="wov2-log-modal" onClick={e => e.stopPropagation()}>
             <div className="wov2-log-modal-header">
               <span className="wov2-log-modal-title">Log — {logItem.input || logItem.goal || logItem.id}</span>
@@ -714,10 +724,8 @@ function TabHistory() {
       </div>
       <div className="wov2-history-list">
         {shown.map((item, i) => (
-          <div
-            key={item.id || i}
-            className={`wov2-history-row${expanded === (item.id || i) ? " wov2-history-row--open" : ""}`}
-            onClick={() => setExpanded(v => v === (item.id || i) ? null : (item.id || i))}
+          <div key={item.id || i}
+            className={`wov2-history-row${expanded === (item.id || i) ? " wov2-history-row--open" : ""}`} {...clickableProps(() => setExpanded(v => v === (item.id || i) ? null : (item.id || i)))}
           >
             <span className={`wov2-hist-status wov2-hist-status--${item.status === "completed" || item.status === "success" ? "ok" : "error"}`}>
               {item.status === "completed" || item.status === "success" ? "✓" : "✗"}
@@ -748,17 +756,46 @@ function TabHistory() {
 // ── Tab: Task Router ──────────────────────────────────────────────────
 
 function TabRouter({ addToast }) {
+  const { user } = useAuth();
   const [opsData,    setOpsData]    = useState(null);
-  const [tasks,      setTasks]      = useState(SEED_TASKS);
+  const [tasks,      setTasks]      = useState([]);
+  const [tasksLoading, setTasksLoading] = useState(true);
   const [statusF,    setStatusF]    = useState("all");
   const [newTask,    setNewTask]    = useState("");
   const [dispatching,setDispatching]= useState(false);
 
+  // Workflow Coverage Completion finding: /ops is operatorOnly
+  // server-side; any non-operator founder on the Router tab fired a 403
+  // on this poll every 10s.
   useEffect(() => {
+    if (user?.role !== "operator") return;
     const load = () => { if (!document.hidden) getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {}); };
     load();
     const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
     return () => clearInterval(t);
+  }, [user]);
+
+  // Same real source TaskRouterCenter.jsx uses: live agent execution history.
+  useEffect(() => {
+    let cancelled = false;
+    listAgents()
+      .then(async res => {
+        if (cancelled) return;
+        const agents = res?.agents;
+        if (!Array.isArray(agents) || !agents.length) return;
+        const histories = await Promise.all(
+          agents.slice(0, 5).map(a => getAgentHistory(a.id, { limit: 5 }).catch(() => null))
+        );
+        if (cancelled) return;
+        const liveTasks = histories.flatMap((h, i) => {
+          const runs = h?.history || h?.runs || [];
+          return runs.map((r, j) => historyToRouterTask(agents[i]?.id || "unknown", r, j));
+        });
+        setTasks(liveTasks);
+      })
+      .catch(() => {})
+      .finally(() => { if (!cancelled) setTasksLoading(false); });
+    return () => { cancelled = true; };
   }, []);
 
   const queue = opsData?.queue || {};
@@ -786,7 +823,7 @@ function TabRouter({ addToast }) {
         duration: null,
       }, ...prev]);
       setNewTask("");
-      track("wf_router_dispatch");
+      track.event("wf_router_dispatch");
     } catch (e) {
       addToast(`Dispatch failed: ${e.message}`, "error");
     } finally {
@@ -801,17 +838,17 @@ function TabRouter({ addToast }) {
     <div className="wov2-router-root">
       <div className="wov2-queue-strip">
         <div className="wov2-qs-cell">
-          <span className="wov2-qs-val" style={{ color: "#7c6fff" }}>{running}</span>
+          <span className="wov2-qs-val" style={{ color: "var(--accent)" }}>{running}</span>
           <span className="wov2-qs-label">Running</span>
         </div>
         <div className="wov2-qs-sep" />
         <div className="wov2-qs-cell">
-          <span className="wov2-qs-val" style={{ color: "#f0b429" }}>{queued}</span>
+          <span className="wov2-qs-val" style={{ color: "var(--warning)" }}>{queued}</span>
           <span className="wov2-qs-label">Queued</span>
         </div>
         <div className="wov2-qs-sep" />
         <div className="wov2-qs-cell">
-          <span className="wov2-qs-val" style={{ color: "#f55b5b" }}>{failed}</span>
+          <span className="wov2-qs-val" style={{ color: "var(--danger)" }}>{failed}</span>
           <span className="wov2-qs-label">Failed</span>
         </div>
         <div className="wov2-qs-sep" />
@@ -865,11 +902,15 @@ function TabRouter({ addToast }) {
       </div>
 
       <div className="wov2-task-list">
-        {filtered.length === 0 ? (
+        {tasksLoading ? (
           <div className="wov2-empty" style={{ padding: "24px" }}>
-            <span className="wov2-empty-icon" style={{ color: "#52d68a", fontSize: 22 }}>✓</span>
+            <p className="wov2-empty-title">Loading tasks…</p>
+          </div>
+        ) : filtered.length === 0 ? (
+          <div className="wov2-empty" style={{ padding: "24px" }}>
+            <span className="wov2-empty-icon" style={{ color: "var(--success)", fontSize: 22 }}>✓</span>
             <p className="wov2-empty-title">Queue is clear</p>
-            <p className="wov2-empty-sub">All tasks completed. No items pending.</p>
+            <p className="wov2-empty-sub">No agent task history yet. Dispatch a task above to get started.</p>
           </div>
         ) : (
           filtered.map(task => {
@@ -903,14 +944,20 @@ function TabRouter({ addToast }) {
 // ── Tab: Autonomous Company ───────────────────────────────────────────
 
 function TabAutonomous({ addToast }) {
+  const { user } = useAuth();
   const [selected, setSelected] = useState(null);
   const [opsData,  setOpsData]  = useState(null);
   const [healStatus, setHealStatus] = useState(null);
 
+  // Workflow Coverage Completion finding: /ops is operatorOnly
+  // server-side; any non-operator founder on the Autonomous Company tab
+  // fired a 403 fetching it.
   useEffect(() => {
-    getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {});
+    if (user?.role === "operator") {
+      getOpsData().then(r => { if (r && !r.error) setOpsData(r); }).catch(() => {});
+    }
     getHealStatus().then(r => { if (r) setHealStatus(r); }).catch(() => {});
-  }, []);
+  }, [user]);
 
   const WK_STATUS = { in_progress: "⟳", queued: "○", done: "✓" };
   const WK_COLORS = { in_progress: "#7c6fff", queued: "#4a5470", done: "#52d68a" };
@@ -921,9 +968,9 @@ function TabAutonomous({ addToast }) {
         <p className="wov2-lt-title">Live Today</p>
         <div className="wov2-live-cards">
           {[
-            { icon: "●", title: "Self-healing agent monitor", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "#52d68a" : "#4a5470", detail: "Restarts crashed agents automatically", stat: healStatus ? `${healStatus.healedTotal ?? 0} healed total` : "—" },
-            { icon: "●", title: "Retry logic with exponential backoff", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "#52d68a" : "#4a5470", detail: "Failed tasks retried up to 3× before dead-letter queue", stat: healStatus ? `${healStatus.failedTotal ?? 0} unrecovered` : "—" },
-            { icon: "○", title: "Evolution scoring engine", status: "MONITORING", color: "#f0b429", detail: "Scoring system improvement opportunities", stat: `Score: ${opsData?.evolution?.score ?? 72}/100` },
+            { icon: "●", title: "Self-healing agent monitor", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "var(--success)" : "#4a5470", detail: "Restarts crashed agents automatically", stat: healStatus ? `${healStatus.healedTotal ?? 0} healed total` : "—" },
+            { icon: "●", title: "Retry logic with exponential backoff", status: healStatus?.active ? "ACTIVE" : "IDLE", color: healStatus?.active ? "var(--success)" : "#4a5470", detail: "Failed tasks retried up to 3× before dead-letter queue", stat: healStatus ? `${healStatus.failedTotal ?? 0} unrecovered` : "—" },
+            { icon: "○", title: "Evolution scoring engine", status: "MONITORING", color: "var(--warning)", detail: "Scoring system improvement opportunities", stat: `Score: ${opsData?.evolution?.score ?? 72}/100` },
           ].map(item => (
             <div key={item.title} className="wov2-live-card">
               <div className="wov2-lc-top">
@@ -946,7 +993,7 @@ function TabAutonomous({ addToast }) {
               key={dept.id}
               className={`wov2-dept-card${selected === dept.id ? " wov2-dept-card--selected" : ""}`}
               style={{ borderColor: selected === dept.id ? dept.color + "40" : undefined }}
-              onClick={() => setSelected(v => v === dept.id ? null : dept.id)}
+              {...clickableProps(() => setSelected(v => v === dept.id ? null : dept.id))}
             >
               <div className="wov2-dept-header">
                 <span className="wov2-dept-icon" style={{ color: dept.color }}>{dept.icon}</span>
@@ -965,7 +1012,7 @@ function TabAutonomous({ addToast }) {
                     <p className="wov2-dept-work-title">Active Work</p>
                     {dept.activeWork.map((w, i) => (
                       <div key={i} className="wov2-dept-work-row">
-                        <span style={{ color: "#7c6fff", fontSize: 11 }}>⟳</span>
+                        <span style={{ color: "var(--accent)", fontSize: 11 }}>⟳</span>
                         <span className="wov2-dept-work-text">{w}</span>
                       </div>
                     ))}
@@ -974,7 +1021,7 @@ function TabAutonomous({ addToast }) {
                     <p className="wov2-dept-work-title">Outcomes This Week</p>
                     {dept.outcomes.map((o, i) => (
                       <div key={i} className="wov2-dept-work-row">
-                        <span style={{ color: "#52d68a", fontSize: 11 }}>✓</span>
+                        <span style={{ color: "var(--success)", fontSize: 11 }}>✓</span>
                         <span className="wov2-dept-work-text">{o}</span>
                       </div>
                     ))}
@@ -1048,7 +1095,7 @@ export default function WorkflowOSV2({ onNavigate }) {
             </div>
             <div className="wov2-hstat-sep" />
             <div className="wov2-hstat">
-              <span className="wov2-hstat-val" style={{ color: "#52d68a" }}>{successRate}%</span>
+              <span className="wov2-hstat-val" style={{ color: "var(--success)" }}>{successRate}%</span>
               <span className="wov2-hstat-label">Success</span>
             </div>
           </div>

@@ -166,7 +166,7 @@
   background: var(--accent, #7c6fff);
   border: none;
   border-radius: var(--radius-pill, 999px);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 12px;
   font-weight: 800;
   font-family: inherit;

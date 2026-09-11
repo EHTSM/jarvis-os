@@ -207,8 +207,42 @@ function checkSecurityHeaders() {
     return { category: "security_headers", score: _score(checks), checks };
 }
 
+// V6 Phase 6 (Category E: Security OS) — real dependency-vulnerability
+// awareness. This file's other 6 checks all inspect real runtime config
+// (JWT/cookies/CSP/rate-limiting/auth/headers) but had no visibility into
+// real known-CVE vulnerabilities in the dependency tree — a genuine,
+// precise gap directly connecting to dependencyAuditEngine.cjs (V6 Phase
+// 5's real `npm audit` execution, live-verified this same session to have
+// found 22 real vulnerabilities in this repo, 3 critical). Reuses that
+// engine's last scan (or triggers a fresh one if none has run yet) rather
+// than re-implementing audit parsing here.
+function checkDependencies() {
+    const checks = [];
+    let scan = null;
+    try {
+        const eng = require("./dependencyAuditEngine.cjs");
+        scan = eng.getLastScan() || eng.scanVulnerabilities();
+    } catch (e) {
+        checks.push(_warn("dependency_scan", `dependencyAuditEngine unavailable: ${e.message}`));
+        return { category: "dependencies", score: _score(checks), checks };
+    }
+
+    if (!scan || scan.ok === false) {
+        checks.push(_warn("dependency_scan", "npm audit could not be run"));
+        return { category: "dependencies", score: _score(checks), checks };
+    }
+
+    const sev = scan.bySeverity || {};
+    checks.push(sev.critical > 0 ? _fail("critical_vulnerabilities", `${sev.critical} critical vulnerability(ies) — run POST /devops/dependencies/update`) : _pass("critical_vulnerabilities", "No critical vulnerabilities"));
+    checks.push(sev.high > 0     ? _warn("high_vulnerabilities", `${sev.high} high-severity vulnerability(ies)`) : _pass("high_vulnerabilities", "No high-severity vulnerabilities"));
+    checks.push(sev.moderate > 0 ? _warn("moderate_vulnerabilities", `${sev.moderate} moderate-severity vulnerability(ies)`) : _pass("moderate_vulnerabilities", "No moderate-severity vulnerabilities"));
+    checks.push(_pass("scan_freshness", `Last scanned: ${scan.ts}`));
+
+    return { category: "dependencies", score: _score(checks), checks, rawScan: { totalVulnerabilities: scan.totalVulnerabilities, bySeverity: sev } };
+}
+
 // ── Score aggregation ─────────────────────────────────────────────────────
-const WEIGHTS = { jwt: 0.20, cookies: 0.15, csp: 0.15, rate_limiting: 0.15, auth_protection: 0.20, security_headers: 0.15 };
+const WEIGHTS = { jwt: 0.17, cookies: 0.13, csp: 0.13, rate_limiting: 0.13, auth_protection: 0.17, security_headers: 0.12, dependencies: 0.15 };
 
 function _grade(score) {
     if (score >= 90) return "A";
@@ -225,15 +259,17 @@ function runCheck() {
     const rl      = checkRateLimiting();
     const auth    = checkAuthProtection();
     const headers = checkSecurityHeaders();
+    const deps    = checkDependencies();
 
-    const cats  = { jwt, cookies, csp, rate_limiting: rl, auth_protection: auth, security_headers: headers };
+    const cats  = { jwt, cookies, csp, rate_limiting: rl, auth_protection: auth, security_headers: headers, dependencies: deps };
     const score = Math.round(
         jwt.score     * WEIGHTS.jwt +
         cookies.score * WEIGHTS.cookies +
         csp.score     * WEIGHTS.csp +
         rl.score      * WEIGHTS.rate_limiting +
         auth.score    * WEIGHTS.auth_protection +
-        headers.score * WEIGHTS.security_headers
+        headers.score * WEIGHTS.security_headers +
+        deps.score    * WEIGHTS.dependencies
     );
     const grade = _grade(score);
 
@@ -277,4 +313,4 @@ function applySecurityHeaders(app) {
 function getLastReport()              { return _rj(REPORT_FILE, null); }
 function getCheckHistory({ limit=50 }={ }) { return { history: [..._history].reverse().slice(0, limit) }; }
 
-module.exports = { runCheck, getLastReport, getCheckHistory, checkJWT, checkCookies, checkCSP, checkRateLimiting, checkAuthProtection, checkSecurityHeaders, applySecurityHeaders };
+module.exports = { runCheck, getLastReport, getCheckHistory, checkJWT, checkCookies, checkCSP, checkRateLimiting, checkAuthProtection, checkSecurityHeaders, checkDependencies, applySecurityHeaders };

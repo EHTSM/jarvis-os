@@ -15,6 +15,28 @@ export function AuthProvider({ children }) {
   const expiryWarnRef  = useRef(null);
 
   const _setUserAndBroadcast = useCallback((u, event = "state") => {
+    // C.7 (C7-01): logout() never cleared localStorage, so tenant-specific data
+    // written during onboarding (jarvis_biz_profile — business type, team size,
+    // goals, product) survived indefinitely across logout. A second account
+    // logging into the same browser afterward would have PaymentPanel.jsx and
+    // Chat.jsx silently read and use the PREVIOUS tenant's business profile —
+    // a real cross-tenant data leak, confirmed live: logout returned 200 while
+    // jarvis_biz_profile remained fully intact in localStorage.
+    //
+    // Cleared on every transition to logged-out (explicit logout, silent
+    // session-expiry, and the global 401 handler all funnel through this one
+    // function), not just the explicit logout() path, so no route out of an
+    // authenticated session leaves the data behind. UI/device preferences
+    // (theme, pinned tabs, sidebar width, telemetry opt-out) are NOT tenant
+    // data and are deliberately left alone — only account-onboarding and
+    // operator-session state that following components read back are cleared.
+    if (!u) {
+      try {
+        localStorage.removeItem("jarvis_biz_profile");
+        localStorage.removeItem("jarvis_has_leads");
+        localStorage.removeItem("operatorSession");
+      } catch { /* localStorage unavailable — nothing to clean up */ }
+    }
     setUser(u);
     _bc?.postMessage({ event, user: u });
   }, []);
@@ -84,9 +106,10 @@ export function AuthProvider({ children }) {
 
   // login(password) — legacy operator login
   // login(password, email) — per-user email+password login (P10)
-  const login = useCallback(async (password, email) => {
+  // login(password, email, mfaToken) — retry after an mfa_code_required response
+  const login = useCallback(async (password, email, mfaToken) => {
     const result = email
-      ? await loginWithEmail(email, password)
+      ? await loginWithEmail(email, password, mfaToken)
       : await loginOperator(password);
     if (result.success) {
       const u = { role: result.role || "user", email: result.email || null };

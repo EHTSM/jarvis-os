@@ -8,13 +8,35 @@ const MAX_OUTPUT_BYTES    = 1024 * 1024; // 1 MB
 const MAX_POLICIES        = 200;
 
 // Built-in base allowlists by adapter type
+//
+// Agent Runtime Execution-Boundary Security & Reliability Triage
+// (2026-08-20): "node", "npm", "npx" were previously in this allowlist.
+// Both isCommandAllowed() and evaluateExecution() below only ever check
+// the EXECUTABLE NAME (the first token), never its arguments — by design,
+// this is a lightweight allowlist, not a full argument sandbox. That's a
+// safe assumption for every other command here (echo/cat/grep/git/etc. —
+// none of them can execute arbitrary attacker-supplied code via their own
+// arguments), but it's a real bypass for node/npm/npx specifically, since
+// `node -e "<any JS>"` (and `npm exec`/`npx <anything>`) run arbitrary
+// code by design, with no shell required — spawn(shell:false) prevents
+// shell-metacharacter injection, but does nothing to stop the allowed
+// program itself from being a code interpreter. Live-reproduced: a
+// terminal command of exactly the shape a real chat message produces
+// (agents/toolAgent.cjs's "terminal" case, reachable by any ordinary,
+// authenticated customer via POST /jarvis with no operator gate — parsed
+// from a message as simple as "run node -e ...") successfully wrote an
+// arbitrary file via node -e. Removed node/npm/npx from the base
+// allowlist — nothing in this adapter's one real caller (toolAgent.cjs's
+// simple "run <command>" chat tool) legitimately needs to invoke a code
+// interpreter; every remaining command here is a safe, non-programmable
+// read-only utility.
 const BASE_ALLOWLISTS = {
   terminal: new Set([
     "echo", "printf", "ls", "cat", "head", "tail", "grep", "find", "pwd",
     "whoami", "uname", "date", "which", "env", "printenv",
     "wc", "sort", "uniq", "tr", "cut", "diff", "stat", "basename",
     "dirname", "realpath", "true", "false", "test", "sleep",
-    "node", "npm", "npx", "git",
+    "git",
   ]),
   git: new Set([
     "status", "log", "diff", "branch", "show", "remote", "rev-parse",

@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { BASE_URL, getOpsData, getTasks, getRuntimeStatus, getRuntimeHistory } from '../api';
+// B.20: `getTasks` is not exported from ../api — it lives in personalApi.js
+// (personal to-do tasks, and it takes a filter object). This hook polls the
+// RUNTIME task queue, so the function it actually wants is getRuntimeTasks(),
+// which api.js does re-export via `export * from "./runtimeApi"` and which
+// takes no arguments, matching the call site below. The bad import broke the
+// production build outright ("Attempted import error: 'getTasks' is not
+// exported from '../api'"), so this was never a runtime-only defect.
+import { BASE_URL, getOpsData, getRuntimeTasks, getRuntimeStatus, getRuntimeHistory } from '../api';
 
 const POLL_OPS_MS = 10000; // Relaxed from 6000
 const POLL_RT_MS = 15000;  // Relaxed from 8000
@@ -7,6 +14,30 @@ const POLL_HIST_MS = 10000; // Relaxed from 5000
 const SSE_BACKOFF = [1000, 2000, 4000, 8000, 30000];
 // Jitter: ±20% randomization prevents thundering-herd reconnects after server restart
 const _jitter = (ms) => ms + Math.floor((Math.random() - 0.5) * ms * 0.4);
+
+// A.11.4 fix: every real runtime execution record — from BOTH the REST poll
+// (GET /runtime/history → { success, entries:[…] }) and the live SSE `execution`
+// event — carries a boolean `success` field and NO `status` field at all
+// (measured live: 20/20 REST entries and 30/30 SSE frames expose
+// [agentId, taskType, taskId, success, durationMs, error, input, output, ts, seq]).
+// Every consumer of this hook's `history` array, however, classifies entries by
+// `e.status === "success" | "failed" | "running" | …`, which therefore matched
+// nothing: 60 genuinely-successful executions rendered as the neutral "·"
+// unknown glyph, and OperatorConsole's success ratio — success.length/last20.length
+// — computed 0%, driving a red "🚨 Many failures — 0% success rate" alarm banner
+// over real data that was 59 successes / 1 failure.
+// Normalizing here (the single point both ingest paths already flow through)
+// applies the convention this codebase already uses for the same class of record
+// in SelfHealingCenter.jsx: `h.status || (h.success ? "success" : "failed")` —
+// prefer a real `status` when one is genuinely present, otherwise derive it from
+// the real `success` boolean. Entries that carry neither field are left untouched,
+// so nothing that already worked changes shape.
+function _normalizeExecEntry(entry) {
+  if (!entry || typeof entry !== "object") return entry;
+  if (entry.status !== undefined) return entry;      // real status wins, untouched
+  if (entry.success === undefined) return entry;     // neither field — leave as-is
+  return { ...entry, status: entry.success ? "success" : "failed" };
+}
 
 /**
  * useRuntimeStream - Scoped hook for high-throughput operational data.
@@ -65,7 +96,7 @@ export function useRuntimeStream() {
       seenEntries.current = new Set(arr.slice(-500));
     }
 
-    historyBuffer.current.push({ ...entry, _new: true });
+    historyBuffer.current.push({ ..._normalizeExecEntry(entry), _new: true });
     
     if (!historyFlushTimer.current) {
       historyFlushTimer.current = setTimeout(() => {
@@ -98,7 +129,7 @@ export function useRuntimeStream() {
 
   const fetchTasks = useCallback(async () => {
     try {
-      const t = await getTasks();
+      const t = await getRuntimeTasks();
       if (t) { setTasks(t); setFetchErrors(e => ({ ...e, tasks: null })); }
     } catch (err) {
       setFetchErrors(e => ({ ...e, tasks: err.message }));
@@ -128,7 +159,7 @@ export function useRuntimeStream() {
       // Merge fetched entries with any pending SSE buffer entries rather than
       // doing a full replace — prevents losing entries that arrived via SSE
       // during the fetch round-trip.
-      const fetched = r.entries.map(e => ({ ...e, _new: false }));
+      const fetched = r.entries.map(e => ({ ..._normalizeExecEntry(e), _new: false }));
       setHistory(prev => {
         const buffered = historyBuffer.current;
         if (buffered.length === 0) {

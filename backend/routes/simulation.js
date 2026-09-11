@@ -7,13 +7,33 @@ const ai         = require("../services/aiService");
 const automation = require("../services/automationService");
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const operatorAudit = require("../middleware/operatorAudit");
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
 
 // /send-followup — any authenticated user (operator or customer) may send a follow-up
 // to a contact they own. operatorOnly was too restrictive: SaaS customers with role="user"
 // were getting 403 on every send from the Contacts drawer.
-router.post("/send-followup", requireAuth, async (req, res) => {
+//
+// Mission 56 (2026-08-27): the handler's own comment already said "a contact
+// they own," but the ownership check was never actually implemented — any
+// authenticated caller (operator or customer) could send a real WhatsApp
+// message to an arbitrary phone number and mutate an arbitrary lead's
+// lastInteraction, not just their own. Fixed with the exact same ownership
+// check crm.js's PATCH /crm/lead/:phone already uses for this identical
+// risk class: crm.getLead(phone, orgId) + lead.userId === caller, operator
+// bypasses (matches this route's own "operator or customer" comment).
+router.post("/send-followup", requireAuth, attachOrg, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone) return res.status(400).json({ error: "phone required" });
+
+    if (req.user.role !== "operator") {
+        const orgId = req.org?.id || null;
+        const lead  = crm.getLead(phone, orgId);
+        const userId = req.user.sub || req.user.id;
+        if (!lead || lead.userId !== userId) {
+            return res.status(403).json({ error: "Forbidden — not your lead" });
+        }
+    }
+
     const result = await automation.sendManualFollowUp(phone, message);
     res.json(result);
 });

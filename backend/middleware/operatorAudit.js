@@ -28,12 +28,22 @@ function _write(action, req, res, next) {
     const start = Date.now();
     res.on("finish", () => {
         try {
+            // Phase B.16: every field here was request metadata — method, path,
+            // status, ip — with no actor. Reproduced live: 516 CRM audit entries
+            // including 3 lead creations and 10 status changes, all with no way
+            // to tell WHO made the change. For customer records that is the one
+            // field an audit trail exists to answer. req.user is already
+            // populated by requireAuth on every route that mounts this
+            // middleware, and req.org by attachOrg where present.
             const entry = JSON.stringify({
                 ts:         new Date().toISOString(),
                 method:     req.method,
                 path:       req.path,
                 action:     action || null,
                 status:     res.statusCode,
+                actor:      req.user?.sub || req.user?.id || null,
+                actorRole:  req.user?.role || null,
+                orgId:      req.org?.id || null,
                 ip:         req.ip || req.socket?.remoteAddress || "-",
                 requestId:  req.id || "-",
                 durationMs: Date.now() - start,

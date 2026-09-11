@@ -1,13 +1,25 @@
 "use strict";
 /**
  * rc1 routes — Production RC-1: Release Candidate 1
- * All routes at /rc1/* require auth.
+ * All routes at /rc1/* require auth AND operator role.
  */
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc = require("../services/rc1.cjs");
 
-router.use("/rc1", requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same platform-wide, not-tenant-scoped
+// defect family already fixed 8 times this session (/eos/ent/eco/civ/auto,
+// ACP-9-12, /execution+/founder+/bible) — rc1.cjs confirmed 0 orgId
+// occurrences; this is internal release-management infrastructure (version
+// freeze, manifest, blocker registry), not customer data. Previously gated
+// by requireAuth alone; live-reproduced with a real, non-operator customer
+// account: GET /rc1/version returned the real frozen-version manifest. The
+// only frontend consumer of this entire RC/PM7/POST-Ω/OP1 cluster
+// (PublicLaunch.jsx and its siblings, mounted inside ElectronWorkspace.jsx)
+// is a documented pure passthrough in the actual web app
+// (`if (!isElectron()) return children`) — these tabs render only inside
+// the Electron desktop shell, never in the customer-facing web product.
+router.use("/rc1", requireAuth, operatorOnly);
 
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }

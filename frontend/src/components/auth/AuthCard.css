@@ -89,13 +89,13 @@
 
 .auth-brand-name {
   font-size: 16px; font-weight: 800;
-  color: #dde2ec;
+  color: var(--text);
   letter-spacing: 0.03em; line-height: 1;
 }
 
 .auth-brand-sub {
   font-size: 10.5px;
-  color: #4a5470;
+  color: var(--text-faint);
   line-height: 1;
   letter-spacing: 0.02em;
 }
@@ -103,7 +103,7 @@
 /* ── Heading ──────────────────────────────────────────────────── */
 .auth-heading {
   font-size: 19px; font-weight: 700;
-  color: #dde2ec;
+  color: var(--text);
   margin: 0 0 5px;
   letter-spacing: -0.2px;
   text-align: center;
@@ -111,7 +111,7 @@
 
 .auth-sub {
   font-size: 13px;
-  color: #8994b0;
+  color: var(--text-dim);
   margin: 0 0 22px;
   line-height: 1.5;
   text-align: center;
@@ -134,7 +134,7 @@
   background: none;
   border: none;
   border-radius: 7px;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 12px;
   font-weight: 600;
   font-family: inherit;
@@ -146,12 +146,12 @@
 
 .auth-tab:hover:not(.auth-tab--active) {
   background: rgba(255,255,255,0.05);
-  color: #8994b0;
+  color: var(--text-dim);
 }
 
 .auth-tab--active {
   background: rgba(124,111,255,0.18);
-  color: #dde2ec;
+  color: var(--text);
   border: 1px solid rgba(124,111,255,0.28);
 }
 
@@ -167,7 +167,7 @@
 
 .auth-label {
   font-size: 11px; font-weight: 600;
-  color: #8994b0;
+  color: var(--text-dim);
   letter-spacing: 0.05em;
 }
 
@@ -177,7 +177,7 @@
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.09);
   border-radius: 8px;
-  color: #dde2ec;
+  color: var(--text);
   font-size: 14px;
   font-family: inherit;
   outline: none;
@@ -195,7 +195,7 @@
   background: rgba(255,255,255,0.055);
 }
 
-.auth-input::placeholder { color: #4a5470; }
+.auth-input::placeholder { color: var(--text-faint); }
 .auth-input:disabled { opacity: 0.45; cursor: not-allowed; }
 
 /* iOS zoom prevention */
@@ -214,14 +214,14 @@
 .auth-pw-toggle {
   position: absolute; right: 12px;
   background: none; border: none;
-  color: #8994b0;
+  color: var(--text-dim);
   font-size: 10.5px; font-weight: 600;
   font-family: inherit;
   cursor: pointer; padding: 4px;
   letter-spacing: 0.04em;
   transition: color 0.12s ease;
 }
-.auth-pw-toggle:hover { color: #7c6fff; }
+.auth-pw-toggle:hover { color: var(--accent); }
 
 /* Password strength bar */
 .auth-pw-strength {
@@ -243,14 +243,14 @@
 }
 
 .auth-pw-bar-fill[data-strength="0"] { width: 0;    background: transparent; }
-.auth-pw-bar-fill[data-strength="1"] { width: 25%;  background: #f55b5b; }
-.auth-pw-bar-fill[data-strength="2"] { width: 50%;  background: #f0b429; }
-.auth-pw-bar-fill[data-strength="3"] { width: 75%;  background: #4ecdc4; }
-.auth-pw-bar-fill[data-strength="4"] { width: 100%; background: #52d68a; }
+.auth-pw-bar-fill[data-strength="1"] { width: 25%;  background: var(--danger); }
+.auth-pw-bar-fill[data-strength="2"] { width: 50%;  background: var(--warning); }
+.auth-pw-bar-fill[data-strength="3"] { width: 75%;  background: var(--accent2); }
+.auth-pw-bar-fill[data-strength="4"] { width: 100%; background: var(--success); }
 
 .auth-pw-label {
   font-size: 10.5px;
-  color: #4a5470;
+  color: var(--text-faint);
   white-space: nowrap;
   min-width: 40px;
 }
@@ -265,7 +265,7 @@
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.09);
   border-radius: 8px;
-  color: #8994b0;
+  color: var(--text-dim);
   font-size: 14px;
   font-family: inherit;
   width: 64px;
@@ -288,7 +288,7 @@
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.09);
   border-radius: 8px;
-  color: #dde2ec;
+  color: var(--text);
   font-size: 20px; font-weight: 700;
   text-align: center;
   outline: none;
@@ -339,7 +339,7 @@
   background: rgba(255,255,255,0.05);
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 8px;
-  color: #dde2ec;
+  color: var(--text);
   font-size: 13px; font-weight: 600;
   font-family: inherit;
   cursor: pointer;
@@ -371,7 +371,7 @@
 }
 
 .auth-divider-text {
-  font-size: 11px; color: #4a5470;
+  font-size: 11px; color: var(--text-faint);
   white-space: nowrap;
 }
 
@@ -382,7 +382,7 @@
   background: rgba(245,91,91,0.07);
   border: 1px solid rgba(245,91,91,0.20);
   border-radius: 8px;
-  font-size: 12.5px; color: #f55b5b;
+  font-size: 12.5px; color: var(--danger);
   line-height: 1.5;
   animation: auth-error-in 0.14s ease both;
 }
@@ -401,7 +401,7 @@
   background: rgba(240,180,41,0.07);
   border: 1px solid rgba(240,180,41,0.18);
   border-radius: 8px;
-  font-size: 12px; color: #f0b429;
+  font-size: 12px; color: var(--warning);
   line-height: 1.5;
 }
 
@@ -418,16 +418,16 @@
   border: 1px solid rgba(82,214,138,0.24);
   display: flex; align-items: center; justify-content: center;
   font-size: 22px;
-  color: #52d68a;
+  color: var(--success);
 }
 
 .auth-success-title {
   font-size: 16px; font-weight: 700;
-  color: #dde2ec;
+  color: var(--text);
 }
 
 .auth-success-sub {
-  font-size: 13px; color: #8994b0; line-height: 1.5;
+  font-size: 13px; color: var(--text-dim); line-height: 1.5;
 }
 
 /* ── Trust strip ──────────────────────────────────────────────── */
@@ -438,13 +438,13 @@
 }
 
 .auth-trust-item {
-  font-size: 11px; color: #4a5470;
+  font-size: 11px; color: var(--text-faint);
   display: flex; align-items: center; gap: 4px;
 }
 
-.auth-trust-check { color: #52d68a; font-size: 10px; }
+.auth-trust-check { color: var(--success); font-size: 10px; }
 
-.auth-trust-sep { color: #2a3050; font-size: 11px; }
+.auth-trust-sep { color: var(--text-faint); font-size: 11px; }
 
 /* ── Footer ───────────────────────────────────────────────────── */
 .auth-footer {
@@ -454,12 +454,12 @@
 }
 
 .auth-footer-text {
-  font-size: 12px; color: #4a5470; text-align: center;
+  font-size: 12px; color: var(--text-faint); text-align: center;
 }
 
 .auth-link {
   background: none; border: none;
-  color: #7c6fff;
+  color: var(--accent);
   font-size: 12px; font-weight: 600;
   font-family: inherit;
   cursor: pointer; padding: 0;
@@ -471,7 +471,7 @@
 .auth-link:disabled { opacity: 0.38; cursor: not-allowed; }
 
 .auth-footer-company {
-  font-size: 10px; color: #2a3050;
+  font-size: 10px; color: var(--text-faint);
   letter-spacing: 0.03em; text-align: center;
 }
 
@@ -493,13 +493,13 @@
 /* ── Phone step indicator ─────────────────────────────────────── */
 .auth-phone-step {
   display: flex; align-items: center; gap: 8px;
-  font-size: 12px; color: #8994b0;
+  font-size: 12px; color: var(--text-dim);
   margin-bottom: 4px;
 }
 
 .auth-phone-back {
   background: none; border: none;
-  color: #7c6fff; font-size: 12px; font-weight: 600;
+  color: var(--accent); font-size: 12px; font-weight: 600;
   font-family: inherit; cursor: pointer; padding: 0;
   transition: opacity 0.12s ease;
 }

@@ -1,0 +1,65 @@
+%% OOPLIX V1 — Platform Architecture with Audit Coverage Overlay
+%% Each block is annotated with the audit that certified it.
+flowchart TB
+    classDef client  fill:#EAF1F8,stroke:#1F4E79,stroke-width:2px,color:#0B1F33
+    classDef edge    fill:#E8EEF4,stroke:#2E75B6,stroke-width:2px,color:#0B1F33
+    classDef svc     fill:#E8F3EC,stroke:#0F9D58,stroke-width:2px,color:#0B1F33
+    classDef intel   fill:#F3EAFA,stroke:#7030A0,stroke-width:2px,color:#0B1F33
+    classDef store   fill:#FDF0E6,stroke:#C55A11,stroke-width:2px,color:#0B1F33
+    classDef risk    fill:#FBE9EC,stroke:#B00020,stroke-width:2px,color:#0B1F33
+
+    subgraph CL["Client Tier"]
+        WEB["Web App · React<br/>B.19 · WCAG 2.2 AA NOT CERTIFIED"]:::risk
+        DESK["Desktop · Electron"]:::client
+        MOB["Mobile · Capacitor"]:::client
+    end
+
+    subgraph EDGE["Edge Tier"]
+        NGX["nginx · TLS 1.3 · HTTP/2<br/>B.4 · CERTIFIED"]:::edge
+        PM2["PM2 · fork · instances 1<br/>B.8 · heap 1024 MB / ceiling 1536"]:::edge
+    end
+
+    subgraph API["API Tier — B.7 · 7.6/10"]
+        RT["Express Router<br/>299 of 300 routes protected"]:::svc
+        AUTH["JWT Auth · production mode<br/>dev bypass fails closed"]:::svc
+        ORG["attachOrg middleware<br/>B.7 F1 · X-Org-Id confused deputy FIXED"]:::svc
+    end
+
+    subgraph BIZ["Business Services — L4"]
+        CRM["CRM · org-scoped<br/>B.16 CERTIFIED"]:::svc
+        FIN["Finance · B.14<br/>orgId attribution restored"]:::svc
+        SUP["Support Engines<br/>G1-B15 · unowned tickets"]:::risk
+        CUST["Customer Engines<br/>G1-B16 · zero orgId"]:::risk
+        WF["Workforce · B.17<br/>G1 · no ownership transfer"]:::risk
+        AUTO["Automation · B.13 · 8.7<br/>dryRun honoured"]:::svc
+    end
+
+    subgraph INT["Intelligence Tier — L3"]
+        AI["AI Service · 14 providers<br/>B.9 · 8.6 · honest failover"]:::intel
+        MEM["Memory Layer<br/>B.10 · 8.7 · 2000-node store"]:::intel
+        AG["Agent Runtime · 210 agents<br/>B.11 · 8.7 · gate 68.6% to 0%"]:::intel
+        KG["Knowledge Graph<br/>B.12 · 1526 edges / 2321 nodes"]:::intel
+    end
+
+    subgraph DATA["Persistence — B.6"]
+        JSON["JSON Stores · 3438 files · 677 MB<br/>0 corrupted · authoritative"]:::store
+        SQL["SQLite · passive mirror<br/>1 table · never read back"]:::store
+        DLQ["Dead-Letter Queue · 1000 cap<br/>B.18 · agentId restored 980/980"]:::store
+        BK["Backups · local disk only<br/>B.5 fixed · G13-B18 no offsite"]:::store
+    end
+
+    WEB --> NGX
+    DESK --> NGX
+    MOB --> NGX
+    NGX --> PM2 --> RT
+    RT --> AUTH --> ORG
+    ORG --> CRM & FIN & SUP & CUST & WF & AUTO
+    CRM & FIN & AUTO --> AI
+    AI --> MEM
+    AG --> AI
+    KG --> MEM
+    CRM & FIN & SUP & CUST & WF --> JSON
+    AG --> DLQ
+    JSON --> SQL
+    JSON --> BK
+    KG --> JSON

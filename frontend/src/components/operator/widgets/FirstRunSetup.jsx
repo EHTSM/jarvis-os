@@ -1,6 +1,7 @@
 "use strict";
 import React, { useState, useEffect, useCallback } from "react";
 import { recordFrictionEvent } from "../../../hooks/useProductivityAnalytics";
+import { _fetch } from "../../../_client";
 
 const FR_KEY = "jarvis_first_run_done";
 const STEPS = [
@@ -51,8 +52,20 @@ export const FirstRunSetup = React.memo(({ onComplete, rtStatus }) => {
   useEffect(() => {
     if (current.id === "runtime") {
       setChecking(true);
-      fetch("/api/health", { credentials: "include" })
-        .then(r => setHealthOk(r.ok))
+      // OOPLIX V1 MASTER AUDIT (2026-08-16, known-defect-family recovery):
+      // this called bare fetch("/api/health", ...), but the real route is
+      // /health (public, no auth required) with no /api prefix. Live-
+      // confirmed: GET /api/health -> 401 (falls through to whatever gate
+      // happens to sit in the way of a nonexistent path, not a genuine
+      // auth requirement); GET /health (real route) -> 200. This was a
+      // genuine, user-facing false negative: every brand-new user going
+      // through first-run onboarding was told "✗ Not reachable — start the
+      // backend" even when the backend was perfectly healthy, since r.ok
+      // was always false for the wrong path. _fetch throws on a non-2xx
+      // response rather than returning a Response object, so the check
+      // becomes "did the call succeed" instead of "was r.ok true".
+      _fetch("/health")
+        .then(() => setHealthOk(true))
         .catch(() => setHealthOk(false))
         .finally(() => setChecking(false));
     }

@@ -20,10 +20,25 @@ import { OperationalStatusBanner } from "./widgets/OperationalStatusBanner";
 import { NotificationOverlay } from "./widgets/NotificationOverlay";
 import { FirstRunSetup, shouldShowFirstRun } from "./widgets/FirstRunSetup";
 import "./operator.css";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 export default function OperatorConsole() {
   const [sessionRestored, setSessionRestored] = React.useState(false);
   const [showFirstRun, setShowFirstRun] = useState(shouldShowFirstRun);
+  const { logout } = useAuth();
+  const [mobileTab, setMobileTab] = useState("Log");
+  const [pendingCmd, setPendingCmd] = useState("");
+  const [lastCheck, setLastCheck] = useState(Date.now()); // Re-entry orientation anchor
+  const { notifications, addNotification, removeNotification } = useNotifications();
+
+  // A.8 fix: these two effects reference pendingCmd/lastCheck/addNotification
+  // in their bodies and dependency arrays, but the source order previously
+  // declared them BEFORE the useState/useNotifications calls above — the
+  // dependency array on the second effect is evaluated during render itself
+  // (not deferred like the effect body), so it read pendingCmd/lastCheck
+  // before their `const` declarations had run, throwing "Cannot access
+  // 'pendingCmd' before initialization" on every single mount. Moved below
+  // all referenced declarations; logic is unchanged.
 
   // Load persisted session state if available
   useEffect(() => {
@@ -44,11 +59,6 @@ export default function OperatorConsole() {
     const state = { pendingCmd, lastCheck };
     localStorage.setItem('operatorSession', JSON.stringify(state));
   }, [pendingCmd, lastCheck]);
-  const { logout } = useAuth();
-  const [mobileTab, setMobileTab] = useState("Log");
-  const [pendingCmd, setPendingCmd] = useState("");
-  const [lastCheck, setLastCheck] = useState(Date.now()); // Re-entry orientation anchor
-  const { notifications, addNotification, removeNotification } = useNotifications();
 
   const {
     connectionState,
@@ -104,7 +114,7 @@ export default function OperatorConsole() {
   }, [authError, addNotification]);
 
   return (
-    <div className="operator-console" onClick={() => setLastCheck(Date.now())}>
+    <div className="operator-console" {...clickableProps(() => setLastCheck(Date.now()))}>
       {showFirstRun && (
         <FirstRunSetup onComplete={() => setShowFirstRun(false)} rtStatus={rtStatus} />
       )}

@@ -167,7 +167,10 @@
   justify-content: center;
   font-size: 14px;
   font-weight: 700;
-  color: #fff;
+  /* B19.2.2: was #fff — 1.85:1 on the lightest palette entries. The avatar
+     fill is a fixed identity colour (see AVATAR_COLORS), so the foreground is
+     pinned dark rather than themed. Worst pairing: 5.18:1. */
+  color: #0a0c14;
   flex-shrink: 0;
 }
 
@@ -301,7 +304,7 @@
 }
 .cv2-btn--primary {
   background: var(--accent, #7c6fff);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--accent, #7c6fff);
 }
 .cv2-btn--primary:hover { background: #9488ff; }

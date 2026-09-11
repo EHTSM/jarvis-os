@@ -217,6 +217,14 @@ export async function _fetch(path, options = {}) {
       const msg = err.error || `HTTP ${res.status}`;
       const e   = new Error(msg);
       e.status  = res.status;
+      // Mission 33 — MFA End-to-End Certification: several auth routes
+      // (/auth/login, /auth/firebase-session) return a machine-readable
+      // `code` (mfa_code_required, mfa_enrollment_required, mfa_code_invalid,
+      // sso_required, provider_not_allowed) alongside `error`. Previously
+      // only the human-readable message survived onto the thrown Error —
+      // callers that need to branch on the specific reason (e.g. show an
+      // MFA code-entry step vs. a flat failure) had no way to do so.
+      if (err.code) e.code = err.code;
       if (executionId) {
         _recordExecutionError(executionId, e);
         _logExecution({ executionId, action: path, status: "failed", error: msg });

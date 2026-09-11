@@ -53,7 +53,7 @@
   background: var(--accent, #7c6fff);
   border: none;
   border-radius: var(--radius-pill);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 12px;
   font-weight: 700;
   font-family: inherit;

@@ -12,7 +12,7 @@
 
 .aac-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
 .aac-tab { padding: 7px 16px; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--surface-raised); color: var(--text-dim); font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; }
-.aac-tab.active { background: var(--accent); color: #06080e; border-color: var(--accent); }
+.aac-tab.active { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
 
 .aac-action-list { display: flex; flex-direction: column; gap: 8px; }
 .aac-action-row { background: var(--surface-base); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 16px; display: flex; align-items: center; gap: 12px; }

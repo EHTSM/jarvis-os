@@ -4,7 +4,7 @@ import { _fetch } from "../_client";
 const ROLE_COLOR = {
   Owner:     "var(--warning)",
   Admin:     "var(--accent)",
-  Operator:  "#52d68a",
+  Operator:  "var(--success)",
   Developer: "var(--accent2)",
   Viewer:    "var(--text-faint)",
 };
@@ -15,6 +15,10 @@ export default function WorkspaceSwitcher({ onNavigate }) {
   const [activeId, setActiveId] = useState(null);
   const [loading, setLoading]   = useState(false);
   const [creating, setCreating] = useState(false);
+  // A.11.2: switching or creating a workspace failed with NO feedback at all —
+  // the most severe of the 15 silent-mutation paths. _client.js already
+  // preserves the backend message; this surfaces it.
+  const [error, setError]       = useState(null);
   const [newName, setNewName]   = useState("");
   const ref = useRef(null);
 
@@ -23,7 +27,16 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       const d = await _fetch("/workspace");
       setWs(d.workspaces || []);
       setActiveId(d.activeWorkspaceId || null);
-    } catch {}
+      setError(null);
+    } catch (e) {
+      // Mission 58: this catch was bare — inconsistent with doSwitch/
+      // doCreate below, which already correctly call setError() for this
+      // exact same risk class (Mission 43B finding). A failed initial load
+      // left the switcher dropdown permanently empty with no error shown,
+      // even though the `error` state already exists in this file for
+      // exactly this purpose.
+      setError(e?.message || "Could not load workspaces.");
+    }
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -44,7 +57,8 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       await _fetch("/workspace/switch", { method: "POST", body: JSON.stringify({ workspaceId: id }) });
       setActiveId(id);
       setOpen(false);
-    } catch {}
+      setError(null);
+    } catch (e) { setError(e?.message || "Could not switch workspace."); }
   }
 
   async function doCreate() {
@@ -56,7 +70,8 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       setWs(prev => [...prev, d.workspace]);
       setNewName("");
       setCreating(false);
-    } catch {}
+      setError(null);
+    } catch (e) { setError(e?.message || "Could not create workspace."); }
     setLoading(false);
   }
 
@@ -68,6 +83,17 @@ export default function WorkspaceSwitcher({ onNavigate }) {
         title="Switch workspace"
       >
         <span className="ws-switcher-icon">⬡</span>
+        {/* Founder Experience Certification finding: this pill sits directly
+            next to OrgSwitcher's, both defaulting to the same name (a new
+            workspace is named after its org on signup) with no visible
+            distinction beyond a barely-different icon color — a first-time
+            founder cannot tell these are two different concepts (workspace
+            = lightweight project grouping, org = the real tenant/billing
+            boundary, see OrgSwitcher.jsx's own comment) without hovering
+            for the title tooltip. Small always-visible micro-label added,
+            reusing the existing tiny-caps style already used for the
+            dropdown's own "Workspaces" header — no new component. */}
+        <span className="ws-switcher-kind">Workspace</span>
         <span className="ws-switcher-name">{activeWs?.name || "Workspace"}</span>
         <span className="ws-switcher-caret">{open ? "▴" : "▾"}</span>
       </button>
@@ -75,6 +101,8 @@ export default function WorkspaceSwitcher({ onNavigate }) {
       {open && (
         <div className="ws-switcher-dropdown">
           <div className="ws-switcher-header">Workspaces</div>
+          {/* A.11.2: surfaces the real backend reason for a failed switch/create. */}
+          {error && <div className="ws-switcher-error" role="alert">{error}</div>}
 
           {workspaces.map(ws => (
             <button

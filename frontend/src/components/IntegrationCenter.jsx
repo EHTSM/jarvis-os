@@ -1,228 +1,136 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useMemo } from "react";
 import { track } from "../analytics";
-import { getOAuthProviderStatus, listOAuthConnections, revokeOAuth, refreshOAuth, getOAuthUrl, getIntegrationsStatus } from "../phase21Api";
+import { listOAuthConnections, revokeOAuth, refreshOAuth, getOAuthUrl } from "../phase21Api";
+import {
+  getVaultDashboard, getCredentialTypes, getVaultSecrets, storeSecret, validateSecret,
+  rotateSecret, deleteSecret, getVaultHistory,
+  getAllIntegrations, checkIntegrationHealth, reconnectIntegration,
+} from "../connectorApi";
 import "./IntegrationCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
+import { useConfirm } from "./ConfirmDialog";
 
-// ── Integration definitions ───────────────────────────────────────────
-const INTEGRATIONS = [
-  {
-    id:       "gmail",
-    name:     "Gmail",
-    category: "communication",
-    icon:     "G",
-    color:    "#ea4335",
-    desc:     "Read and send emails, sync contacts, trigger workflows from incoming mail.",
-    status:   "disconnected",
-    permissions: ["Read emails", "Send emails", "Manage contacts"],
-    syncStatus:  null,
-    health:   null,
-    setupUrl: "https://console.cloud.google.com",
-  },
-  {
-    id:       "gdrive",
-    name:     "Google Drive",
-    category: "storage",
-    icon:     "▲",
-    color:    "#fbbc04",
-    desc:     "Access files and folders, read documents into the Knowledge Base, write reports.",
-    status:   "disconnected",
-    permissions: ["Read files", "Write files", "List folders"],
-    syncStatus:  null,
-    health:   null,
-    setupUrl: "https://console.cloud.google.com",
-  },
-  {
-    id:       "github",
-    name:     "GitHub",
-    category: "engineering",
-    icon:     "◉",
-    color:    "#e6edf3",
-    desc:     "Access repositories, read issues and PRs, trigger CI workflows, post status checks.",
-    status:   "disconnected",
-    permissions: ["Read repos", "Read issues", "Read PRs", "Write comments"],
-    syncStatus:  null,
-    lastSync:    null,
-    health:   null,
-    setupUrl: "https://github.com/settings/developers",
-  },
-  {
-    id:       "gitlab",
-    name:     "GitLab",
-    category: "engineering",
-    icon:     "◈",
-    color:    "#fc6d26",
-    desc:     "Access GitLab projects, merge requests, pipelines, and CI/CD status.",
-    status:   "disconnected",
-    permissions: ["Read projects", "Read MRs", "Read pipelines"],
-    syncStatus:  null,
-    health:   null,
-    setupUrl: "https://gitlab.com/-/profile/applications",
-  },
-  {
-    id:       "notion",
-    name:     "Notion",
-    category: "knowledge",
-    icon:     "N",
-    color:    "#ffffff",
-    desc:     "Sync pages and databases to the Knowledge Base. Write meeting notes and reports.",
-    status:   "disconnected",
-    permissions: ["Read pages", "Write pages", "Read databases"],
-    syncStatus:  null,
-    lastSync:    null,
-    health:   null,
-    setupUrl: "https://www.notion.so/my-integrations",
-  },
-  {
-    id:       "slack",
-    name:     "Slack",
-    category: "communication",
-    icon:     "#",
-    color:    "#4a154b",
-    desc:     "Post alerts, pipeline updates, and task completions to Slack channels.",
-    status:   "disconnected",
-    permissions: ["Post messages", "Read channel list"],
-    syncStatus:  null,
-    health:   null,
-    setupUrl: "https://api.slack.com/apps",
-  },
-  {
-    id:       "outlook",
-    name:     "Outlook",
-    category: "communication",
-    icon:     "O",
-    color:    "#0078d4",
-    desc:     "Read and send Outlook email, sync calendar events, manage contacts.",
-    status:   "disconnected",
-    permissions: ["Read mail", "Send mail", "Read calendar"],
-    syncStatus:  null,
-    health:   null,
-    setupUrl: "https://portal.azure.com",
-  },
-  {
-    id:       "telegram",
-    name:     "Telegram",
-    category: "communication",
-    icon:     "✈",
-    color:    "#2aabee",
-    desc:     "Send notifications and workflow alerts via Telegram bot. Receive commands.",
-    status:   "disconnected",
-    permissions: ["Send messages", "Receive commands"],
-    syncStatus:  null,
-    health:   null,
-    setupUrl: "https://t.me/BotFather",
-  },
-];
+// ── Connector Center (Module 5) ──────────────────────────────────────────────
+// Rebuilt on the real backend: founderVault.js (54 connectors, 12 credential
+// types, operator-only) + integrations.js (live scan/probe, any authed user).
+// Previously this component only covered 8 hardcoded OAuth-style connectors
+// via phase21Api — the vault/integrations backends had no frontend at all.
 
-const CATEGORIES = [
-  { id: "all",           label: "All"           },
-  { id: "communication", label: "Communication" },
-  { id: "engineering",   label: "Engineering"   },
-  { id: "storage",       label: "Storage"       },
-  { id: "knowledge",     label: "Knowledge"     },
-];
+// integrationConnectors.cjs's reconnect()/getHealth() only implement probe
+// functions for these phases (see its `fns` dispatch map) — "email" connectors
+// exist in the vault (credential storage, all 6 providers) but have no live
+// probe function, so calling /integrations/:id/health for them throws
+// "Unknown connector" server-side (500). Gate the call rather than let every
+// email connector's detail panel fire a doomed request.
+// "issue" (Jira/Linear) added — Phase 6 connector reachability audit found
+// scanAllProjectManagementProviders()/reconnect()'s "issue" dispatch group
+// already probe both connectJira()/connectLinear() for real, this set just
+// hadn't been updated when that phase was added.
+const HEALTH_PROBE_PHASES = new Set(["ai", "git", "infra", "pay", "msg", "auth", "prod", "commerce", "creative", "auto", "monitor", "issue"]);
 
-const STATUS_COLORS = {
-  connected:    "var(--success)",
-  disconnected: "var(--text-faint)",
-  error:        "var(--danger)",
-  syncing:      "var(--warning)",
+const PHASE_LABEL = {
+  ai: "AI Providers", auth: "Authentication", auto: "Automation", commerce: "Commerce",
+  creative: "Creative", email: "Email", git: "Git", infra: "Infrastructure",
+  monitor: "Monitoring", msg: "Messaging", pay: "Payments", prod: "Productivity",
+  issue: "Project Management",
 };
 
-function IntegCard({ integ, onConnect, onDisconnect, onViewDetail, isSelected }) {
-  const connected = integ.status === "connected";
-  return (
-    <div
-      className={`ic-card${connected ? " ic-card--connected" : ""}${isSelected ? " ic-card--selected" : ""}`}
-      onClick={() => onViewDetail(integ.id)}
-    >
-      <div className="ic-card-header">
-        <div className="ic-icon-wrap" style={{ background: integ.color + "18", borderColor: integ.color + "33" }}>
-          <span className="ic-icon" style={{ color: integ.color }}>{integ.icon}</span>
-        </div>
-        <div className="ic-card-meta">
-          <span className="ic-card-name">{integ.name}</span>
-          <span className="ic-card-category">{integ.category}</span>
-        </div>
-        <span className="ic-status-dot" style={{ background: STATUS_COLORS[integ.status] }} title={integ.status} />
-      </div>
-      <p className="ic-card-desc">{integ.desc}</p>
-      <div className="ic-card-footer">
-        {connected ? (
-          <>
-            <span className="ic-sync-text" style={{ color: "var(--success)" }}>
-              ✓ {integ.lastSync ? `Synced ${integ.lastSync}` : "Connected"}
-            </span>
-            <button
-              className="ic-btn ic-btn--disconnect"
-              onClick={e => { e.stopPropagation(); onDisconnect(integ.id); }}
-            >Disconnect</button>
-          </>
-        ) : (
-          <button
-            className="ic-btn ic-btn--connect"
-            onClick={e => { e.stopPropagation(); onConnect(integ.id); }}
-          >Connect →</button>
-        )}
-      </div>
-    </div>
-  );
+const CONNECTOR_NAME = {
+  "ai:anthropic": "Anthropic", "ai:cohere": "Cohere", "ai:deepseek": "DeepSeek",
+  "ai:fireworks": "Fireworks AI", "ai:gemini": "Google Gemini", "ai:grok": "Grok (x.ai)",
+  "ai:groq": "Groq", "ai:nvidia": "NVIDIA NIM", "ai:openai": "OpenAI",
+  "ai:openrouter": "OpenRouter", "ai:qwen": "Qwen (DashScope)", "ai:together": "Together AI",
+  "auth:apple": "Sign in with Apple", "auth:discord": "Discord OAuth",
+  "auth:github": "GitHub OAuth", "auth:google": "Google OAuth",
+  "auth:linkedin": "LinkedIn OAuth", "auth:microsoft": "Microsoft OAuth",
+  "auto:make": "Make (Integromat)", "auto:n8n": "n8n", "auto:zapier": "Zapier",
+  "commerce:shopify": "Shopify", "commerce:woocommerce": "WooCommerce",
+  "commerce:wordpress": "WordPress",
+  "creative:canva": "Canva", "creative:figma": "Figma",
+  "email:brevo": "Brevo", "email:mailgun": "Mailgun", "email:postmark": "Postmark",
+  "email:resend": "Resend", "email:sendgrid": "SendGrid", "email:smtp": "SMTP",
+  "git:bitbucket": "Bitbucket", "git:github": "GitHub", "git:gitlab": "GitLab",
+  "infra:aws": "AWS", "infra:cloudflare": "Cloudflare", "infra:firebase": "Firebase",
+  "infra:hostinger": "Hostinger", "infra:r2": "Cloudflare R2", "infra:supabase": "Supabase",
+  "issue:jira": "Jira", "issue:linear": "Linear",
+  "monitor:datadog": "Datadog", "monitor:sentry": "Sentry", "monitor:uptime": "UptimeRobot",
+  "msg:discord": "Discord", "msg:slack": "Slack", "msg:teams": "Microsoft Teams",
+  "msg:telegram": "Telegram", "msg:twilio": "Twilio", "msg:whatsapp": "WhatsApp Business",
+  "pay:lemonsqueezy": "Lemon Squeezy", "pay:paddle": "Paddle",
+  "pay:razorpay": "Razorpay", "pay:stripe": "Stripe",
+  "prod:dropbox": "Dropbox", "prod:google_workspace": "Google Workspace",
+  "prod:m365": "Microsoft 365", "prod:notion": "Notion",
+};
+
+function _label(connectorId) {
+  return CONNECTOR_NAME[connectorId] || connectorId.split(":")[1]?.replace(/_/g, " ") || connectorId;
+}
+function _phaseOf(connectorId) { return connectorId.split(":")[0]; }
+function _phaseLabel(connectorId) { return PHASE_LABEL[_phaseOf(connectorId)] || _phaseOf(connectorId); }
+
+// getCredentialTypes() returns all 12 vault-wide credential types in a fixed
+// order (oauth_token first) — that's not "the type this connector actually
+// uses," it's just the vault's global catalog. Defaulting the setup form's
+// dropdown to types[0] would silently default nearly every non-OAuth
+// connector to "oauth_token", which is wrong. Best-effort guess from the
+// connector id/phase instead; the dropdown remains fully overridable.
+function _likelyCredentialType(connectorId) {
+  const [phase, id] = connectorId.split(":");
+  // auth:apple's ENV_MAP entry is auth:apple::ssh_key (APPLE_PRIVATE_KEY),
+  // not oauth_token like its other auth: siblings.
+  if (id === "apple") return "ssh_key";
+  if (phase === "auth") return "oauth_token";
+  if (id === "smtp") return "smtp_credentials";
+  if (phase === "git" || phase === "creative" || id === "jira") return "personal_access_token";
+  if (id === "google_workspace" || id === "firebase") return "service_account_json";
+  return "api_key";
 }
 
-function DetailPanel({ integ, onClose, onConnect, onDisconnect, onRefresh }) {
-  const connected = integ.status === "connected";
+// OAuth-style connectors get the browser-redirect flow via phase21Api; everything
+// else (API keys, tokens, SMTP creds etc.) gets the vault setup form.
+// auth:discord and auth:apple were listed here but oauthIntegrationLayer.cjs's
+// _cfg() has no "discord" or "apple" config block — it only implements
+// google/github/slack/notion/microsoft/linkedin (see ExecutionConnectorCenter.jsx's
+// CONNECTOR_META, which correctly covers exactly those 6). Both were dead ends:
+// clicking "Connect" for auth:discord threw a 500 from getOAuthUrl("discord")
+// (cfg.clientId reads off undefined), and auth:apple wasn't even in
+// OAUTH_PROVIDER_ID below, so its button silently did nothing. Both connectors
+// are real, though — connectDiscordAuth()/connectAppleAuth() in
+// integrationConnectors.cjs verify DISCORD_CLIENT_ID/APPLE_TEAM_ID+co via live
+// probes, and both have ENV_MAP entries in secretVault.cjs — they just need the
+// vault SetupForm path (like auth:linkedin's siblings that aren't OAuth-login
+// providers), not the OAuth-redirect path.
+const OAUTH_CONNECTORS = new Set([
+  "auth:google", "auth:github", "auth:linkedin", "auth:microsoft",
+]);
+// phase21Api's OAuth provider ids are unnamespaced (google, github, ...) — map both ways.
+const OAUTH_PROVIDER_ID = { "auth:google": "google", "auth:github": "github", "auth:linkedin": "linkedin", "auth:microsoft": "microsoft" };
+
+const STATUS_COLOR = { connected: "var(--success)", missing: "var(--text-faint)", expiring: "var(--warning)", overdue: "var(--danger)" };
+
+function ConnectorCard({ connectorId, connected, health, onOpen, isSelected }) {
+  const color = STATUS_COLOR[health || (connected ? "connected" : "missing")];
   return (
-    <div className="ic-detail">
-      <div className="ic-detail-header">
-        <div className="ic-icon-wrap ic-icon-wrap--lg" style={{ background: integ.color + "18", borderColor: integ.color + "33" }}>
-          <span className="ic-icon ic-icon--lg" style={{ color: integ.color }}>{integ.icon}</span>
+    <div className={`ic-card${connected ? " ic-card--connected" : ""}${isSelected ? " ic-card--selected" : ""}`} {...clickableProps(() => onOpen(connectorId))}
+    >
+      <div className="ic-card-header">
+        <div className="ic-icon-wrap" style={{ background: color + "18", borderColor: color + "33" }}>
+          <span className="ic-icon" style={{ color, fontSize: 13, fontWeight: 700 }}>
+            {_label(connectorId).slice(0, 2).toUpperCase()}
+          </span>
         </div>
-        <div>
-          <h3 className="ic-detail-name">{integ.name}</h3>
-          <span className={`ic-detail-status ic-detail-status--${integ.status}`}>{integ.status}</span>
+        <div className="ic-card-meta">
+          <span className="ic-card-name">{_label(connectorId)}</span>
+          <span className="ic-card-category">{_phaseLabel(connectorId)}</span>
         </div>
-        <button className="ic-detail-close" onClick={onClose}>✕</button>
+        <span className="ic-status-dot" style={{ background: color }} title={connected ? "Connected" : "Not configured"} />
       </div>
-
-      <p className="ic-detail-desc">{integ.desc}</p>
-
-      <div className="ic-detail-section">
-        <p className="ic-detail-label">Permissions</p>
-        <div className="ic-perms-list">
-          {integ.permissions.map(p => (
-            <span key={p} className="ic-perm-chip" style={{ borderColor: integ.color + "33", color: integ.color }}>✓ {p}</span>
-          ))}
-        </div>
-      </div>
-
-      {connected && (
-        <div className="ic-detail-section">
-          <p className="ic-detail-label">Sync status</p>
-          <div className="ic-sync-info">
-            <span className="ic-sync-badge ic-sync-badge--ok">● {integ.syncStatus}</span>
-            {integ.lastSync && <span className="ic-sync-time">Last synced: {integ.lastSync}</span>}
-            {integ.health && <span className="ic-health-badge ic-health-badge--ok">Health: {integ.health}</span>}
-          </div>
-          {integ.repoCount && <p className="ic-detail-sub">{integ.repoCount} repositories connected</p>}
-          {integ.pageCount && <p className="ic-detail-sub">{integ.pageCount} pages indexed</p>}
-        </div>
-      )}
-
-      {!connected && integ.setupUrl && (
-        <div className="ic-detail-section">
-          <p className="ic-detail-label">Setup</p>
-          <p className="ic-detail-sub">OAuth credentials required. Generate them in your provider's developer console.</p>
-        </div>
-      )}
-
-      <div className="ic-detail-actions">
+      <div className="ic-card-footer">
         {connected ? (
-          <>
-            <button className="ic-detail-btn ic-detail-btn--secondary" onClick={() => onRefresh(integ.id)}>Refresh token</button>
-            <button className="ic-detail-btn ic-detail-btn--danger" onClick={() => onDisconnect(integ.id)}>Disconnect</button>
-          </>
+          <span className="ic-sync-text" style={{ color: "var(--success)" }}>✓ Configured</span>
         ) : (
-          <button className="ic-detail-btn ic-detail-btn--primary" onClick={() => onConnect(integ.id)}>
-            Connect {integ.name} →
+          <button className="ic-btn ic-btn--connect" onClick={e => { e.stopPropagation(); onOpen(connectorId); }}>
+            Set up →
           </button>
         )}
       </div>
@@ -230,105 +138,379 @@ function DetailPanel({ integ, onClose, onConnect, onDisconnect, onRefresh }) {
   );
 }
 
-// This panel's plain ids (github, notion, slack, telegram) don't match the
-// namespaced connector ids integrationConnectors.cjs registers under
-// (git:github, msg:slack, msg:telegram) — Notion has no live probe there at
-// all (its status only lives in the OAuth layer). Map what does exist so we
-// can merge in real probe results instead of only OAuth-connection state.
-const CONNECTOR_ID_MAP = {
-  github:   "git:github",
-  slack:    "msg:slack",
-  telegram: "msg:telegram",
-  gmail:    "prod:google_workspace",
-  gdrive:   "prod:google_workspace",
-};
+function SetupForm({ connectorId, credentialTypes, onSaved, onCancel, showToast }) {
+  const [type, setType]   = useState(() => {
+    const likely = _likelyCredentialType(connectorId);
+    return credentialTypes.some(t => t.type === likely) ? likely : (credentialTypes[0]?.type || "api_key");
+  });
+  const [value, setValue] = useState("");
+  const [saving, setSaving] = useState(false);
 
-export default function IntegrationCenter({ onNavigate }) {
-  const [integs,    setInteg]    = useState(INTEGRATIONS);
-  const [category,  setCategory] = useState("all");
-  const [selected,  setSelected] = useState(null);
-  const [toast,     setToast]    = useState(null);
-  const [loading,   setLoading]  = useState(true);
+  const submit = useCallback(async () => {
+    if (!value.trim()) return;
+    setSaving(true);
+    try {
+      const res = await storeSecret(connectorId, type, value.trim());
+      if (res.ok) {
+        showToast(`${_label(connectorId)} credential saved`);
+        onSaved();
+      } else {
+        showToast(res.error || "Save failed");
+      }
+    } finally {
+      setSaving(false);
+    }
+  }, [connectorId, type, value, onSaved, showToast]);
 
-  const showToast = (m) => { setToast(m); setTimeout(() => setToast(null), 2600); };
+  return (
+    <div className="ic-detail-section">
+      <p className="ic-detail-label">Add credential</p>
+      <select className="ic-setup-select" value={type} onChange={e => setType(e.target.value)}>
+        {credentialTypes.map(t => <option key={t.type} value={t.type}>{t.type.replace(/_/g, " ")}</option>)}
+      </select>
+      <textarea
+        className="ic-setup-input"
+        placeholder="Paste credential value…"
+        value={value}
+        onChange={e => setValue(e.target.value)}
+        rows={3}
+      />
+      <div className="ic-detail-actions">
+        <button className="ic-detail-btn ic-detail-btn--secondary" onClick={onCancel}>Cancel</button>
+        <button className="ic-detail-btn ic-detail-btn--primary" disabled={saving || !value.trim()} onClick={submit}>
+          {saving ? "Saving…" : "Save credential"}
+        </button>
+      </div>
+    </div>
+  );
+}
 
-  // Merge live OAuth status + real connector probe results over static definitions
-  const _applyLiveStatus = useCallback((providerStatus, connections, connectorsById) => {
-    setInteg(prev => prev.map(integ => {
-      const pStatus  = providerStatus?.[integ.id];
-      const conn     = connections?.find(c => c.provider === integ.id);
-      const cid      = CONNECTOR_ID_MAP[integ.id];
-      const connector = cid ? connectorsById?.[cid] : null;
-      if (!pStatus && !conn && !connector) return integ;
+export function DetailPanel({ connectorId, connected, credentialTypes, canManageVault, onClose, showToast, onChanged }) {
+  const [adding, setAdding]   = useState(false);
+  const [busy, setBusy]       = useState(false);
+  const [history, setHistory] = useState(null);
+  const [metrics, setMetrics] = useState(null);
+  const [storedType, setStoredType] = useState(null); // the actual credential type on file, if any
+  const [storedRecord, setStoredRecord] = useState(null); // full record (rotationDueAt/lastValidatedAt/lastFailure) — metadata only, never a value
+  const isOAuth = OAUTH_CONNECTORS.has(connectorId);
+  const [confirm, ConfirmUI] = useConfirm();
 
-      const isConnected = !!conn || connector?.status === "CONNECTED";
-      return {
-        ...integ,
-        status:     isConnected ? "connected" : "disconnected",
-        syncStatus: isConnected ? "synced" : null,
-        lastSync:   conn?.updatedAt ? new Date(conn.updatedAt).toLocaleString()
-                   : connector?.lastSuccess ? new Date(connector.lastSuccess).toLocaleString()
-                   : null,
-        health:     isConnected ? "healthy" : (connector?.status === "PARTIAL" ? "degraded" : null),
-      };
-    }));
-  }, []);
+  const refetchStoredState = useCallback(() => {
+    if (!canManageVault) return;
+    getVaultHistory(connectorId).then(r => setHistory(r.ok !== false ? r.history : null));
+    getVaultSecrets({ connectorId }).then(r => {
+      const rec = r.ok !== false ? r.secrets?.[0] : null;
+      setStoredType(rec ? rec.type : null);
+      setStoredRecord(rec || null);
+    });
+  }, [connectorId, canManageVault]);
 
   useEffect(() => {
+    setAdding(false);
+    setMetrics(null);
+    setStoredType(null);
+    setStoredRecord(null);
+    refetchStoredState();
+    if (HEALTH_PROBE_PHASES.has(_phaseOf(connectorId))) {
+      checkIntegrationHealth(connectorId).then(r => setMetrics(r.ok !== false ? r : null)).catch(() => {});
+    }
+  }, [connectorId, canManageVault, refetchStoredState]);
+
+  const handleOAuthConnect = useCallback(async () => {
+    const providerId = OAUTH_PROVIDER_ID[connectorId];
+    if (!providerId) return;
+    track.event("integration_connect_clicked", { id: connectorId });
+    try {
+      const res = await getOAuthUrl(providerId);
+      if (res?.url) window.location.href = res.url;
+      else showToast("OAuth not configured in .env for this provider");
+    } catch { showToast("Connect failed"); }
+  }, [connectorId, showToast]);
+
+  const handleOAuthRefresh = useCallback(async () => {
+    const providerId = OAUTH_PROVIDER_ID[connectorId];
+    if (!providerId) return;
+    setBusy(true);
+    try {
+      await refreshOAuth(providerId);
+      showToast(`${_label(connectorId)} token refreshed`);
+    } catch { showToast("Refresh failed — reconnect may be required"); }
+    finally { setBusy(false); }
+  }, [connectorId, showToast]);
+
+  const handleOAuthDisconnect = useCallback(async () => {
+    // This revokes a real OAuth grant (Google/GitHub/Discord/LinkedIn/
+    // Microsoft/Apple) for the whole organization — previously fired
+    // immediately on click with zero confirmation, the same gap fixed in
+    // ConnectorSetupWizard.jsx's customer-facing Disconnect (Mission 25).
+    const ok = await confirm({
+      title: `Disconnect ${_label(connectorId)}?`,
+      message: `This revokes your organization's ${_label(connectorId)} authorization. Anything Ooplix runs through it will stop working until you reconnect.`,
+      danger: true,
+      confirmLabel: "Disconnect",
+    });
+    if (!ok) return;
+    const providerId = OAUTH_PROVIDER_ID[connectorId];
+    if (!providerId) return;
+    setBusy(true);
+    try {
+      await revokeOAuth(providerId);
+      showToast(`${_label(connectorId)} disconnected`);
+      onChanged();
+    } catch { showToast("Disconnect failed"); }
+    finally { setBusy(false); }
+  }, [connectorId, showToast, onChanged, confirm]);
+
+  const handleValidate = useCallback(async () => {
+    if (!storedType) return;
+    setBusy(true);
+    try {
+      const res = await validateSecret(connectorId, storedType);
+      showToast(res.valid ? "✓ Credential is valid" : (res.error || "Validation failed"));
+    } catch { showToast("Validation failed"); } // Mission 58: try/finally had no catch — matches handleReconnect/handleDisconnect's existing pattern
+    finally { setBusy(false); }
+  }, [connectorId, storedType, showToast]);
+
+  const handleReconnect = useCallback(async () => {
+    setBusy(true);
+    try {
+      const res = await reconnectIntegration(connectorId);
+      showToast(res.ok !== false ? "Reconnected" : (res.error || "Reconnect failed"));
+      onChanged();
+    } finally { setBusy(false); }
+  }, [connectorId, showToast, onChanged]);
+
+  const handleDelete = useCallback(async (type) => {
+    // Permanently deletes a real stored credential from the vault — for 54
+    // connectors this can be a production Stripe/AWS/database secret —
+    // previously fired immediately on click with zero confirmation, the same
+    // gap fixed in ConnectorSetupWizard.jsx's customer-facing Disconnect
+    // (Mission 25). Reusing that identical useConfirm pattern.
+    const ok = await confirm({
+      title: `Remove ${_label(connectorId)} credential?`,
+      message: `This permanently deletes the stored ${type.replace(/_/g, " ")} credential for ${_label(connectorId)}. Anything Ooplix runs through it will stop working until you add a new one.`,
+      danger: true,
+      confirmLabel: "Remove",
+    });
+    if (!ok) return;
+    setBusy(true);
+    try {
+      await deleteSecret(connectorId, type);
+      showToast(`${_label(connectorId)} credential removed`);
+      refetchStoredState();
+      onChanged();
+    } finally { setBusy(false); }
+  }, [connectorId, showToast, onChanged, refetchStoredState, confirm]);
+
+  return (
+    <div className="ic-detail">
+      {ConfirmUI}
+      <div className="ic-detail-header">
+        <div className="ic-icon-wrap ic-icon-wrap--lg">
+          <span className="ic-icon ic-icon--lg">{_label(connectorId).slice(0, 2).toUpperCase()}</span>
+        </div>
+        <div>
+          <h3 className="ic-detail-name">{_label(connectorId)}</h3>
+          <span className={`ic-detail-status ic-detail-status--${connected ? "connected" : "disconnected"}`}>
+            {connected ? "configured" : "not configured"}
+          </span>
+        </div>
+        <button className="ic-detail-close" onClick={onClose}>✕</button>
+      </div>
+
+      <p className="ic-detail-desc">{_phaseLabel(connectorId)} · {connectorId}</p>
+
+      {metrics && (
+        <div className="ic-detail-section">
+          <p className="ic-detail-label">Health</p>
+          <div className="ic-sync-info">
+            <span className={`ic-sync-badge ic-sync-badge--${metrics.status === "CONNECTED" ? "ok" : "warn"}`}>
+              ● {metrics.status || "unknown"}
+            </span>
+            {metrics.syncCount != null && <span className="ic-sync-time">{metrics.syncCount} syncs</span>}
+          </div>
+        </div>
+      )}
+      {!HEALTH_PROBE_PHASES.has(_phaseOf(connectorId)) && (
+        <div className="ic-detail-section">
+          <p className="ic-detail-label">Health</p>
+          <p className="ic-detail-sub">Live health checks aren't wired up for {_phaseLabel(connectorId)} connectors yet — credential status only.</p>
+        </div>
+      )}
+
+      {canManageVault && storedRecord && (
+        <div className="ic-detail-section">
+          <p className="ic-detail-label">Credential status</p>
+          <p className="ic-detail-sub">
+            Last verified: {storedRecord.lastValidatedAt ? new Date(storedRecord.lastValidatedAt).toLocaleString() : "never"}
+          </p>
+          {storedRecord.rotationDueAt && (
+            <p className="ic-detail-sub">
+              Rotation due: {new Date(storedRecord.rotationDueAt).toLocaleDateString()}
+              {new Date(storedRecord.rotationDueAt) < new Date() && <span style={{ color: 'var(--danger)', marginLeft: 6 }}>⚠ overdue</span>}
+            </p>
+          )}
+          {storedRecord.lastFailure?.reason && (
+            <p className="ic-detail-sub" style={{ color: 'var(--danger)' }}>
+              Last failure: {storedRecord.lastFailure.reason} ({storedRecord.lastFailure.ts ? new Date(storedRecord.lastFailure.ts).toLocaleString() : ""})
+            </p>
+          )}
+        </div>
+      )}
+
+      {canManageVault && history?.length > 0 && (
+        <div className="ic-detail-section">
+          <p className="ic-detail-label">Recent activity</p>
+          {history.slice(0, 5).map((h, i) => (
+            <p key={i} className="ic-detail-sub">{h.action} · {new Date(h.ts || h.timestamp).toLocaleString()}</p>
+          ))}
+        </div>
+      )}
+
+      <div className="ic-detail-actions">
+        {isOAuth ? (
+          connected ? (
+            <>
+              <button className="ic-detail-btn ic-detail-btn--secondary" disabled={busy} onClick={handleOAuthRefresh}>
+                Refresh token
+              </button>
+              <button className="ic-detail-btn ic-detail-btn--danger" disabled={busy} onClick={handleOAuthDisconnect}>
+                Disconnect
+              </button>
+            </>
+          ) : (
+            <button className="ic-detail-btn ic-detail-btn--primary" onClick={handleOAuthConnect}>
+              Connect {_label(connectorId)} →
+            </button>
+          )
+        ) : canManageVault ? (
+          adding ? (
+            <SetupForm
+              connectorId={connectorId}
+              credentialTypes={credentialTypes}
+              onSaved={() => { setAdding(false); refetchStoredState(); onChanged(); }}
+              onCancel={() => setAdding(false)}
+              showToast={showToast}
+            />
+          ) : (
+            <>
+              {connected && storedType && (
+                <button className="ic-detail-btn ic-detail-btn--secondary" disabled={busy} onClick={handleValidate}>
+                  Validate
+                </button>
+              )}
+              {connected && HEALTH_PROBE_PHASES.has(_phaseOf(connectorId)) && (
+                <button className="ic-detail-btn ic-detail-btn--secondary" disabled={busy} onClick={handleReconnect}>
+                  Check health
+                </button>
+              )}
+              {connected && storedType && (
+                <button
+                  className="ic-detail-btn ic-detail-btn--danger"
+                  disabled={busy}
+                  onClick={() => handleDelete(storedType)}
+                >
+                  Remove
+                </button>
+              )}
+              <button className="ic-detail-btn ic-detail-btn--primary" onClick={() => setAdding(true)}>
+                {connected ? "Rotate / add credential" : "Set up"}
+              </button>
+            </>
+          )
+        ) : (
+          <p className="ic-detail-sub">Credential management requires operator access.</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function IntegrationCenter({ onNavigate }) {
+  const [dashboard, setDashboard] = useState(null);
+  const [credTypes, setCredTypes] = useState([]);
+  const [liveStatus, setLiveStatus] = useState({});
+  const [oauthConnected, setOauthConnected] = useState(new Set());
+  const [canManageVault, setCanManageVault] = useState(true);
+  const [phase, setPhase] = useState("all");
+  const [selected, setSelected] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const showToast = useCallback((m) => { setToast(m); setTimeout(() => setToast(null), 2800); }, []);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const [vd, ct, oauthConns, allInteg] = await Promise.all([
+      getVaultDashboard(),
+      getCredentialTypes(),
+      listOAuthConnections().catch(() => null),
+      getAllIntegrations().catch(() => null),
+    ]);
+
+    if (vd.status === 401 || vd.status === 403) {
+      // Expected for non-operator roles — vault management is hidden, not an error.
+      setCanManageVault(false);
+      setDashboard(null);
+      setError(null);
+    } else if (vd.ok !== false) {
+      setDashboard(vd);
+      setError(null);
+    } else {
+      // Mission 46 P1: a genuine backend failure (500, timeout, network
+      // error — anything that isn't 401/403) previously fell through with
+      // no branch at all: dashboard stayed null, loading still flipped to
+      // false, and allConnectorIds fell back to every known connector id
+      // marked "missing" — rendering a false "0 of 54 configured" screen
+      // indistinguishable from a genuinely fresh account.
+      setDashboard(null);
+      setError(vd.error || "Failed to load connector dashboard");
+    }
+    if (ct.ok !== false) setCredTypes(ct.types || []);
+
+    const status = {};
+    for (const c of allInteg?.connectors || []) status[c.id] = c.status;
+    setLiveStatus(status);
+
+    // OAuth "connected" means the current user completed authorization, not
+    // just that the OAuth app has client id/secret configured — vault's
+    // env-based check only proves the latter, so override with the real
+    // per-user connection list for the 6 OAuth-flow connectors.
+    const connectedProviders = new Set((oauthConns?.connections || []).map(c => c.provider));
+    const oauthIds = new Set();
+    for (const [connectorId, providerId] of Object.entries(OAUTH_PROVIDER_ID)) {
+      if (connectedProviders.has(providerId)) oauthIds.add(connectorId);
+    }
+    setOauthConnected(oauthIds);
+
     track.event("integration_center_viewed");
-    Promise.all([getOAuthProviderStatus(), listOAuthConnections(), getIntegrationsStatus()])
-      .then(([ps, cs, is]) => {
-        const connectorsById = {};
-        for (const c of is?.connectors || []) connectorsById[c.id] = c;
-        _applyLiveStatus(ps?.providers, cs?.connections, connectorsById);
-      })
-      .catch(() => {}) // backend may not have OAuth keys — fail silently, show static state
-      .finally(() => setLoading(false));
-  }, [_applyLiveStatus]);
+    setLoading(false);
+  }, []);
 
-  const handleConnect = useCallback(async (id) => {
-    track.event("integration_connect_clicked", { id });
-    try {
-      const res = await getOAuthUrl(id);
-      if (res?.url) {
-        // Redirect to provider OAuth page; callback will return to app
-        window.location.href = res.url;
-      } else {
-        // OAuth not configured — show instructional toast
-        const name = INTEGRATIONS.find(i => i.id === id)?.name || id;
-        showToast(`${name}: OAuth credentials not yet configured in .env`);
-      }
-    } catch {
-      showToast("Connect failed — check server configuration");
+  useEffect(() => { load(); }, [load]);
+
+  const allConnectorIds = useMemo(() => {
+    if (!dashboard) return Object.keys(CONNECTOR_NAME).sort();
+    return [...dashboard.connected, ...dashboard.missing].sort();
+  }, [dashboard]);
+
+  const connectedSet = useMemo(() => {
+    const set = new Set(dashboard?.connected || []);
+    // OAuth connectors: real per-user auth state wins over vault's "app configured" check.
+    for (const id of Object.keys(OAUTH_PROVIDER_ID)) {
+      if (oauthConnected.has(id)) set.add(id); else set.delete(id);
     }
-  }, []);
+    return set;
+  }, [dashboard, oauthConnected]);
 
-  const handleRefresh = useCallback(async (id) => {
-    track.event("integration_refresh_clicked", { id });
-    try {
-      await refreshOAuth(id);
-      showToast(`${INTEGRATIONS.find(i=>i.id===id)?.name} token refreshed`);
-    } catch {
-      showToast("Refresh failed — reconnect may be required");
-    }
-  }, []);
+  const phases = useMemo(() => {
+    const set = new Set(allConnectorIds.map(_phaseOf));
+    return [{ id: "all", label: "All" }, ...[...set].sort().map(p => ({ id: p, label: PHASE_LABEL[p] || p }))];
+  }, [allConnectorIds]);
 
-  const handleDisconnect = useCallback(async (id) => {
-    try {
-      await revokeOAuth(id);
-    } catch {} // best-effort revoke
-    setInteg(prev => prev.map(i => i.id === id
-      ? { ...i, status: "disconnected", syncStatus: null, lastSync: null, health: null }
-      : i
-    ));
-    setSelected(null);
-    showToast(`${INTEGRATIONS.find(i=>i.id===id)?.name} disconnected`);
-    track.event("integration_disconnected", { id });
-  }, []);
-
-  const visible = integs.filter(i => category === "all" || i.category === category);
-  const connectedCount = integs.filter(i => i.status === "connected").length;
-  const selectedInteg  = selected ? integs.find(i => i.id === selected) : null;
+  const visible = phase === "all" ? allConnectorIds : allConnectorIds.filter(id => _phaseOf(id) === phase);
+  const connectedCount = connectedSet.size;
 
   return (
     <div className="integration-center page-enter">
@@ -336,62 +518,77 @@ export default function IntegrationCenter({ onNavigate }) {
 
       <div className="ic-header">
         <div>
-          <h1 className="ic-title">Integration OS</h1>
-          <p className="ic-subtitle">Connect external tools, manage permissions, and monitor sync health.</p>
+          <h1 className="ic-title">Connector Center</h1>
+          <p className="ic-subtitle">
+            {canManageVault
+              ? "Set up credentials, monitor health, and manage every connected service."
+              : "Connector health overview. Credential management requires operator access."}
+          </p>
         </div>
-        <div className="ic-header-stat">
-          <span className="ic-stat-num" style={{ color: connectedCount > 0 ? "var(--success)" : "var(--text-faint)" }}>
-            {connectedCount}
-          </span>
-          <span className="ic-stat-label">Connected</span>
-        </div>
+        {!error && (
+          <div className="ic-header-stat">
+            <span className="ic-stat-num" style={{ color: connectedCount > 0 ? "var(--success)" : "var(--text-faint)" }}>
+              {connectedCount}
+            </span>
+            <span className="ic-stat-label">of {allConnectorIds.length} configured</span>
+          </div>
+        )}
       </div>
 
-      {/* Category filter */}
       <div className="ic-cats">
-        {CATEGORIES.map(c => (
+        {phases.map(p => (
           <button
-            key={c.id}
-            className={`ic-cat${category === c.id ? " ic-cat--active" : ""}`}
-            onClick={() => setCategory(c.id)}
-          >{c.label}</button>
+            key={p.id}
+            className={`ic-cat${phase === p.id ? " ic-cat--active" : ""}`}
+            onClick={() => setPhase(p.id)}
+          >{p.label}</button>
         ))}
       </div>
 
-      {/* Health banner when all disconnected */}
-      {!loading && connectedCount === 0 && (
+      {!loading && dashboard?.health && (dashboard.health.overdue > 0 || dashboard.health.expiring > 0) && (
         <div className="ic-banner">
-          <span className="ic-banner-icon">◎</span>
+          <span className="ic-banner-icon">⚠</span>
           <div>
-            <p className="ic-banner-title">No integrations connected</p>
-            <p className="ic-banner-sub">Connect tools to unlock automated syncing, knowledge ingestion, and cross-platform workflows.</p>
+            <p className="ic-banner-title">Credential rotation needed</p>
+            <p className="ic-banner-sub">
+              {dashboard.health.overdue > 0 && `${dashboard.health.overdue} overdue`}
+              {dashboard.health.overdue > 0 && dashboard.health.expiring > 0 && " · "}
+              {dashboard.health.expiring > 0 && `${dashboard.health.expiring} expiring soon`}
+            </p>
           </div>
         </div>
       )}
 
       <div className="ic-layout">
-        {/* Grid */}
         <div className="ic-grid">
-          {visible.map(i => (
-            <IntegCard
-              key={i.id}
-              integ={i}
-              isSelected={selected === i.id}
-              onConnect={handleConnect}
-              onDisconnect={handleDisconnect}
-              onViewDetail={id => setSelected(prev => prev === id ? null : id)}
+          {loading ? (
+            <p className="ic-detail-sub">Loading connectors…</p>
+          ) : error ? (
+            <div className="ic-detail-sub" style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start", padding: "20px 4px" }}>
+              <p style={{ margin: 0, color: "var(--danger, #e5484d)" }}>Couldn't load connector status: {error}</p>
+              <button className="ic-detail-btn ic-detail-btn--secondary" onClick={load}>Retry</button>
+            </div>
+          ) : visible.map(id => (
+            <ConnectorCard
+              key={id}
+              connectorId={id}
+              connected={connectedSet.has(id)}
+              health={liveStatus[id]}
+              isSelected={selected === id}
+              onOpen={cid => setSelected(prev => prev === cid ? null : cid)}
             />
           ))}
         </div>
 
-        {/* Detail panel */}
-        {selectedInteg && (
+        {selected && (
           <DetailPanel
-            integ={selectedInteg}
+            connectorId={selected}
+            connected={connectedSet.has(selected)}
+            credentialTypes={credTypes}
+            canManageVault={canManageVault}
             onClose={() => setSelected(null)}
-            onConnect={handleConnect}
-            onDisconnect={handleDisconnect}
-            onRefresh={handleRefresh}
+            showToast={showToast}
+            onChanged={load}
           />
         )}
       </div>

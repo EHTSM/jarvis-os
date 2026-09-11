@@ -2,57 +2,74 @@
 /**
  * Developer AI Operating System — repos, projects, issues, builds, deployments, summaries.
  *
+ * MASTER RECOVERY (2026-08-15, C10-003): this module had zero orgId concept
+ * anywhere — C.10's audit reproduced live that after fixing the missing
+ * requireAuth gate on /dev/*, any authenticated user of ANY organization
+ * still saw every OTHER organization's repos/projects/issues/builds/
+ * deployments. Every create function below now accepts and stores orgId;
+ * every list/get/search function now requires it and filters by it. Existing
+ * pre-recovery records (created before this fix) have no orgId field at
+ * all — they are intentionally NOT silently assigned to whichever org
+ * happens to call first. See _isOwnedBy() below: a record with no orgId is
+ * only visible to a caller who explicitly passes includeUnowned:true (used
+ * once, by the one-time migration script), never through normal API use.
+ * This mirrors the "never fall back to all tenants'" pattern already
+ * proven in growthOS.cjs.
+ *
  * Entry points:
  *
  * Repository Management:
  *   createRepo(opts)              — register a repository
- *   updateRepo(repoId, patch)     — update repo metadata
- *   archiveRepo(repoId)           — soft-archive
- *   getRepo(repoId)
- *   listRepos(opts)               — filter by language, status, tag, limit
- *   searchRepos(query)            — keyword search across name / description
+ *   updateRepo(orgId, repoId, patch)     — update repo metadata
+ *   archiveRepo(orgId, repoId)           — soft-archive
+ *   getRepo(orgId, repoId)
+ *   listRepos(orgId, opts)               — filter by language, status, tag, limit
+ *   searchRepos(orgId, query)            — keyword search across name / description
  *
  * Project Management:
  *   createProject(opts)           — create an engineering project
- *   updateProject(projectId, patch)
- *   completeProject(projectId, opts)
- *   archiveProject(projectId)
- *   getProject(projectId)
- *   listProjects(opts)            — filter by status, repoId, tag, limit
+ *   updateProject(orgId, projectId, patch)
+ *   completeProject(orgId, projectId, opts)
+ *   archiveProject(orgId, projectId)
+ *   getProject(orgId, projectId)
+ *   listProjects(orgId, opts)            — filter by status, repoId, tag, limit
  *
  * Issue Tracking:
  *   createIssue(opts)             — file an issue (bug / feature / task / chore)
- *   updateIssue(issueId, patch)
- *   assignIssue(issueId, assignee)
- *   closeIssue(issueId, opts)     — mark resolved, records resolution
- *   reopenIssue(issueId)
- *   deleteIssue(issueId)          — soft-delete
- *   getIssue(issueId)
- *   listIssues(opts)              — filter by status, type, priority, repoId, assignee, label
+ *   updateIssue(orgId, issueId, patch)
+ *   assignIssue(orgId, issueId, assignee)
+ *   closeIssue(orgId, issueId, opts)     — mark resolved, records resolution
+ *   reopenIssue(orgId, issueId)
+ *   deleteIssue(orgId, issueId)          — soft-delete
+ *   getIssue(orgId, issueId)
+ *   listIssues(orgId, opts)              — filter by status, type, priority, repoId, assignee, label
  *
  * Build Tracking:
  *   recordBuild(opts)             — log a build event
- *   updateBuild(buildId, patch)   — update status / outcome
- *   getBuild(buildId)
- *   listBuilds(opts)              — filter by status, repoId, branch, limit
- *   getBuildStats(opts)           — success rate, avg duration, failure breakdown
+ *   updateBuild(orgId, buildId, patch)   — update status / outcome
+ *   getBuild(orgId, buildId)
+ *   listBuilds(orgId, opts)              — filter by status, repoId, branch, limit
+ *   getBuildStats(orgId, opts)           — success rate, avg duration, failure breakdown
  *
  * Deployment Tracking:
  *   recordDeployment(opts)        — log a deployment event
- *   updateDeployment(deployId, patch)
- *   rollbackDeployment(deployId, opts) — mark rolled-back
- *   getDeployment(deployId)
- *   listDeployments(opts)         — filter by status, repoId, env, limit
- *   getDeploymentStats(opts)      — frequency, rollback rate, MTTR
+ *   updateDeployment(orgId, deployId, patch)
+ *   rollbackDeployment(orgId, deployId, opts) — mark rolled-back
+ *   getDeployment(orgId, deployId)
+ *   listDeployments(orgId, opts)         — filter by status, repoId, env, limit
+ *   getDeploymentStats(orgId, opts)      — frequency, rollback rate, MTTR
  *
- * Summaries & Dashboard:
- *   getEngineeringDashboard()     — live snapshot
- *   getDailySummary(date)         — daily engineering activity
- *   getWeeklySummary(weekStart)   — weekly roll-up
- *   getVelocityMetrics(opts)      — issues closed / builds / deploys over time window
+ * Summaries & Dashboard (all orgId-scoped):
+ *   getEngineeringDashboard(orgId)     — live snapshot
+ *   getDailySummary(orgId, date)       — daily engineering activity
+ *   getWeeklySummary(orgId, weekStart) — weekly roll-up
+ *   getVelocityMetrics(orgId, opts)    — issues closed / builds / deploys over time window
  *
  * Stats:
- *   getStats()
+ *   getStats(orgId)
+ *
+ * Migration (one-time, operator-invoked, not reachable via any route):
+ *   backfillUnownedRecords(orgId)  — see comment above _backfillUnownedRecords
  *
  * Reuses (all fail-safe):
  *   goalEngine.listGoals({ type: "development" })  — engineering goals on dashboard
@@ -73,27 +90,27 @@
  *   dev-deployments.json    — deployment records (max 1000)
  *
  * Repo shape:
- *   { repoId, name, description, language, defaultBranch, remoteUrl,
+ *   { repoId, orgId, name, description, language, defaultBranch, remoteUrl,
  *     status, tags[], createdAt, updatedAt, archivedAt? }
  *
  * Project shape:
- *   { projectId, name, description, repoId?, status, priority,
+ *   { projectId, orgId, name, description, repoId?, status, priority,
  *     tags[], assignees[], goalId?,
  *     createdAt, updatedAt, completedAt?, archivedAt? }
  *
  * Issue shape:
- *   { issueId, title, description, type, status, priority, severity,
+ *   { issueId, orgId, title, description, type, status, priority, severity,
  *     repoId?, projectId?, assignee, labels[], tags[],
  *     createdAt, updatedAt, closedAt?, deletedAt?,
  *     resolution?, closedBy? }
  *
  * Build shape:
- *   { buildId, repoId, branch, commit, status, trigger,
+ *   { buildId, orgId, repoId, branch, commit, status, trigger,
  *     startedAt, finishedAt?, durationMs?, outcome,
  *     log?, failureReason?, tags[] }
  *
  * Deployment shape:
- *   { deployId, repoId, projectId?, buildId?,
+ *   { deployId, orgId, repoId, projectId?, buildId?,
  *     environment, version, status, deployedBy,
  *     startedAt, finishedAt?, durationMs?,
  *     rollbackOf?, rolledBackAt?, rollbackReason?,
@@ -148,6 +165,17 @@ function _readJson(name) {
     catch { return null; }
 }
 
+// C10-003 recovery: a record "belongs" to orgId only if its own orgId field
+// matches exactly. A record with orgId===undefined (pre-recovery legacy data)
+// is NEVER matched by a real orgId query — it is invisible until explicitly
+// migrated via backfillUnownedRecords(). This is the same "never fall back
+// to all tenants'" contract growthOS.cjs already uses.
+function _ownedBy(item, orgId) { return item.orgId === orgId; }
+
+function _requireOrgId(orgId, fnName) {
+    if (!orgId) throw new Error(`${fnName}: orgId is required`);
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // REPOSITORY MANAGEMENT
 // ═══════════════════════════════════════════════════════════════════
@@ -155,6 +183,7 @@ function _readJson(name) {
 /**
  * Register a repository.
  * @param {object} opts
+ * @param {string}  opts.orgId        REQUIRED — owning organization
  * @param {string}  opts.name
  * @param {string}  [opts.description]
  * @param {string}  [opts.language]     primary language
@@ -162,11 +191,13 @@ function _readJson(name) {
  * @param {string}  [opts.remoteUrl]
  * @param {string[]} [opts.tags]
  */
-function createRepo({ name, description = "", language = "", defaultBranch = "main",
+function createRepo({ orgId, name, description = "", language = "", defaultBranch = "main",
                       remoteUrl = "", tags = [] } = {}) {
+    if (!orgId) return { ok: false, error: "orgId required" };
     if (!name) return { ok: false, error: "name required" };
     const repo = {
         repoId:        _uid("repo"),
+        orgId,
         name:          name.slice(0, 200),
         description:   description.slice(0, 500),
         language,
@@ -184,9 +215,10 @@ function createRepo({ name, description = "", language = "", defaultBranch = "ma
     return repo;
 }
 
-function updateRepo(repoId, patch = {}) {
+function updateRepo(orgId, repoId, patch = {}) {
+    _requireOrgId(orgId, "updateRepo");
     const all = _load(REPOS_PATH);
-    const idx = all.findIndex(r => r.repoId === repoId);
+    const idx = all.findIndex(r => r.repoId === repoId && _ownedBy(r, orgId));
     if (idx === -1) return { ok: false, error: "repo_not_found" };
     const allowed = ["name","description","language","defaultBranch","remoteUrl","status","tags"];
     for (const k of allowed) {
@@ -197,9 +229,10 @@ function updateRepo(repoId, patch = {}) {
     return { ok: true, repo: all[idx] };
 }
 
-function archiveRepo(repoId) {
+function archiveRepo(orgId, repoId) {
+    _requireOrgId(orgId, "archiveRepo");
     const all = _load(REPOS_PATH);
-    const idx = all.findIndex(r => r.repoId === repoId);
+    const idx = all.findIndex(r => r.repoId === repoId && _ownedBy(r, orgId));
     if (idx === -1) return { ok: false, error: "repo_not_found" };
     all[idx].status     = "archived";
     all[idx].archivedAt = _now();
@@ -208,22 +241,26 @@ function archiveRepo(repoId) {
     return { ok: true, repo: all[idx] };
 }
 
-function getRepo(repoId) {
-    return _load(REPOS_PATH).find(r => r.repoId === repoId) || null;
+function getRepo(orgId, repoId) {
+    _requireOrgId(orgId, "getRepo");
+    return _load(REPOS_PATH).find(r => r.repoId === repoId && _ownedBy(r, orgId)) || null;
 }
 
-function listRepos({ language, status, tags, limit = 50 } = {}) {
-    let items = _load(REPOS_PATH);
+function listRepos(orgId, { language, status, tags, limit = 50 } = {}) {
+    _requireOrgId(orgId, "listRepos");
+    let items = _load(REPOS_PATH).filter(r => _ownedBy(r, orgId));
     if (language) items = items.filter(r => r.language.toLowerCase() === language.toLowerCase());
     if (status)   items = items.filter(r => r.status === status);
     if (tags?.length) items = items.filter(r => tags.some(t => r.tags?.includes(t)));
     return items.slice(0, limit);
 }
 
-function searchRepos(query, { limit = 20 } = {}) {
+function searchRepos(orgId, query, { limit = 20 } = {}) {
+    _requireOrgId(orgId, "searchRepos");
     if (!query) return [];
     const q = query.toLowerCase();
     return _load(REPOS_PATH)
+        .filter(r => _ownedBy(r, orgId))
         .filter(r => r.status !== "archived")
         .filter(r =>
             r.name.toLowerCase().includes(q) ||
@@ -240,6 +277,7 @@ function searchRepos(query, { limit = 20 } = {}) {
 /**
  * Create an engineering project.
  * @param {object} opts
+ * @param {string}  opts.orgId        REQUIRED — owning organization
  * @param {string}  opts.name
  * @param {string}  [opts.description]
  * @param {string}  [opts.repoId]
@@ -249,11 +287,13 @@ function searchRepos(query, { limit = 20 } = {}) {
  * @param {string}  [opts.goalId]     link to a goal-engine goal
  * @param {string}  [opts.dueDate]
  */
-function createProject({ name, description = "", repoId, priority = "medium",
+function createProject({ orgId, name, description = "", repoId, priority = "medium",
                           assignees = [], tags = [], goalId, dueDate } = {}) {
+    if (!orgId) return { ok: false, error: "orgId required" };
     if (!name) return { ok: false, error: "name required" };
     const proj = {
         projectId:   _uid("proj"),
+        orgId,
         name:        name.slice(0, 200),
         description: description.slice(0, 1000),
         repoId:      repoId    || null,
@@ -274,9 +314,10 @@ function createProject({ name, description = "", repoId, priority = "medium",
     return proj;
 }
 
-function updateProject(projectId, patch = {}) {
+function updateProject(orgId, projectId, patch = {}) {
+    _requireOrgId(orgId, "updateProject");
     const all = _load(PROJS_PATH);
-    const idx = all.findIndex(p => p.projectId === projectId);
+    const idx = all.findIndex(p => p.projectId === projectId && _ownedBy(p, orgId));
     if (idx === -1) return { ok: false, error: "project_not_found" };
     const allowed = ["name","description","repoId","status","priority","assignees","tags","goalId","dueDate"];
     for (const k of allowed) {
@@ -287,9 +328,10 @@ function updateProject(projectId, patch = {}) {
     return { ok: true, project: all[idx] };
 }
 
-function completeProject(projectId, { notes = "" } = {}) {
+function completeProject(orgId, projectId, { notes = "" } = {}) {
+    _requireOrgId(orgId, "completeProject");
     const all = _load(PROJS_PATH);
-    const idx = all.findIndex(p => p.projectId === projectId);
+    const idx = all.findIndex(p => p.projectId === projectId && _ownedBy(p, orgId));
     if (idx === -1) return { ok: false, error: "project_not_found" };
     if (all[idx].status === "completed") return { ok: false, error: "already_completed" };
     all[idx].status      = "completed";
@@ -300,9 +342,10 @@ function completeProject(projectId, { notes = "" } = {}) {
     return { ok: true, project: all[idx] };
 }
 
-function archiveProject(projectId) {
+function archiveProject(orgId, projectId) {
+    _requireOrgId(orgId, "archiveProject");
     const all = _load(PROJS_PATH);
-    const idx = all.findIndex(p => p.projectId === projectId);
+    const idx = all.findIndex(p => p.projectId === projectId && _ownedBy(p, orgId));
     if (idx === -1) return { ok: false, error: "project_not_found" };
     all[idx].status     = "archived";
     all[idx].archivedAt = _now();
@@ -311,12 +354,14 @@ function archiveProject(projectId) {
     return { ok: true, project: all[idx] };
 }
 
-function getProject(projectId) {
-    return _load(PROJS_PATH).find(p => p.projectId === projectId) || null;
+function getProject(orgId, projectId) {
+    _requireOrgId(orgId, "getProject");
+    return _load(PROJS_PATH).find(p => p.projectId === projectId && _ownedBy(p, orgId)) || null;
 }
 
-function listProjects({ status, repoId, tags, priority, limit = 50 } = {}) {
-    let items = _load(PROJS_PATH);
+function listProjects(orgId, { status, repoId, tags, priority, limit = 50 } = {}) {
+    _requireOrgId(orgId, "listProjects");
+    let items = _load(PROJS_PATH).filter(p => _ownedBy(p, orgId));
     if (status)   items = items.filter(p => p.status === status);
     if (repoId)   items = items.filter(p => p.repoId === repoId);
     if (priority) items = items.filter(p => p.priority === priority);
@@ -331,6 +376,7 @@ function listProjects({ status, repoId, tags, priority, limit = 50 } = {}) {
 /**
  * File an issue.
  * @param {object} opts
+ * @param {string}  opts.orgId        REQUIRED — owning organization
  * @param {string}  opts.title
  * @param {string}  [opts.description]
  * @param {string}  [opts.type]       "bug"|"feature"|"task"|"chore"|"incident"
@@ -342,12 +388,14 @@ function listProjects({ status, repoId, tags, priority, limit = 50 } = {}) {
  * @param {string[]} [opts.labels]
  * @param {string[]} [opts.tags]
  */
-function createIssue({ title, description = "", type = "task", priority = "medium",
+function createIssue({ orgId, title, description = "", type = "task", priority = "medium",
                         severity = "minor", repoId, projectId, assignee = "",
                         labels = [], tags = [] } = {}) {
+    if (!orgId) return { ok: false, error: "orgId required" };
     if (!title) return { ok: false, error: "title required" };
     const issue = {
         issueId:     _uid("iss"),
+        orgId,
         title:       title.slice(0, 300),
         description: description.slice(0, 2000),
         type,
@@ -372,9 +420,10 @@ function createIssue({ title, description = "", type = "task", priority = "mediu
     return issue;
 }
 
-function updateIssue(issueId, patch = {}) {
+function updateIssue(orgId, issueId, patch = {}) {
+    _requireOrgId(orgId, "updateIssue");
     const all = _load(ISSUES_PATH);
-    const idx = all.findIndex(i => i.issueId === issueId);
+    const idx = all.findIndex(i => i.issueId === issueId && _ownedBy(i, orgId));
     if (idx === -1) return { ok: false, error: "issue_not_found" };
     const allowed = ["title","description","type","status","priority","severity","repoId","projectId","assignee","labels","tags","resolution"];
     for (const k of allowed) {
@@ -385,9 +434,10 @@ function updateIssue(issueId, patch = {}) {
     return { ok: true, issue: all[idx] };
 }
 
-function assignIssue(issueId, assignee) {
+function assignIssue(orgId, issueId, assignee) {
+    _requireOrgId(orgId, "assignIssue");
     const all = _load(ISSUES_PATH);
-    const idx = all.findIndex(i => i.issueId === issueId);
+    const idx = all.findIndex(i => i.issueId === issueId && _ownedBy(i, orgId));
     if (idx === -1) return { ok: false, error: "issue_not_found" };
     all[idx].assignee  = assignee;
     all[idx].status    = all[idx].status === "open" ? "in-progress" : all[idx].status;
@@ -396,9 +446,10 @@ function assignIssue(issueId, assignee) {
     return { ok: true, issue: all[idx] };
 }
 
-function closeIssue(issueId, { resolution = "", closedBy = "" } = {}) {
+function closeIssue(orgId, issueId, { resolution = "", closedBy = "" } = {}) {
+    _requireOrgId(orgId, "closeIssue");
     const all = _load(ISSUES_PATH);
-    const idx = all.findIndex(i => i.issueId === issueId);
+    const idx = all.findIndex(i => i.issueId === issueId && _ownedBy(i, orgId));
     if (idx === -1) return { ok: false, error: "issue_not_found" };
     if (all[idx].status === "closed") return { ok: false, error: "already_closed" };
     all[idx].status     = "closed";
@@ -410,9 +461,10 @@ function closeIssue(issueId, { resolution = "", closedBy = "" } = {}) {
     return { ok: true, issue: all[idx] };
 }
 
-function reopenIssue(issueId) {
+function reopenIssue(orgId, issueId) {
+    _requireOrgId(orgId, "reopenIssue");
     const all = _load(ISSUES_PATH);
-    const idx = all.findIndex(i => i.issueId === issueId);
+    const idx = all.findIndex(i => i.issueId === issueId && _ownedBy(i, orgId));
     if (idx === -1) return { ok: false, error: "issue_not_found" };
     all[idx].status    = "open";
     all[idx].closedAt  = null;
@@ -421,9 +473,10 @@ function reopenIssue(issueId) {
     return { ok: true, issue: all[idx] };
 }
 
-function deleteIssue(issueId) {
+function deleteIssue(orgId, issueId) {
+    _requireOrgId(orgId, "deleteIssue");
     const all = _load(ISSUES_PATH);
-    const idx = all.findIndex(i => i.issueId === issueId);
+    const idx = all.findIndex(i => i.issueId === issueId && _ownedBy(i, orgId));
     if (idx === -1) return { ok: false, error: "issue_not_found" };
     all[idx].status    = "deleted";
     all[idx].deletedAt = _now();
@@ -432,12 +485,14 @@ function deleteIssue(issueId) {
     return { ok: true };
 }
 
-function getIssue(issueId) {
-    return _load(ISSUES_PATH).find(i => i.issueId === issueId) || null;
+function getIssue(orgId, issueId) {
+    _requireOrgId(orgId, "getIssue");
+    return _load(ISSUES_PATH).find(i => i.issueId === issueId && _ownedBy(i, orgId)) || null;
 }
 
-function listIssues({ status, type, priority, severity, repoId, projectId, assignee, label, limit = 50 } = {}) {
-    let items = _load(ISSUES_PATH).filter(i => i.status !== "deleted");
+function listIssues(orgId, { status, type, priority, severity, repoId, projectId, assignee, label, limit = 50 } = {}) {
+    _requireOrgId(orgId, "listIssues");
+    let items = _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.status !== "deleted");
     if (status)    items = items.filter(i => i.status    === status);
     if (type)      items = items.filter(i => i.type      === type);
     if (priority)  items = items.filter(i => i.priority  === priority);
@@ -456,6 +511,7 @@ function listIssues({ status, type, priority, severity, repoId, projectId, assig
 /**
  * Record a build event.
  * @param {object} opts
+ * @param {string}  opts.orgId        REQUIRED — owning organization
  * @param {string}  opts.repoId
  * @param {string}  [opts.branch]
  * @param {string}  [opts.commit]    short SHA
@@ -466,12 +522,14 @@ function listIssues({ status, type, priority, severity, repoId, projectId, assig
  * @param {string}  [opts.log]        short excerpt
  * @param {string[]} [opts.tags]
  */
-function recordBuild({ repoId, branch = "main", commit = "", trigger = "push",
+function recordBuild({ orgId, repoId, branch = "main", commit = "", trigger = "push",
                         status = "running", durationMs, failureReason = "",
                         log = "", tags = [] } = {}) {
+    if (!orgId) return { ok: false, error: "orgId required" };
     if (!repoId) return { ok: false, error: "repoId required" };
     const build = {
         buildId:       _uid("bld"),
+        orgId,
         repoId,
         branch,
         commit:        commit.slice(0, 40),
@@ -491,9 +549,10 @@ function recordBuild({ repoId, branch = "main", commit = "", trigger = "push",
     return { ok: true, build };
 }
 
-function updateBuild(buildId, patch = {}) {
+function updateBuild(orgId, buildId, patch = {}) {
+    _requireOrgId(orgId, "updateBuild");
     const all = _load(BUILDS_PATH);
-    const idx = all.findIndex(b => b.buildId === buildId);
+    const idx = all.findIndex(b => b.buildId === buildId && _ownedBy(b, orgId));
     if (idx === -1) return { ok: false, error: "build_not_found" };
     const allowed = ["status","outcome","finishedAt","durationMs","failureReason","log"];
     for (const k of allowed) {
@@ -507,12 +566,14 @@ function updateBuild(buildId, patch = {}) {
     return { ok: true, build: all[idx] };
 }
 
-function getBuild(buildId) {
-    return _load(BUILDS_PATH).find(b => b.buildId === buildId) || null;
+function getBuild(orgId, buildId) {
+    _requireOrgId(orgId, "getBuild");
+    return _load(BUILDS_PATH).find(b => b.buildId === buildId && _ownedBy(b, orgId)) || null;
 }
 
-function listBuilds({ status, repoId, branch, trigger, limit = 50 } = {}) {
-    let items = _load(BUILDS_PATH);
+function listBuilds(orgId, { status, repoId, branch, trigger, limit = 50 } = {}) {
+    _requireOrgId(orgId, "listBuilds");
+    let items = _load(BUILDS_PATH).filter(b => _ownedBy(b, orgId));
     if (status)  items = items.filter(b => b.status  === status);
     if (repoId)  items = items.filter(b => b.repoId  === repoId);
     if (branch)  items = items.filter(b => b.branch  === branch);
@@ -520,8 +581,9 @@ function listBuilds({ status, repoId, branch, trigger, limit = 50 } = {}) {
     return items.slice(0, limit);
 }
 
-function getBuildStats({ repoId, dateFrom, dateTo } = {}) {
-    let items = _load(BUILDS_PATH);
+function getBuildStats(orgId, { repoId, dateFrom, dateTo } = {}) {
+    _requireOrgId(orgId, "getBuildStats");
+    let items = _load(BUILDS_PATH).filter(b => _ownedBy(b, orgId));
     if (repoId)   items = items.filter(b => b.repoId === repoId);
     if (dateFrom) items = items.filter(b => b.startedAt >= dateFrom);
     if (dateTo)   items = items.filter(b => b.startedAt <= dateTo);
@@ -554,6 +616,7 @@ function getBuildStats({ repoId, dateFrom, dateTo } = {}) {
 /**
  * Record a deployment event.
  * @param {object} opts
+ * @param {string}  opts.orgId        REQUIRED — owning organization
  * @param {string}  opts.repoId
  * @param {string}  [opts.projectId]
  * @param {string}  [opts.buildId]
@@ -564,12 +627,14 @@ function getBuildStats({ repoId, dateFrom, dateTo } = {}) {
  * @param {number}  [opts.durationMs]
  * @param {string[]} [opts.tags]
  */
-function recordDeployment({ repoId, projectId, buildId, environment = "production",
+function recordDeployment({ orgId, repoId, projectId, buildId, environment = "production",
                              version = "", status = "running", deployedBy = "operator",
                              durationMs, tags = [] } = {}) {
+    if (!orgId) return { ok: false, error: "orgId required" };
     if (!repoId) return { ok: false, error: "repoId required" };
     const deploy = {
         deployId:       _uid("dep"),
+        orgId,
         repoId,
         projectId:      projectId  || null,
         buildId:        buildId    || null,
@@ -591,9 +656,10 @@ function recordDeployment({ repoId, projectId, buildId, environment = "productio
     return { ok: true, deployment: deploy };
 }
 
-function updateDeployment(deployId, patch = {}) {
+function updateDeployment(orgId, deployId, patch = {}) {
+    _requireOrgId(orgId, "updateDeployment");
     const all = _load(DEPLOYS_PATH);
-    const idx = all.findIndex(d => d.deployId === deployId);
+    const idx = all.findIndex(d => d.deployId === deployId && _ownedBy(d, orgId));
     if (idx === -1) return { ok: false, error: "deployment_not_found" };
     const allowed = ["status","version","finishedAt","durationMs","deployedBy"];
     for (const k of allowed) {
@@ -606,9 +672,10 @@ function updateDeployment(deployId, patch = {}) {
     return { ok: true, deployment: all[idx] };
 }
 
-function rollbackDeployment(deployId, { reason = "", deployedBy = "operator" } = {}) {
+function rollbackDeployment(orgId, deployId, { reason = "", deployedBy = "operator" } = {}) {
+    _requireOrgId(orgId, "rollbackDeployment");
     const all = _load(DEPLOYS_PATH);
-    const idx = all.findIndex(d => d.deployId === deployId);
+    const idx = all.findIndex(d => d.deployId === deployId && _ownedBy(d, orgId));
     if (idx === -1) return { ok: false, error: "deployment_not_found" };
     all[idx].status         = "rolled-back";
     all[idx].rolledBackAt   = _now();
@@ -618,6 +685,7 @@ function rollbackDeployment(deployId, { reason = "", deployedBy = "operator" } =
 
     // Create a new deployment record to represent the rollback action
     const rb = recordDeployment({
+        orgId,
         repoId:      all[idx].repoId,
         projectId:   all[idx].projectId,
         environment: all[idx].environment,
@@ -631,12 +699,14 @@ function rollbackDeployment(deployId, { reason = "", deployedBy = "operator" } =
     return { ok: true, deployment: all[idx], rollbackDeployment: rb.deployment || null };
 }
 
-function getDeployment(deployId) {
-    return _load(DEPLOYS_PATH).find(d => d.deployId === deployId) || null;
+function getDeployment(orgId, deployId) {
+    _requireOrgId(orgId, "getDeployment");
+    return _load(DEPLOYS_PATH).find(d => d.deployId === deployId && _ownedBy(d, orgId)) || null;
 }
 
-function listDeployments({ status, repoId, environment, projectId, limit = 50 } = {}) {
-    let items = _load(DEPLOYS_PATH);
+function listDeployments(orgId, { status, repoId, environment, projectId, limit = 50 } = {}) {
+    _requireOrgId(orgId, "listDeployments");
+    let items = _load(DEPLOYS_PATH).filter(d => _ownedBy(d, orgId));
     if (status)      items = items.filter(d => d.status      === status);
     if (repoId)      items = items.filter(d => d.repoId      === repoId);
     if (environment) items = items.filter(d => d.environment === environment);
@@ -644,8 +714,9 @@ function listDeployments({ status, repoId, environment, projectId, limit = 50 } 
     return items.slice(0, limit);
 }
 
-function getDeploymentStats({ repoId, dateFrom, dateTo } = {}) {
-    let items = _load(DEPLOYS_PATH);
+function getDeploymentStats(orgId, { repoId, dateFrom, dateTo } = {}) {
+    _requireOrgId(orgId, "getDeploymentStats");
+    let items = _load(DEPLOYS_PATH).filter(d => _ownedBy(d, orgId));
     if (repoId)   items = items.filter(d => d.repoId === repoId);
     if (dateFrom) items = items.filter(d => d.startedAt >= dateFrom);
     if (dateTo)   items = items.filter(d => d.startedAt <= dateTo);
@@ -675,23 +746,26 @@ function getDeploymentStats({ repoId, dateFrom, dateTo } = {}) {
 // VELOCITY METRICS
 // ═══════════════════════════════════════════════════════════════════
 
-function getVelocityMetrics({ days = 7 } = {}) {
+function getVelocityMetrics(orgId, { days = 7 } = {}) {
+    _requireOrgId(orgId, "getVelocityMetrics");
     const since = new Date(Date.now() - days * 86_400_000).toISOString();
 
     const issuesClosed = _load(ISSUES_PATH)
-        .filter(i => i.closedAt && i.closedAt >= since).length;
+        .filter(i => _ownedBy(i, orgId) && i.closedAt && i.closedAt >= since).length;
     const issuesOpened = _load(ISSUES_PATH)
-        .filter(i => i.createdAt >= since && i.status !== "deleted").length;
+        .filter(i => _ownedBy(i, orgId) && i.createdAt >= since && i.status !== "deleted").length;
     const buildsRun = _load(BUILDS_PATH)
-        .filter(b => b.startedAt >= since).length;
+        .filter(b => _ownedBy(b, orgId) && b.startedAt >= since).length;
     const buildsFailed = _load(BUILDS_PATH)
-        .filter(b => b.startedAt >= since && b.status === "failed").length;
+        .filter(b => _ownedBy(b, orgId) && b.startedAt >= since && b.status === "failed").length;
     const deploys = _load(DEPLOYS_PATH)
-        .filter(d => d.startedAt >= since).length;
+        .filter(d => _ownedBy(d, orgId) && d.startedAt >= since).length;
     const deploysFailed = _load(DEPLOYS_PATH)
-        .filter(d => d.startedAt >= since && d.status === "failed").length;
+        .filter(d => _ownedBy(d, orgId) && d.startedAt >= since && d.status === "failed").length;
 
-    // Patch activity from patchAssistant
+    // Patch activity from patchAssistant — NOT org-scoped yet (separate
+    // finding, C9's coding patch-history item); left as a platform-wide
+    // signal rather than fabricating a filter that doesn't exist upstream.
     let patchesApplied = 0;
     const pa = _pa();
     if (pa) {
@@ -701,7 +775,7 @@ function getVelocityMetrics({ days = 7 } = {}) {
         } catch { /* non-fatal */ }
     }
 
-    // Pipeline runs from projectRunner
+    // Pipeline runs from projectRunner — same caveat as above.
     let pipelineRuns = 0;
     const pr = _pr();
     if (pr) {
@@ -731,52 +805,56 @@ function getVelocityMetrics({ days = 7 } = {}) {
 // ENGINEERING DASHBOARD
 // ═══════════════════════════════════════════════════════════════════
 
-function getEngineeringDashboard() {
+function getEngineeringDashboard(orgId) {
+    _requireOrgId(orgId, "getEngineeringDashboard");
     const now = new Date().toISOString();
 
     // Repos
-    const activeRepos = _load(REPOS_PATH).filter(r => r.status === "active");
+    const orgRepos    = _load(REPOS_PATH).filter(r => _ownedBy(r, orgId));
+    const activeRepos = orgRepos.filter(r => r.status === "active");
 
     // Projects
-    const allProjs    = _load(PROJS_PATH);
+    const allProjs    = _load(PROJS_PATH).filter(p => _ownedBy(p, orgId));
     const activeProjs = allProjs.filter(p => p.status === "active");
 
     // Issues
-    const allIssues   = _load(ISSUES_PATH).filter(i => i.status !== "deleted");
+    const allIssues   = _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.status !== "deleted");
     const openIssues  = allIssues.filter(i => i.status === "open" || i.status === "in-progress");
     const criticalIssues = openIssues.filter(i => i.severity === "blocker" || i.severity === "critical" || i.priority === "critical");
 
     // Builds (last 10)
-    const recentBuilds   = _load(BUILDS_PATH).slice(0, 10);
+    const recentBuilds   = _load(BUILDS_PATH).filter(b => _ownedBy(b, orgId)).slice(0, 10);
     const failedBuilds   = recentBuilds.filter(b => b.status === "failed");
 
     // Deployments (last 5)
-    const recentDeploys  = _load(DEPLOYS_PATH).slice(0, 5);
-    const activeDeployments = _load(DEPLOYS_PATH).filter(d => d.status === "running");
+    const orgDeploys        = _load(DEPLOYS_PATH).filter(d => _ownedBy(d, orgId));
+    const recentDeploys     = orgDeploys.slice(0, 5);
+    const activeDeployments = orgDeploys.filter(d => d.status === "running");
 
     // Velocity (7-day)
-    const velocity = getVelocityMetrics({ days: 7 });
+    const velocity = getVelocityMetrics(orgId, { days: 7 });
 
-    // Goals
+    // Goals — goalEngine is not org-scoped; left platform-wide (a separate,
+    // undocumented finding — not in scope for this recovery item).
     const ge        = _ge();
     const devGoals  = ge ? ge.listGoals({ type: "development", status: "active", limit: 5 }) : [];
     const goalSum   = ge ? ge.getGoalSummary() : null;
 
-    // Pipeline runs
+    // Pipeline runs — same caveat.
     const pr = _pr();
     let pipelineRuns = [];
     if (pr) {
         try { pipelineRuns = pr.listProjects({ limit: 5 }); } catch { /* non-fatal */ }
     }
 
-    // Lifecycle maturity
+    // Lifecycle maturity — platform-wide system metric, not tenant data.
     const lifecycle = (_readJson("lifecycle-reports.json") || [])[0] || null;
 
     return {
         generatedAt: now,
         repos: {
             active:  activeRepos.length,
-            total:   _load(REPOS_PATH).length,
+            total:   orgRepos.length,
             topActive: activeRepos.slice(0, 5),
         },
         projects: {
@@ -813,16 +891,17 @@ function getEngineeringDashboard() {
 // DAILY SUMMARY
 // ═══════════════════════════════════════════════════════════════════
 
-function getDailySummary(date) {
+function getDailySummary(orgId, date) {
+    _requireOrgId(orgId, "getDailySummary");
     const target   = date || new Date().toISOString().slice(0, 10);
     const dayStart = target + "T00:00:00.000Z";
     const dayEnd   = target + "T23:59:59.999Z";
 
-    const issuesOpened  = _load(ISSUES_PATH).filter(i => i.createdAt >= dayStart && i.createdAt <= dayEnd && i.status !== "deleted");
-    const issuesClosed  = _load(ISSUES_PATH).filter(i => i.closedAt  >= dayStart && i.closedAt  <= dayEnd);
-    const buildsToday   = _load(BUILDS_PATH).filter(b => b.startedAt >= dayStart && b.startedAt <= dayEnd);
-    const deploysToday  = _load(DEPLOYS_PATH).filter(d => d.startedAt >= dayStart && d.startedAt <= dayEnd);
-    const projsChanged  = _load(PROJS_PATH).filter(p => p.updatedAt  >= dayStart && p.updatedAt  <= dayEnd);
+    const issuesOpened  = _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.createdAt >= dayStart && i.createdAt <= dayEnd && i.status !== "deleted");
+    const issuesClosed  = _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.closedAt  >= dayStart && i.closedAt  <= dayEnd);
+    const buildsToday   = _load(BUILDS_PATH).filter(b => _ownedBy(b, orgId) && b.startedAt >= dayStart && b.startedAt <= dayEnd);
+    const deploysToday  = _load(DEPLOYS_PATH).filter(d => _ownedBy(d, orgId) && d.startedAt >= dayStart && d.startedAt <= dayEnd);
+    const projsChanged  = _load(PROJS_PATH).filter(p => _ownedBy(p, orgId) && p.updatedAt  >= dayStart && p.updatedAt  <= dayEnd);
 
     const buildsFailed  = buildsToday.filter(b => b.status === "failed").length;
     const deploysSuccess = deploysToday.filter(d => d.status === "success").length;
@@ -858,7 +937,8 @@ function getDailySummary(date) {
 // WEEKLY SUMMARY
 // ═══════════════════════════════════════════════════════════════════
 
-function getWeeklySummary(weekStart) {
+function getWeeklySummary(orgId, weekStart) {
+    _requireOrgId(orgId, "getWeeklySummary");
     const now = new Date();
     let start;
     if (weekStart) {
@@ -875,25 +955,25 @@ function getWeeklySummary(weekStart) {
     const ws = start.toISOString();
     const we = end.toISOString();
 
-    const issuesClosed   = _load(ISSUES_PATH).filter(i => i.closedAt  >= ws && i.closedAt  < we).length;
-    const issuesOpened   = _load(ISSUES_PATH).filter(i => i.createdAt >= ws && i.createdAt < we && i.status !== "deleted").length;
-    const buildsThisWeek = _load(BUILDS_PATH).filter(b => b.startedAt >= ws && b.startedAt < we);
-    const deploys        = _load(DEPLOYS_PATH).filter(d => d.startedAt >= ws && d.startedAt < we);
-    const projsCompleted = _load(PROJS_PATH).filter(p => p.completedAt >= ws && p.completedAt < we);
+    const issuesClosed   = _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.closedAt  >= ws && i.closedAt  < we).length;
+    const issuesOpened   = _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.createdAt >= ws && i.createdAt < we && i.status !== "deleted").length;
+    const buildsThisWeek = _load(BUILDS_PATH).filter(b => _ownedBy(b, orgId) && b.startedAt >= ws && b.startedAt < we);
+    const deploys        = _load(DEPLOYS_PATH).filter(d => _ownedBy(d, orgId) && d.startedAt >= ws && d.startedAt < we);
+    const projsCompleted = _load(PROJS_PATH).filter(p => _ownedBy(p, orgId) && p.completedAt >= ws && p.completedAt < we);
 
     const buildSuccessRate = buildsThisWeek.length
         ? Math.round(buildsThisWeek.filter(b => b.status === "success").length / buildsThisWeek.length * 100)
         : null;
     const rollbacks = deploys.filter(d => d.status === "rolled-back").length;
 
-    // Lifecycle maturity this week
+    // Lifecycle maturity this week — platform-wide, not tenant data.
     const lifecycleReports = (_readJson("lifecycle-reports.json") || [])
         .filter(r => r.generatedAt >= ws && r.generatedAt < we);
     const avgMaturity = lifecycleReports.length
         ? Math.round(lifecycleReports.reduce((s, r) => s + (r.maturity?.total || 0), 0) / lifecycleReports.length)
         : null;
 
-    // Dev goals completed
+    // Dev goals completed — goalEngine not org-scoped, same caveat as dashboard.
     const ge         = _ge();
     const allGoals   = ge ? ge.listGoals({ limit: 50 }) : [];
     const goalsWon   = allGoals.filter(g =>
@@ -923,7 +1003,7 @@ function getWeeklySummary(weekStart) {
         projectsCompleted:  projsCompleted.length,
         goalsAchieved:      goalsWon.length,
         systemMaturity:     avgMaturity,
-        velocity:           getVelocityMetrics({ days: 7 }),
+        velocity:           getVelocityMetrics(orgId, { days: 7 }),
         highlights,
     };
 }
@@ -932,28 +1012,34 @@ function getWeeklySummary(weekStart) {
 // CROSS-STORE SEARCH
 // ═══════════════════════════════════════════════════════════════════
 
-function searchEngineering(query, { limit = 20 } = {}) {
+function searchEngineering(orgId, query, { limit = 20 } = {}) {
+    _requireOrgId(orgId, "searchEngineering");
     if (!query) return [];
     const q = query.toLowerCase();
     const results = [];
 
-    const repoHits = searchRepos(query, { limit: 3 })
+    const repoHits = searchRepos(orgId, query, { limit: 3 })
         .map(r => ({ type: "repo",    id: r.repoId,    title: r.name,    language: r.language }));
 
     const projHits = _load(PROJS_PATH)
+        .filter(p => _ownedBy(p, orgId))
         .filter(p => p.name.toLowerCase().includes(q) || p.description.toLowerCase().includes(q))
         .slice(0, 3)
         .map(p => ({ type: "project", id: p.projectId, title: p.name,    status: p.status }));
 
     const issueHits = _load(ISSUES_PATH)
-        .filter(i => i.status !== "deleted")
+        .filter(i => _ownedBy(i, orgId) && i.status !== "deleted")
         .filter(i => i.title.toLowerCase().includes(q) || i.description.toLowerCase().includes(q))
         .slice(0, 5)
         .map(i => ({ type: "issue",   id: i.issueId,   title: i.title,   status: i.status, type_: i.type }));
 
     results.push(...repoHits, ...projHits, ...issueHits);
 
-    // Cross-namespace via UME
+    // Cross-namespace via UME — NOT org-scoped (separate finding, C10-004/
+    // 005 Memory OS). Left platform-wide here rather than fabricating a
+    // filter the underlying engine doesn't support; the dev-entity results
+    // above (repos/projects/issues) ARE correctly scoped, which is this
+    // function's actual responsibility.
     const ume = _ume();
     if (ume) {
         try {
@@ -973,14 +1059,46 @@ function searchEngineering(query, { limit = 20 } = {}) {
 
 // ── Stats ─────────────────────────────────────────────────────────
 
-function getStats() {
+function getStats(orgId) {
+    _requireOrgId(orgId, "getStats");
     return {
-        repos:       _load(REPOS_PATH).filter(r => r.status !== "archived").length,
-        projects:    _load(PROJS_PATH).filter(p => !["archived"].includes(p.status)).length,
-        issues:      _load(ISSUES_PATH).filter(i => i.status !== "deleted").length,
-        builds:      _load(BUILDS_PATH).length,
-        deployments: _load(DEPLOYS_PATH).length,
+        repos:       _load(REPOS_PATH).filter(r => _ownedBy(r, orgId) && r.status !== "archived").length,
+        projects:    _load(PROJS_PATH).filter(p => _ownedBy(p, orgId) && !["archived"].includes(p.status)).length,
+        issues:      _load(ISSUES_PATH).filter(i => _ownedBy(i, orgId) && i.status !== "deleted").length,
+        builds:      _load(BUILDS_PATH).filter(b => _ownedBy(b, orgId)).length,
+        deployments: _load(DEPLOYS_PATH).filter(d => _ownedBy(d, orgId)).length,
     };
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// MIGRATION (one-time, operator-invoked; not reachable via any HTTP route)
+// ═══════════════════════════════════════════════════════════════════
+
+/**
+ * Assigns a real orgId to every pre-recovery record that has none (orgId
+ * undefined). NOT auto-run — pre-recovery records are simply invisible
+ * (never matched by _ownedBy) until an operator explicitly runs this once,
+ * deciding which real org should own the legacy data. This is a decision
+ * only a human operator can make correctly; silently guessing (e.g.
+ * "assign to whichever org calls first") would misattribute real
+ * engineering history to the wrong tenant, which is worse than leaving it
+ * inaccessible until a deliberate choice is made.
+ */
+function backfillUnownedRecords(orgId) {
+    if (!orgId) return { ok: false, error: "orgId required" };
+    let migrated = 0;
+    for (const [filePath, max] of [
+        [REPOS_PATH, MAX_REPOS], [PROJS_PATH, MAX_PROJS], [ISSUES_PATH, MAX_ISSUES],
+        [BUILDS_PATH, MAX_BUILDS], [DEPLOYS_PATH, MAX_DEPLOYS],
+    ]) {
+        const all = _load(filePath);
+        let changed = false;
+        for (const item of all) {
+            if (item.orgId === undefined) { item.orgId = orgId; changed = true; migrated++; }
+        }
+        if (changed) _save(filePath, all, max);
+    }
+    return { ok: true, migrated };
 }
 
 module.exports = {
@@ -1000,4 +1118,6 @@ module.exports = {
     getEngineeringDashboard, getDailySummary, getWeeklySummary,
     // Search & Stats
     searchEngineering, getStats,
+    // Migration
+    backfillUnownedRecords,
 };

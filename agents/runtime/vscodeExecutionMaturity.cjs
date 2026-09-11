@@ -13,6 +13,7 @@
 const fs   = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const logger = require("../../backend/utils/logger");
 
 function _tryRequire(p) { try { return require(p); } catch { return null; } }
 
@@ -136,7 +137,17 @@ function getLaunchConfigs(workspaceRoot = process.cwd()) {
         }));
         return { ok: true, configCount: configs.length, configs };
     } catch (e) {
-        return { ok: false, error: e.message, available: false };
+        // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+        // (2026-08-21): live-reproduced via a real HTTP request from an
+        // ordinary requireAuth-only customer — GET /runtime/vscode/
+        // launch-configs returned a real 200 with the raw ENOENT text
+        // embedding the server's absolute install path, since no
+        // .vscode/launch.json exists in this deployment (the common case,
+        // not an edge case). "No launch configuration" is a normal,
+        // expected outcome here, not a real failure — only genuinely
+        // unexpected errors (a real permission/parse problem) are logged.
+        if (e.code !== "ENOENT") logger.warn(`[VSCodeMaturity] launch.json read failed: ${e.message}`);
+        return { ok: false, error: "No launch configuration found", available: false };
     }
 }
 
@@ -151,7 +162,10 @@ function getWorkspaceSettings(workspaceRoot = process.cwd()) {
         const json  = JSON.parse(clean);
         return { ok: true, settings: json };
     } catch (e) {
-        return { ok: false, error: e.message, available: false };
+        // Same fix as getLaunchConfigs() above — not currently routed, but
+        // fixed alongside it to prevent the identical leak on regression.
+        if (e.code !== "ENOENT") logger.warn(`[VSCodeMaturity] settings.json read failed: ${e.message}`);
+        return { ok: false, error: "No workspace settings found", available: false };
     }
 }
 

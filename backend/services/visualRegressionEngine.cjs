@@ -14,6 +14,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const REG_DIR = path.join(__dirname, "../../data/odi/regressions");
 
@@ -104,6 +105,8 @@ function _diffPixels(a, b) {
 
 async function runRegression({ url, baselineFilename, label } = {}) {
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

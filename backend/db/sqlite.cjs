@@ -17,13 +17,33 @@ if (!fs.existsSync(DB_DIR)) {
 }
 
 let _db = null;
+let _dbIno = null; // inode DB_PATH pointed to when _db was opened
 
 function getDB() {
-    if (_db) return _db;
+    // Stale-handle detection: if DB_PATH now resolves to a different inode
+    // than the one _db has open (e.g. an external process replaced the file
+    // via rename — a real restore-drill scenario, not hypothetical: a live
+    // server's open fd keeps writing into the old, now-unlinked inode
+    // forever, silently, with every write appearing to succeed while the
+    // data becomes permanently unreachable the moment that inode's last
+    // reference is dropped), reopen against the current file instead of
+    // continuing to write into orphaned storage.
+    if (_db) {
+        try {
+            const curIno = fs.statSync(DB_PATH).ino;
+            if (curIno === _dbIno) return _db;
+            logger.warn('[SQLite] DB_PATH inode changed since connection was opened (external replace) — reopening');
+            _db.close();
+            _db = null;
+        } catch {
+            return _db; // stat failed transiently — keep using the existing handle rather than disrupt it
+        }
+    }
 
     _db = new Database(DB_PATH, {
         // verbose: console.log // uncomment for debugging
     });
+    _dbIno = fs.statSync(DB_PATH).ino;
 
     // ── WAL Configuration ──────────────────────────────────────────────────
     // Write-Ahead Logging allows concurrent readers + 1 writer without blocking.
@@ -75,6 +95,7 @@ function closeDB() {
     if (_db) {
         _db.close();
         _db = null;
+        _dbIno = null;
     }
 }
 

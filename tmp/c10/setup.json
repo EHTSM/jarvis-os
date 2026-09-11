@@ -1,0 +1,10 @@
+[2026-08-14T20:41:07.233Z] [INFO] [Billing] Trial started for 77483981d0f5bf2578d53a40 — expires Sat Aug 22 2026
+[2026-08-14T20:41:07.234Z] [INFO] [Account] Created: c10orga_1786740067@test.local (77483981d0f5bf2578d53a40)
+[2026-08-14T20:41:07.272Z] [INFO] [Billing] Trial started for 786e0eaafc7e3bd474238347 — expires Sat Aug 22 2026
+[2026-08-14T20:41:07.272Z] [INFO] [Account] Created: c10orgb_1786740067@test.local (786e0eaafc7e3bd474238347)
+accountA: {"success":true,"account":{"id":"77483981d0f5bf2578d53a40","email":"c10orga_1786740067@test.local","name":"C10 Org A User","role":"user","createdAt":"2026-08-14T20:41:07.228Z","lastLoginAt":null,"active":true,"emailVerified":false,"emailVerifiedAt":null}}
+accountB: {"success":true,"account":{"id":"786e0eaafc7e3bd474238347","email":"c10orgb_1786740067@test.local","name":"C10 Org B User","role":"user","createdAt":"2026-08-14T20:41:07.269Z","lastLoginAt":null,"active":true,"emailVerified":false,"emailVerifiedAt":null}}
+[2026-08-14T20:41:07.287Z] [INFO] [OrgService] Created org org_1786740067275_1: C10-OrgA-1786740067 (owner: 77483981d0f5bf2578d53a40)
+[2026-08-14T20:41:07.298Z] [INFO] [OrgService] Created org org_1786740067291_2: C10-OrgB-1786740067 (owner: 786e0eaafc7e3bd474238347)
+orgA: {"id":"org_1786740067275_1","name":"C10-OrgA-1786740067","description":"","slug":"c10-orga-1786740067","plan":"free","status":"active","archivedAt":null,"createdAt":"2026-08-14T20:41:07.275Z","updatedAt":"2026-08-14T20:41:07.275Z","memberCount":1,"deptCount":0,"members":[{"accountId":"77483981d0f5bf2578d53a40","orgRole":"org_owner","joinedAt":"2026-08-14T20:41:07.275Z"}]}
+orgB: {"id":"org_1786740067291_2","name":"C10-OrgB-1786740067","description":"","slug":"c10-orgb-1786740067","plan":"free","status":"active","archivedAt":null,"createdAt":"2026-08-14T20:41:07.291Z","updatedAt":"2026-08-14T20:41:07.291Z","memberCount":1,"deptCount":0,"members":[{"accountId":"786e0eaafc7e3bd474238347","orgRole":"org_owner","joinedAt":"2026-08-14T20:41:07.291Z"}]}

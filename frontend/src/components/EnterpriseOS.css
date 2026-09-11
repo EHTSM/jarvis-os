@@ -4,7 +4,7 @@
 .eos-subtitle { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.25rem; }
 .eos-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
 .eos-tab { border: 1px solid var(--border); background: var(--surface); color: var(--text); padding: 0.65rem 0.9rem; border-radius: 999px; cursor: pointer; transition: background 0.2s ease; }
-.eos-tab.active { background: var(--accent); color: #fff; border-color: transparent; }
+.eos-tab.active { background: var(--accent); color: var(--on-accent); border-color: transparent; }
 .eos-view { margin-top: 1rem; }
 .eos-section { display: flex; flex-direction: column; gap: 1rem; }
 .eos-section-header { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
@@ -35,7 +35,7 @@
 .eos-label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; }
 .eos-input, .eos-select, .eos-textarea { width: 100%; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); color: var(--text); padding: 0.75rem 0.85rem; font: inherit; }
 .eos-textarea { min-height: 100px; resize: vertical; }
-.eos-btn { border: 1px solid transparent; background: var(--accent); color: #fff; padding: 0.75rem 1rem; border-radius: 0.75rem; cursor: pointer; }
+.eos-btn { border: 1px solid transparent; background: var(--accent); color: var(--on-accent); padding: 0.75rem 1rem; border-radius: 0.75rem; cursor: pointer; }
 .eos-btn.outline { background: transparent; color: var(--text); border-color: var(--border); }
 .eos-btn.danger { background: var(--danger); border-color: transparent; }
 .eos-form-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem; }

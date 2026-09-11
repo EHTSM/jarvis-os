@@ -48,6 +48,20 @@ function _ts()     { return new Date().toISOString(); }
 function _today()  { return new Date().toISOString().slice(0, 10); }
 function _hour()   { return new Date().getHours(); }
 
+// Tenant isolation — same pattern recovered for growthOS.cjs (G1) and
+// contentSEOEngine.cjs (G2): this service's data model had zero org
+// scoping. See growthOS.cjs for the full incident writeup.
+function _scopedRecords(recordsObj, orgId) {
+  const all = Object.values(recordsObj || {});
+  if (!orgId) return [];
+  return all.filter(r => r.orgId === orgId);
+}
+function _ownedRecord(recordsObj, id, orgId) {
+  const r = (recordsObj || {})[id];
+  if (!r || !orgId || r.orgId !== orgId) return null;
+  return r;
+}
+
 // ── MODULE 1: Universal Publisher ─────────────────────────────────────────────
 
 const PUBLISH_PLATFORMS = [
@@ -66,13 +80,14 @@ const PUBLISH_PLATFORMS = [
 
 const PUBLISH_STATUSES = ["queued", "in_review", "approved", "publishing", "published", "failed", "retrying"];
 
-function createPublishJob(opts) {
+function createPublishJob(opts, orgId) {
   const s  = _load();
   const id = _id("pub");
   const platforms = opts.platforms || PUBLISH_PLATFORMS.map(p => p.id);
 
   s.publishJobs[id] = {
     id,
+    orgId,
     title:        opts.title       || "",
     contentType:  opts.contentType || "post",
     content:      opts.content     || "",
@@ -100,52 +115,92 @@ function createPublishJob(opts) {
   return s.publishJobs[id];
 }
 
-function publishJob(id) {
+function publishJob(id, orgId) {
   const s   = _load();
-  const job = s.publishJobs[id];
+  const job = _ownedRecord(s.publishJobs, id, orgId);
   if (!job) throw new Error(`Publish job ${id} not found`);
   if (job.requireApproval && job.approvalState !== "approved") throw new Error("Job not approved yet");
 
+  // Phase OS-3 fake-success fix — same defect class as the WhatsApp/Push
+  // findings in OS-2 (F-001/F-002), but with wider blast radius.
+  //
+  // This module performs NO external HTTP call anywhere (verified: zero
+  // axios/fetch call sites). It nonetheless marked every platform
+  // "published", minted a postUrl pointing at a page that does not exist
+  // (https://linkedin.com/ooplix/p/<id>), and derived reach/engagement/
+  // shares/clicks from hardcoded per-platform constants and fixed
+  // multipliers (0.042 / 0.008 / 0.025).
+  //
+  // Measured live: POST /distrib/publish/jobs/:id/publish reported linkedin
+  // and x as "published" with URLs and reach 580; /distrib/analytics then
+  // aggregated those into totalReach 7280, engagementRate "4.20" — the
+  // multiplier echoed back as a measured rate. Nothing was ever posted, and
+  // no field disclosed that the numbers were modelled.
+  //
+  // A founder could reasonably report those figures to an investor.
+  //
+  // Preserved: the job/approval/scheduling workflow is real and untouched.
+  // Changed: the state is now "simulated" rather than "published", the URL
+  // is not fabricated, and projections are labelled as projections instead
+  // of masquerading as measurements.
   const now = _ts();
   for (const pf of job.platforms) {
     if (pf.status === "queued" || pf.status === "failed") {
-      pf.status      = "published";
-      pf.publishedAt = now;
-      pf.postUrl     = `https://${pf.platform}.com/ooplix/p/${id.slice(-6)}`;
+      pf.status      = "simulated";
+      pf.simulatedAt = now;
+      pf.postUrl     = null;
+      pf.note        = `No ${pf.platform} connector is configured — this job was recorded, not posted.`;
     }
   }
   job.updatedAt = now;
+  job.simulated = true;
 
-  // Simulate reach based on platform
+  // Per-platform audience-size assumptions used for PLANNING only. These are
+  // static constants, not observed reach, so they are reported under
+  // `projected` and the measured counters stay null ("not measured").
   const REACH_ESTIMATES = { linkedin: 400, facebook: 250, instagram: 600, x: 180, threads: 90, pinterest: 120, youtube: 800, telegram: 350, whatsapp_channel: 500, medium: 200, wordpress: 150 };
-  job.stats.reach      = job.platforms.filter(p => p.status === "published").reduce((s, p) => s + (REACH_ESTIMATES[p.platform] || 100), 0);
-  job.stats.engagement = Math.round(job.stats.reach * 0.042);
-  job.stats.shares     = Math.round(job.stats.reach * 0.008);
-  job.stats.clicks     = Math.round(job.stats.reach * 0.025);
+  const projectedReach = job.platforms
+    .filter(p => p.status === "simulated" || p.status === "published")
+    .reduce((sum, p) => sum + (REACH_ESTIMATES[p.platform] || 100), 0);
+
+  job.stats.reach      = null;   // requires real platform analytics APIs
+  job.stats.engagement = null;
+  job.stats.shares     = null;
+  job.stats.clicks     = null;
+  job.stats.projected  = {
+    basis: "static per-platform audience estimates × fixed industry rates — NOT measured",
+    reach:      projectedReach,
+    engagement: Math.round(projectedReach * 0.042),
+    shares:     Math.round(projectedReach * 0.008),
+    clicks:     Math.round(projectedReach * 0.025),
+  };
   _save(s);
   return s.publishJobs[id];
 }
 
-function retryPlatform(jobId, platform) {
+function retryPlatform(jobId, platform, orgId) {
   const s   = _load();
-  const job = s.publishJobs[jobId];
+  const job = _ownedRecord(s.publishJobs, jobId, orgId);
   if (!job) throw new Error(`Job ${jobId} not found`);
   const pf = job.platforms.find(p => p.platform === platform);
   if (!pf) throw new Error(`Platform ${platform} not in job`);
-  pf.status  = "retrying";
   pf.retries = (pf.retries || 0) + 1;
   job.updatedAt = _ts();
-  // Simulate retry success
-  pf.status      = "published";
-  pf.publishedAt = _ts();
-  pf.postUrl     = `https://${platform}.com/ooplix/p/${jobId.slice(-6)}-r${pf.retries}`;
+  // Phase OS-3: this mirrored publishJob()'s fake success — it declared the
+  // retry "published" and minted another non-existent postUrl, without any
+  // external call. A retry of a simulated post is still simulated.
+  pf.status      = "simulated";
+  pf.simulatedAt = _ts();
+  pf.postUrl     = null;
+  pf.note        = `No ${platform} connector is configured — retry recorded, not posted.`;
+  job.simulated  = true;
   _save(s);
   return job;
 }
 
-function approvePublishJob(jobId, approvedBy) {
+function approvePublishJob(jobId, approvedBy, orgId) {
   const s   = _load();
-  const job = s.publishJobs[jobId];
+  const job = _ownedRecord(s.publishJobs, jobId, orgId);
   if (!job) throw new Error(`Job ${jobId} not found`);
   job.approvalState = "approved";
   job.approvedBy    = approvedBy || "operator";
@@ -155,19 +210,19 @@ function approvePublishJob(jobId, approvedBy) {
   return job;
 }
 
-function listPublishJobs(status, platform) {
+function listPublishJobs(status, platform, orgId) {
   const s = _load();
-  return Object.values(s.publishJobs)
+  return _scopedRecords(s.publishJobs, orgId)
     .filter(j => !status || j.platforms.some(p => p.status === status))
     .filter(j => !platform || j.platforms.some(p => p.platform === platform))
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
-function getPublishJob(id) { return _load().publishJobs[id] || null; }
+function getPublishJob(id, orgId) { return _ownedRecord(_load().publishJobs, id, orgId); }
 
-function getPublishStats() {
+function getPublishStats(orgId) {
   const s    = _load();
-  const jobs = Object.values(s.publishJobs);
+  const jobs = _scopedRecords(s.publishJobs, orgId);
   const totalReach = jobs.reduce((s, j) => s + (j.stats?.reach || 0), 0);
   const byPlatform = {};
   for (const j of jobs) {
@@ -184,11 +239,12 @@ function getPublishStats() {
 
 const CAMPAIGN_PHASES = ["planning", "approval", "ready", "live", "completed", "paused", "cancelled"];
 
-function createCampaign(opts) {
+function createCampaign(opts, orgId) {
   const s  = _load();
   const id = _id("cmp");
   s.campaigns[id] = {
     id,
+    orgId,
     name:        opts.name        || "",
     description: opts.description || "",
     type:        opts.type        || "launch",
@@ -213,23 +269,23 @@ function createCampaign(opts) {
   return s.campaigns[id];
 }
 
-function updateCampaign(id, patch) {
+function updateCampaign(id, patch, orgId) {
   const s = _load();
-  if (!s.campaigns[id]) throw new Error(`Campaign ${id} not found`);
+  if (!_ownedRecord(s.campaigns, id, orgId)) throw new Error(`Campaign ${id} not found`);
   Object.assign(s.campaigns[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.campaigns[id];
 }
 
-function launchCampaign(id) {
+function launchCampaign(id, orgId) {
   const s   = _load();
-  const cmp = s.campaigns[id];
+  const cmp = _ownedRecord(s.campaigns, id, orgId);
   if (!cmp) throw new Error(`Campaign ${id} not found`);
   if (cmp.approvalRequired && cmp.approvalState !== "approved") throw new Error("Campaign not approved");
   cmp.status = "live";
   cmp.updatedAt = _ts();
   // Simulate stats rollup from linked publish jobs
-  const linkedJobs = Object.values(s.publishJobs).filter(j => j.campaignId === id);
+  const linkedJobs = _scopedRecords(s.publishJobs, orgId).filter(j => j.campaignId === id);
   cmp.stats.publishJobs = linkedJobs.length;
   cmp.stats.reach       = linkedJobs.reduce((s, j) => s + (j.stats?.reach || 0), 0);
   cmp.stats.engagement  = linkedJobs.reduce((s, j) => s + (j.stats?.engagement || 0), 0);
@@ -237,9 +293,9 @@ function launchCampaign(id) {
   return cmp;
 }
 
-function approveCampaign(id, note) {
+function approveCampaign(id, note, orgId) {
   const s   = _load();
-  const cmp = s.campaigns[id];
+  const cmp = _ownedRecord(s.campaigns, id, orgId);
   if (!cmp) throw new Error(`Campaign ${id} not found`);
   cmp.approvalState = "approved";
   cmp.approvalNote  = note || "";
@@ -249,9 +305,9 @@ function approveCampaign(id, note) {
   return cmp;
 }
 
-function listCampaigns(status) {
+function listCampaigns(status, orgId) {
   const s = _load();
-  return Object.values(s.campaigns)
+  return _scopedRecords(s.campaigns, orgId)
     .filter(c => !status || c.status === status)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
@@ -267,11 +323,12 @@ function _inferTier(followers) {
   return "nano";
 }
 
-function addInfluencer(opts) {
+function addInfluencer(opts, orgId) {
   const s  = _load();
   const id = _id("inf");
   s.influencers[id] = {
     id,
+    orgId,
     name:         opts.name         || "",
     handle:       opts.handle       || "",
     platform:     opts.platform     || "instagram",
@@ -294,9 +351,9 @@ function addInfluencer(opts) {
   return s.influencers[id];
 }
 
-function buildOutreachDraft(influencerId, opts = {}) {
+function buildOutreachDraft(influencerId, opts = {}, orgId) {
   const s   = _load();
-  const inf = s.influencers[influencerId];
+  const inf = _ownedRecord(s.influencers, influencerId, orgId);
   if (!inf) throw new Error(`Influencer ${influencerId} not found`);
 
   const draft = {
@@ -327,9 +384,9 @@ ${opts.senderName || "Altamash"} @ Ooplix`,
   return draft;
 }
 
-function logOutreach(influencerId, opts) {
+function logOutreach(influencerId, opts, orgId) {
   const s   = _load();
-  const inf = s.influencers[influencerId];
+  const inf = _ownedRecord(s.influencers, influencerId, orgId);
   if (!inf) throw new Error(`Influencer ${influencerId} not found`);
   inf.outreachHistory.push({
     type:     opts.type      || "dm",
@@ -346,23 +403,23 @@ function logOutreach(influencerId, opts) {
   return inf;
 }
 
-function updateInfluencer(id, patch) {
+function updateInfluencer(id, patch, orgId) {
   const s = _load();
-  if (!s.influencers[id]) throw new Error(`Influencer ${id} not found`);
+  if (!_ownedRecord(s.influencers, id, orgId)) throw new Error(`Influencer ${id} not found`);
   Object.assign(s.influencers[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.influencers[id];
 }
 
-function listInfluencers(tier, platform, status) {
+function listInfluencers(tier, platform, status, orgId) {
   const s = _load();
-  return Object.values(s.influencers)
+  return _scopedRecords(s.influencers, orgId)
     .filter(i => (!tier || i.tier === tier) && (!platform || i.platform === platform) && (!status || i.status === status))
     .sort((a, b) => b.followers - a.followers);
 }
 
-function getInfluencerIntelligence() {
-  const all = listInfluencers();
+function getInfluencerIntelligence(orgId) {
+  const all = listInfluencers(undefined, undefined, undefined, orgId);
   const byTier     = {};
   const byPlatform = {};
   for (const i of all) {
@@ -392,11 +449,12 @@ const COMMUNITY_PLATFORMS = [
   { id: "skool",               label: "Skool",              type: "community", icon: "✦" },
 ];
 
-function addCommunity(opts) {
+function addCommunity(opts, orgId) {
   const s  = _load();
   const id = _id("com");
   s.communities[id] = {
     id,
+    orgId,
     platform:    opts.platform    || "discord",
     name:        opts.name        || "",
     url:         opts.url         || null,
@@ -415,17 +473,17 @@ function addCommunity(opts) {
   return s.communities[id];
 }
 
-function updateCommunity(id, patch) {
+function updateCommunity(id, patch, orgId) {
   const s = _load();
-  if (!s.communities[id]) throw new Error(`Community ${id} not found`);
+  if (!_ownedRecord(s.communities, id, orgId)) throw new Error(`Community ${id} not found`);
   Object.assign(s.communities[id], patch, { updatedAt: _ts() });
   _save(s);
   return s.communities[id];
 }
 
-function addCommunityCalendarEntry(communityId, opts) {
+function addCommunityCalendarEntry(communityId, opts, orgId) {
   const s   = _load();
-  const com = s.communities[communityId];
+  const com = _ownedRecord(s.communities, communityId, orgId);
   if (!com) throw new Error(`Community ${communityId} not found`);
   const entry = {
     id:       _id("ce"),
@@ -442,9 +500,9 @@ function addCommunityCalendarEntry(communityId, opts) {
   return entry;
 }
 
-function addCommunityWorkflow(communityId, opts) {
+function addCommunityWorkflow(communityId, opts, orgId) {
   const s   = _load();
-  const com = s.communities[communityId];
+  const com = _ownedRecord(s.communities, communityId, orgId);
   if (!com) throw new Error(`Community ${communityId} not found`);
   const wf = {
     id:       _id("wf"),
@@ -461,15 +519,15 @@ function addCommunityWorkflow(communityId, opts) {
   return wf;
 }
 
-function listCommunities(platform) {
+function listCommunities(platform, orgId) {
   const s = _load();
-  return Object.values(s.communities)
+  return _scopedRecords(s.communities, orgId)
     .filter(c => !platform || c.platform === platform)
     .sort((a, b) => b.memberCount - a.memberCount);
 }
 
-function getCommunityStats() {
-  const all = listCommunities();
+function getCommunityStats(orgId) {
+  const all = listCommunities(undefined, orgId);
   return {
     total:        all.length,
     totalMembers: all.reduce((s, c) => s + (c.memberCount || 0), 0),
@@ -483,11 +541,12 @@ function getCommunityStats() {
 
 const FRAUD_SIGNALS = ["same_ip", "burst_signups", "no_activation", "bot_pattern", "duplicate_email"];
 
-function createReferralCampaign(opts) {
+function createReferralCampaign(opts, orgId) {
   const s  = _load();
   const id = _id("rcm");
   s.referralCampaigns[id] = {
     id,
+    orgId,
     name:        opts.name        || "",
     description: opts.description || "",
     rewardType:  opts.rewardType  || "credits",
@@ -515,9 +574,9 @@ function createReferralCampaign(opts) {
   return s.referralCampaigns[id];
 }
 
-function addReferralInvite(campaignId, opts) {
+function addReferralInvite(campaignId, opts, orgId) {
   const s   = _load();
-  const cmp = s.referralCampaigns[campaignId];
+  const cmp = _ownedRecord(s.referralCampaigns, campaignId, orgId);
   if (!cmp) throw new Error(`Referral campaign ${campaignId} not found`);
 
   // Fraud detection
@@ -546,9 +605,9 @@ function addReferralInvite(campaignId, opts) {
   return { ok: true, invite };
 }
 
-function convertReferralInvite(campaignId, inviteId) {
+function convertReferralInvite(campaignId, inviteId, orgId) {
   const s   = _load();
-  const cmp = s.referralCampaigns[campaignId];
+  const cmp = _ownedRecord(s.referralCampaigns, campaignId, orgId);
   if (!cmp) throw new Error(`Campaign ${campaignId} not found`);
   const invite = cmp.invites.find(i => i.id === inviteId);
   if (!invite) throw new Error(`Invite ${inviteId} not found`);
@@ -564,9 +623,9 @@ function convertReferralInvite(campaignId, inviteId) {
   return { ok: true, invite, milestone: milestone || null };
 }
 
-function getReferralLeaderboard(campaignId) {
+function getReferralLeaderboard(campaignId, orgId) {
   const s   = _load();
-  const cmp = s.referralCampaigns[campaignId];
+  const cmp = _ownedRecord(s.referralCampaigns, campaignId, orgId);
   if (!cmp) throw new Error(`Campaign ${campaignId} not found`);
   const byReferrer = {};
   for (const inv of cmp.invites) {
@@ -577,20 +636,21 @@ function getReferralLeaderboard(campaignId) {
   return Object.values(byReferrer).sort((a, b) => b.conversions - a.conversions).slice(0, 20);
 }
 
-function listReferralCampaigns() {
-  return Object.values(_load().referralCampaigns).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+function listReferralCampaigns(orgId) {
+  return _scopedRecords(_load().referralCampaigns, orgId).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
 // ── MODULE 6: Launch Manager ──────────────────────────────────────────────────
 
 const LAUNCH_CHANNELS = ["website", "email", "social", "community", "docs", "release_notes", "press", "producthunt", "appstore"];
 
-function createLaunch(opts) {
+function createLaunch(opts, orgId) {
   const s  = _load();
   const id = _id("lnch");
   const channels = opts.channels || LAUNCH_CHANNELS;
   s.launches[id] = {
     id,
+    orgId,
     name:        opts.name        || "",
     version:     opts.version     || "v1.0",
     description: opts.description || "",
@@ -622,9 +682,9 @@ function createLaunch(opts) {
   return s.launches[id];
 }
 
-function updateLaunchChannel(launchId, channel, patch) {
+function updateLaunchChannel(launchId, channel, patch, orgId) {
   const s   = _load();
-  const lnch = s.launches[launchId];
+  const lnch = _ownedRecord(s.launches, launchId, orgId);
   if (!lnch) throw new Error(`Launch ${launchId} not found`);
   const ch = lnch.channels.find(c => c.channel === channel);
   if (!ch) throw new Error(`Channel ${channel} not in launch`);
@@ -637,9 +697,9 @@ function updateLaunchChannel(launchId, channel, patch) {
   return lnch;
 }
 
-function updateLaunchChecklist(launchId, itemId, done) {
+function updateLaunchChecklist(launchId, itemId, done, orgId) {
   const s    = _load();
-  const lnch = s.launches[launchId];
+  const lnch = _ownedRecord(s.launches, launchId, orgId);
   if (!lnch) throw new Error(`Launch ${launchId} not found`);
   const item = lnch.checklistItems.find(i => i.id === itemId);
   if (!item) throw new Error(`Item ${itemId} not found`);
@@ -652,63 +712,98 @@ function updateLaunchChecklist(launchId, itemId, done) {
   return lnch;
 }
 
-function listLaunches(status) {
+function listLaunches(status, orgId) {
   const s = _load();
-  return Object.values(s.launches)
+  return _scopedRecords(s.launches, orgId)
     .filter(l => !status || l.status === status)
     .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 }
 
-function getLaunch(id) { return _load().launches[id] || null; }
+function getLaunch(id, orgId) { return _ownedRecord(_load().launches, id, orgId); }
 
 // ── MODULE 7: Distribution Analytics ─────────────────────────────────────────
 
-function getDistributionAnalytics() {
+function getDistributionAnalytics(orgId) {
   const s       = _load();
-  const jobs    = Object.values(s.publishJobs);
-  const camps   = Object.values(s.campaigns);
+  const jobs    = _scopedRecords(s.publishJobs, orgId);
+  const camps   = _scopedRecords(s.campaigns, orgId);
 
-  const totalReach      = jobs.reduce((s, j) => s + (j.stats?.reach || 0), 0);
-  const totalEngagement = jobs.reduce((s, j) => s + (j.stats?.engagement || 0), 0);
-  const totalShares     = jobs.reduce((s, j) => s + (j.stats?.shares || 0), 0);
-  const totalClicks     = jobs.reduce((s, j) => s + (j.stats?.clicks || 0), 0);
+  // Phase OS-4. These four totals were reported as measured performance, but
+  // every contributing value was fabricated by the pre-OS-3 publishJob():
+  // reach came from static per-platform constants and engagement/shares/clicks
+  // from fixed multipliers. Measured live before the fix:
+  //   totalReach 7280, engagementRate "4.20"  — 4.20 IS the 0.042 multiplier,
+  // echoed back as though it had been observed.
+  //
+  // Nothing in this module consumes a platform analytics API, so no measured
+  // value for any of these exists. They are reported as null ("not measured"),
+  // and the residue still held by pre-fix records is surfaced separately under
+  // `legacy` so it is visible without masquerading as performance data.
+  const legacyReach      = jobs.reduce((s, j) => s + (typeof j.stats?.reach      === "number" ? j.stats.reach      : 0), 0);
+  const legacyEngagement = jobs.reduce((s, j) => s + (typeof j.stats?.engagement === "number" ? j.stats.engagement : 0), 0);
+  const legacyShares     = jobs.reduce((s, j) => s + (typeof j.stats?.shares     === "number" ? j.stats.shares     : 0), 0);
+  const legacyClicks     = jobs.reduce((s, j) => s + (typeof j.stats?.clicks     === "number" ? j.stats.clicks     : 0), 0);
+  const legacyJobs       = jobs.filter(j => typeof j.stats?.reach === "number").length;
 
   const byPlatform = {};
   for (const j of jobs) {
     for (const pf of j.platforms) {
-      if (!byPlatform[pf.platform]) byPlatform[pf.platform] = { posts: 0, reach: 0, engagement: 0, shares: 0 };
-      if (pf.status === "published") {
+      // `engagement`/`shares` are deliberately absent: this module consumes no
+      // platform analytics API, so there is nothing measured to report.
+      if (!byPlatform[pf.platform]) byPlatform[pf.platform] = { posts: 0, legacyReach: 0 };
+      if (pf.status === "published" || pf.status === "simulated") {
         byPlatform[pf.platform].posts++;
-        const perPlatformReach = Math.round((j.stats?.reach || 0) / j.platforms.length);
-        byPlatform[pf.platform].reach      += perPlatformReach;
-        byPlatform[pf.platform].engagement += Math.round(perPlatformReach * 0.042);
-        byPlatform[pf.platform].shares     += Math.round(perPlatformReach * 0.008);
+        // Phase OS-4: this mirrored the publishJob() fabrication fixed in OS-3
+        // — per-platform engagement and shares were still derived from
+        // reach × 0.042 / × 0.008 rather than measured. Post-OS-3 jobs carry
+        // stats.reach === null, so only pre-fix records fed this path, and it
+        // kept re-deriving invented engagement from invented reach.
+        //
+        // Reach is summed only where a number was actually recorded; the
+        // derived counters are gone. `legacyReach` marks totals that came from
+        // records written before the OS-3 honesty fix.
+        const recorded = typeof j.stats?.reach === "number" ? j.stats.reach : null;
+        if (recorded !== null) {
+          byPlatform[pf.platform].legacyReach += Math.round(recorded / j.platforms.length);
+        }
       }
     }
   }
 
-  const viralityScore = totalReach > 0 ? Math.min(100, Math.round(totalShares / totalReach * 1000)) : 0;
-
   return {
-    totalReach,
-    totalEngagement,
-    totalShares,
-    totalClicks,
-    engagementRate: totalReach > 0 ? (totalEngagement / totalReach * 100).toFixed(2) : "0.00",
-    viralityScore,
+    // No platform analytics connector exists, so none of these are measured.
+    // null means "not measured"; 0 would falsely assert zero reach.
+    totalReach:      null,
+    totalEngagement: null,
+    totalShares:     null,
+    totalClicks:     null,
+    engagementRate:  null,
+    viralityScore:   null,
+    measured: false,
+    measurementNote: "No platform analytics connector is configured — reach, engagement, shares and clicks are not measured for this deployment.",
+    // Residue from records written before the OS-3 publishing-honesty fix.
+    // Retained for transparency, explicitly NOT presented as performance.
+    legacy: {
+      note: "Values from pre-fix records whose reach/engagement were generated from static constants and fixed multipliers, not observed.",
+      jobs: legacyJobs,
+      reach: legacyReach,
+      engagement: legacyEngagement,
+      shares: legacyShares,
+      clicks: legacyClicks,
+    },
     totalPublishJobs: jobs.length,
     totalCampaigns:   camps.length,
     byPlatform,
-    topPlatform: Object.entries(byPlatform).sort((a, b) => b[1].reach - a[1].reach)[0]?.[0] || null,
+    topPlatform: Object.entries(byPlatform).sort((a, b) => b[1].legacyReach - a[1].legacyReach)[0]?.[0] || null,
     period: "all_time",
   };
 }
 
-function getCampaignAnalytics(campaignId) {
+function getCampaignAnalytics(campaignId, orgId) {
   const s   = _load();
-  const cmp = s.campaigns[campaignId];
+  const cmp = _ownedRecord(s.campaigns, campaignId, orgId);
   if (!cmp) throw new Error(`Campaign ${campaignId} not found`);
-  const linked = Object.values(s.publishJobs).filter(j => j.campaignId === campaignId);
+  const linked = _scopedRecords(s.publishJobs, orgId).filter(j => j.campaignId === campaignId);
   return {
     campaign: cmp,
     jobs:     linked.length,
@@ -732,14 +827,15 @@ function _groupByPlatform(jobs) {
 
 const BEST_POST_HOURS = { linkedin: [8,9,10,17,18], instagram: [9,11,14,19,21], facebook: [9,13,15,19], x: [8,9,12,17,19], youtube: [14,15,16,20,21] };
 
-function snapshotPerformance(jobId) {
+function snapshotPerformance(jobId, orgId) {
   const s   = _load();
-  const job = s.publishJobs[jobId];
+  const job = _ownedRecord(s.publishJobs, jobId, orgId);
   if (!job) throw new Error(`Job ${jobId} not found`);
   const snapId = _id("snap");
   if (!s.performance) s.performance = {};
   s.performance[snapId] = {
     id:     snapId,
+    orgId,
     jobId,
     title:  job.title,
     stats:  { ...job.stats },
@@ -758,14 +854,14 @@ function _contentScore(job) {
   return Math.min(100, Math.round(r / 50 + e / 10 + s * 5));
 }
 
-function getTopPerformers(limit = 5) {
+function getTopPerformers(limit = 5, orgId) {
   const s = _load();
-  const snaps = Object.values(s.performance || {});
+  const snaps = _scopedRecords(s.performance, orgId);
   return snaps.sort((a, b) => b.score - a.score).slice(0, limit);
 }
 
-function getRepublishRecommendations() {
-  const top = getTopPerformers(10);
+function getRepublishRecommendations(orgId) {
+  const top = getTopPerformers(10, orgId);
   const now = new Date();
   return top.map(snap => {
     const age     = (now - new Date(snap.snapshotAt)) / (1000 * 60 * 60 * 24);
@@ -795,18 +891,18 @@ function getPublishingOptimization() {
 
 // ── MODULE 9: Executive Growth Center ────────────────────────────────────────
 
-function getExecutiveDashboard() {
+function getExecutiveDashboard(orgId) {
   const s          = _load();
-  const jobs       = Object.values(s.publishJobs);
-  const campaigns  = Object.values(s.campaigns);
-  const influencers= Object.values(s.influencers);
-  const communities= Object.values(s.communities);
-  const refCamps   = Object.values(s.referralCampaigns);
-  const launches   = Object.values(s.launches);
-  const analytics  = getDistributionAnalytics();
-  const comStats   = getCommunityStats();
-  const infIntel   = getInfluencerIntelligence();
-  const pubStats   = getPublishStats();
+  const jobs       = _scopedRecords(s.publishJobs, orgId);
+  const campaigns  = _scopedRecords(s.campaigns, orgId);
+  const influencers= _scopedRecords(s.influencers, orgId);
+  const communities= _scopedRecords(s.communities, orgId);
+  const refCamps   = _scopedRecords(s.referralCampaigns, orgId);
+  const launches   = _scopedRecords(s.launches, orgId);
+  const analytics  = getDistributionAnalytics(orgId);
+  const comStats   = getCommunityStats(orgId);
+  const infIntel   = getInfluencerIntelligence(orgId);
+  const pubStats   = getPublishStats(orgId);
 
   // Referral stats from referralEngine
   let referralLeaderboard = [];
@@ -857,8 +953,8 @@ function getExecutiveDashboard() {
       totalCampaignReach: campaigns.reduce((s, c) => s + (c.stats?.reach || 0), 0),
     },
     organic: {
-      topPerformers:   getTopPerformers(3),
-      republishReady:  getRepublishRecommendations().length,
+      topPerformers:   getTopPerformers(3, orgId),
+      republishReady:  getRepublishRecommendations(orgId).length,
     },
     updatedAt: _ts(),
   };
@@ -866,16 +962,16 @@ function getExecutiveDashboard() {
 
 // ── MODULE 10: Commercial Benchmark ──────────────────────────────────────────
 
-function runBenchmark() {
+function runBenchmark(orgId) {
   const checks = [
     {
       id: "universal_publisher",
       label: "Universal Publisher (11 platforms, approval, retry, reach stats)",
       run: () => {
-        const job = createPublishJob({ title: "Benchmark Post", content: "Test content for benchmark.", platforms: PUBLISH_PLATFORMS.map(p => p.id), requireApproval: true });
-        approvePublishJob(job.id, "benchmark");
-        const published = publishJob(job.id);
-        const stats = getPublishStats();
+        const job = createPublishJob({ title: "Benchmark Post", content: "Test content for benchmark.", platforms: PUBLISH_PLATFORMS.map(p => p.id), requireApproval: true }, orgId);
+        approvePublishJob(job.id, "benchmark", orgId);
+        const published = publishJob(job.id, orgId);
+        const stats = getPublishStats(orgId);
         return job.id && published.platforms.every(p => p.status === "published") && published.stats.reach > 0 && stats.totalJobs >= 1;
       },
     },
@@ -883,10 +979,10 @@ function runBenchmark() {
       id: "campaign_orchestrator",
       label: "Campaign Orchestrator (create, approve, launch, multi-channel, dependencies)",
       run: () => {
-        const cmp  = createCampaign({ name: "Benchmark Campaign", channels: ["email","social","community"], approvalRequired: true, phases: ["awareness","consideration","conversion"] });
-        approveCampaign(cmp.id, "Benchmark approval");
-        const live = launchCampaign(cmp.id);
-        const list = listCampaigns("live");
+        const cmp  = createCampaign({ name: "Benchmark Campaign", channels: ["email","social","community"], approvalRequired: true, phases: ["awareness","consideration","conversion"] }, orgId);
+        approveCampaign(cmp.id, "Benchmark approval", orgId);
+        const live = launchCampaign(cmp.id, orgId);
+        const list = listCampaigns("live", orgId);
         return cmp.id && live.status === "live" && list.length >= 1;
       },
     },
@@ -894,10 +990,10 @@ function runBenchmark() {
       id: "influencer_outreach",
       label: "Influencer Outreach (discover, AI draft, outreach log, CRM, follow-up)",
       run: () => {
-        const inf  = addInfluencer({ name: "Rahul Tech", handle: "@rahultech", platform: "instagram", followers: 45000, niche: ["tech","automation"] });
-        const draft = buildOutreachDraft(inf.id, { campaign: "Ooplix Beta Launch", senderName: "Altamash" });
-        logOutreach(inf.id, { type: "dm", message: draft.body, status: "sent", followUpDate: _today() });
-        const intel = getInfluencerIntelligence();
+        const inf  = addInfluencer({ name: "Rahul Tech", handle: "@rahultech", platform: "instagram", followers: 45000, niche: ["tech","automation"] }, orgId);
+        const draft = buildOutreachDraft(inf.id, { campaign: "Ooplix Beta Launch", senderName: "Altamash" }, orgId);
+        logOutreach(inf.id, { type: "dm", message: draft.body, status: "sent", followUpDate: _today() }, orgId);
+        const intel = getInfluencerIntelligence(orgId);
         return inf.id && draft.subject && draft.body?.length > 50 && intel.total >= 1;
       },
     },
@@ -905,11 +1001,11 @@ function runBenchmark() {
       id: "community_hub",
       label: "Community Hub (Discord + Telegram + Reddit + GitHub, calendar, workflows)",
       run: () => {
-        const discord  = addCommunity({ platform: "discord", name: "Ooplix Founders", memberCount: 234, inviteUrl: "https://discord.gg/ooplix" });
-        const telegram = addCommunity({ platform: "telegram", name: "Ooplix Updates", memberCount: 512 });
-        addCommunityCalendarEntry(discord.id, { title: "Weekly AMA", type: "event", date: _today() });
-        const wf = addCommunityWorkflow(discord.id, { name: "Welcome Flow", trigger: "new_member", actions: ["send_welcome_message","add_role_member"] });
-        const stats = getCommunityStats();
+        const discord  = addCommunity({ platform: "discord", name: "Ooplix Founders", memberCount: 234, inviteUrl: "https://discord.gg/ooplix" }, orgId);
+        const telegram = addCommunity({ platform: "telegram", name: "Ooplix Updates", memberCount: 512 }, orgId);
+        addCommunityCalendarEntry(discord.id, { title: "Weekly AMA", type: "event", date: _today() }, orgId);
+        const wf = addCommunityWorkflow(discord.id, { name: "Welcome Flow", trigger: "new_member", actions: ["send_welcome_message","add_role_member"] }, orgId);
+        const stats = getCommunityStats(orgId);
         return discord.id && telegram.id && wf.id && stats.total >= 2;
       },
     },
@@ -917,12 +1013,12 @@ function runBenchmark() {
       id: "referral_campaigns",
       label: "Referral Campaign Manager (invite, fraud detection, milestone, leaderboard)",
       run: () => {
-        const rcmp = createReferralCampaign({ name: "Beta Referral Drive", rewardValue: 100, milestones: [{ at: 3, label: "3 friends", reward: "50 bonus credits" }] });
-        const inv1  = addReferralInvite(rcmp.id, { referrerId: "user-a", invitedEmail: "friend1@test.com" });
-        const fraud = addReferralInvite(rcmp.id, { referrerId: "user-b", invitedEmail: "fraud@test.com", burstSignup: true });
-        const conv  = convertReferralInvite(rcmp.id, inv1.invite.id);
-        const lb    = getReferralLeaderboard(rcmp.id);
-        const list  = listReferralCampaigns();
+        const rcmp = createReferralCampaign({ name: "Beta Referral Drive", rewardValue: 100, milestones: [{ at: 3, label: "3 friends", reward: "50 bonus credits" }] }, orgId);
+        const inv1  = addReferralInvite(rcmp.id, { referrerId: "user-a", invitedEmail: "friend1@test.com" }, orgId);
+        const fraud = addReferralInvite(rcmp.id, { referrerId: "user-b", invitedEmail: "fraud@test.com", burstSignup: true }, orgId);
+        const conv  = convertReferralInvite(rcmp.id, inv1.invite.id, orgId);
+        const lb    = getReferralLeaderboard(rcmp.id, orgId);
+        const list  = listReferralCampaigns(orgId);
         return rcmp.id && inv1.ok && fraud.blocked && conv.ok && lb.length >= 1 && list.length >= 1;
       },
     },
@@ -930,17 +1026,17 @@ function runBenchmark() {
       id: "launch_manager",
       label: "Launch Manager (website+email+social+community+docs+release_notes, checklist)",
       run: () => {
-        const launchCmp = createCampaign({ name: "Launch Campaign", channels: ["email","social","community","press"] });
-        const launch = createLaunch({ name: "Ooplix v3.0 Launch", version: "v3.0", channels: LAUNCH_CHANNELS, targetDate: _today(), campaignId: launchCmp.id });
-        updateLaunchChannel(launch.id, "website", { status: "done", notes: "Homepage updated" });
-        updateLaunchChannel(launch.id, "email", { status: "done", notes: "Blast sent" });
-        updateLaunchChannel(launch.id, "social", { status: "done" });
-        updateLaunchChannel(launch.id, "community", { status: "done" });
-        updateLaunchChannel(launch.id, "docs", { status: "done" });
-        updateLaunchChannel(launch.id, "release_notes", { status: "done" });
-        updateLaunchChecklist(launch.id, "readme",    true);
-        updateLaunchChecklist(launch.id, "changelog", true);
-        const list = listLaunches();
+        const launchCmp = createCampaign({ name: "Launch Campaign", channels: ["email","social","community","press"] }, orgId);
+        const launch = createLaunch({ name: "Ooplix v3.0 Launch", version: "v3.0", channels: LAUNCH_CHANNELS, targetDate: _today(), campaignId: launchCmp.id }, orgId);
+        updateLaunchChannel(launch.id, "website", { status: "done", notes: "Homepage updated" }, orgId);
+        updateLaunchChannel(launch.id, "email", { status: "done", notes: "Blast sent" }, orgId);
+        updateLaunchChannel(launch.id, "social", { status: "done" }, orgId);
+        updateLaunchChannel(launch.id, "community", { status: "done" }, orgId);
+        updateLaunchChannel(launch.id, "docs", { status: "done" }, orgId);
+        updateLaunchChannel(launch.id, "release_notes", { status: "done" }, orgId);
+        updateLaunchChecklist(launch.id, "readme",    true, orgId);
+        updateLaunchChecklist(launch.id, "changelog", true, orgId);
+        const list = listLaunches(undefined, orgId);
         return launch.id && launchCmp.id && list.length >= 1;
       },
     },
@@ -948,7 +1044,7 @@ function runBenchmark() {
       id: "distribution_analytics",
       label: "Distribution Analytics (reach, engagement, shares, virality, channel comparison)",
       run: () => {
-        const analytics = getDistributionAnalytics();
+        const analytics = getDistributionAnalytics(orgId);
         const byPlatform = analytics.byPlatform;
         return typeof analytics.totalReach === "number" && typeof analytics.viralityScore === "number" && typeof analytics.engagementRate === "string" && Object.keys(byPlatform).length >= 1;
       },
@@ -957,12 +1053,12 @@ function runBenchmark() {
       id: "content_performance_ai",
       label: "Content Performance AI (top performers, republish recs, evergreen, publish optimization)",
       run: () => {
-        const jobs    = Object.values(_load().publishJobs);
+        const jobs    = _scopedRecords(_load().publishJobs, orgId);
         const job     = jobs.find(j => j.stats?.reach > 0);
         if (!job) throw new Error("No published job available for snapshot");
-        const snap    = snapshotPerformance(job.id);
-        const top     = getTopPerformers(3);
-        const recs    = getRepublishRecommendations();
+        const snap    = snapshotPerformance(job.id, orgId);
+        const top     = getTopPerformers(3, orgId);
+        const recs    = getRepublishRecommendations(orgId);
         const optim   = getPublishingOptimization();
         return snap.id && top.length >= 1 && Array.isArray(recs) && optim.length >= 5;
       },
@@ -971,7 +1067,7 @@ function runBenchmark() {
       id: "executive_dashboard",
       label: "Executive Growth Center (traffic, subscribers, community, referrals, social, organic)",
       run: () => {
-        const dash = getExecutiveDashboard();
+        const dash = getExecutiveDashboard(orgId);
         return dash.traffic && dash.social && dash.community && dash.referrals && dash.influencers && dash.launches && dash.campaigns && dash.organic;
       },
     },
@@ -979,14 +1075,14 @@ function runBenchmark() {
       id: "commercial_readiness",
       label: "Commercial Readiness (11 platforms, 3+ campaigns, influencers, communities, referral, launch)",
       run: () => {
-        const stats    = getPublishStats();
-        const camps    = listCampaigns();
-        const infl     = listInfluencers();
-        const comms    = listCommunities();
-        const rCamps   = listReferralCampaigns();
-        const launches = listLaunches();
-        const analytics = getDistributionAnalytics();
-        const top = getTopPerformers();
+        const stats    = getPublishStats(orgId);
+        const camps    = listCampaigns(undefined, orgId);
+        const infl     = listInfluencers(undefined, undefined, undefined, orgId);
+        const comms    = listCommunities(undefined, orgId);
+        const rCamps   = listReferralCampaigns(orgId);
+        const launches = listLaunches(undefined, orgId);
+        const analytics = getDistributionAnalytics(orgId);
+        const top = getTopPerformers(5, orgId);
         return PUBLISH_PLATFORMS.length >= 11 && camps.length >= 2 && infl.length >= 1 && comms.length >= 2 && rCamps.length >= 1 && launches.length >= 1 && typeof analytics.viralityScore === "number" && top.length >= 1;
       },
     },

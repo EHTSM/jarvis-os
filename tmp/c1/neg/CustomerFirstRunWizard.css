@@ -1,0 +1,43 @@
+.cfr-backdrop {
+  position: fixed; inset: 0; z-index: 2000;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(5,6,12,0.72); backdrop-filter: blur(6px);
+}
+
+.cfr-card {
+  width: min(420px, calc(100vw - 32px));
+  /* C.1 (C1-D2): was var(--surface-elevated, #12131c). --surface-elevated is
+     defined nowhere, so this always fell back to the hardcoded DARK #12131c.
+     In light mode the text tokens flip to dark and rendered dark-on-dark:
+     --text #1a1f2e on #12131c = 1.13:1 (AA needs 4.5:1). This is the first-run
+     modal, so the first screen a new user saw in light mode was unreadable.
+     --surface-float is the existing theme-aware token for modals and is white
+     in light mode / dark in dark mode. */
+  background: var(--surface-float); border: 1px solid var(--border);
+  border-radius: var(--radius-lg, 16px); padding: 28px 26px 24px;
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.45);
+}
+
+.cfr-progress { display: flex; align-items: center; gap: 6px; margin-bottom: 14px; }
+.cfr-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); transition: background var(--dur-fast) var(--ease-out); }
+.cfr-dot.past    { background: var(--accent2); }
+.cfr-dot.current { background: var(--accent); width: 16px; border-radius: 3px; }
+.cfr-step-count { font-size: 10.5px; color: var(--text-faint); margin-left: 6px; font-weight: 700; }
+
+.cfr-icon  { font-size: 34px; margin-bottom: 6px; }
+.cfr-title { font-size: 19px; font-weight: 800; color: var(--text); margin: 0 0 6px; }
+.cfr-body  { font-size: 13.5px; color: var(--text-dim); line-height: 1.55; margin: 0 0 18px; max-width: 320px; }
+
+.cfr-actions { display: flex; flex-direction: column; gap: 8px; width: 100%; }
+.cfr-btn-primary {
+  padding: 12px 20px; border-radius: var(--radius-sm); border: none; cursor: pointer;
+  background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #06080e;
+  font-size: 14px; font-weight: 800;
+}
+.cfr-btn-skip { background: none; border: none; color: var(--text-faint); font-size: 12.5px; cursor: pointer; padding: 4px; }
+.cfr-btn-skip:hover { color: var(--text-dim); }
+
+@media (max-width: 480px) {
+  .cfr-card { padding: 22px 18px 18px; }
+}

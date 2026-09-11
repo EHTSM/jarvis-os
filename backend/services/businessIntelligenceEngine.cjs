@@ -330,10 +330,53 @@ function _emitRecommendation(signal, ruleId, entityType) {
 // MISSION CREATION — via missionOrchestrator/businessEntityModel
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Dedup window for auto-triggered missions — without this, any caller that
+// runs scan() on a recurring schedule (e.g. businessOperationsScheduler.cjs,
+// V7 Phase 4) would create a brand new mission for the same still-idle lead
+// every single tick, since _triggerMission() previously had no memory of
+// what it already triggered. Reuses missionMemory's real disk-persisted
+// listMissions({since}) — NOT missionOrchestrator.listMissions(), whose
+// in-memory _live records never carry the metadata field passed to
+// createManual() at all (confirmed live: metadata only reaches the
+// missionMemory-backed record _createRecord() creates underneath). A
+// process restart losing nothing here since missionMemory is disk-backed.
+const _MISSION_DEDUP_WINDOW_MS = 24 * 60 * 60 * 1000;
+
+// JARVIS INCIDENT REPAIR (2026-09-03, P0 dedup-window-truncation fix):
+// this used listMissions({since, limit: 500}) — correct only while the true
+// number of missions inside the 24h window stayed under 500. listMissions()
+// sorts newest-first then applies .slice(0, limit), so once real volume in
+// the window exceeded 500, the truncation silently dropped older-but-still-
+// in-window rows before this function's own .some() predicate ever saw
+// them. Live-reproduced against this incident's real data: at the Aug 27
+// peak, ~3001 missions existed in one trailing-24h window (6x the old
+// limit), producing up to 71 duplicate follow-up missions for a single lead
+// (1784810737006_a2aa1f — only 1 of 71 ever reached "completed"). Switched
+// to missionMemory.hasMissionMatching(), a purpose-built existence check
+// with no row-count cap — see that function's own header comment for the
+// full design rationale. Raising the old `limit` constant instead would
+// only raise the volume needed to reproduce the same defect again.
+function _recentlyTriggered(entityType, entityId, signalType) {
+    try {
+        const mm = _mem();
+        if (!mm) return false;
+        const since = new Date(Date.now() - _MISSION_DEDUP_WINDOW_MS).toISOString();
+        return mm.hasMissionMatching({
+            since,
+            predicate: m =>
+                m.metadata?.autoTriggered &&
+                m.metadata?.entityType === entityType &&
+                m.metadata?.entityId === entityId &&
+                m.metadata?.signalType === signalType,
+        });
+    } catch { return false; }
+}
+
 function _triggerMission(signal, entityType, entityId) {
     try {
         const orch = _orch();
         if (!orch) return null;
+        if (_recentlyTriggered(entityType, entityId, signal.type)) return null;
         const priority = signal.urgency === "critical" ? "critical"
                        : signal.urgency === "high"     ? "high"
                        : "medium";
@@ -423,31 +466,39 @@ function _runRules(entities, entityType, opts = {}) {
 // PUBLIC SCAN METHODS
 // ─────────────────────────────────────────────────────────────────────────────
 
+// All scan* functions accept an optional orgId in opts (threaded from the
+// caller's req.org.id — see backend/routes/business.js /business/intelligence/*
+// routes) and pass it through to businessDataService's existing orgId-scoped
+// reads. Omitting orgId preserves the prior (pre-scoping) global-scan
+// behavior for internal/background callers that intentionally scan across
+// all orgs (e.g. a portfolio-wide health job) — see
+// 100-COMPANY-REALITY-AUDIT.md Part 6 for why this was previously unscoped
+// even when called from a per-request route.
 function scanLeads(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const leads = bds.listLeads({ limit: 500 }).items;
+    const leads = bds.listLeads({ limit: 500, orgId: opts.orgId || null }).items;
     return _runRules(leads, "lead", opts);
 }
 
 function scanDeals(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const deals = bds.listOpportunities({ limit: 500 }).items;
+    const deals = bds.listOpportunities({ limit: 500, orgId: opts.orgId || null }).items;
     return _runRules(deals, "deal", opts);
 }
 
 function scanCustomers(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const customers = bds.listContacts({ limit: 500 }).items;
+    const customers = bds.listContacts({ limit: 500, orgId: opts.orgId || null }).items;
     return _runRules(customers, "customer", opts);
 }
 
 function scanCampaigns(opts = {}) {
     const bds = _bds();
     if (!bds) return { signals: [], missions: [], error: "businessDataService unavailable" };
-    const campaigns = bds.listCampaigns({ limit: 200 }).items;
+    const campaigns = bds.listCampaigns({ limit: 200, orgId: opts.orgId || null }).items;
     return _runRules(campaigns, "campaign", opts);
 }
 
@@ -455,14 +506,15 @@ function scanCampaigns(opts = {}) {
 // HEALTH METRICS
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getHealthMetrics() {
+function getHealthMetrics(opts = {}) {
     const bds = _bds();
     if (!bds) return { error: "businessDataService unavailable" };
+    const orgId = opts.orgId || null;
 
-    const leads   = bds.listLeads({ limit: 1000 }).items;
-    const deals   = bds.listOpportunities({ limit: 1000 }).items;
-    const camps   = bds.listCampaigns({ limit: 200 }).items;
-    const rev     = bds.listRevenue({ limit: 1000 }).items;
+    const leads   = bds.listLeads({ limit: 1000, orgId }).items;
+    const deals   = bds.listOpportunities({ limit: 1000, orgId }).items;
+    const camps   = bds.listCampaigns({ limit: 200, orgId }).items;
+    const rev     = bds.listRevenue({ limit: 1000, orgId }).items;
 
     // Lead health
     const leadNew       = leads.filter(l => l.status === "new");
@@ -552,7 +604,7 @@ function scan(opts = {}) {
     const allSignals  = [...leadResult.signals, ...dealResult.signals, ...custResult.signals, ...campResult.signals];
     const allMissions = [...leadResult.missions, ...dealResult.missions, ...custResult.missions, ...campResult.missions];
 
-    const health = getHealthMetrics();
+    const health = getHealthMetrics(opts);
 
     const completedAt = new Date().toISOString();
 

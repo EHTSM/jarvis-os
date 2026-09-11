@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth }           from "../context/AuthContext.jsx";
 import { useToast }          from "../context/ToastContext.jsx";
 import { signOut }           from "../firebase.js";
+import { endSession }        from "../api.js";
 
 export default function Profile() {
   const { user }   = useAuth();
@@ -16,6 +17,7 @@ export default function Profile() {
   const handleSignOut = async () => {
     setLoading(true);
     try {
+      await endSession();
       await signOut();
       navigate("/login", { replace: true });
     } catch (err) {

@@ -5,13 +5,60 @@
  * 14 FIX REQUIRED items from 11-area audit — all implemented.
  */
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc = require("../services/closedBeta.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path require — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _orgSvc = () => _try(() => require("../services/organizationService.cjs"));
 
 router.use("/cbeta", requireAuth);
 
+// C.10 audit (2026-08-14/15): the billing sub-routes below (FIX H1/H2/H3 —
+// downgrade, payment-failure, invoices, credits, coupons/apply) accept an
+// arbitrary client-supplied accountId with no ownership check at all,
+// gated only by the barrel-level requireAuth above — the exact same bug
+// class this file's own prior "Security Hardening (Zero-Trust Competitor
+// Remediation, Phase 4)" pass already fixed for GET /cbeta/orgs/:orgId/
+// deletion-check (see comment below). That pass did not extend to these
+// routes. Reproduced live: an authenticated account with no relationship to
+// another real account read that account's real credit balance (200, not
+// 403/404) AND successfully wrote a forged ₹99,999 credit onto it — a
+// persisted, real financial-record corruption, not just a read leak.
+// These are internal beta-ops billing-management tools (accepting a target
+// accountId is intentional for an operator managing another user's
+// billing) — the fix is restricting WHO may specify someone else's
+// accountId, matching the exact operatorOnly pattern already used for the
+// equivalent platform-financial-data class in revenueOS.js.
+router.use(
+  ["/cbeta/billing/downgrade", "/cbeta/billing/payment-failure", "/cbeta/billing/retry-queue",
+   "/cbeta/billing/process-retries", "/cbeta/billing/invoices", "/cbeta/billing/credits",
+   "/cbeta/billing/coupons/apply"],
+  operatorOnly
+);
+
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }
+
+// Security Hardening (Zero-Trust Competitor Remediation, Phase 4): found
+// during systemic tenant-isolation verification, same bug class as the
+// platformOrg/workforce IDORs fixed earlier in this pass —
+// GET /cbeta/orgs/:orgId/deletion-check had no ownership/membership check,
+// gated only by the barrel-level requireAuth above, disclosing another
+// org's member count and open-mission count to any authenticated user by
+// ID guessing. The DELETE route on the same :orgId param is NOT affected —
+// it delegates through svc.safeDeleteOrg -> organizationService.deleteOrg
+// -> archiveOrg, which already calls _assertPermission(orgId, accountId,
+// "delete_org") at the deepest layer; verified real and unchanged.
+function _requireOrgMemberOrAdmin(req, res, next) {
+  const orgId = req.params.orgId;
+  const accountId = req.user?.sub;
+  const svc2 = _orgSvc();
+  const role = accountId ? svc2.getMemberRole(orgId, accountId) : null;
+  if (role || (accountId && svc2.isEnterpriseAdmin(accountId))) return next();
+  return res.status(404).json({ ok: false, error: "Organization not found" });
+}
 
 // ── FIX A1 — Invite Revocation ───────────────────────────────────────────────
 
@@ -49,7 +96,7 @@ router.post("/cbeta/ai-workflows/record", (req, res) => {
 
 // ── FIX B1 — Org Deletion Safeguards ────────────────────────────────────────
 
-router.get("/cbeta/orgs/:orgId/deletion-check", (req, res) => {
+router.get("/cbeta/orgs/:orgId/deletion-check", _requireOrgMemberOrAdmin, (req, res) => {
   try { _ok(res, svc.checkOrgDeletionSafeguards(req.params.orgId)); } catch (e) { _err(res, e); }
 });
 

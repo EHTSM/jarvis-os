@@ -21,6 +21,7 @@
 const fs     = require("fs");
 const path   = require("path");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const ROOT     = path.join(__dirname, "../../");
 const DATA_DIR = path.join(ROOT, "data");
@@ -60,8 +61,52 @@ function _loadTokens() {
   catch { return {}; }
 }
 
+// Atomic tmp-rename write — same pattern already used by
+// authMiddleware.js's revocation ledger / missionMemory.cjs /
+// organizationService.cjs, so a crash mid-write can never leave
+// m6-auth-tokens.json truncated or corrupt.
 function _saveTokens(t) {
-  fs.writeFileSync(TOKEN_FILE, JSON.stringify(t, null, 2));
+  const tmp = `${TOKEN_FILE}.${process.pid}.${crypto.randomBytes(4).toString("hex")}.tmp`;
+  try {
+    fs.writeFileSync(tmp, JSON.stringify(t, null, 2));
+    fs.renameSync(tmp, TOKEN_FILE);
+  } catch (e) {
+    // Client Error Sanitization Deep Sweep (2026-08-21): a real write
+    // failure here (disk full, permission issue) previously threw Node's
+    // raw fs error straight up through resetPassword()/verifyEmail() into
+    // /auth/reset-password and /auth/verify-email's route-level catch —
+    // both UNAUTHENTICATED routes — leaking the absolute path to
+    // data/m6-auth-tokens.json to anyone on the internet. Reproduced via a
+    // standalone read-only-directory test (safe — not induced against the
+    // real data/ directory): "EACCES: permission denied, open
+    // '.../m6-auth-tokens.json.<pid>.<rand>.tmp'".
+    logger.error(`[BetaReadiness] token store write failed: ${e.message}`);
+    throw new Error("Could not save token state");
+  }
+}
+
+// Rate-Limit + Security Token Audit (2026-08-16): resetPassword() and
+// verifyEmail() each did read-tokens → check usedAt → do real work →
+// write-tokens, with no lock between the check and the write. Two
+// concurrent requests carrying the identical valid token could both pass
+// the `usedAt == null` check before either request's write landed — a
+// real, live-reproducible single-use bypass (replay). This process is
+// single-instance (no cluster/worker_threads — confirmed via the existing
+// in-memory rateLimiter's own single-process assumption), so a plain
+// in-memory claim set is sufficient: a token is provisionally "claimed"
+// synchronously before any of the surrounding async/IO work runs, and
+// released only if that attempt turns out invalid — closing the race
+// without a new locking framework or session store.
+const _claimedTokens = new Set();
+
+function _claimToken(key) {
+  if (_claimedTokens.has(key)) return false;
+  _claimedTokens.add(key);
+  return true;
+}
+
+function _releaseToken(key) {
+  _claimedTokens.delete(key);
 }
 
 function _ts()    { return new Date().toISOString(); }
@@ -82,15 +127,38 @@ function generateEmailVerificationToken(accountId, email) {
   return token;
 }
 
-function sendEmailVerification(accountId, email, name) {
+// Email Ecosystem mission: this previously called emailSvc.sendEmail()
+// WITHOUT await, inside a synchronous try/catch — the exact
+// false-success class already found and fixed once in
+// workspaceService.cjs's sendInvitationEmail() (test 61), reproduced
+// here unfixed. Two compounding problems: (1) with no await, any
+// rejection becomes an unhandled promise rejection the surrounding
+// try/catch can never see; (2) sendEmail() doesn't even throw on
+// failure — it always resolves to {ok, error}, so the catch block was
+// structurally unable to ever fire for a real send failure regardless.
+// A real, live email-provider outage would have been completely
+// invisible — not logged, not audited, not surfaced anywhere. Now
+// async + properly awaited, with the REAL outcome recorded in the audit
+// log (emailSent:true/false + the real provider error when false) — the
+// function's own external contract (ok:true, token still valid for
+// manual use even if the email never arrives) is deliberately
+// unchanged, since a registration/verification flow correctly should
+// not fail just because an email provider hiccuped; what was missing
+// was ever recording that this happened, not the tolerant behavior itself.
+async function sendEmailVerification(accountId, email, name) {
   const token = generateEmailVerificationToken(accountId, email);
   const base  = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
-  const link  = `${base}/auth/verify-email?token=${token}`;
+  // Points at the SPA route (App.jsx reads ?token= and calls the verify-email
+  // API itself), NOT the raw /auth/verify-email API endpoint — that route
+  // returns JSON, not a page, and would be intercepted before the SPA
+  // fallback ever runs (see server.js's routing-order comment).
+  const link  = `${base}/verify-email?token=${token}`;
 
+  let emailSent = false, emailError = null;
   const emailSvc = _email();
   if (emailSvc) {
     try {
-      emailSvc.sendEmail({
+      const result = await emailSvc.sendEmail({
         to:      email,
         subject: "Verify your Ooplix email address",
         html: `<p>Hi ${name || "there"},</p>
@@ -99,30 +167,44 @@ function sendEmailVerification(accountId, email, name) {
 <p>If you did not create an Ooplix account, ignore this email.</p>`,
         text: `Verify your email: ${link}`,
       });
-    } catch { /* non-fatal — token still valid for manual use */ }
+      emailSent  = !!result?.ok;
+      emailError = result?.ok ? null : (result?.error || "Email send failed");
+    } catch (e) { emailError = e.message; } // non-fatal — token still valid for manual use
+  } else {
+    emailError = "emailService unavailable";
   }
 
   const al = _auditLog();
-  if (al) al.append({ type: "email_verify_sent", accountId, email, expiresAt: new Date(Date.now() + EMAIL_VERIFY_TTL_MS).toISOString() });
+  if (al) al.append({ type: "email_verify_sent", accountId, email, emailSent, emailError, expiresAt: new Date(Date.now() + EMAIL_VERIFY_TTL_MS).toISOString() });
 
-  return { ok: true, token, link };
+  return { ok: true, token, link, emailSent };
 }
 
 function verifyEmail(token) {
+  // Same claim-lock as resetPassword — closes the identical read-check-write
+  // race for concurrent requests carrying the same verify token.
+  const claimKey = `ev_${token}`;
+  if (!_claimToken(claimKey)) {
+    return { ok: false, error: "Token already used" };
+  }
+
   const tokens = _loadTokens();
-  const entry  = tokens[`ev_${token}`];
+  const entry  = tokens[claimKey];
   if (!entry || entry.type !== "email_verify") {
+    _releaseToken(claimKey);
     return { ok: false, error: "Invalid or expired verification token" };
   }
   if (entry.usedAt) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Token already used" };
   }
   if (new Date(entry.expiresAt) < new Date()) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Verification token expired" };
   }
 
   // Mark token used
-  tokens[`ev_${token}`].usedAt = _ts();
+  tokens[claimKey].usedAt = _ts();
   _saveTokens(tokens);
 
   // Mark account as verified in accountService
@@ -156,7 +238,15 @@ function isEmailVerified(email) {
 // ════════════════════════════════════════════════════════════════════════════
 const RESET_TTL_MS = 60 * 60_000; // 1 hour
 
-function sendPasswordReset(email) {
+// Email Ecosystem mission: same un-awaited-send false-invisibility bug
+// as sendEmailVerification above, fixed the same way. The route-facing
+// response message deliberately stays identical regardless of real
+// delivery outcome (anti-enumeration is a genuine, correct security
+// property here — an attacker probing for valid emails must see the
+// same response whether the account exists or the send succeeded); what
+// was missing was ever recording the real outcome anywhere, which the
+// audit log now does (emailSent:true/false + the real provider error).
+async function sendPasswordReset(email) {
   const acctSvc = _accounts();
   if (!acctSvc) return { ok: false, error: "accountService unavailable" };
 
@@ -171,18 +261,26 @@ function sendPasswordReset(email) {
   _saveTokens(tokens);
 
   const base = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
-  const link = `${base}/auth/reset-password?token=${token}`;
+  // Points at the SPA route, not the raw API endpoint — see comment in
+  // sendEmailVerification above for why.
+  const link = `${base}/reset-password?token=${token}`;
 
+  let emailSent = false, emailError = null;
   const emailSvc = _email();
   if (emailSvc) {
-    try { emailSvc.sendPasswordReset(email, link); }
-    catch { /* non-fatal */ }
+    try {
+      const result = await emailSvc.sendPasswordReset(email, link);
+      emailSent  = !!result?.ok;
+      emailError = result?.ok ? null : (result?.error || "Email send failed");
+    } catch (e) { emailError = e.message; } // non-fatal — anti-enumeration response is unaffected
+  } else {
+    emailError = "emailService unavailable";
   }
 
   const al = _auditLog();
-  if (al) al.append({ type: "password_reset_requested", accountId: account.id, email, expiresAt });
+  if (al) al.append({ type: "password_reset_requested", accountId: account.id, email, emailSent, emailError, expiresAt });
 
-  return { ok: true, message: "If an account exists, a reset link will be sent.", token /* for test environments */ };
+  return { ok: true, message: "If an account exists, a reset link will be sent.", token /* for test environments */, emailSent };
 }
 
 function resetPassword(token, newPassword) {
@@ -193,28 +291,70 @@ function resetPassword(token, newPassword) {
     return { ok: false, error: "Password must be at least 8 characters" };
   }
 
+  // Claim the token synchronously before any async/IO work runs — closes
+  // the read-check-write race where two concurrent requests carrying the
+  // same valid token could both pass the usedAt check before either
+  // request's write landed. Released on every early-exit failure path so a
+  // rejected attempt (unknown/expired/already-used token) never blocks a
+  // legitimate subsequent retry.
+  const claimKey = `pr_${token}`;
+  if (!_claimToken(claimKey)) {
+    return { ok: false, error: "Reset token already used" };
+  }
+
   const tokens = _loadTokens();
-  const entry  = tokens[`pr_${token}`];
+  const entry  = tokens[claimKey];
   if (!entry || entry.type !== "password_reset") {
+    _releaseToken(claimKey);
     return { ok: false, error: "Invalid or expired reset token" };
   }
   if (entry.usedAt) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Reset token already used" };
   }
   if (new Date(entry.expiresAt) < new Date()) {
+    _releaseToken(claimKey);
     return { ok: false, error: "Reset token expired" };
   }
 
   const acctSvc = _accounts();
-  if (!acctSvc) return { ok: false, error: "accountService unavailable" };
+  if (!acctSvc) { _releaseToken(claimKey); return { ok: false, error: "accountService unavailable" }; }
+
+  // Enterprise password policy (Module 4): enforced here rather than in
+  // accountService.createAccount, which has no org context at signup time —
+  // a reset always has a real accountId to resolve the account's primary org
+  // (if any) and check its policy against.
+  try {
+    const org = require("./organizationService.cjs");
+    const policy = require("./policyService.cjs");
+    const primaryOrgId = org.resolveContext(entry.accountId)?.primaryOrg?.orgId;
+    if (primaryOrgId) policy.assertPasswordMeetsPolicy(primaryOrgId, newPassword);
+  } catch (e) {
+    if (e?.message?.startsWith("Password must")) { _releaseToken(claimKey); return { ok: false, error: e.message }; }
+    // organizationService/policyService unavailable — fail open on the
+    // enterprise policy check specifically (not on the reset itself), same
+    // as every other _try()-wrapped optional integration in this codebase.
+  }
+
+  // Mark used and persist BEFORE the account mutation: the claim above
+  // already prevents a concurrent duplicate from reaching this point, but
+  // writing the token's consumed state first (rather than after
+  // updateAccount) means a crash between the two can never leave a
+  // password changed with its token still showing as unused/replayable.
+  tokens[claimKey].usedAt = _ts();
+  _saveTokens(tokens);
 
   const result = acctSvc.updateAccount(entry.accountId, {
     passwordHash: acctSvc.hashPassword ? acctSvc.hashPassword(newPassword)
       : require("crypto").scryptSync(newPassword, "ooplix-salt", 64).toString("hex"),
+    // Security Token Audit (2026-08-16): invalidates every session/JWT
+    // issued before this moment (see verifyJWT's iat check in
+    // authMiddleware.js) — a pre-reset session (e.g. held by whoever
+    // triggered the compromise this reset is meant to recover from) no
+    // longer authenticates after a successful reset, without needing a new
+    // session-store architecture (JWTs already carry iat + sub).
+    passwordChangedAt: _ts(),
   });
-
-  tokens[`pr_${token}`].usedAt = _ts();
-  _saveTokens(tokens);
 
   const al = _auditLog();
   if (al) al.append({ type: "password_reset_complete", accountId: entry.accountId });
@@ -224,8 +364,19 @@ function resetPassword(token, newPassword) {
 
 // ════════════════════════════════════════════════════════════════════════════
 // FIX 3 — Beta User Cap (50 hard limit) + FIX 4 — Invite-Code Gate
+//
+// Public SaaS mission: registration is open self-serve by default (no invite
+// code required). Set OPEN_SIGNUP=false in .env to re-enable the closed-beta
+// invite-code requirement — the cap/invite-code machinery below still runs
+// either way, it's only whether checkBetaGate REQUIRES a code that toggles.
+// An invite code, if supplied, is still validated and marked used even in
+// open mode, so existing invite links/co3 tracking keep working.
 // ════════════════════════════════════════════════════════════════════════════
 const BETA_MAX_USERS = 50;
+
+function isOpenSignup() {
+  return process.env.OPEN_SIGNUP !== "false";
+}
 
 function getBetaStatus() {
   const acctSvc = _accounts();
@@ -234,14 +385,15 @@ function getBetaStatus() {
   const userAccounts = allAccounts.filter(a => a.role !== "operator");
   const state = _loadState();
   const verifiedEmails = state.verifiedEmails || {};
+  const open = isOpenSignup();
 
   return {
-    limit:         BETA_MAX_USERS,
+    limit:         open ? null : BETA_MAX_USERS,
     registered:    userAccounts.length,
-    remaining:     Math.max(0, BETA_MAX_USERS - userAccounts.length),
-    isFull:        userAccounts.length >= BETA_MAX_USERS,
+    remaining:     open ? null : Math.max(0, BETA_MAX_USERS - userAccounts.length),
+    isFull:        open ? false : userAccounts.length >= BETA_MAX_USERS,
     verified:      Object.keys(verifiedEmails).length,
-    inviteRequired: true,
+    inviteRequired: !open,
   };
 }
 
@@ -261,6 +413,8 @@ function checkBetaGate(inviteCode) {
     }
     return { allowed: true, inviteCode };
   }
+
+  if (isOpenSignup()) return { allowed: true };
 
   return { allowed: false, reason: "An invite code is required to join the closed beta." };
 }
@@ -1044,7 +1198,7 @@ module.exports = {
   // FIX 2 — Password reset
   sendPasswordReset, resetPassword,
   // FIX 3+4 — Beta cap + invite gate
-  getBetaStatus, checkBetaGate, markInviteCodeUsed, BETA_MAX_USERS,
+  getBetaStatus, checkBetaGate, markInviteCodeUsed, BETA_MAX_USERS, isOpenSignup,
   // FIX 5 — Diagnostic bundle
   generateDiagnosticBundle,
   // FIX 6 — Retention cohorts

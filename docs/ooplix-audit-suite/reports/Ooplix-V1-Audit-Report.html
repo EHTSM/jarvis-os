@@ -1,0 +1,628 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Ooplix V1 — Master Audit &amp; Certification Report</title>
+<style>
+  @page { size: A4; margin: 20mm 18mm; }
+  * { box-sizing: border-box; }
+  body { font: 10.5pt/1.5 Georgia, 'Times New Roman', serif; color: #0B1F33; margin: 0; }
+  h1,h2,h3 { font-family: -apple-system,'Segoe UI',Inter,system-ui,sans-serif; font-weight: 600; color: #0B1F33; }
+  h1 { font-size: 20pt; margin: 0 0 4pt; }
+  h2 { font-size: 14pt; margin: 22pt 0 6pt; padding-bottom: 4pt; border-bottom: 1.5pt solid #1F4E79; page-break-after: avoid; }
+  h3 { font-size: 11.5pt; margin: 14pt 0 4pt; page-break-after: avoid; }
+  .mono { font-family: 'SF Mono','Cascadia Code',Menlo,Consolas,monospace; font-size: 9pt; }
+  .b { font-weight: 700; }
+  .num { text-align: right; }
+  .sm { font-size: 8.5pt; }
+  table { width: 100%; border-collapse: collapse; margin: 8pt 0 14pt; font-size: 9pt; page-break-inside: auto; }
+  th { background: #1F4E79; color: #fff; text-align: left; padding: 5pt 6pt; font-family: -apple-system,'Segoe UI',sans-serif; font-size: 8.5pt; }
+  td { padding: 4pt 6pt; border-bottom: 0.5pt solid #D8E0E7; vertical-align: top; }
+  tr:nth-child(even) td { background: #F5F8FA; }
+  tr { page-break-inside: avoid; }
+  .planned-row td { color: #8A96A3; font-style: italic; border-bottom: 0.75pt dashed #8A96A3; }
+  .v-cert { color: #0F9D58; font-weight: 600; }
+  .v-lim  { color: #C55A11; font-weight: 600; }
+  .v-not  { color: #B00020; font-weight: 700; }
+  .v-plan { color: #8A96A3; }
+  .sev-critical { color: #B00020; font-weight: 700; }
+  .sev-high { color: #C55A11; font-weight: 600; }
+  .sev-medium { color: #BF9000; font-weight: 600; }
+  .cover { height: 247mm; display: flex; flex-direction: column; justify-content: center; page-break-after: always; }
+  .cover .band { height: 6pt; background: #1F4E79; margin-bottom: 18pt; }
+  .cover h1 { font-family: Georgia, serif; font-size: 30pt; }
+  .cover .sub { font-size: 15pt; color: #4A5C6D; margin: 6pt 0 24pt; }
+  .cover .meta { font-size: 10pt; color: #4A5C6D; line-height: 1.9; }
+  .chip { display: inline-block; background: #B00020; color: #fff; padding: 3pt 9pt; font-size: 8.5pt; letter-spacing: .06em; font-family: sans-serif; }
+  .panel { border: 1pt solid #D8E0E7; background: #F5F8FA; padding: 10pt 12pt; margin: 10pt 0; }
+  .panel.alert { border-color: #B00020; background: #FBE9EC; }
+  .kpis { display: flex; gap: 8pt; margin: 12pt 0; }
+  .kpi { flex: 1; border: 1pt solid #D8E0E7; padding: 8pt; }
+  .kpi .l { font-size: 7.5pt; color: #4A5C6D; font-family: sans-serif; letter-spacing: .04em; }
+  .kpi .v { font-size: 19pt; font-weight: 700; font-family: sans-serif; }
+  .kpi .s { font-size: 7.5pt; color: #4A5C6D; }
+  .pagebreak { page-break-before: always; }
+  footer { font-size: 8pt; color: #4A5C6D; }
+</style></head><body>
+
+<div class="cover">
+  <div class="band"></div>
+  <div class="chip">CONFIDENTIAL — INVESTOR / ENTERPRISE DUE DILIGENCE</div>
+  <h1>Ooplix V1</h1>
+  <div class="sub">Master Audit &amp; Certification Report</div>
+  <div class="meta">
+    <strong>Document ID</strong> OPX-RPT-001<br>
+    <strong>Product</strong> Ooplix (<span class="mono">jarvis-os</span>) 1.0.0-rc1<br>
+    <strong>Date of record</strong> 2026-08-09<br>
+    <strong>Branch of record</strong> <span class="mono">security/reality-completion</span><br>
+    <strong>Version</strong> 1.1.0 &middot; Retention: permanent certification record
+  </div>
+</div>
+
+<h2>Statement of Evidence Integrity</h2>
+<div class="panel">
+  <p style="margin-top:0">This register distinguishes measured fact from forward plan. Audits A.1-A.13 and B.1-B.19.2.1 were executed and are evidenced by committed artifacts. Audits B.20-B.25 and Phase C have not been executed; they appear with status PLANNED, no score, and no findings. No projected or illustrative score appears anywhere in this suite.</p>
+  <p style="margin-bottom:0"><strong>Register note.</strong> The register carries 31 executed rows. A-phase sub-audits are consolidated into their parent row (A.10 consolidates A.10.1-A.10.7; A.11 consolidates A.11.1-A.11.8; A.4 consolidates A.4.3; A.5 consolidates A.5.2-A.5.3; A.8 consolidates A.8.3). B-phase recovery continuations (B.18.1, B.19.1, B.19.2, B.19.2.1) are listed as their own rows because each carries an independent certification document and regression suite. Counting A-phase sub-audits individually gives 48 discrete audit passes. All aggregate figures are computed over the 31 consolidated rows.</p>
+</div>
+<table>
+  <tr><th>Class</th><th class="num">Count</th><th>Meaning</th></tr>
+  <tr><td><strong>EXECUTED</strong></td><td class="num b">31</td><td>Performed against the running product. Every figure traces to a committed certification document or a git commit.</td></tr>
+  <tr><td><strong>PLANNED</strong></td><td class="num b">7</td><td><strong>Not executed.</strong> Scope forecast only. No score, no findings, no evidence.</td></tr>
+</table>
+
+<h2>Executive Summary</h2>
+<div class="kpis">
+  <div class="kpi"><div class="l">EXECUTED</div><div class="v" style="color:#1F4E79">31</div><div class="s">of 38 rows</div></div>
+  <div class="kpi"><div class="l">FINDINGS</div><div class="v" style="color:#0F9D58">116</div><div class="s">17 critical</div></div>
+  <div class="kpi"><div class="l">RESIDUAL CRITICAL</div><div class="v" style="color:#B00020">3</div><div class="s">one root cause</div></div>
+  <div class="kpi"><div class="l">MEAN SCORE</div><div class="v" style="color:#1F4E79">8.49</div><div class="s">8 scored</div></div>
+  <div class="kpi"><div class="l">REGRESSION</div><div class="v" style="color:#0F9D58">144/144</div><div class="s">+142/142 phase</div></div>
+</div>
+<p>The executed portfolio is strong on runtime integrity, isolation at the API boundary, recovery, and AI honesty. It is weak in three named places: tenant ownership in engines built before multi-tenancy (3 critical gaps), accessibility (1 audit recorded NOT CERTIFIED), and API surface consistency (response envelope 5.0/10, SDK readiness 5.5/10). None of these were discovered by users or external auditors &mdash; all were found, reproduced, and documented by the programme itself.</p>
+
+<div class="panel alert">
+  <strong>Three residual CRITICAL gaps remain open.</strong> All three are tenant-ownership gaps in storage models built without an ownership dimension. They share a root cause and should be treated as one remediation programme, not three tickets.
+</div>
+
+<h2 class="pagebreak">Master Audit Register &mdash; Executed</h2>
+<table>
+  <tr><th>ID</th><th>Audit</th><th>Date</th><th>Verdict</th><th class="num">Score</th><th class="num">C/H/M/L</th><th>Headline finding</th></tr>
+  <tr class="">
+        <td class="mono b">A.1</td>
+        <td>Founder Reality Recertification</td>
+        <td>2026-08-05</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">2/0/0/0</td>
+        <td class="sm">Two authorization gaps closed during recertification variant sweep.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.4</td>
+        <td>Navigation &amp; Discoverability</td>
+        <td>2026-08-06</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/2/1/0</td>
+        <td class="sm">'More' dropdown was inert — 74 of ~79 surfaces unreachable.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.5</td>
+        <td>Runtime Load &amp; AI Honesty</td>
+        <td>2026-08-06</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/2/1/0</td>
+        <td class="sm">Unbounded mission-fanout loops blocked the event loop; Engineering Workspace swallowed every pipeline failure.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.6</td>
+        <td>Founder Journey Integrity</td>
+        <td>2026-08-06</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/5/5/0</td>
+        <td class="sm">Ten truthfulness defects: false invite success, false zeros on Reports, contradictory integration badges.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.7</td>
+        <td>Growth &amp; Creative Operations</td>
+        <td>2026-08-06</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/2/1/0</td>
+        <td class="sm">Social content AI reported fake success with an empty caption; no delete/archive path existed.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.8</td>
+        <td>Operator Console Stability</td>
+        <td>2026-08-07</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">2/1/1/0</td>
+        <td class="sm">Runtime Console crashed with 4 TDZ errors; Memory Fabric crashed on every real memory node.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.9</td>
+        <td>Tenant Isolation Verification</td>
+        <td>2026-08-07</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/0/0/0</td>
+        <td class="sm">Cross-org tenant isolation confirmed with real accounts; Executive Intelligence crash fixed.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.10</td>
+        <td>Action Recovery Sweep</td>
+        <td>2026-08-07</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/6/2/0</td>
+        <td class="sm">Systematic id/entityId field mismatches silently broke update and convert actions across seven modules.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.11</td>
+        <td>Cross-Product Consistency</td>
+        <td>2026-08-08</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/4/8/4</td>
+        <td class="sm">Sixteen consistency defects across eight sub-phases, including gated-402 false zeros and unconfirmed deletes.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">A.13</td>
+        <td>Category Vocabulary Recovery</td>
+        <td>2026-08-08</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/0/1/1</td>
+        <td class="sm">Existing capability was unfindable under the words the market actually uses.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.1</td>
+        <td>Runtime Performance &amp; Provider Failover</td>
+        <td>2026-08-09</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/1/0/0</td>
+        <td class="sm">Mission store retention cap removed a measured 483 ms event-loop block.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.4</td>
+        <td>Enterprise Security Validation</td>
+        <td>2026-08-09</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/0/0/0</td>
+        <td class="sm">Dev bypass fails closed; JWT production mode confirmed; validated against 2 real orgs with no code changes.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.5</td>
+        <td>Disaster Recovery &amp; Continuity</td>
+        <td>2026-08-09</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">2/1/0/0</td>
+        <td class="sm">Backups omitted leads, organizations, billing and memory stores — the archive was effectively worthless.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.6</td>
+        <td>Database &amp; Persistence</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/0/1/0</td>
+        <td class="sm">0 corrupted / 0 zero-byte across 3438 stores (282.9 MB); no migration framework exists.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.7</td>
+        <td>API Certification</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">7.6</td>
+        <td class="num mono">1/1/0/0</td>
+        <td class="sm">Cross-tenant leak via X-Org-Id header override — a textbook confused deputy. 299/300 routes protected.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.8</td>
+        <td>DevOps Certification</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">8.1</td>
+        <td class="num mono">1/1/3/0</td>
+        <td class="sm">App was in an unbounded OOM restart loop for ~2 months, hidden until PM2 supervision exposed it.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.9</td>
+        <td>AI Intelligence Certification</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">8.6</td>
+        <td class="num mono">0/1/0/0</td>
+        <td class="sm">/jarvis reported false success on total AI failure; 0 fake successes in 20 concurrent calls after fix.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.10</td>
+        <td>Memory Certification</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">8.7</td>
+        <td class="num mono">1/1/0/0</td>
+        <td class="sm">Every new memory was destroyed by its own save — evicted inside the same _persist() call that stored it.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.11</td>
+        <td>Agent Certification</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">8.7</td>
+        <td class="num mono">1/1/0/0</td>
+        <td class="sm">Admission gate rejected 68.6% of all agent work (1371 of 2000 runs) — threshold left at 44% of the heap budget.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.12</td>
+        <td>Knowledge System Certification</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/1/0/0</td>
+        <td class="sm">Knowledge Graph was fully built but never indexed — 5 edges and lastIndexed: null. Existing index took it to 1526 edges / 2321 nodes in 2.7 s.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.13</td>
+        <td>Automation &amp; Workflow OS</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">8.7</td>
+        <td class="num mono">0/1/0/0</td>
+        <td class="sm">dryRun was silently dropped by two wrapper layers — every 'preview' executed for real.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.14</td>
+        <td>Finance Operations</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/1/1/0</td>
+        <td class="sm">Org AI spend structurally unreportable — 636 costed events, 0 carrying an orgId, so budget caps could never fire.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.15</td>
+        <td>Support Operations</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/1/1/0</td>
+        <td class="sm">Support tickets had no ownership — any account could read and close another tenant's tickets.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.16</td>
+        <td>Customer Operations</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/2/3/0</td>
+        <td class="sm">Five defects recovered; CRM org scoping is discarded at the customer-engine boundary.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.17</td>
+        <td>Team &amp; Workforce</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">1/0/0/0</td>
+        <td class="sm">The sole org owner could demote themselves, stranding the company permanently and unmanageably.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.18</td>
+        <td>Business Continuity &amp; Resilience</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/1/0/0</td>
+        <td class="sm">Every dead-letter entry was anonymous — 0 of 980 named the failing agent, making triage impossible.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.18.1</td>
+        <td>Autonomous Runtime Recovery</td>
+        <td>2026-08-09</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/1/0/0</td>
+        <td class="sm">Runtime re-queued work indefinitely on prerequisite failure; bounded gate blocks dispatch after 3 consecutive failures.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.19</td>
+        <td>Accessibility &amp; Inclusive UX — Baseline</td>
+        <td>2026-08-09</td>
+        <td class="v-not">NOT CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/1/0/0</td>
+        <td class="sm">Did not achieve WCAG 2.2 AA. Real measured baseline established; failing criteria listed as failing.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.19.1</td>
+        <td>Accessibility Foundation Recovery</td>
+        <td>2026-08-09</td>
+        <td class="v-cert">CERTIFIED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">0/3/3/0</td>
+        <td class="sm">All 10 foundation gates reached PASS: controls named 100%, forms labeled 100%, dialogs accessible 42/42, 0 placeholder-only fields, 0 unnamed interactive elements.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.19.2</td>
+        <td>Visual Accessibility Recovery</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">9.0</td>
+        <td class="num mono">0/8/8/0</td>
+        <td class="sm">Token pairs below AA went 40/90 to 0/90; live page failures 22 to 0 in both themes; undefined token refs 276 to 0; component-CSS failures 4,959 to 180.</td>
+      </tr>
+<tr class="">
+        <td class="mono b">B.19.2.1</td>
+        <td>Visual Accessibility Recovery — Final</td>
+        <td>2026-08-09</td>
+        <td class="v-lim">CERTIFIED WITH LIMITATIONS</td>
+        <td class="num mono">8.5</td>
+        <td class="num mono">0/2/3/0</td>
+        <td class="sm">Live authenticated measurement replaced synthetic inference. 180 synthetic findings resolved to 0 real; but the live app still shows 33 contrast failures (31 light, 2 dark).</td>
+      </tr>
+</table>
+
+<h2>Master Audit Register &mdash; Planned</h2>
+<p class="sm"><em>These audits have not been executed. No score, finding count, or evidence exists for any row below.</em></p>
+<table>
+  <tr><th>ID</th><th>Audit</th><th>Date</th><th>Verdict</th><th class="num">Score</th><th class="num">C/H/M/L</th><th>Forecast scope</th></tr>
+  <tr class="planned-row">
+        <td class="mono b">B.20</td>
+        <td>Scalability &amp; Multi-Node Readiness</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+<tr class="planned-row">
+        <td class="mono b">B.21</td>
+        <td>Compliance &amp; Audit Trail</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+<tr class="planned-row">
+        <td class="mono b">B.22</td>
+        <td>Integration &amp; Partner Ecosystem</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+<tr class="planned-row">
+        <td class="mono b">B.23</td>
+        <td>Data Governance &amp; Privacy</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+<tr class="planned-row">
+        <td class="mono b">B.24</td>
+        <td>Performance &amp; Capacity Certification</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+<tr class="planned-row">
+        <td class="mono b">B.25</td>
+        <td>Pre-Certification Readiness Gate</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+<tr class="planned-row">
+        <td class="mono b">C</td>
+        <td>Phase C — Production Certification &amp; Release</td>
+        <td>&mdash;</td>
+        <td class="v-plan">PLANNED</td>
+        <td class="num mono">&mdash;</td>
+        <td class="num mono">&mdash;</td>
+        <td class="sm">Not executed. Scope forecast only.</td>
+      </tr>
+</table>
+
+<h2 class="pagebreak">Residual Gap Register</h2>
+<p>A <strong>defect</strong> is a broken capability that exists; it was recovered. A <strong>gap</strong> is a capability that was never built; it was recorded with reproduction steps and a reason for remaining open.</p>
+<table>
+  <tr><th>Gap</th><th>Phase</th><th>Severity</th><th>Title</th><th>Measured detail</th><th>Why open</th><th>Closes in</th></tr>
+  <tr>
+      <td class="mono b">G1-B15</td>
+      <td class="mono">B.15</td>
+      <td class="sev-critical">CRITICAL</td>
+      <td>Legacy ticket store cross-tenant readable/writable</td>
+      <td class="sm">customerSupportEngine.cjs contains zero orgId occurrences; createTicket() has no ownership parameter. 190 tickets affected.</td>
+      <td class="sm">Closing requires adding an ownership dimension to a storage model that has none — new capability, not recovery.</td>
+      <td class="mono">B.21</td>
+    </tr>
+<tr>
+      <td class="mono b">G1-B16</td>
+      <td class="mono">B.16</td>
+      <td class="sev-critical">CRITICAL</td>
+      <td>Customer engines discard org scoping</td>
+      <td class="sm">All five customer engines contain zero orgId occurrences; 0 of 123 stored customer records carry an owner. Org B read Org A's customer name and phone number.</td>
+      <td class="sm">Threading org through five engines and backfilling ownership into three stores is new capability.</td>
+      <td class="mono">B.23</td>
+    </tr>
+<tr>
+      <td class="mono b">G1-B17</td>
+      <td class="mono">B.17</td>
+      <td class="sev-critical">CRITICAL</td>
+      <td>No ownership transfer operation exists</td>
+      <td class="sm">Both removeMember() and updateMemberRole() guards demand transfer-ownership-first, but no such operation exists. No member suspend/restore either.</td>
+      <td class="sm">Requires building new capability, which the recovery mission forbids.</td>
+      <td class="mono">B.25</td>
+    </tr>
+<tr>
+      <td class="mono b">G2-B15</td>
+      <td class="mono">B.15</td>
+      <td class="sev-high">HIGH</td>
+      <td>Support actions entirely unaudited</td>
+      <td class="sm">0 of 39,416 audit entries record a support action. Neither support service imports auditLog.</td>
+      <td class="sm">Instrumentation was never present, so there was nothing to restore.</td>
+      <td class="mono">B.21</td>
+    </tr>
+<tr>
+      <td class="mono b">G1-B18</td>
+      <td class="mono">B.18</td>
+      <td class="sev-high">HIGH</td>
+      <td>Recovery produces no incident record</td>
+      <td class="sm">Three hard kills produced zero incidents; all 10 detection rules are deployment-scoped. No post-incident record, no MTTR.</td>
+      <td class="sm">Detection rule scope change is new capability.</td>
+      <td class="mono">B.24</td>
+    </tr>
+<tr>
+      <td class="mono b">G3-B18</td>
+      <td class="mono">B.18</td>
+      <td class="sev-high">HIGH</td>
+      <td>Monitoring locked out during incidents</td>
+      <td class="sm">All 20 SSE slots held by internal subscribers; the bus throws on the 21st, rejecting an operator dashboard connecting mid-incident.</td>
+      <td class="sm">Requires a slot-reservation model that does not exist.</td>
+      <td class="mono">B.24</td>
+    </tr>
+<tr>
+      <td class="mono b">G13-B18</td>
+      <td class="mono">B.18</td>
+      <td class="sev-medium">MEDIUM</td>
+      <td>Backups are local-disk only</td>
+      <td class="sm">Fast recovery from process failure verified; no verified protection against host loss.</td>
+      <td class="sm">Offsite target is infrastructure scope.</td>
+      <td class="mono">B.24</td>
+    </tr>
+<tr>
+      <td class="mono b">G12-B18</td>
+      <td class="mono">B.18</td>
+      <td class="sev-medium">MEDIUM</td>
+      <td>No published RTO/RPO</td>
+      <td class="sm">Measured recovery numbers are good (~11-12 s) but no commitment is published, so continuity cannot be certified against a target.</td>
+      <td class="sm">Requires a business commitment decision, not an engineering change.</td>
+      <td class="mono">B.24</td>
+    </tr>
+<tr>
+      <td class="mono b">G1-B1921</td>
+      <td class="mono">B.19.2.1</td>
+      <td class="sev-high">HIGH</td>
+      <td>33 contrast failures remain in the live authenticated app</td>
+      <td class="sm">31 light-mode and 2 dark-mode failures measured across 3,035 elements / 8 tabs in a real authenticated session. Root cause identified and measured.</td>
+      <td class="sm">Recorded at the highest evidence-backed score rather than inflated to 10/10. Remediation is scoped but not executed.</td>
+      <td class="mono">B.25</td>
+    </tr>
+</table>
+
+<h2>Measured Highlights</h2>
+<table>
+  <tr><th>Metric</th><th class="num">Value</th><th>Detail</th><th>Source</th></tr>
+  <tr>
+      <td>Agent work rejected before B.11 fix</td>
+      <td class="num mono b">68.6%</td>
+      <td class="sm">1371 of 2000 recorded runs failed with memory_pressure</td>
+      <td class="mono">B.11</td>
+    </tr>
+<tr>
+      <td>Agent work rejected after B.11 fix</td>
+      <td class="num mono b">0.0%</td>
+      <td class="sm">Admission gate threshold corrected to the real heap envelope</td>
+      <td class="mono">B.11</td>
+    </tr>
+<tr>
+      <td>Knowledge graph edges before B.12</td>
+      <td class="num mono b">5</td>
+      <td class="sm">lastIndexed was null — no index had ever run</td>
+      <td class="mono">B.12</td>
+    </tr>
+<tr>
+      <td>Knowledge graph edges after B.12</td>
+      <td class="num mono b">1526</td>
+      <td class="sm">2321 nodes across 10 domain types, built in 2.7 s by the existing endpoint</td>
+      <td class="mono">B.12</td>
+    </tr>
+<tr>
+      <td>Event-loop block removed</td>
+      <td class="num mono b">483 ms</td>
+      <td class="sm">Mission store retention cap</td>
+      <td class="mono">B.1</td>
+    </tr>
+<tr>
+      <td>Routes protected</td>
+      <td class="num mono b">299 / 300</td>
+      <td class="sm">Only /health is public</td>
+      <td class="mono">B.7</td>
+    </tr>
+<tr>
+      <td>Store corruption</td>
+      <td class="num mono b">0 / 3438</td>
+      <td class="sm">0 corrupted, 0 zero-byte across 282.9 MB</td>
+      <td class="mono">B.6</td>
+    </tr>
+<tr>
+      <td>Recovery time from SIGKILL</td>
+      <td class="num mono b">~11-12 s</td>
+      <td class="sm">3 consecutive hard kills, zero unstable restarts</td>
+      <td class="mono">B.18</td>
+    </tr>
+<tr>
+      <td>Dead-letter entries naming the failing agent</td>
+      <td class="num mono b">0 / 980 to 980 / 980</td>
+      <td class="sm">Anonymous failure backlog made triage impossible</td>
+      <td class="mono">B.18</td>
+    </tr>
+<tr>
+      <td>AI spend events carrying an orgId</td>
+      <td class="num mono b">0 / 636</td>
+      <td class="sm">Budget caps could never fire; cost could not be allocated</td>
+      <td class="mono">B.14</td>
+    </tr>
+<tr>
+      <td>Runtime regression</td>
+      <td class="num mono b">144 / 144</td>
+      <td class="sm">Plus 142/142 phase-specific tests across B.6-B.19</td>
+      <td class="mono">All</td>
+    </tr>
+<tr>
+      <td>Agents live in runtime</td>
+      <td class="num mono b">210 / 210</td>
+      <td class="sm">Registered and ticking; 0 phantom agents</td>
+      <td class="mono">B.11</td>
+    </tr>
+</table>
+
+<h2>Scored Audits</h2>
+<table>
+  <tr><th>Audit</th><th>Verdict</th><th class="num">Score</th></tr>
+  <tr><td class="mono b">B.19.2</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">9.0</td></tr>
+<tr><td class="mono b">B.10</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">8.7</td></tr>
+<tr><td class="mono b">B.11</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">8.7</td></tr>
+<tr><td class="mono b">B.13</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">8.7</td></tr>
+<tr><td class="mono b">B.9</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">8.6</td></tr>
+<tr><td class="mono b">B.19.2.1</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">8.5</td></tr>
+<tr><td class="mono b">B.8</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">8.1</td></tr>
+<tr><td class="mono b">B.7</td><td class="v-lim">CERTIFIED WITH LIMITATIONS</td><td class="num mono b">7.6</td></tr>
+  <tr><td colspan="2"><strong>Mean of scored audits</strong></td><td class="num mono b">8.49</td></tr>
+</table>
+<p class="sm"><em>Only 8 of 31 executed audits produced weighted dimension scores. The remainder were pass/fail against defined criteria. Averaging across both would fabricate precision.</em></p>
+
+<h2>Change Control</h2>
+<table>
+  <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+  <tr><td class="mono">1.0.0</td><td class="mono">2026-08-09</td><td>Initial register. 31 executed audits recorded from committed evidence; 7 planned audits recorded without scores.</td></tr>
+</table>
+<div class="panel">
+  <strong>Amendment rules.</strong> A PLANNED row may only move to EXECUTED when accompanied by a committed certification document containing measured evidence. Scores may not be added to a PLANNED row under any circumstance. A NOT CERTIFIED verdict may not be revised without a new dated audit.
+</div>
+
+<footer><hr style="border:none;border-top:0.5pt solid #D8E0E7;margin:16pt 0 6pt">
+Ooplix V1 Master Audit &amp; Certification Report &middot; OPX-RPT-001 &middot; Confidential — Investor / Enterprise Due Diligence
+</footer>
+</body></html>

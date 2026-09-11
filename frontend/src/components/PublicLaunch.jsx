@@ -2,6 +2,7 @@
 // No feature development. Only execution.
 import React, { useState, useCallback, useEffect } from "react";
 import "./PublicLaunch.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -186,8 +187,7 @@ function WeekPanel({ weekId }) {
         <div className="pl-card" style={{ borderColor: "rgba(245,158,11,.2)" }}>
           <div className="pl-card-title" style={{ color: "var(--pl-accent)" }}>Critical ({data.critDone}/{data.critTotal} done)</div>
           {critItems.map(item => (
-            <div key={item.id} className={`pl-check-item critical ${item.done ? "done" : ""}`}
-              onClick={() => toggle(item.id, !item.done)}>
+            <div key={item.id} className={`pl-check-item critical ${item.done ? "done" : ""}`} {...clickableProps(() => toggle(item.id, !item.done))}>
               <div className={`pl-check-box ${item.done ? "done" : ""}`}>{item.done ? "✓" : ""}</div>
               <div style={{ flex: 1 }}>
                 <div className="pl-check-lbl">{item.label}</div>
@@ -202,8 +202,7 @@ function WeekPanel({ weekId }) {
         <div className="pl-card">
           <div className="pl-card-title">Additional Items</div>
           {nonCrit.map(item => (
-            <div key={item.id} className={`pl-check-item ${item.done ? "done" : ""}`}
-              onClick={() => toggle(item.id, !item.done)}>
+            <div key={item.id} className={`pl-check-item ${item.done ? "done" : ""}`} {...clickableProps(() => toggle(item.id, !item.done))}>
               <div className={`pl-check-box ${item.done ? "done" : ""}`}>{item.done ? "✓" : ""}</div>
               <div style={{ flex: 1 }}>
                 <div className="pl-check-lbl">{item.label}</div>
@@ -457,7 +456,7 @@ function KPIPanel() {
               </div>
             ) : (
               <div className="pl-kpi-val" style={{ color: k.met ? "var(--pl-green)" : sc(k.progressPct), cursor: "pointer" }}
-                onClick={() => { setEditing(k.id); setVal(String(k.current)); }}>
+                {...clickableProps(() => { setEditing(k.id); setVal(String(k.current)); })}>
                 {k.unit === "₹" ? `₹${(k.current || 0).toLocaleString("en-IN")}` : `${k.current ?? "—"}${k.unit === "%" ? "%" : ""}`}
               </div>
             )}

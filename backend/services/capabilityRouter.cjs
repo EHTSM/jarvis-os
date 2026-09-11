@@ -12,6 +12,12 @@ const aiRegistry   = require("./aiRegistry.cjs");
 const smartRouter  = require("./smartRouter.cjs");
 const creditEngine = require("./creditEngine.cjs");
 
+let _bus = null;
+function _evtBus() {
+  if (!_bus) try { _bus = require("../../agents/runtime/runtimeEventBus.cjs"); } catch {}
+  return _bus;
+}
+
 // ── Intent → Capability map ───────────────────────────────────────
 const INTENT_PATTERNS = [
   { cap: "code",       patterns: [/code|program|implement|function|class|debug|fix|refactor|test|lint|syntax|typescript|python|javascript|rust|go|sql/i] },
@@ -64,12 +70,34 @@ function route(opts = {}) {
     ? intent
     : detectCapability(intent);
 
-  // 2. Find best provider for this capability
-  const best = aiRegistry.bestFor(capability, {
-    prefer,
-    minQuality:    opts.minQuality || 0.6,
-    maxCostPer1k:  opts.maxCostPer1k,
-  });
+  // 2. Find best provider for this capability. local.enabled means "route to
+  // a real local provider" — it is not a blanket billing waiver. Only honor
+  // it if a type:"local" provider actually supports this capability;
+  // otherwise every candidate is a real paid provider and local mode must
+  // not apply (falls through to normal cost-optimized routing + billing).
+  const localRecord   = accountId && accountId !== "unknown" ? creditEngine.getRecord(accountId, plan) : null;
+  const wantsLocal     = !!localRecord?.local?.enabled;
+  const localProviders = wantsLocal ? aiRegistry.getByCapability(capability).filter(p => p.type === "local") : [];
+  const useLocal        = wantsLocal && localProviders.length > 0;
+
+  if (wantsLocal && !useLocal) {
+    try {
+      _evtBus()?.emit("credit:local_mode:denied", {
+        accountId, capability, reason: "no_local_provider_for_capability", _ts: Date.now(),
+      });
+    } catch {}
+  }
+
+  const best = useLocal
+    ? { providerId: localProviders[0].id, providerName: localProviders[0].name,
+        model: localProviders[0].capabilities[capability]?.models?.[0] || "default",
+        costPer1k: 0, quality: localProviders[0].capabilities[capability]?.quality,
+        latencyClass: localProviders[0].capabilities[capability]?.latencyClass }
+    : aiRegistry.bestFor(capability, {
+        prefer,
+        minQuality:    opts.minQuality || 0.6,
+        maxCostPer1k:  opts.maxCostPer1k,
+      });
 
   // 3. Build fallback chain (same capability, sorted by cost)
   const capProviders = aiRegistry.getByCapability(capability)
@@ -78,8 +106,9 @@ function route(opts = {}) {
     .sort((a, b) => (a.cap.costPer1k || 0) - (b.cap.costPer1k || 0))
     .map(p => ({ providerId: p.id, model: p.cap.models?.[0] || "default", costPer1k: p.cap.costPer1k }));
 
-  // 4. Credit check
-  const creditCheck = creditEngine.checkCredit(accountId, capability, plan);
+  // 4. Credit check — local mode only bypasses cost when we actually
+  // selected a local provider above; every other path is billed normally.
+  const creditCheck = creditEngine.checkCredit(accountId, capability, plan, { localProviderAvailable: useLocal });
 
   // 5. Smart router scores (for the underlying transport if it's a text-based cap)
   const textCaps = ["chat","code","reasoning","vision","embeddings","browser"];

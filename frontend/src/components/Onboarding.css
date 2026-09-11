@@ -81,6 +81,22 @@
   letter-spacing: 0.01em;
 }
 
+.ob-login-link {
+  margin-left: auto;
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.ob-login-link:hover {
+  text-decoration: underline;
+}
+
 /* Step count chip — gives progress a visual anchor */
 .ob-step-count {
   display: inline-flex;

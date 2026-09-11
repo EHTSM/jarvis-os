@@ -1,8 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── L2 Marketplace Panels ─────────────────────────────────────────
 const STAR_COLOR = "#f5a623";
+
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function L2ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
 
 function StarRating({ rating }) {
   const full  = Math.floor(rating);
@@ -17,7 +32,7 @@ function StarRating({ rating }) {
 
 function PluginCard({ plugin, onInstall, onDetail }) {
   return (
-    <div className="l2-card" onClick={() => onDetail?.(plugin)}>
+    <div className="l2-card" {...clickableProps(() => onDetail?.(plugin))}>
       <div className="l2-card-header">
         <span className="l2-card-name">{plugin.name}</span>
         <div className="l2-card-badges">
@@ -56,6 +71,9 @@ function PluginDetail({ plugin, onClose, onInstall }) {
   const [newRating, setNewRating] = useState(5);
   const [newBody, setNewBody] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, onClose);
 
   useEffect(() => {
     if (!plugin) return;
@@ -70,21 +88,28 @@ function PluginDetail({ plugin, onClose, onInstall }) {
   const submitReview = async () => {
     if (!newBody.trim()) return;
     setSubmitting(true);
-    await _fetch(`/marketplace/plugin/${plugin.id}/review`, {
-      method: "POST",
-      body: JSON.stringify({ rating: newRating, body: newBody }),
-    }).catch(() => {});
-    setNewBody(""); setSubmitting(false);
-    _fetch(`/marketplace/plugin/${plugin.id}`).then(r => setReviews(r.plugin?.reviews || [])).catch(() => {});
+    setSubmitError(null);
+    try {
+      await _fetch(`/marketplace/plugin/${plugin.id}/review`, {
+        method: "POST",
+        body: JSON.stringify({ rating: newRating, body: newBody }),
+      });
+      setNewBody("");
+      _fetch(`/marketplace/plugin/${plugin.id}`).then(r => setReviews(r.plugin?.reviews || [])).catch(() => {});
+    } catch (e) {
+      setSubmitError(e.message || "Failed to submit review");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (!plugin) return null;
   return (
-    <div className="ws-modal-overlay" onClick={onClose}>
-      <div className="ws-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 600, maxHeight: "85vh", overflowY: "auto" }}>
+    <div className="ws-modal-overlay" {...overlayProps(onClose)}>
+      <div className="ws-modal" role="dialog" aria-modal="true" aria-labelledby="l2-detail-name" onClick={e => e.stopPropagation()} style={{ maxWidth: 600, maxHeight: "85vh", overflowY: "auto" }}>
         <div className="l2-detail-header">
           <div>
-            <div className="l2-detail-name">{plugin.name}</div>
+            <div className="l2-detail-name" id="l2-detail-name">{plugin.name}</div>
             <div className="l2-detail-meta">{plugin.author} · v{plugin.version} · {plugin.category}</div>
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -149,6 +174,7 @@ function PluginDetail({ plugin, onClose, onInstall }) {
         <button className="k2-form-btn" style={{ marginTop: 6 }} disabled={submitting || !newBody.trim()} onClick={submitReview}>
           {submitting ? "Submitting…" : "Submit Review"}
         </button>
+        {submitError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginTop: 4 }}>{submitError}</div>}
       </div>
     </div>
   );
@@ -156,8 +182,10 @@ function PluginDetail({ plugin, onClose, onInstall }) {
 
 function useMarketplaceInstall(reload) {
   const [installing, setInstalling] = useState(null);
+  const [installError, setInstallError] = useState(null);
   const doInstall = async (plugin) => {
     setInstalling(plugin.id);
+    setInstallError(null);
     try {
       await _fetch("/plugins/install", {
         method: "POST",
@@ -169,11 +197,17 @@ function useMarketplaceInstall(reload) {
           tags: plugin.tags, minSDKVersion: plugin.minSDKVersion || "1.0.0",
         }),
       });
-    } catch {}
+      reload?.();
+    } catch (e) {
+      // A failed install previously reverted silently to the plain "Install"
+      // button with zero indication anything went wrong — indistinguishable
+      // from the click doing nothing. Same fix shape as PluginDetail's
+      // submitError just below (already fixed, Mission 22).
+      setInstallError(`Failed to install ${plugin.name}: ${e.message || "unknown error"}`);
+    }
     setInstalling(null);
-    reload?.();
   };
-  return { installing, doInstall };
+  return { installing, installError, doInstall };
 }
 
 function MarketplaceCatalogPanel() {
@@ -181,24 +215,28 @@ function MarketplaceCatalogPanel() {
   const [cats,      setCats]      = useState([]);
   const [activeCat, setActiveCat] = useState("all");
   const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
   const [detail,    setDetail]    = useState(null);
 
   const reload = useCallback(() => {
+    setLoading(true); setError(null);
     const url = activeCat && activeCat !== "all" ? `/marketplace/catalog?category=${activeCat}` : "/marketplace/catalog";
-    _fetch(url).then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    _fetch(url).then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, [activeCat]);
 
   useEffect(() => {
     _fetch("/marketplace/categories").then(r => setCats(r.categories || [])).catch(() => {});
   }, []);
-  useEffect(() => { setLoading(true); reload(); }, [reload]);
+  useEffect(() => { reload(); }, [reload]);
 
-  const { installing, doInstall } = useMarketplaceInstall(reload);
+  const { installing, installError, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Loading marketplace…</div>;
+  if (error) return <L2ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l2-panel">
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginBottom: 8 }}>{installError}</div>}
       <div className="l2-cat-bar">
         {cats.map(c => (
           <button key={c.id} className={`l2-cat-btn${activeCat === c.id ? " l2-cat-btn--active" : ""}`}
@@ -225,18 +263,21 @@ function MarketplaceCatalogPanel() {
 function MarketplaceFeaturedPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [detail,  setDetail]  = useState(null);
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/marketplace/featured").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/marketplace/featured").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
-  const { installing, doInstall } = useMarketplaceInstall(reload);
+  const { installing, installError, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Loading featured plugins…</div>;
+  if (error) return <L2ErrorState error={error} onRetry={reload} />;
   return (
     <div className="l2-panel">
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginBottom: 8 }}>{installError}</div>}
       <div className="l2-grid">
         {(data?.plugins || []).map(p => (
           <PluginCard key={p.id} plugin={{ ...p, installing: installing === p.id }}
@@ -252,12 +293,13 @@ function MarketplaceSearchPanel() {
   const [query,   setQuery]   = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [error,   setError]   = useState(null);
   const [detail,  setDetail]  = useState(null);
 
   const doSearch = useCallback(() => {
-    if (!query.trim()) { setResults(null); return; }
-    setLoading(true);
-    _fetch(`/marketplace/search?q=${encodeURIComponent(query)}`).then(r => setResults(r)).catch(() => setResults(null)).finally(() => setLoading(false));
+    if (!query.trim()) { setResults(null); setError(null); return; }
+    setLoading(true); setError(null);
+    _fetch(`/marketplace/search?q=${encodeURIComponent(query)}`).then(r => setResults(r)).catch(e => { setResults(null); setError(e.message || "Search failed"); }).finally(() => setLoading(false));
   }, [query]);
 
   useEffect(() => {
@@ -265,14 +307,16 @@ function MarketplaceSearchPanel() {
     return () => clearTimeout(t);
   }, [doSearch]);
 
-  const { installing, doInstall } = useMarketplaceInstall(() => doSearch());
+  const { installing, installError, doInstall } = useMarketplaceInstall(() => doSearch());
 
   return (
     <div className="l2-panel">
       <input className="k2-form-input" placeholder="Search by name, capability, tag, author…"
         value={query} onChange={e => setQuery(e.target.value)} autoFocus />
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, margin: "8px 0" }}>{installError}</div>}
       {loading && <div className="k2-loading">Searching…</div>}
-      {!loading && results && results.total === 0 && <div className="k2-empty">No results for "{query}".</div>}
+      {!loading && error && <L2ErrorState error={error} onRetry={doSearch} />}
+      {!loading && !error && results && results.total === 0 && <div className="k2-empty">No results for "{query}".</div>}
       {!loading && results?.plugins?.length > 0 && (
         <>
           <div className="l2-search-meta">{results.total} result{results.total !== 1 ? "s" : ""} for "{results.query}"</div>
@@ -293,19 +337,22 @@ function MarketplaceSearchPanel() {
 function MarketplaceRecsPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [detail,  setDetail]  = useState(null);
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/marketplace/recommendations").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/marketplace/recommendations").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
-  const { installing, doInstall } = useMarketplaceInstall(reload);
+  const { installing, installError, doInstall } = useMarketplaceInstall(reload);
 
   if (loading) return <div className="k2-loading">Computing recommendations…</div>;
+  if (error) return <L2ErrorState error={error} onRetry={reload} />;
 
   return (
     <div className="l2-panel">
+      {installError && <div className="k2-form-error" style={{ color: "var(--danger)", fontSize: 12, marginBottom: 8 }}>{installError}</div>}
       {(!data?.recommendations?.length) ? (
         <div className="k2-empty">All recommended plugins are already installed — great coverage!</div>
       ) : (

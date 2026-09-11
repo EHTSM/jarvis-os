@@ -1,15 +1,36 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { _fetch } from "../_client";
 import "./SelfImprovementPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Fixed by delegating to the
+// canonical _client.js _fetch, which already throws on !res.ok and preserves
+// the backend's own message + status — so callers can surface the real
+// reason. Do not re-add a local `if (!r.ok)` check here: _fetch() never
+// returns a non-ok response, it throws before returning, so that check would
+// be unreachable dead code, not a real guard.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16, known-defect-family recovery): same
+// defect already found and fixed in the sibling components
+// EngineeringMemoryPanel.jsx, RepositoryMapPanel.jsx, and
+// AutonomousPlatformPanel.jsx — this helper called a bare fetch() against
+// `/api${path}` (e.g. /api/improvement/stats), but the real backend mounts
+// these routes at /improvement/* with NO /api prefix. Live-confirmed: GET
+// /api/improvement/stats -> 404; GET /improvement/stats (real route) -> 200,
+// real evolution-cycle data. All 8 of this panel's calls (evolve, patterns,
+// candidates, promote, measure, architecture, confidence, benchmark, stats)
+// were equally broken. Replaced with the canonical _fetch (_client.js),
+// preserving this file's existing API(method, path, body) call-site
+// signature and Error{message,status} contract so no other line in this
+// file needed to change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
+    return _fetch(path, {
         method,
-        headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    return r.json();
 };
 
 function formatMs(ms) {
@@ -28,22 +49,22 @@ function timeAgo(iso) {
 }
 
 function confColor(c) {
-    if (c >= 85) return "#10b981";
-    if (c >= 65) return "#f59e0b";
-    return "#ef4444";
+    if (c >= 85) return "var(--success)";
+    if (c >= 65) return "var(--warning)";
+    return "var(--danger)";
 }
 
 function priColor(p) {
-    const m = { high: "#ef4444", medium: "#f59e0b", low: "#6b7280" };
-    return m[p] || "#6b7280";
+    const m = { high: "var(--danger)", medium: "var(--warning)", low: "var(--text-dim)" };
+    return m[p] || "var(--text-dim)";
 }
 
 const PATTERN_COLORS = {
     recurring_smell:         "#a78bfa",
-    recurring_rca:           "#ef4444",
-    recurring_failure_phase: "#f59e0b",
-    high_success_run_type:   "#10b981",
-    low_success_run_type:    "#ef4444",
+    recurring_rca:           "var(--danger)",
+    recurring_failure_phase: "var(--warning)",
+    high_success_run_type:   "var(--success)",
+    low_success_run_type:    "var(--danger)",
     high_rollback_file:      "#fb923c",
     prolific_lesson_source:  "#60a5fa",
 };
@@ -86,7 +107,7 @@ function ScoreGauge({ value, label, color }) {
 // ── Pattern card ─────────────────────────────────────────────────────────────
 
 function PatternCard({ pattern, onPromote }) {
-    const color = PATTERN_COLORS[pattern.type] || "#6b7280";
+    const color = PATTERN_COLORS[pattern.type] || "var(--text-dim)";
     return (
         <div className="sip-pattern-card">
             <div className="sip-pattern-head">
@@ -116,8 +137,10 @@ function EvolutionView({ stats }) {
 
     const evolve = async () => {
         setRunning(true);
+        // A.11.2: failure was invisible. Reuses this file's own error shape
+        // (see the benchmark handler), now carrying the real backend message.
         try { setResult(await API("POST", "/improvement/evolve", {})); }
-        catch {}
+        catch (e) { setResult({ error: e?.message || "Evolve failed" }); }
         setRunning(false);
     };
 
@@ -153,7 +176,9 @@ function EvolutionView({ stats }) {
                 ))}
             </div>
 
-            {result && (
+            {/* A.11.2: surface the failure using this file's own .sip-err class. */}
+            {result?.error && <div className="sip-err">{result.error}</div>}
+            {result && !result.error && (
                 <div className="sip-cycle-result">
                     <div className="sip-cycle-head">
                         <span className="sip-cycle-title">Cycle Result</span>
@@ -161,13 +186,13 @@ function EvolutionView({ stats }) {
                     </div>
                     <div className="sip-cycle-kpis">
                         <div className="sip-cycle-kpi"><span style={{ color:"#a78bfa" }}>{result.patternsFound}</span><br/>Patterns</div>
-                        <div className="sip-cycle-kpi"><span style={{ color:"#10b981" }}>{result.rulesPromoted}</span><br/>Promoted</div>
-                        <div className="sip-cycle-kpi"><span style={{ color:"#f59e0b" }}>{result.rulesRetired}</span><br/>Retired</div>
+                        <div className="sip-cycle-kpi"><span style={{ color:"var(--success)" }}>{result.rulesPromoted}</span><br/>Promoted</div>
+                        <div className="sip-cycle-kpi"><span style={{ color:"var(--warning)" }}>{result.rulesRetired}</span><br/>Retired</div>
                         <div className="sip-cycle-kpi"><span style={{ color:"#60a5fa" }}>{result.confidenceUpdates}</span><br/>Calibrated</div>
                     </div>
                     {Object.entries(result.stages || {}).map(([stage, data]) => (
                         <div key={stage} className={`sip-stage-row ${data?.error ? "sip-stage-row--err" : "sip-stage-row--ok"}`}>
-                            <span className="sip-stage-dot" style={{ background: data?.error ? "#ef4444" : "#10b981" }} />
+                            <span className="sip-stage-dot" style={{ background: data?.error ? "var(--danger)" : "var(--success)" }} />
                             <span className="sip-stage-name">{stage}</span>
                             {data?.error
                                 ? <span className="sip-stage-err">{data.error}</span>
@@ -185,8 +210,8 @@ function EvolutionView({ stats }) {
                         <div key={i} className="sip-recent-row">
                             <span className="sip-recent-ts">{timeAgo(c.runAt)}</span>
                             <span className="sip-recent-stat">{c.patternsFound}p</span>
-                            <span className="sip-recent-stat" style={{ color: "#10b981" }}>{c.rulesPromoted}↑</span>
-                            <span className="sip-recent-stat" style={{ color: "#f59e0b" }}>{c.rulesRetired}↓</span>
+                            <span className="sip-recent-stat" style={{ color: "var(--success)" }}>{c.rulesPromoted}↑</span>
+                            <span className="sip-recent-stat" style={{ color: "var(--warning)" }}>{c.rulesRetired}↓</span>
                             <span className="sip-recent-ms">{formatMs(c.durationMs)}</span>
                         </div>
                     ))}
@@ -215,7 +240,7 @@ function PatternsView() {
     const promote = async () => {
         setPromoting(true);
         try { setPromResult(await API("POST", "/improvement/promote", {})); }
-        catch {}
+        catch (e) { setPromResult({ error: e?.message || "Promote failed" }); }
         setPromoting(false);
     };
 
@@ -235,7 +260,8 @@ function PatternsView() {
                 )}
             </div>
 
-            {promResult && (
+            {promResult?.error && <div className="sip-err">{promResult.error}</div>}
+            {promResult && !promResult.error && (
                 <div className="sip-prom-result">
                     {promResult.promoted?.length > 0 && (
                         <span className="sip-prom-ok">✓ {promResult.promoted.length} rules promoted</span>
@@ -285,10 +311,10 @@ function ScoresView() {
     const scores = data?.scores || {};
     const gauges = [
         { key: "learningVelocity",     label: "Learning\nVelocity",     color: "#60a5fa",  value: Math.min(100, scores.learningVelocity) },
-        { key: "repairSuccess",         label: "Repair\nSuccess",        color: "#10b981",  value: scores.repairSuccess },
+        { key: "repairSuccess",         label: "Repair\nSuccess",        color: "var(--success)",  value: scores.repairSuccess },
         { key: "engineeringMaturity",   label: "Engineering\nMaturity",  color: "#a78bfa",  value: scores.engineeringMaturity },
         { key: "repositoryHealth",      label: "Repo\nHealth",           color: "#34d399",  value: scores.repositoryHealth },
-        { key: "autonomousSuccess",     label: "Autonomous\nSuccess",    color: "#f59e0b",  value: scores.autonomousSuccess },
+        { key: "autonomousSuccess",     label: "Autonomous\nSuccess",    color: "var(--warning)",  value: scores.autonomousSuccess },
         { key: "predictionAccuracy",    label: "Prediction\nAccuracy",   color: "#fb923c",  value: scores.predictionAccuracy },
     ];
 
@@ -427,12 +453,12 @@ function BenchmarkView() {
                 <>
                     <div className="sip-bench-kpis">
                         {[
-                            { k: "Passed",          v: `${result.passed}/${result.total}`,  c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
-                            { k: "Pass Rate",        v: `${result.passRate}%`,               c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
+                            { k: "Passed",          v: `${result.passed}/${result.total}`,  c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
+                            { k: "Pass Rate",        v: `${result.passRate}%`,               c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
                             { k: "Time",             v: formatMs(result.totalMs),            c: "#60a5fa" },
                             { k: "Patterns",         v: result.stats?.pendingPatterns || 0,  c: "#a78bfa" },
                             { k: "Knowledge Items",  v: result.stats?.improvementScores?.knowledgeGrowth || 0, c: "#d1d5db" },
-                            { k: "Maturity",         v: `${result.stats?.improvementScores?.engineeringMaturity || 0}%`, c: "#10b981" },
+                            { k: "Maturity",         v: `${result.stats?.improvementScores?.engineeringMaturity || 0}%`, c: "var(--success)" },
                         ].map(kpi => (
                             <div key={kpi.k} className="sip-bench-kpi">
                                 <div className="sip-bench-kpi-val" style={{ color: kpi.c }}>{kpi.v}</div>
@@ -444,7 +470,7 @@ function BenchmarkView() {
                         {(result.scenarios || []).map((s, i) => (
                             <div key={i} className={`sip-bench-row sip-bench-row--${s.ok ? "ok" : "fail"}`}>
                                 <span className="sip-bench-num">{i + 1}.</span>
-                                <span className="sip-bench-dot" style={{ background: s.ok ? "#10b981" : "#ef4444" }} />
+                                <span className="sip-bench-dot" style={{ background: s.ok ? "var(--success)" : "var(--danger)" }} />
                                 <span className="sip-bench-goal">{s.name}</span>
                                 <span className="sip-bench-val">{s.value}</span>
                                 <span className="sip-bench-ms">{formatMs(s.elapsedMs)}</span>

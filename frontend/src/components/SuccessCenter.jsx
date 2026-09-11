@@ -272,6 +272,30 @@ export default function SuccessCenter({ stats, opsData, billing, onNavigate, onU
         </div>
       </div>
 
+      {/* ── Explore more ─────────────────────────────────────────── */}
+      <div className="sc-quick-links">
+        <p className="sc-quick-label">Explore more</p>
+        <div className="sc-quick-grid">
+          {[
+            { icon: "◈", label: "CRM",                tab: "business" },
+            { icon: "◎", label: "Companies",           tab: "companies" },
+            { icon: "⚡", label: "Workflow Automation", tab: "workflowautomation" },
+            { icon: "◉", label: "Analytics",           tab: "analyticscenter" },
+            { icon: "★", label: "Referral Engine",     tab: "referral" },
+            { icon: "✦", label: "Creative Studio",     tab: "creative" },
+          ].map(q => (
+            <button
+              key={q.tab}
+              className="sc-quick-btn"
+              onClick={() => onNavigate?.(q.tab)}
+            >
+              <span className="sc-quick-icon">{q.icon}</span>
+              <span className="sc-quick-text">{q.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
     </div>
   );
 }

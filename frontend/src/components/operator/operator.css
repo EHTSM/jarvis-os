@@ -9,7 +9,7 @@
    ──────────────────────────────────────────────────────────────────────── */
 :root {
   /* ── Canvas ── */
-  --op-bg:             #04070f;
+  --op-bg: var(--bg);
   --op-surface:        rgba(8, 14, 26, 0.94);
   --op-surface2:       rgba(12, 20, 34, 0.86);
   --op-surface3:       rgba(16, 28, 44, 0.88);
@@ -24,16 +24,16 @@
   --op-border-hi: rgba(92, 214, 255, 0.22);
 
   /* ── Brand palette ── */
-  --op-accent:    #73b7ff;
+  --op-accent: var(--accent);
   --op-accent2:   #5de2d5;
-  --op-purple:    #9f7ffd;
-  --op-blue:      #44a2ff;
+  --op-purple: var(--accent);
+  --op-blue: var(--info);
 
   /* ── Status colors ── */
-  --op-green:   #4bf0b1;
+  --op-green: var(--success);
   --op-green2:  #22c88a;
   --op-amber:   #f7b34f;
-  --op-red:     #ff6f7d;
+  --op-red: var(--danger);
   --op-red2:    #e0576d;
 
   /* ── Semantic aliases (frozen) ── */
@@ -42,13 +42,18 @@
   --op-warn:    #f7b34f;
   --op-danger:  #ff6f7d;
   --op-info:    #44a2ff;
-  --op-muted:   #98aac2;
+  --op-muted: var(--text-dim);
 
   /* ── Typography ── */
-  --op-text:         #e3ebf5;
-  --op-text2:        #98aac2;
-  --op-text3:        #5c6e88;
-  --op-text-soft:    #c8d4df;
+  --op-text: var(--text);
+  /* B19.2.2: --op-text2/3/-soft were pinned light-on-dark values (#98aac2,
+     #5c6e88, #c8d4df). Once --op-bg became theme-aware they inverted in light
+     mode — 2.17:1 measured on --bg. Aliased onto the global text roles, which
+     already flip. The dark-theme appearance is preserved because --text-dim /
+     --text-faint resolve to near-identical values there. */
+  --op-text2:        var(--text-dim);
+  --op-text3:        var(--text-faint);
+  --op-text-soft:    var(--text);
   --op-text-xs:      8px;
   --op-text-sm:      9px;
   --op-text-base:    11px;
@@ -639,7 +644,7 @@
 .op-exec-icon.fail { background: rgba(255,68,68,0.16); color: var(--op-red); }
 .op-exec-agent  { color: rgba(173,219,255,0.9); font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .op-exec-input  { color: var(--op-text2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.op-exec-dur    { color: rgba(255,255,255,0.6); font-size: 10px; text-align: right; white-space: nowrap; }
+.op-exec-dur    { color: rgba(var(--fg-rgb), 0.62); font-size: 10px; text-align: right; white-space: nowrap; }
 
 .op-exec-icon.ok   { color: var(--op-green); }
 .op-exec-icon.fail.pulse-fail {
@@ -945,17 +950,20 @@
 
 .op-msg.op-msg-user-entry .op-msg-prompt {
   background: rgba(255,255,255,0.18);
-  color: rgba(35,57,94,0.95);
+  /* B19.2.3: was rgba(35,57,94,0.95) — a dark navy on a light-grey chip,
+     measured 1.02:1 (effectively invisible). Takes the themed text token so it
+     tracks the surface it actually sits on. */
+  color: var(--op-text);
 }
 
 .op-msg.op-msg-ai .op-msg-prompt {
   background: rgba(78,205,196,0.18);
-  color: rgba(255,255,255,0.96);
+  color: rgba(var(--fg-rgb), 0.92);
 }
 
 .op-msg.op-msg-error-entry .op-msg-prompt {
   background: rgba(255,68,68,0.22);
-  color: rgba(255,255,255,0.9);
+  color: rgba(var(--fg-rgb), 0.92);
 }
 
 .op-msg-user, .op-msg-reply, .op-msg-err, .op-msg-sys, .op-msg-wait {
@@ -1037,7 +1045,7 @@
 }
 
 .op-cmd-input::placeholder {
-  color: rgba(255,255,255,0.32);
+  color: rgba(var(--fg-rgb), 0.62);
   font-style: italic;
   letter-spacing: 0.01em;
 }
@@ -1343,7 +1351,7 @@
 
 .op-workflow-timeline-step.fail {
   color: var(--op-red);
-  background: rgba(255,111,125,0.28);
+  background: rgba(255,111,125,0.16);
   border-color: rgba(255,111,125,0.46);
   box-shadow: 0 0 20px rgba(255,111,125,0.18);
 }
@@ -2470,11 +2478,11 @@ select:focus-visible {
 /* High-contrast mode support */
 @media (prefers-contrast: more) {
   :root {
-    --op-border:  #3a5068;
-    --op-text:    #ffffff;
+    --op-border: var(--border);
+    --op-text: var(--text);
     --op-text2:   #c0d0e0;
-    --op-bg:      #000000;
-    --op-surface: #0a0f14;
+    --op-bg: var(--bg);
+    --op-surface: var(--surface);
   }
 }
 
@@ -2715,7 +2723,7 @@ select:focus-visible {
   top: -40px;
   left: 0;
   background: var(--op-accent);
-  color: #000;
+  color: var(--on-accent);
   padding: 4px 8px;
   font-size: 11px;
   font-weight: bold;
@@ -3412,7 +3420,7 @@ body.op-long-session .op-notif-item {
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(145,163,184,0.45);
+  color: var(--op-text3);
   padding: 2px 0 0 2px;
   user-select: none;
 }
@@ -3486,7 +3494,7 @@ body.op-long-session .op-notif-item {
 }
 .op-table th {
   text-align: left;
-  color: rgba(145,163,184,0.6);
+  color: var(--op-text3);
   font-size: 8px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -3552,7 +3560,7 @@ body.op-long-session .op-notif-item {
 /* Long-session: workspace continuity badge */
 .op-session-age {
   font-size: 8px;
-  color: rgba(145,163,184,0.45);
+  color: var(--op-text3);
   letter-spacing: 0.04em;
 }
 
@@ -3769,7 +3777,7 @@ body.op-long-session .op-notif-item {
   align-items: center;
   gap: 4px;
   font-size: 7px;
-  color: rgba(145,163,184,0.35);
+  color: var(--op-text3);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   padding: 1px 5px;
@@ -3792,7 +3800,7 @@ body.op-long-session .op-notif-item {
 /* Listener leak indicator: operational safety signal */
 .op-listener-count {
   font-size: 8px;
-  color: rgba(145,163,184,0.4);
+  color: var(--op-text3);
   font-variant-numeric: tabular-nums;
 }
 
@@ -3923,7 +3931,7 @@ body.op-animation-budget-exhausted .op-panel[data-loaded="true"] {
 .op-workflow-body .op-field-label {
   font-size: 8px;
   letter-spacing: 0.12em;
-  color: rgba(145,163,184,0.5);
+  color: var(--op-text3);
   text-transform: uppercase;
   font-weight: 700;
 }
@@ -4043,7 +4051,7 @@ body.op-animation-budget-exhausted .op-panel[data-loaded="true"] {
   background: rgba(255,45,85,0.055);
   border-bottom: 1px solid rgba(255,45,85,0.15);
   font-size: 10px;
-  color: rgba(255,100,100,0.75);
+  color: rgba(255,100,100,0.9);
 }
 
 /* Phase 1649: Status bar pill cluster — right-side indicators */
@@ -4675,7 +4683,7 @@ body.op-long-session .op-widget-card:hover { box-shadow: none; }
 .op-palette-footer {
   padding: 10px 16px;
   font-size: 10px;
-  color: rgba(255,255,255,0.75);
+  color: rgba(var(--fg-rgb), 0.78);
   border-top: 1px solid rgba(255,255,255,0.08);
   display: flex;
   gap: 12px;
@@ -5846,7 +5854,7 @@ body.op-long-session .op-widget-card:hover { box-shadow: none; }
   font-size: 9px;
   font-weight: bold;
   background: var(--op-blue);
-  color: white;
+  color: var(--on-info);
   border: none;
   border-radius: 3px;
   cursor: pointer;
@@ -6466,7 +6474,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   letter-spacing: 0.04em;
   background: rgba(255,255,255,0.15);
-  color: rgba(255,255,255,0.9);
+  color: rgba(var(--fg-rgb), 0.92);
   min-width: 28px;
   padding: 0 5px;
 }
@@ -7465,7 +7473,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   letter-spacing: 0.10em;
   text-transform: uppercase;
-  color: rgba(145,163,184,0.45);
+  color: var(--op-text3);
   padding: 0 2px;
   margin-bottom: -2px;
 }
@@ -7485,7 +7493,7 @@ body.op-long-session .op-badge.running {
 /* AI message: "Jarvis replied" timestamp label */
 .op-msg-ts {
   font-size: 9px;
-  color: rgba(145,163,184,0.35);
+  color: var(--op-text3);
   letter-spacing: 0.02em;
   margin-top: 3px;
   font-variant-numeric: tabular-nums;
@@ -7590,7 +7598,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.10em;
-  color: rgba(145,163,184,0.42);
+  color: var(--op-text3);
   margin-bottom: 8px;
 }
 
@@ -7616,7 +7624,7 @@ body.op-long-session .op-badge.running {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.10em;
-  color: rgba(145,163,184,0.40);
+  color: var(--op-text3);
   padding: 8px 0 4px;
   margin-bottom: 2px;
   border-bottom: 1px solid rgba(255,255,255,0.04);
@@ -7683,14 +7691,14 @@ body.op-long-session .op-badge.running {
   cursor: pointer;
   padding: 0;
   font-size: 11px;
-  color: rgba(145,163,184,0.35);
+  color: var(--op-text3);
   align-self: flex-end;
   margin-top: -4px;
   transition: color 120ms ease;
   line-height: 1;
 }
 
-.op-sidebar-onboard-dismiss:hover { color: rgba(145,163,184,0.65); }
+.op-sidebar-onboard-dismiss:hover { color: var(--op-text3); }
 
 /* ── [6] Demo + showcase quality ──────────────────────────────────────── */
 
@@ -7710,7 +7718,7 @@ body.op-long-session .op-badge.running {
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 0.10em;
-  color: rgba(145,163,184,0.38);
+  color: var(--op-text3);
   font-weight: 600;
   line-height: 1;
 }
@@ -7757,7 +7765,7 @@ body.op-long-session .op-badge.running {
 /* "Powered by Jarvis" showcase footer */
 .op-showcase-footer {
   font-size: 9px;
-  color: rgba(145,163,184,0.25);
+  color: var(--op-text3);
   text-align: center;
   letter-spacing: 0.08em;
   padding: 4px 0;

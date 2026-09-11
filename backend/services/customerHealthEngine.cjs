@@ -124,7 +124,20 @@ function scoreCustomer(customerId, opts = {}) {
   const revHealth = _try(() => _rev()?.getCustomerHealth?.(customerId)) || null;
   const journey   = _try(() => _cje()?.getJourney?.(customerId)) || null;
   const leads     = _try(() => _crm()?.getLeads?.()) || [];
-  const lead      = leads.find(l => (l.userId || l.phone || l.chatId) === customerId) || null;
+  // Customer-Reachable API / Data-Access Boundary Audit (2026-08-21): this
+  // used to match `(l.userId || l.phone || l.chatId) === customerId`, which
+  // only ever compares customerId against whichever field is truthy FIRST
+  // per lead, not against all three. Every real lead created through the
+  // actual product route (POST /crm/lead) carries a real userId (the
+  // authenticated caller's own account id) alongside its phone — so any
+  // scoreCustomer(phone) call for a real customer silently failed to match
+  // its own lead, leaving orgId permanently null. That, in turn, made the
+  // cross-tenant ownership check this same audit added to the health/score
+  // route (comparing the record's stored orgId against the caller's real
+  // orgId) reject the LEGITIMATE owner too, since null never equals a real
+  // orgId. Live-reproduced against a real /crm/lead-created lead. Fixed by
+  // matching customerId against each candidate field independently.
+  const lead      = leads.find(l => l.userId === customerId || l.phone === customerId || l.chatId === customerId) || null;
   const csHealth  = _try(() => _cs()?.computeHealth?.({ accountId: customerId, signals: {} }));
 
   const dims = {
@@ -151,7 +164,15 @@ function scoreCustomer(customerId, opts = {}) {
   if (dims.support_health < 30)     alerts.push({ severity: "high",   code: "support_issues",   msg: "Multiple risk signals from customer success" });
 
   const id    = _id();
-  const entry = { id, customerId, overall, grade, risk, dimensions: dims, alerts, journey: journey?.stage || null, scoredAt: _ts() };
+  // Cross-tenant fix — same class as customerSupportEngine.cjs's ticket fix
+  // and customerJourneyEngine.cjs's journey fix: health records carried no
+  // orgId, so listHealthRecords() returned every organization's customer
+  // health scores to every caller. Reproduced live: two real orgs each
+  // received the identical health-record list, same customerIds. Inherit
+  // orgId from the matching CRM lead where one exists (leads already carry a
+  // real orgId — see crmService.js); null for customers with no CRM lead,
+  // matching the null-orgId convention used throughout this fix family.
+  const entry = { id, customerId, orgId: lead?.orgId || null, overall, grade, risk, dimensions: dims, alerts, journey: journey?.stage || null, scoredAt: _ts() };
 
   const d = _load();
   const existing = d.records.findIndex(r => r.customerId === customerId);
@@ -191,23 +212,45 @@ function scoreAll() {
   return { ok: true, scored: scored.length, atRisk: scored.filter(s => s.risk === "high" || s.risk === "critical").length };
 }
 
-function getHealthRecord(customerId) { return _load().records.find(r => r.customerId === customerId) || null; }
+function getHealthRecord(customerId, orgId = null) {
+  const r = _load().records.find(x => x.customerId === customerId);
+  if (!r) return null;
+  if (orgId && (r.orgId || null) !== orgId) return null;
+  return r;
+}
 
-function listHealthRecords({ risk, grade, limit = 50 } = {}) {
+function listHealthRecords({ risk, grade, limit = 50, orgId = null } = {}) {
   let list = _load().records;
+  // Same scoping rule as customerJourneyEngine.listJourneys() — legacy
+  // null-orgId records are excluded from a scoped call, not misattributed.
+  if (orgId) list = list.filter(r => r.orgId === orgId);
   if (risk)  list = list.filter(r => r.risk === risk);
   if (grade) list = list.filter(r => r.grade === grade);
   list.sort((a, b) => a.overall - b.overall); // worst first
   return { ok: true, records: list.slice(0, limit) };
 }
 
-function getHealthHistory(customerId, limit = 10) {
+// Customer-Reachable API / Data-Access Boundary Audit (2026-08-21): orgId is
+// OPTIONAL, same convention as getHealthRecord() above — when supplied, the
+// customer's current record must belong to that org or the call returns
+// nothing/an error, exactly like getHealthRecord()'s own check. Previously
+// had no orgId parameter, so any authenticated customer could read another
+// org's real customer health history/trend by customerId — live-reproduced.
+function getHealthHistory(customerId, limit = 10, orgId = null) {
+  if (orgId) {
+    const rec = getHealthRecord(customerId, orgId);
+    if (!rec) return { ok: false, error: "health record not found" };
+  }
   const d = _load();
   const hist = (d.history[customerId] || []).slice(-limit);
   return { ok: true, customerId, history: hist };
 }
 
-function getHealthTrend(customerId) {
+function getHealthTrend(customerId, orgId = null) {
+  if (orgId) {
+    const rec = getHealthRecord(customerId, orgId);
+    if (!rec) return { ok: false, error: "health record not found" };
+  }
   const d    = _load();
   const hist = (d.history[customerId] || []).slice(-5);
   if (hist.length < 2) return { ok: false, error: "insufficient history" };

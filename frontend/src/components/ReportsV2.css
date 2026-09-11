@@ -21,14 +21,22 @@
   gap: 16px;
   flex-wrap: wrap;
 }
+/* Phase A.11.6: aligned to the page-header shape five sibling screens already
+   share byte-identically (.anc-title / .oac-title / .tw-title / .ws-title /
+   .bd-title — all `22px / 800 / var(--text) / letter-spacing: -0.3px`, with a
+   `13.5px / var(--text-dim)` subtitle). Reports was the sole outlier at 700
+   weight, -0.02em (= -0.44px measured) tracking, and a 13px subtitle in the
+   dimmer --text-faint token. Analytics (.anc-), its own sibling under the same
+   "Operations" breadcrumb group, was already on the correct values. Same size,
+   same element, same structure — only the drifted values corrected. */
 .rv2-page-title {
   margin: 0;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 800;
   color: var(--text, #dde2ec);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.3px;
 }
-.rv2-page-sub { margin: 4px 0 0; font-size: 13px; color: var(--text-faint, #4a5470); }
+.rv2-page-sub { margin: 4px 0 0; font-size: 13.5px; color: var(--text-dim, #8994b0); }
 .rv2-header-right { display: flex; align-items: center; gap: 8px; }
 
 .rv2-export-btn, .rv2-refresh-btn {
@@ -45,38 +53,30 @@
 .rv2-export-btn:disabled { opacity: .35; cursor: not-allowed; }
 .rv2-refresh-btn:hover { background: rgba(255,255,255,.04); color: var(--text, #dde2ec); }
 
-/* Coming soon banner */
-.rv2-coming-soon {
+/* Distinct error state — a rejected/failed fetch batch is not the same as "loading" */
+.rv2-error-banner {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   padding: 14px 16px;
-  background: rgba(124,111,255,.06);
-  border: 1px solid rgba(124,111,255,.16);
+  background: rgba(245,91,91,.07);
+  border: 1px solid rgba(245,91,91,.22);
   border-radius: 10px;
 }
-.rv2-coming-icon { font-size: 16px; color: var(--accent, #7c6fff); flex-shrink: 0; margin-top: 2px; }
-.rv2-coming-title { margin: 0; font-size: 13px; font-weight: 600; color: var(--accent, #7c6fff); }
-.rv2-coming-sub { margin: 3px 0 0; font-size: 12px; color: var(--text-faint, #4a5470); }
-
-/* Period tabs */
-.rv2-period-tabs { display: flex; gap: 4px; }
-.rv2-period-tab {
+.rv2-error-icon { font-size: 16px; color: var(--danger, #f55b5b); flex-shrink: 0; }
+.rv2-error-title { margin: 0; font-size: 13px; font-weight: 600; color: var(--danger, #f55b5b); }
+.rv2-error-sub { margin: 3px 0 0; font-size: 12px; color: var(--text-faint, #4a5470); }
+.rv2-error-retry {
+  margin-left: auto;
   padding: 6px 14px;
-  border-radius: 9999px;
-  border: 1px solid var(--border, rgba(255,255,255,.08));
-  background: transparent;
-  color: var(--text-dim, #8994b0);
+  border-radius: var(--radius-sm, 6px);
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 700;
+  background: rgba(245,91,91,.10);
+  border: 1px solid rgba(245,91,91,.24);
+  color: var(--danger, #f55b5b);
   cursor: pointer;
-  transition: all .15s;
-}
-.rv2-period-tab:hover { background: rgba(255,255,255,.04); color: var(--text, #dde2ec); }
-.rv2-period-tab--active {
-  background: rgba(124,111,255,.15);
-  border-color: rgba(124,111,255,.4);
-  color: var(--accent, #7c6fff);
+  flex-shrink: 0;
 }
 
 /* KPI row */
@@ -138,7 +138,8 @@
 }
 .rv2-panel-link {
   font-size: 12px;
-  color: var(--accent, #7c6fff);
+  /* B19.5: 12px accent link on a light panel — flagged at 768px in light mode. */
+  color: var(--on-accent-tint);
   background: transparent;
   border: none;
   cursor: pointer;
@@ -240,6 +241,10 @@
 }
 .dot--ok   { background: var(--success, #52d68a); }
 .dot--warn { background: var(--warning, #f0b429); }
+/* Phase A.11.6: neutral "unknown" state, matching the same token index.css
+   already uses for its own .status-indicator.dot--dim. Not a new state —
+   the app-wide dot vocabulary (ok/warn/crit/dim) already includes it. */
+.dot--dim  { background: var(--text-faint, #4a5470); }
 .dot--live { animation: rv2-pulse 2s infinite; }
 @keyframes rv2-pulse {
   0%   { box-shadow: 0 0 0 0 rgba(82,214,138,.5); }

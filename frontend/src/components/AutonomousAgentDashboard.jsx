@@ -33,11 +33,11 @@ function _ago(iso) {
 }
 
 const STATUS_COLOR = {
-    running:    "#22c55e",
-    paused:     "#f59e0b",
+    running:    "var(--success)",
+    paused:     "var(--warning)",
     recovering: "#a78bfa",
-    failed:     "#ef4444",
-    stopped:    "#6b7280",
+    failed:     "var(--danger)",
+    stopped:    "var(--text-dim)",
     starting:   "#3b82f6",
 };
 
@@ -69,7 +69,7 @@ const ROLE_ICON = {
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function StatusPill({ status }) {
-    const color = STATUS_COLOR[status] || "#6b7280";
+    const color = STATUS_COLOR[status] || "var(--text-dim)";
     return (
         <span className="aad-pill" style={{ background: color + "22", color, borderColor: color + "55" }}>
             <span className="aad-pill-dot" style={{ background: color }} />
@@ -79,7 +79,7 @@ function StatusPill({ status }) {
 }
 
 function HealthBar({ health }) {
-    const color = health >= 70 ? "#22c55e" : health >= 40 ? "#f59e0b" : "#ef4444";
+    const color = health >= 70 ? "var(--success)" : health >= 40 ? "var(--warning)" : "var(--danger)";
     return (
         <div className="aad-healthbar">
             <div className="aad-healthbar-fill" style={{ width: `${health}%`, background: color }} />
@@ -114,9 +114,9 @@ function DomainMetric({ agent }) {
     const role = agent.role;
     if (role === "planner" || role === "developer" || role === "security" ||
         role === "crm" || role === "marketing" || role === "executive" || role === "tester")
-        return <MetricCell label="Missions" value={agent.missionsCreated} color="#22c55e" />;
+        return <MetricCell label="Missions" value={agent.missionsCreated} color="var(--success)" />;
     if (role === "reviewer" || role === "documentation")
-        return <MetricCell label="Lessons" value={agent.lessonsRegistered} color="#22c55e" />;
+        return <MetricCell label="Lessons" value={agent.lessonsRegistered} color="var(--success)" />;
     if (role === "verifier")
         return <MetricCell label="Verifies" value={agent.verificationsRun} color="#3b82f6" />;
     return null;
@@ -124,7 +124,7 @@ function DomainMetric({ agent }) {
 
 function AgentCard({ agent, onPause, onResume, onTick, onEnable, onDisable, pausing, resuming, ticking, enabling, disabling }) {
     const role  = agent.role;
-    const color = STATUS_COLOR[agent.status] || "#6b7280";
+    const color = STATUS_COLOR[agent.status] || "var(--text-dim)";
     const disabled = agent.enabled === false;
 
     return (
@@ -136,7 +136,7 @@ function AgentCard({ agent, onPause, onResume, onTick, onEnable, onDisable, paus
                     <span className="aad-agent-id">{agent.id}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    {disabled && <span style={{ fontSize: 10, color: "#6b7280", border: "1px solid #6b728055", borderRadius: 4, padding: "1px 5px" }}>disabled</span>}
+                    {disabled && <span style={{ fontSize: 10, color: "var(--text-dim)", border: "1px solid #6b728055", borderRadius: 4, padding: "1px 5px" }}>disabled</span>}
                     <StatusPill status={agent.status} />
                 </div>
             </div>
@@ -168,8 +168,8 @@ function AgentCard({ agent, onPause, onResume, onTick, onEnable, onDisable, paus
             <div className="aad-metrics-row">
                 <MetricCell label="Uptime"    value={_dur(agent.uptime)} />
                 <MetricCell label="Ticks"     value={agent.tickCount} />
-                <MetricCell label="Success"   value={agent.successRate != null ? `${agent.successRate}%` : "—"} color={agent.successRate >= 80 ? "#22c55e" : agent.successRate >= 50 ? "#f59e0b" : "#ef4444"} />
-                <MetricCell label="Recovery"  value={agent.recoveryCount} color={agent.recoveryCount > 0 ? "#f59e0b" : undefined} />
+                <MetricCell label="Success"   value={agent.successRate != null ? `${agent.successRate}%` : "—"} color={agent.successRate >= 80 ? "var(--success)" : agent.successRate >= 50 ? "var(--warning)" : "var(--danger)"} />
+                <MetricCell label="Recovery"  value={agent.recoveryCount} color={agent.recoveryCount > 0 ? "var(--warning)" : undefined} />
             </div>
 
             {/* Secondary metrics row — resource + domain */}
@@ -230,13 +230,13 @@ function AgentCard({ agent, onPause, onResume, onTick, onEnable, onDisable, paus
 // ── I6: Collaboration panel sub-components ────────────────────────────────────
 
 const HANDOFF_STATUS_COLOR = {
-    pending:   "#f59e0b",
+    pending:   "var(--warning)",
     claimed:   "#3b82f6",
     accepted:  "#8b5cf6",
-    running:   "#22c55e",
-    completed: "#22c55e",
-    failed:    "#ef4444",
-    rejected:  "#ef4444",
+    running:   "var(--success)",
+    completed: "var(--success)",
+    failed:    "var(--danger)",
+    rejected:  "var(--danger)",
 };
 
 function CollabStatBar({ stats }) {
@@ -248,7 +248,7 @@ function CollabStatBar({ stats }) {
                 <span className="aad-collab-stat-lbl">Active</span>
             </div>
             <div className="aad-collab-stat">
-                <span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.completedPlans ?? 0}</span>
+                <span className="aad-collab-stat-val" style={{ color: "var(--success)" }}>{stats.completedPlans ?? 0}</span>
                 <span className="aad-collab-stat-lbl">Completed</span>
             </div>
             <div className="aad-collab-stat">
@@ -256,11 +256,11 @@ function CollabStatBar({ stats }) {
                 <span className="aad-collab-stat-lbl">Handoffs</span>
             </div>
             <div className="aad-collab-stat">
-                <span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.handoffsCompleted ?? 0}</span>
+                <span className="aad-collab-stat-val" style={{ color: "var(--success)" }}>{stats.handoffsCompleted ?? 0}</span>
                 <span className="aad-collab-stat-lbl">Done</span>
             </div>
             <div className="aad-collab-stat">
-                <span className="aad-collab-stat-val" style={{ color: "#f59e0b" }}>{stats.handoffsRetried ?? 0}</span>
+                <span className="aad-collab-stat-val" style={{ color: "var(--warning)" }}>{stats.handoffsRetried ?? 0}</span>
                 <span className="aad-collab-stat-lbl">Retried</span>
             </div>
             <div className="aad-collab-stat">
@@ -268,7 +268,7 @@ function CollabStatBar({ stats }) {
                 <span className="aad-collab-stat-lbl">Parallel</span>
             </div>
             <div className="aad-collab-stat">
-                <span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.recoveryMissionsCreated ?? 0}</span>
+                <span className="aad-collab-stat-val" style={{ color: "var(--danger)" }}>{stats.recoveryMissionsCreated ?? 0}</span>
                 <span className="aad-collab-stat-lbl">Recoveries</span>
             </div>
         </div>
@@ -286,7 +286,7 @@ function CollabChainCard({ collab }) {
     const current = collab.currentStage;
 
     return (
-        <div className="aad-collab-card" style={{ borderLeft: collab.status === "active" ? "3px solid #3b82f6" : collab.status === "waiting_approval" ? "3px solid #f59e0b" : "3px solid #22c55e" }}>
+        <div className="aad-collab-card" style={{ borderLeft: collab.status === "active" ? "3px solid #3b82f6" : collab.status === "waiting_approval" ? "3px solid var(--warning)" : "3px solid var(--success)" }}>
             <div className="aad-collab-card-header">
                 <div>
                     <span style={{ fontWeight: 600, fontSize: 12 }}>Mission Collaboration</span>
@@ -329,12 +329,12 @@ function CollabChainCard({ collab }) {
 
             {/* Pending handoffs */}
             {collab.pendingHandoffs > 0 && (
-                <div style={{ fontSize: 11, color: "#f59e0b" }}>⏳ {collab.pendingHandoffs} pending handoff(s)</div>
+                <div style={{ fontSize: 11, color: "var(--warning)" }}>⏳ {collab.pendingHandoffs} pending handoff(s)</div>
             )}
 
             {/* Approval gate */}
             {collab.status === "waiting_approval" && (
-                <div style={{ fontSize: 11, padding: "5px 8px", background: "#f59e0b11", borderRadius: 4, color: "#f59e0b" }}>
+                <div style={{ fontSize: 11, padding: "5px 8px", background: "#f59e0b11", borderRadius: 4, color: "var(--warning)" }}>
                     ⚠ Waiting for approval gate
                 </div>
             )}
@@ -409,7 +409,7 @@ function CollaborationTab() {
                                 <div className="aad-alert-title">{h.fromAgent || "origin"} → {ROLE_LABEL[h.toAgent?.replace("agent_","")]||h.toAgent}</div>
                                 <div className="aad-alert-meta">Mission: {h.missionId} · Pending {_ago(h.createdAt)} · Retries: {h.retries}/{h.maxRetries}</div>
                             </div>
-                            <span className="aad-handoff-status" style={{ background: "#f59e0b22", color: "#f59e0b" }}>{h.status}</span>
+                            <span className="aad-handoff-status" style={{ background: "#f59e0b22", color: "var(--warning)" }}>{h.status}</span>
                         </div>
                     ))}
                 </div>
@@ -437,21 +437,21 @@ const STAGE_ICON = {
 };
 
 const STAGE_STATUS_COLOR = {
-    completed: "#22c55e",
+    completed: "var(--success)",
     running:   "#3b82f6",
-    failed:    "#ef4444",
-    pending:   "#6b7280",
+    failed:    "var(--danger)",
+    pending:   "var(--text-dim)",
 };
 
 function PipelineStageRow({ stage }) {
-    const color = STAGE_STATUS_COLOR[stage.status] || "#6b7280";
+    const color = STAGE_STATUS_COLOR[stage.status] || "var(--text-dim)";
     return (
         <div className="aad-handoff-row" style={{ borderLeft: `2px solid ${color}`, gap: 8 }}>
             <span style={{ fontSize: 13 }}>{STAGE_ICON[stage.id] || "◉"}</span>
             <span style={{ flex: 1, fontWeight: stage.status === "running" ? 600 : 400 }}>{stage.label}</span>
             {stage.durationMs > 0 && <span style={{ fontSize: 10, color: "var(--text-dim, #94a3b8)" }}>{stage.durationMs}ms</span>}
-            {stage.retries > 0 && <span style={{ fontSize: 10, color: "#f59e0b" }}>↺{stage.retries}</span>}
-            {stage.gateResult && !stage.gateResult.ok && <span style={{ fontSize: 10, color: "#ef4444" }}>BLOCKED</span>}
+            {stage.retries > 0 && <span style={{ fontSize: 10, color: "var(--warning)" }}>↺{stage.retries}</span>}
+            {stage.gateResult && !stage.gateResult.ok && <span style={{ fontSize: 10, color: "var(--danger)" }}>BLOCKED</span>}
             <span className="aad-handoff-status" style={{ background: color + "22", color, borderColor: color + "55" }}>{stage.status}</span>
         </div>
     );
@@ -459,7 +459,7 @@ function PipelineStageRow({ stage }) {
 
 function PipelineCard({ pipeline }) {
     const [expanded, setExpanded] = useState(false);
-    const statusColor = { completed: "#22c55e", running: "#3b82f6", failed: "#ef4444", cancelled: "#6b7280", pending: "#f59e0b" }[pipeline.status] || "#6b7280";
+    const statusColor = { completed: "var(--success)", running: "#3b82f6", failed: "var(--danger)", cancelled: "var(--text-dim)", pending: "var(--warning)" }[pipeline.status] || "var(--text-dim)";
     const progress = pipeline.stagesTotal > 0 ? Math.round(pipeline.stagesCompleted / pipeline.stagesTotal * 100) : 0;
 
     return (
@@ -482,10 +482,10 @@ function PipelineCard({ pipeline }) {
             {/* Key metrics */}
             <div style={{ display: "flex", gap: 12, fontSize: 11, color: "var(--text-dim, #94a3b8)", flexWrap: "wrap" }}>
                 {pipeline.durationMs > 0 && <span>Duration: {Math.round(pipeline.durationMs / 1000)}s</span>}
-                {pipeline.commitHash && <span style={{ color: "#22c55e" }}>Commit: {pipeline.commitHash}</span>}
-                {pipeline.rollbackExecuted && <span style={{ color: "#f59e0b" }}>⎌ Rolled back</span>}
-                {pipeline.failedStage && <span style={{ color: "#ef4444" }}>Failed: {pipeline.failedStage}</span>}
-                {pipeline.risk?.criticalDeps > 0 && <span style={{ color: "#f59e0b" }}>⚠ {pipeline.risk.criticalDeps} critical deps</span>}
+                {pipeline.commitHash && <span style={{ color: "var(--success)" }}>Commit: {pipeline.commitHash}</span>}
+                {pipeline.rollbackExecuted && <span style={{ color: "var(--warning)" }}>⎌ Rolled back</span>}
+                {pipeline.failedStage && <span style={{ color: "var(--danger)" }}>Failed: {pipeline.failedStage}</span>}
+                {pipeline.risk?.criticalDeps > 0 && <span style={{ color: "var(--warning)" }}>⚠ {pipeline.risk.criticalDeps} critical deps</span>}
                 {pipeline.approvalStatus === "pending" && <span style={{ color: "#a78bfa" }}>⏳ Awaiting approval</span>}
             </div>
 
@@ -507,6 +507,8 @@ function PipelineTab() {
     const [loading, setLoading] = useState(true);
     const [error, setError]     = useState(null);
     const [allPipes, setAll]    = useState([]);
+    const [goal, setGoal]       = useState("");
+    const [starting, setStarting] = useState(false);
     const pollRef = useRef(null);
 
     const load = useCallback(async () => {
@@ -529,6 +531,17 @@ function PipelineTab() {
         return () => clearInterval(pollRef.current);
     }, [load]);
 
+    const handleStartPipeline = async () => {
+        if (!goal.trim() || starting) return;
+        setStarting(true);
+        try {
+            await _fetch("/pipeline/run", { method: "POST", body: JSON.stringify({ goal: goal.trim() }) });
+            setGoal("");
+            await load();
+        } catch (e) { setError(e.message); }
+        finally { setStarting(false); }
+    };
+
     if (loading && !data) return <div className="aad-loading">Loading pipeline data…</div>;
     if (error) return <div className="aad-error-banner">{error}</div>;
 
@@ -536,16 +549,32 @@ function PipelineTab() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Start pipeline */}
+            <div style={{ display: "flex", gap: 8 }}>
+                <input
+                    className="aad-input"
+                    style={{ flex: 1 }}
+                    placeholder="Describe an engineering goal to run through the pipeline…"
+                    value={goal}
+                    onChange={e => setGoal(e.target.value)}
+                    onKeyDown={e => { if (e.key === "Enter") handleStartPipeline(); }}
+                    disabled={starting}
+                />
+                <button className="aad-btn aad-btn--ok" onClick={handleStartPipeline} disabled={starting || !goal.trim()}>
+                    {starting ? "Starting…" : "Start Pipeline"}
+                </button>
+            </div>
+
             {/* Stat bar */}
             {stats && (
                 <div className="aad-collab-summary">
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#3b82f6" }}>{stats.active ?? 0}</span><span className="aad-collab-stat-lbl">Active</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.completed ?? 0}</span><span className="aad-collab-stat-lbl">Completed</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.failed ?? 0}</span><span className="aad-collab-stat-lbl">Failed</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#f59e0b" }}>{stats.rollbacks ?? 0}</span><span className="aad-collab-stat-lbl">Rollbacks</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--success)" }}>{stats.completed ?? 0}</span><span className="aad-collab-stat-lbl">Completed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--danger)" }}>{stats.failed ?? 0}</span><span className="aad-collab-stat-lbl">Failed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--warning)" }}>{stats.rollbacks ?? 0}</span><span className="aad-collab-stat-lbl">Rollbacks</span></div>
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.buildGateBlocked ?? 0}</span><span className="aad-collab-stat-lbl">Build⛔</span></div>
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.testGateBlocked ?? 0}</span><span className="aad-collab-stat-lbl">Test⛔</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.recoveryMissionsCreated ?? 0}</span><span className="aad-collab-stat-lbl">Recoveries</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--danger)" }}>{stats.recoveryMissionsCreated ?? 0}</span><span className="aad-collab-stat-lbl">Recoveries</span></div>
                 </div>
             )}
 
@@ -560,7 +589,7 @@ function PipelineTab() {
 
             <div className="aad-collab-section-title">Recent Pipelines ({allPipes.length})</div>
             {allPipes.length === 0 && (
-                <div className="aad-empty">No pipelines yet. POST /pipeline/run with a goal to start.</div>
+                <div className="aad-empty">No pipelines yet. Enter a goal above to start one.</div>
             )}
             <div className="aad-cards">
                 {allPipes.map(p => <PipelineCard key={p.pipelineId} pipeline={p} />)}
@@ -571,13 +600,13 @@ function PipelineTab() {
 
 // ── I8: Deployment Dashboard sub-components (I8-5) ────────────────────────────
 
-const TARGET_COLOR = { development: "#22c55e", staging: "#f59e0b", production: "#ef4444" };
-const DEPLOY_STATUS_COLOR = { completed: "#22c55e", running: "#3b82f6", failed: "#ef4444", cancelled: "#6b7280", rolled_back: "#f59e0b", pending: "#94a3b8" };
+const TARGET_COLOR = { development: "var(--success)", staging: "var(--warning)", production: "var(--danger)" };
+const DEPLOY_STATUS_COLOR = { completed: "var(--success)", running: "#3b82f6", failed: "var(--danger)", cancelled: "var(--text-dim)", rolled_back: "var(--warning)", pending: "#94a3b8" };
 const DEPLOY_STAGE_ICON = { pre_check: "🔍", deploy: "🚀", health_verify: "💚", service_check: "🔧", observe: "📊", learn: "🧠", rollback: "⎌" };
 
 function DeploymentCard({ dep }) {
     const [expanded, setExpanded] = useState(false);
-    const statusColor = DEPLOY_STATUS_COLOR[dep.status] || "#6b7280";
+    const statusColor = DEPLOY_STATUS_COLOR[dep.status] || "var(--text-dim)";
     const targetColor = TARGET_COLOR[dep.target] || "#94a3b8";
     const progress    = dep.stagesTotal > 0 ? Math.round(dep.stagesCompleted / dep.stagesTotal * 100) : 0;
     const health      = dep.healthSnapshot?.score;
@@ -605,14 +634,14 @@ function DeploymentCard({ dep }) {
             <div style={{ display: "flex", gap: 12, fontSize: 11, color: "var(--text-dim, #94a3b8)", flexWrap: "wrap" }}>
                 {dep.durationMs > 0 && <span>Duration: {Math.round(dep.durationMs / 1000)}s</span>}
                 {health !== null && health !== undefined && (
-                    <span style={{ color: health >= 80 ? "#22c55e" : health >= 50 ? "#f59e0b" : "#ef4444" }}>
+                    <span style={{ color: health >= 80 ? "var(--success)" : health >= 50 ? "var(--warning)" : "var(--danger)" }}>
                         Health: {health}%
                     </span>
                 )}
-                {dep.rollbackExecuted && <span style={{ color: "#f59e0b" }}>⎌ Rolled back: {dep.rollbackReason?.slice(0, 40)}</span>}
-                {dep.failedStage && <span style={{ color: "#ef4444" }}>Failed: {dep.failedStage}</span>}
+                {dep.rollbackExecuted && <span style={{ color: "var(--warning)" }}>⎌ Rolled back: {dep.rollbackReason?.slice(0, 40)}</span>}
+                {dep.failedStage && <span style={{ color: "var(--danger)" }}>Failed: {dep.failedStage}</span>}
                 {dep.approvalStatus === "pending" && <span style={{ color: "#a78bfa" }}>⏳ Awaiting approval</span>}
-                {dep.commitHash && <span style={{ color: "#22c55e" }}>Commit: {dep.commitHash.slice(0, 7)}</span>}
+                {dep.commitHash && <span style={{ color: "var(--success)" }}>Commit: {dep.commitHash.slice(0, 7)}</span>}
                 {dep.recoveryMissionId && <span style={{ color: "#f87171" }}>Recovery mission created</span>}
             </div>
 
@@ -622,11 +651,11 @@ function DeploymentCard({ dep }) {
             {expanded && (
                 <div style={{ display: "flex", flexDirection: "column", gap: 4, marginTop: 4 }}>
                     {(dep.stages || []).map(s => (
-                        <div key={s.id} className="aad-handoff-row" style={{ borderLeft: `2px solid ${DEPLOY_STATUS_COLOR[s.status] || "#6b7280"}`, gap: 8 }}>
+                        <div key={s.id} className="aad-handoff-row" style={{ borderLeft: `2px solid ${DEPLOY_STATUS_COLOR[s.status] || "var(--text-dim)"}`, gap: 8 }}>
                             <span style={{ fontSize: 13 }}>{DEPLOY_STAGE_ICON[s.id] || "◉"}</span>
                             <span style={{ flex: 1, fontWeight: s.status === "running" ? 600 : 400 }}>{s.label}</span>
                             {s.durationMs > 0 && <span style={{ fontSize: 10, color: "var(--text-dim, #94a3b8)" }}>{s.durationMs}ms</span>}
-                            <span className="aad-handoff-status" style={{ background: (DEPLOY_STATUS_COLOR[s.status] || "#6b7280") + "22", color: DEPLOY_STATUS_COLOR[s.status] || "#6b7280" }}>{s.status}</span>
+                            <span className="aad-handoff-status" style={{ background: (DEPLOY_STATUS_COLOR[s.status] || "var(--text-dim)") + "22", color: DEPLOY_STATUS_COLOR[s.status] || "var(--text-dim)" }}>{s.status}</span>
                         </div>
                     ))}
                 </div>
@@ -641,6 +670,9 @@ function DeploymentTab() {
     const [error, setError]     = useState(null);
     const [allDeps, setAll]     = useState([]);
     const [targets, setTargets] = useState({});
+    const [target, setTarget]   = useState("");
+    const [goal, setGoal]       = useState("");
+    const [starting, setStarting] = useState(false);
     const pollRef = useRef(null);
 
     const load = useCallback(async () => {
@@ -665,6 +697,22 @@ function DeploymentTab() {
         return () => clearInterval(pollRef.current);
     }, [load]);
 
+    useEffect(() => {
+        const ids = Object.keys(targets);
+        if (!target && ids.length > 0) setTarget(ids[0]);
+    }, [targets, target]);
+
+    const handleStartDeployment = async () => {
+        if (!target || starting) return;
+        setStarting(true);
+        try {
+            await _fetch("/deployment/run", { method: "POST", body: JSON.stringify({ target, goal: goal.trim() || undefined }) });
+            setGoal("");
+            await load();
+        } catch (e) { setError(e.message); }
+        finally { setStarting(false); }
+    };
+
     if (loading && !data) return <div className="aad-loading">Loading deployment data…</div>;
     if (error) return <div className="aad-error-banner">{error}</div>;
 
@@ -672,13 +720,34 @@ function DeploymentTab() {
 
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {/* Start deployment */}
+            {Object.keys(targets).length > 0 && (
+                <div style={{ display: "flex", gap: 8 }}>
+                    <select className="aad-input" value={target} onChange={e => setTarget(e.target.value)} disabled={starting}>
+                        {Object.values(targets).map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
+                    </select>
+                    <input
+                        className="aad-input"
+                        style={{ flex: 1 }}
+                        placeholder="Optional deployment goal/description…"
+                        value={goal}
+                        onChange={e => setGoal(e.target.value)}
+                        onKeyDown={e => { if (e.key === "Enter") handleStartDeployment(); }}
+                        disabled={starting}
+                    />
+                    <button className="aad-btn aad-btn--ok" onClick={handleStartDeployment} disabled={starting || !target}>
+                        {starting ? "Starting…" : "Deploy"}
+                    </button>
+                </div>
+            )}
+
             {/* Deployment stat bar */}
             {stats && (
                 <div className="aad-collab-summary">
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#3b82f6" }}>{stats.active ?? 0}</span><span className="aad-collab-stat-lbl">Active</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#22c55e" }}>{stats.completed ?? 0}</span><span className="aad-collab-stat-lbl">Completed</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#ef4444" }}>{stats.failed ?? 0}</span><span className="aad-collab-stat-lbl">Failed</span></div>
-                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#f59e0b" }}>{stats.rolledBack ?? 0}</span><span className="aad-collab-stat-lbl">Rollbacks</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--success)" }}>{stats.completed ?? 0}</span><span className="aad-collab-stat-lbl">Completed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--danger)" }}>{stats.failed ?? 0}</span><span className="aad-collab-stat-lbl">Failed</span></div>
+                    <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "var(--warning)" }}>{stats.rolledBack ?? 0}</span><span className="aad-collab-stat-lbl">Rollbacks</span></div>
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#a78bfa" }}>{stats.verificationFailed ?? 0}</span><span className="aad-collab-stat-lbl">Verify⛔</span></div>
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#f87171" }}>{stats.recoveryMissionsCreated ?? 0}</span><span className="aad-collab-stat-lbl">Recoveries</span></div>
                     <div className="aad-collab-stat"><span className="aad-collab-stat-val" style={{ color: "#94a3b8" }}>{stats.avgVerifyMs ?? 0}ms</span><span className="aad-collab-stat-lbl">Avg Verify</span></div>
@@ -689,7 +758,7 @@ function DeploymentTab() {
             {Object.keys(targets).length > 0 && (
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                     {Object.values(targets).map(t => (
-                        <div key={t.id} style={{ padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 600, background: (TARGET_COLOR[t.id] || "#6b7280") + "22", color: TARGET_COLOR[t.id] || "#6b7280", border: `1px solid ${(TARGET_COLOR[t.id] || "#6b7280")}44` }}>
+                        <div key={t.id} style={{ padding: "4px 10px", borderRadius: 4, fontSize: 10, fontWeight: 600, background: (TARGET_COLOR[t.id] || "var(--text-dim)") + "22", color: TARGET_COLOR[t.id] || "var(--text-dim)", border: `1px solid ${(TARGET_COLOR[t.id] || "var(--text-dim)")}44` }}>
                             {t.label} · {t.requireApproval ? "Approval req" : "Auto"} · Health≥{t.healthThreshold}%
                         </div>
                     ))}
@@ -707,7 +776,7 @@ function DeploymentTab() {
 
             <div className="aad-collab-section-title">Deployment History ({allDeps.length})</div>
             {allDeps.length === 0 && (
-                <div className="aad-empty">No deployments yet. POST /deployment/run with a target to start.</div>
+                <div className="aad-empty">No deployments yet. Pick a target above to start one.</div>
             )}
             <div className="aad-cards">
                 {allDeps.map(d => <DeploymentCard key={d.deployId} dep={d} />)}
@@ -729,8 +798,8 @@ function SupervisorBar({ status, onStart, onStop, loading }) {
             <div className="aad-supervisor-left">
                 <span className="aad-sup-title">Agent Runtime Supervisor</span>
                 {status.started
-                    ? <span className="aad-sup-state" style={{ color: "#22c55e" }}>● Running</span>
-                    : <span className="aad-sup-state" style={{ color: "#6b7280" }}>○ Stopped</span>
+                    ? <span className="aad-sup-state" style={{ color: "var(--success)" }}>● Running</span>
+                    : <span className="aad-sup-state" style={{ color: "var(--text-dim)" }}>○ Stopped</span>
                 }
                 {status.started && (
                     <span className="aad-sup-meta">{runningCount}/{total} agents · uptime {_dur(uptime)}</span>
@@ -775,8 +844,9 @@ export default function AutonomousAgentDashboard() {
         setBusyMap(m => ({ ...m, [agentId]: busyKey }));
         try {
             const r = await _fetch(path, { method });
-            if (r?.ok) await load();
-        } catch {}
+            if (r?.ok) { setError(null); await load(); }
+            else setError(r?.error || "Action failed");
+        } catch (e) { setError(e.message || "Action failed"); }
         setBusyMap(m => { const n = { ...m }; delete n[agentId]; return n; });
     };
 
@@ -786,8 +856,16 @@ export default function AutonomousAgentDashboard() {
     const handleEnable  = id => _action(id, "enabling",  `/agents/runtime/registry/${id}/enable`);
     const handleDisable = id => _action(id, "disabling", `/agents/runtime/registry/${id}/disable`);
 
-    const handleStart  = async () => { setLoading(true); await _fetch("/agents/runtime/supervisor/start", { method: "POST" }); await load(); };
-    const handleStop   = async () => { setLoading(true); await _fetch("/agents/runtime/supervisor/stop",  { method: "POST" }); await load(); };
+    const handleStart  = async () => {
+        setLoading(true);
+        try { await _fetch("/agents/runtime/supervisor/start", { method: "POST" }); setError(null); await load(); }
+        catch (e) { setError(e.message || "Start failed"); setLoading(false); }
+    };
+    const handleStop   = async () => {
+        setLoading(true);
+        try { await _fetch("/agents/runtime/supervisor/stop", { method: "POST" }); setError(null); await load(); }
+        catch (e) { setError(e.message || "Stop failed"); setLoading(false); }
+    };
 
     if (loading && !status) return (
         <div className="aad-root"><div className="aad-loading">Connecting to Agent Runtime…</div></div>

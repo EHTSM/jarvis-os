@@ -328,7 +328,7 @@
 .pos-btn:disabled { opacity: 0.4; cursor: default; }
 
 .pos-btn.primary {
-  background: rgba(154, 144, 255, 0.18);
+  background: rgba(154, 144, 255, 0.12);
   color: var(--accent);
   border-color: rgba(154, 144, 255, 0.35);
 }

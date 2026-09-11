@@ -8,7 +8,18 @@
 const router = require("express").Router();
 
 const _try = fn => { try { return fn(); } catch { return null; } };
-const requireAuth = _try(() => require("../middleware/requireAuth")) || ((req, res, next) => next());
+// Security Hardening: this used to require("../middleware/requireAuth"), a
+// module that does not exist — the require threw, _try() swallowed it, and
+// every route below silently fell back to a no-op passthrough. It was only
+// actually protected because routes/index.js also applies an outer
+// `router.use("/computer", requireAuth)` gate before mounting this file —
+// and this file's /computer/terminal/run is the raw-shell-execution
+// endpoint, so a silent auth bypass here was the highest-severity finding
+// in the reality audit. Now pointing at the real module/export, with a
+// fail-closed fallback (403, not next()) if it were ever somehow still
+// unavailable.
+const { requireAuth: _realRequireAuth } = _try(() => require("../middleware/authMiddleware")) || {};
+const requireAuth = _realRequireAuth || ((req, res) => res.status(500).json({ ok: false, error: "auth middleware unavailable" }));
 
 const _cc  = () => _try(() => require("../services/computerController.cjs"));
 const _cee = () => _try(() => require("../services/computerExecutionEngine.cjs"));
@@ -91,11 +102,15 @@ router.post("/computer/desktop/screenshot", requireAuth, async (req, res) => {
 
 router.get("/computer/browser/tabs",        requireAuth, (req, res) => res.json({ ok: true, tabs: _bc()?.listTabs?.(req.query) || [] }));
 router.get("/computer/browser/stats",       requireAuth, (req, res) => res.json({ ok: true, stats: _bc()?.getStats?.() || {} }));
-router.post("/computer/browser/open",       requireAuth, (req, res) => {
+router.post("/computer/browser/open",       requireAuth, async (req, res) => {
   const { url, browser, profileId } = req.body || {};
-  res.json(_bc()?.openTab?.({ url, browser, profileId }) || { ok: false });
+  try { res.json(await _bc()?.openTab?.({ url, browser, profileId }) || { ok: false }); }
+  catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
-router.post("/computer/browser/close/:tabId", requireAuth, (req, res) => res.json(_bc()?.closeTab?.(req.params.tabId) || { ok: false }));
+router.post("/computer/browser/close/:tabId", requireAuth, async (req, res) => {
+  try { res.json(await _bc()?.closeTab?.(req.params.tabId) || { ok: false }); }
+  catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
 router.post("/computer/browser/switch/:tabId",requireAuth, (req, res) => res.json(_bc()?.switchTab?.(req.params.tabId) || { ok: false }));
 router.post("/computer/browser/screenshot/:tabId", requireAuth, async (req, res) => {
   try { res.json(await _bc()?.captureScreenshot?.(req.params.tabId, req.body) || { ok: false }); }
@@ -106,7 +121,10 @@ router.post("/computer/browser/workflow",   requireAuth, async (req, res) => {
   try { res.json(await _bc()?.executeWorkflow?.(intent, { tabId, context }) || { ok: false }); }
   catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
-router.post("/computer/browser/download",   requireAuth, (req, res) => res.json(_bc()?.downloadFile?.(req.body) || { ok: false }));
+router.post("/computer/browser/download",   requireAuth, async (req, res) => {
+  try { res.json(await _bc()?.downloadFile?.(req.body) || { ok: false }); }
+  catch (e) { res.status(500).json({ ok: false, error: e.message }); }
+});
 router.post("/computer/browser/auth",       requireAuth, (req, res) => res.json(_bc()?.authenticate?.(req.body) || { ok: false }));
 
 // ── Editor ────────────────────────────────────────────────────────────────────

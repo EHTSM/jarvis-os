@@ -1,23 +1,18 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { _fetch } from "../_client";
+import { useConfirm } from "./ConfirmDialog.jsx";
 import "./TeamWorkspace.css";
-
-// ── Storage ───────────────────────────────────────────────────────────
-const MEMBERS_KEY  = "ooplix_team_members";
-const INVITES_KEY  = "ooplix_team_invites";
-const ACTIVITY_KEY = "ooplix_team_activity";
-
-function _load(key, fallback) {
-  try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
-  catch { return fallback; }
-}
-function _save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Role definitions ─────────────────────────────────────────────────
+// Matches the real backend role vocabulary (workspaceService.cjs ROLES) —
+// the fictional owner/admin/manager/operator/viewer set previously used
+// here didn't correspond to anything the API actually returns or accepts.
 const ROLES = [
   {
-    id:    "owner",
+    id:    "Owner",
     label: "Owner",
     color: "var(--warning)",
     icon:  "◉",
@@ -25,7 +20,7 @@ const ROLES = [
     perms: ["All permissions"],
   },
   {
-    id:    "admin",
+    id:    "Admin",
     label: "Admin",
     color: "var(--accent)",
     icon:  "◈",
@@ -33,23 +28,23 @@ const ROLES = [
     perms: ["Manage team", "Manage settings", "View billing", "Full data access"],
   },
   {
-    id:    "manager",
-    label: "Manager",
-    color: "var(--accent2)",
-    icon:  "◎",
-    desc:  "Manage contacts, run campaigns, view pipeline. Cannot change settings.",
-    perms: ["Manage contacts", "Run campaigns", "View pipeline", "View team activity"],
-  },
-  {
-    id:    "operator",
+    id:    "Operator",
     label: "Operator",
-    color: "#52d68a",
+    color: "var(--success)",
     icon:  "▷",
     desc:  "Execute tasks, send messages, update lead status. Cannot manage other users.",
     perms: ["Execute tasks", "Send messages", "Update leads", "View pipeline"],
   },
   {
-    id:    "viewer",
+    id:    "Developer",
+    label: "Developer",
+    color: "var(--accent2)",
+    icon:  "◎",
+    desc:  "Access engineering tools, code workspace, and deployment controls.",
+    perms: ["Code workspace", "Deployments", "View pipeline", "View team activity"],
+  },
+  {
+    id:    "Viewer",
     label: "Viewer",
     color: "var(--text-faint)",
     icon:  "○",
@@ -57,21 +52,10 @@ const ROLES = [
     perms: ["View pipeline", "View contacts", "View reports"],
   },
 ];
-
-// ── Seed data ─────────────────────────────────────────────────────────
-const SEED_MEMBERS = [
-  { id: "m1", name: "You (Account Owner)", email: "owner@ooplix.com", role: "owner",    joined: "2026-01-01", lastActive: "Today",      status: "active"   },
-];
-
-const SEED_ACTIVITY = [
-  { id: "a1", actor: "You",        action: "Workspace created",             ts: "2 months ago" },
-  { id: "a2", actor: "You",        action: "WhatsApp connected",            ts: "2 months ago" },
-  { id: "a3", actor: "You",        action: "First contact added",           ts: "6 weeks ago"  },
-  { id: "a4", actor: "You",        action: "Billing plan upgraded",         ts: "3 weeks ago"  },
-];
+const ROLE_BY_ID = Object.fromEntries(ROLES.map(r => [r.id, r]));
 
 function RoleBadge({ role }) {
-  const def = ROLES.find(r => r.id === role) || ROLES[4];
+  const def = ROLE_BY_ID[role] || ROLES[4];
   return (
     <span className="tw-role-badge" style={{ color: def.color, borderColor: def.color + "33" }}>
       {def.icon} {def.label}
@@ -79,43 +63,29 @@ function RoleBadge({ role }) {
   );
 }
 
-function MemberRow({ member, isOnly, onChangeRole, onRemove }) {
-  const [menuOpen, setMenuOpen] = useState(false);
+function MemberRow({ member, isOnly, onRemove }) {
   return (
     <div className="tw-member-row">
-      <div className="tw-member-avatar" style={{ background: `hsl(${member.name.charCodeAt(0) * 7 % 360}, 50%, 25%)` }}>
-        {member.name.slice(0, 2).toUpperCase()}
+      <div className="tw-member-avatar" style={{ background: `hsl(${(member.name || "?").charCodeAt(0) * 7 % 360}, 50%, 25%)` }}>
+        {(member.name || member.accountId || "?").slice(0, 2).toUpperCase()}
       </div>
       <div className="tw-member-info">
         <span className="tw-member-name">{member.name}</span>
         <span className="tw-member-email">{member.email}</span>
       </div>
-      <span className="tw-member-last">{member.lastActive}</span>
       <RoleBadge role={member.role} />
-      {!isOnly && member.role !== "owner" && (
-        <div className="tw-member-actions">
-          <button className="tw-member-menu-btn" onClick={() => setMenuOpen(o => !o)}>⋯</button>
-          {menuOpen && (
-            <div className="tw-member-menu">
-              {ROLES.filter(r => r.id !== "owner" && r.id !== member.role).map(r => (
-                <button key={r.id} className="tw-menu-item" onClick={() => { onChangeRole(member.id, r.id); setMenuOpen(false); }}>
-                  Set as {r.label}
-                </button>
-              ))}
-              <button className="tw-menu-item tw-menu-item--danger" onClick={() => { onRemove(member.id); setMenuOpen(false); }}>
-                Remove
-              </button>
-            </div>
-          )}
-        </div>
+      {!isOnly && member.role !== "Owner" && (
+        <button className="tw-menu-item tw-menu-item--danger" onClick={() => onRemove(member.accountId)}>
+          Remove
+        </button>
       )}
     </div>
   );
 }
 
-function InviteForm({ onInvite, onCancel }) {
+function InviteForm({ onInvite, onCancel, submitting }) {
   const [email, setEmail] = useState("");
-  const [role,  setRole]  = useState("operator");
+  const [role,  setRole]  = useState("Operator");
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email.trim()) return;
@@ -123,7 +93,7 @@ function InviteForm({ onInvite, onCancel }) {
   };
   return (
     <form className="tw-invite-form" onSubmit={handleSubmit}>
-      <h3 className="tw-invite-title">Invite team member</h3>
+      <h3 className="tw-invite-title" id="tw-invite-title">Invite team member</h3>
       <div className="tw-invite-fields">
         <div className="tw-invite-field">
           <label className="tw-field-label">Email address</label>
@@ -140,7 +110,7 @@ function InviteForm({ onInvite, onCancel }) {
         <div className="tw-invite-field">
           <label className="tw-field-label">Role</label>
           <select className="tw-field-select" value={role} onChange={e => setRole(e.target.value)}>
-            {ROLES.filter(r => r.id !== "owner").map(r => (
+            {ROLES.filter(r => r.id !== "Owner").map(r => (
               <option key={r.id} value={r.id}>{r.label} — {r.desc.split(".")[0]}</option>
             ))}
           </select>
@@ -148,35 +118,109 @@ function InviteForm({ onInvite, onCancel }) {
       </div>
       <div className="tw-invite-actions">
         <button type="button" className="tw-cancel-btn" onClick={onCancel}>Cancel</button>
-        <button type="submit" className="tw-send-btn">Send invite →</button>
+        <button type="submit" className="tw-send-btn" disabled={submitting}>{submitting ? "Sending…" : "Send invite →"}</button>
       </div>
     </form>
   );
 }
 
 // ── K1 Workspaces panel ───────────────────────────────────────────
-const K1_ROLES = ["Owner", "Admin", "Operator", "Developer", "Viewer"];
-const K1_ROLE_COLOR = { Owner: "var(--warning)", Admin: "var(--accent)", Operator: "#52d68a", Developer: "var(--accent2)", Viewer: "var(--text-faint)" };
+const K1_ROLES = ROLES.map(r => r.id);
+const K1_ROLE_COLOR = Object.fromEntries(ROLES.map(r => [r.id, r.color]));
 
-function WorkspacesPanel() {
-  const [workspaces,   setWorkspaces]   = useState([]);
-  const [activeId,     setActiveId]     = useState(null);
-  const [members,      setMembers]      = useState([]);
-  const [activity,     setActivity]     = useState([]);
-  const [pendingInvs,  setPendingInvs]  = useState([]);
-  const [loading,      setLoading]      = useState(true);
-  const [creating,     setCreating]     = useState(false);
-  const [newName,      setNewName]      = useState("");
-  const [invEmail,     setInvEmail]     = useState("");
-  const [invRole,      setInvRole]      = useState("Operator");
-  const [inviting,     setInviting]     = useState(false);
-  const [toastMsg,     setToastMsg]     = useState(null);
-  const [panel,        setPanel]        = useState("workspaces"); // workspaces | members | activity
+// Workspace list/switch/create only — members/invites/activity now live in
+// the parent (TeamWorkspace) so the top-level Members/Invites/Activity tabs
+// can share the same real data instead of duplicating the fetch here.
+function WorkspacesPanel({ workspaces, activeId, loading, onSwitch, onCreated, toast }) {
+  const [creating, setCreating] = useState(false);
+  const [newName,  setNewName]  = useState("");
 
-  const toast = (msg) => { setToastMsg(msg); setTimeout(() => setToastMsg(null), 2800); };
+  async function doCreate() {
+    const name = newName.trim();
+    if (!name) return;
+    try {
+      const d = await _fetch("/workspace", { method: "POST", body: JSON.stringify({ name }) });
+      onCreated(d.workspace);
+      setNewName(""); setCreating(false);
+      toast(`Workspace "${name}" created`);
+    } catch (e) { toast(e.message || "Create failed"); }
+  }
+
+  const activeWs = workspaces.find(w => w.id === activeId);
+
+  if (loading) return <div className="tw-ws-loading">Loading workspaces…</div>;
+
+  return (
+    <div className="tw-ws-panel">
+      <div className="tw-ws-list">
+        <div className="tw-ws-list-header">
+          <span>{workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}</span>
+          <button className="tw-ws-create-btn" onClick={() => setCreating(c => !c)}>＋ New</button>
+        </div>
+
+        {creating && (
+          <div className="tw-ws-create-form">
+            <input
+              autoFocus className="tw-ws-create-input" placeholder="Workspace name…"
+              value={newName} onChange={e => setNewName(e.target.value)}
+              onKeyDown={e => { if (e.key === "Enter") doCreate(); if (e.key === "Escape") setCreating(false); }}
+            />
+            <button className="tw-ws-create-confirm" onClick={doCreate} disabled={!newName.trim()}>Create</button>
+          </div>
+        )}
+
+        {workspaces.map(ws => (
+          <div key={ws.id} className={`tw-ws-card${ws.id === activeId ? " tw-ws-card--active" : ""}`}>
+            <div className="tw-ws-card-avatar">{ws.name.slice(0, 2).toUpperCase()}</div>
+            <div className="tw-ws-card-meta">
+              <span className="tw-ws-card-name">{ws.name}</span>
+              <span className="tw-ws-card-info">{ws.members?.length || 0} members · {ws.description || "No description"}</span>
+            </div>
+            {ws.id === activeId
+              ? <span className="tw-ws-active-badge">Active</span>
+              : <button className="tw-ws-switch-btn" onClick={() => onSwitch(ws.id)}>Switch →</button>
+            }
+          </div>
+        ))}
+
+        {activeWs && (
+          <div className="tw-ws-active-info">
+            <span className="tw-ws-active-label">Active:</span>
+            <span className="tw-ws-active-name">{activeWs.name}</span>
+            <span className="tw-ws-active-role" style={{ color: K1_ROLE_COLOR[activeWs.myRole] || "var(--text-faint)" }}>
+              {activeWs.myRole || "Member"}
+            </span>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function TeamWorkspace({ onNavigate }) {
+  const [section,     setSection]     = useState("members");
+  const [workspaces,  setWorkspaces]  = useState([]);
+  const [activeId,    setActiveId]    = useState(null);
+  const [members,     setMembers]     = useState([]);
+  const [pendingInvs, setPendingInvs] = useState([]);
+  const [activity,    setActivity]    = useState([]);
+  const [loading,     setLoading]     = useState(true);
+  const [error,       setError]       = useState(null);
+  const [showInvite,  setShowInvite]  = useState(false);
+  const [inviting,    setInviting]    = useState(false);
+  const [toastMsg,    setToastMsg]    = useState(null);
+  const [retryToken,  setRetryToken]  = useState(0);
+  const [confirm, ConfirmUI]          = useConfirm();
+
+  React.useEffect(() => { track.event("team_workspace_viewed"); }, []);
+
+  const toast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(null), 2800);
+  };
 
   const load = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); setError(null);
     try {
       const d = await _fetch("/workspace");
       setWorkspaces(d.workspaces || []);
@@ -184,19 +228,23 @@ function WorkspacesPanel() {
       const wsId = d.activeWorkspaceId;
       if (wsId) {
         const [mem, act] = await Promise.all([
-          _fetch(`/workspace/${wsId}/members`).then(r => r.members || []).catch(() => []),
-          _fetch(`/workspace/activity?workspaceId=${wsId}`).then(r => r.activity || []).catch(() => []),
+          _fetch(`/workspace/${wsId}/members`).then(r => r.members || []),
+          _fetch(`/workspace/activity?workspaceId=${wsId}`).then(r => r.activity || []),
         ]);
         setMembers(mem);
         setActivity(act);
         const ws = (d.workspaces || []).find(w => w.id === wsId);
         setPendingInvs((ws?.invitations || []).filter(i => !i.usedAt && i.expiresAt > Date.now()));
+      } else {
+        setMembers([]); setActivity([]); setPendingInvs([]);
       }
-    } catch {}
+    } catch (e) {
+      setError(e.message || "Failed to load team data");
+    }
     setLoading(false);
   }, []);
 
-  useEffect(() => { load(); }, [load]);
+  useEffect(() => { load(); }, [load, retryToken]);
 
   async function doSwitch(id) {
     try {
@@ -206,197 +254,67 @@ function WorkspacesPanel() {
     } catch (e) { toast(e.message || "Switch failed"); }
   }
 
-  async function doCreate() {
-    const name = newName.trim();
-    if (!name) return;
-    try {
-      const d = await _fetch("/workspace", { method: "POST", body: JSON.stringify({ name }) });
-      setWorkspaces(prev => [...prev, d.workspace]);
-      setNewName(""); setCreating(false);
-      toast(`Workspace "${name}" created`);
-    } catch (e) { toast(e.message || "Create failed"); }
-  }
-
-  async function doInvite() {
-    if (!invEmail.trim()) return;
+  const handleInvite = useCallback(async (data) => {
+    if (!activeId) { toast("No active workspace"); return; }
     setInviting(true);
     try {
-      await _fetch("/workspace/invite", {
+      // A.6 business-owner-journey finding: this always showed "Invite
+      // sent to {email}" as soon as the invite RECORD was created,
+      // discarding the response body entirely — so it never actually
+      // checked whether the email itself sent. Confirmed live: with zero
+      // email provider credentials configured, the invite record was
+      // created (pending invite correctly appeared) but no email could
+      // possibly have been delivered, and the founder still saw "sent."
+      // The backend already returns the real emailSent/emailError fields
+      // (backend/routes/workspace.js) — this now reads and shows them
+      // instead of a hardcoded success message.
+      const res = await _fetch("/workspace/invite", {
         method: "POST",
-        body: JSON.stringify({ workspaceId: activeId, email: invEmail.trim(), role: invRole }),
+        body: JSON.stringify({ workspaceId: activeId, email: data.email, role: data.role }),
       });
-      setInvEmail(""); toast(`Invite sent to ${invEmail.trim()}`); load();
+      setShowInvite(false);
+      if (res?.emailSent === false) {
+        toast(`Invite created for ${data.email}, but the email could not be sent: ${res.emailError || "unknown error"}`);
+      } else {
+        toast(`Invite sent to ${data.email}`);
+      }
+      track.event("team_invite_sent", { role: data.role, emailSent: res?.emailSent !== false });
+      load();
     } catch (e) { toast(e.message || "Invite failed"); }
     setInviting(false);
-  }
+  }, [activeId, load]);
 
-  const activeWs = workspaces.find(w => w.id === activeId);
-
-  if (loading) return <div className="tw-ws-loading">Loading workspaces…</div>;
-
-  return (
-    <div className="tw-ws-panel">
-      {toastMsg && <div className="tw-toast">{toastMsg}</div>}
-
-      <div className="tw-ws-subtabs">
-        {[["workspaces","Workspaces"],["members","Members & Invites"],["activity","Activity Log"]].map(([id, label]) => (
-          <button key={id} className={`tw-ws-subtab${panel === id ? " tw-ws-subtab--active" : ""}`} onClick={() => setPanel(id)}>{label}</button>
-        ))}
-      </div>
-
-      {panel === "workspaces" && (
-        <div className="tw-ws-list">
-          <div className="tw-ws-list-header">
-            <span>{workspaces.length} workspace{workspaces.length !== 1 ? "s" : ""}</span>
-            <button className="tw-ws-create-btn" onClick={() => setCreating(c => !c)}>＋ New</button>
-          </div>
-
-          {creating && (
-            <div className="tw-ws-create-form">
-              <input
-                autoFocus className="tw-ws-create-input" placeholder="Workspace name…"
-                value={newName} onChange={e => setNewName(e.target.value)}
-                onKeyDown={e => { if (e.key === "Enter") doCreate(); if (e.key === "Escape") setCreating(false); }}
-              />
-              <button className="tw-ws-create-confirm" onClick={doCreate} disabled={!newName.trim()}>Create</button>
-            </div>
-          )}
-
-          {workspaces.map(ws => (
-            <div key={ws.id} className={`tw-ws-card${ws.id === activeId ? " tw-ws-card--active" : ""}`}>
-              <div className="tw-ws-card-avatar">{ws.name.slice(0, 2).toUpperCase()}</div>
-              <div className="tw-ws-card-meta">
-                <span className="tw-ws-card-name">{ws.name}</span>
-                <span className="tw-ws-card-info">{ws.members?.length || 0} members · {ws.description || "No description"}</span>
-              </div>
-              {ws.id === activeId
-                ? <span className="tw-ws-active-badge">Active</span>
-                : <button className="tw-ws-switch-btn" onClick={() => doSwitch(ws.id)}>Switch →</button>
-              }
-            </div>
-          ))}
-
-          {activeWs && (
-            <div className="tw-ws-active-info">
-              <span className="tw-ws-active-label">Active:</span>
-              <span className="tw-ws-active-name">{activeWs.name}</span>
-              <span className="tw-ws-active-role" style={{ color: K1_ROLE_COLOR[activeWs.myRole] || "var(--text-faint)" }}>
-                {activeWs.myRole || "Member"}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {panel === "members" && (
-        <div className="tw-ws-members">
-          <div className="tw-ws-invite-row">
-            <input
-              className="tw-ws-invite-email" placeholder="colleague@company.com"
-              value={invEmail} onChange={e => setInvEmail(e.target.value)}
-            />
-            <select className="tw-ws-invite-role" value={invRole} onChange={e => setInvRole(e.target.value)}>
-              {K1_ROLES.filter(r => r !== "Owner").map(r => <option key={r} value={r}>{r}</option>)}
-            </select>
-            <button className="tw-ws-invite-btn" onClick={doInvite} disabled={inviting || !invEmail.trim()}>
-              {inviting ? "…" : "Invite"}
-            </button>
-          </div>
-
-          <div className="tw-ws-members-list">
-            {members.length === 0 && <div className="tw-ws-empty">No members yet.</div>}
-            {members.map((m, i) => (
-              <div key={m.accountId || i} className="tw-ws-member-row">
-                <div className="tw-ws-member-avatar">{(m.name || m.email || "?").slice(0, 2).toUpperCase()}</div>
-                <div className="tw-ws-member-info">
-                  <span className="tw-ws-member-name">{m.name || m.accountId}</span>
-                  <span className="tw-ws-member-email">{m.email || ""}</span>
-                </div>
-                <span className="tw-ws-member-role" style={{ color: K1_ROLE_COLOR[m.role] || "var(--text-faint)" }}>{m.role}</span>
-              </div>
-            ))}
-          </div>
-
-          {pendingInvs.length > 0 && (
-            <>
-              <div className="tw-ws-section-title">Pending Invitations</div>
-              {pendingInvs.map((inv, i) => (
-                <div key={i} className="tw-ws-inv-row">
-                  <span className="tw-ws-inv-email">{inv.email}</span>
-                  <span className="tw-ws-inv-role" style={{ color: K1_ROLE_COLOR[inv.role] || "var(--text-faint)" }}>{inv.role}</span>
-                  <span className="tw-ws-inv-expires">expires {new Date(inv.expiresAt).toLocaleDateString()}</span>
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      )}
-
-      {panel === "activity" && (
-        <div className="tw-ws-activity">
-          {activity.length === 0 && <div className="tw-ws-empty">No activity yet.</div>}
-          {activity.map((a, i) => (
-            <div key={i} className="tw-ws-activity-row">
-              <span className="tw-activity-dot" />
-              <span className="tw-ws-act-ts">{new Date(a.ts).toLocaleString()}</span>
-              <span className="tw-ws-act-action">{a.action}</span>
-              {a.detail && <span className="tw-ws-act-detail">{a.detail}</span>}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-export default function TeamWorkspace({ onNavigate }) {
-  const [section,     setSection]     = useState("members");
-  const [members,     setMembers]     = useState(() => _load(MEMBERS_KEY, SEED_MEMBERS));
-  const [invites,     setInvites]     = useState(() => _load(INVITES_KEY, []));
-  const [activity,    setActivity]    = useState(() => _load(ACTIVITY_KEY, SEED_ACTIVITY));
-  const [showInvite,  setShowInvite]  = useState(false);
-  const [toastMsg,    setToastMsg]    = useState(null);
-
-  React.useEffect(() => { track.event("team_workspace_viewed"); }, []);
-
-  const toast = (msg) => {
-    setToastMsg(msg);
-    setTimeout(() => setToastMsg(null), 2800);
-  };
-
-  const handleInvite = useCallback((data) => {
-    const inv = { id: `inv_${Date.now()}`, ...data, status: "pending", sentAt: new Date().toISOString() };
-    const all = [...invites, inv];
-    _save(INVITES_KEY, all);
-    setInvites(all);
-    setShowInvite(false);
-    toast(`Invite sent to ${data.email}`);
-    track.event("team_invite_sent", { role: data.role });
-  }, [invites]);
-
-  const handleChangeRole = useCallback((memberId, newRole) => {
-    const updated = members.map(m => m.id === memberId ? { ...m, role: newRole } : m);
-    _save(MEMBERS_KEY, updated);
-    setMembers(updated);
-    toast("Role updated");
-  }, [members]);
-
-  const handleRemove = useCallback((memberId) => {
-    const updated = members.filter(m => m.id !== memberId);
-    _save(MEMBERS_KEY, updated);
-    setMembers(updated);
-    toast("Member removed");
-  }, [members]);
-
-  const handleCancelInvite = useCallback((invId) => {
-    const updated = invites.filter(i => i.id !== invId);
-    _save(INVITES_KEY, updated);
-    setInvites(updated);
-    toast("Invite cancelled");
-  }, [invites]);
+  // Phase A.11.8 — destructive-action confirmation recovered in place.
+  // This is the app's established pattern for irreversible actions:
+  // ConfirmDialog/useConfirm, already used by OrgAdminCenter's five sites
+  // (A.11.5), the CRM (A.11.2), connector Disconnect (A.11.7) and
+  // WorkspaceSettingsL1. A.11.5 deliberately left THIS site unfixed because it
+  // was treated as part of that phase's UNKNOWN-A (TeamWorkspace's local toast
+  // subsystem, which genuinely does require re-wiring `onToast` through
+  // App.jsx). Re-evaluated here as instructed: the two are separable. useConfirm
+  // is entirely self-contained — a hook plus a rendered element, no prop
+  // threading, no call-signature change in App.jsx, nothing deleted — so gating
+  // this DELETE is an in-place recovery of an existing pattern, not the toast
+  // re-architecture. The toast subsystem is left exactly as it was.
+  const handleRemove = useCallback(async (accountId) => {
+    if (!activeId) return;
+    const member = members.find(m => m.accountId === accountId);
+    if (!await confirm({
+      title: `Remove ${member?.name || member?.email || "this member"}?`,
+      message: "They will immediately lose access to this workspace. You can invite them again later.",
+      danger: true,
+      confirmLabel: "Remove",
+    })) return;
+    try {
+      await _fetch(`/workspace/${activeId}/members/${accountId}`, { method: "DELETE" });
+      setMembers(prev => prev.filter(m => m.accountId !== accountId));
+      toast("Member removed");
+    } catch (e) { toast(e.message || "Remove failed"); }
+  }, [activeId, members, confirm]);
 
   return (
     <div className="team-workspace page-enter">
+      {ConfirmUI}
       {toastMsg && <div className="tw-toast">{toastMsg}</div>}
 
       <div className="tw-header">
@@ -407,13 +325,21 @@ export default function TeamWorkspace({ onNavigate }) {
         <button className="tw-invite-btn" onClick={() => setShowInvite(true)}>+ Invite member</button>
       </div>
 
-      {/* Summary strip */}
+      {/* Summary strip.
+          The tiles sit ABOVE the `error` guard on .tw-content, so when the load
+          genuinely fails they still render — and used to assert "0 MEMBERS /
+          0 ROLES / 0 WORKSPACES" as fact while the banner below said the data
+          couldn't load. Measured live: a real account with 1 real member, 1 real
+          role and 1 real workspace displayed 0/0/0/0 under a request timeout.
+          When the truth is unknown, show the app's established "—" unknown
+          placeholder (MissionControlV1.jsx's metric cards, BillingDashboard's
+          own summary row) instead of a confident, false zero. */}
       <div className="tw-summary-strip">
         {[
-          { label: "Members",         value: members.length },
-          { label: "Pending invites", value: invites.filter(i => i.status === "pending").length },
-          { label: "Roles",           value: [...new Set(members.map(m => m.role))].length },
-          { label: "Active today",    value: members.filter(m => m.lastActive === "Today").length },
+          { label: "Members",         value: error || loading ? "—" : members.length },
+          { label: "Pending invites", value: error || loading ? "—" : pendingInvs.length },
+          { label: "Roles",           value: error || loading ? "—" : [...new Set(members.map(m => m.role))].length },
+          { label: "Workspaces",      value: error || loading ? "—" : workspaces.length },
         ].map(s => (
           <div key={s.label} className="tw-summary-item">
             <span className="tw-summary-value">{s.value}</span>
@@ -426,7 +352,7 @@ export default function TeamWorkspace({ onNavigate }) {
         {[
           { id: "workspaces",  label: "Workspaces"  },
           { id: "members",     label: "Members"     },
-          { id: "invites",     label: `Invites${invites.length ? ` (${invites.length})` : ""}` },
+          { id: "invites",     label: `Invites${pendingInvs.length ? ` (${pendingInvs.length})` : ""}` },
           { id: "roles",       label: "Roles"       },
           { id: "permissions", label: "Permissions" },
           { id: "activity",    label: "Activity"    },
@@ -441,49 +367,68 @@ export default function TeamWorkspace({ onNavigate }) {
 
       <div className="tw-content" key={section}>
 
-        {/* K1 — Enterprise Workspaces */}
-        {section === "workspaces" && <WorkspacesPanel />}
-
-        {/* Invite modal */}
-        {showInvite && (
-          <div className="tw-modal-overlay" onClick={() => setShowInvite(false)}>
-            <div className="tw-modal" onClick={e => e.stopPropagation()}>
-              <InviteForm onInvite={handleInvite} onCancel={() => setShowInvite(false)} />
-            </div>
+        {error ? (
+          <div className="k2-error">
+            <span>Couldn't load team data — {error}.</span>
+            <button className="k2-error-retry" onClick={() => setRetryToken(t => t + 1)}>Retry</button>
           </div>
-        )}
+        ) : (
+          <>
+            {/* K1 — Enterprise Workspaces */}
+            {section === "workspaces" && (
+              <WorkspacesPanel
+                workspaces={workspaces} activeId={activeId} loading={loading}
+                onSwitch={doSwitch} onCreated={ws => setWorkspaces(prev => [...prev, ws])} toast={toast}
+              />
+            )}
 
-        {/* Members */}
-        {section === "members" && (
-          <div className="tw-members-section">
-            <div className="tw-members-list">
-              {members.map(m => (
-                <MemberRow
-                  key={m.id}
-                  member={m}
-                  isOnly={members.length === 1}
-                  onChangeRole={handleChangeRole}
-                  onRemove={handleRemove}
-                />
-              ))}
-            </div>
-            {members.length === 1 && (
-              <div className="tw-solo-prompt">
-                <span className="tw-solo-icon">◈</span>
-                <div>
-                  <p className="tw-solo-title">You're the only member</p>
-                  <p className="tw-solo-sub">Invite colleagues to collaborate. Each role has specific access — see the Roles tab for details.</p>
+            {/* Invite modal */}
+            {showInvite && (
+              <div className="tw-modal-overlay" {...overlayProps(() => setShowInvite(false))}>
+                <div className="tw-modal" role="dialog" aria-modal="true" aria-labelledby="tw-invite-title" onClick={e => e.stopPropagation()}>
+                  <InviteForm onInvite={handleInvite} onCancel={() => setShowInvite(false)} submitting={inviting} />
                 </div>
-                <button className="tw-solo-cta" onClick={() => setShowInvite(true)}>Invite someone →</button>
               </div>
             )}
-          </div>
-        )}
+
+            {/* Members */}
+            {section === "members" && (
+              <div className="tw-members-section">
+                {loading ? (
+                  <div className="k2-loading">Loading members…</div>
+                ) : (
+                  <>
+                    <div className="tw-members-list">
+                      {members.map(m => (
+                        <MemberRow
+                          key={m.accountId}
+                          member={m}
+                          isOnly={members.length === 1}
+                          onRemove={handleRemove}
+                        />
+                      ))}
+                    </div>
+                    {members.length === 1 && (
+                      <div className="tw-solo-prompt">
+                        <span className="tw-solo-icon">◈</span>
+                        <div>
+                          <p className="tw-solo-title">You're the only member</p>
+                          <p className="tw-solo-sub">Invite colleagues to collaborate. Each role has specific access — see the Roles tab for details.</p>
+                        </div>
+                        <button className="tw-solo-cta" onClick={() => setShowInvite(true)}>Invite someone →</button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
 
         {/* Invites */}
         {section === "invites" && (
           <div className="tw-invites-section">
-            {invites.length === 0 ? (
+            {loading ? (
+              <div className="k2-loading">Loading invites…</div>
+            ) : pendingInvs.length === 0 ? (
               <div className="tw-empty">
                 <span className="tw-empty-icon">✉</span>
                 <p className="tw-empty-title">No pending invites</p>
@@ -492,17 +437,16 @@ export default function TeamWorkspace({ onNavigate }) {
               </div>
             ) : (
               <div className="tw-invite-list">
-                {invites.map(inv => (
-                  <div key={inv.id} className="tw-invite-row">
+                {pendingInvs.map((inv, i) => (
+                  <div key={i} className="tw-invite-row">
                     <div className="tw-invite-info">
                       <span className="tw-invite-email">{inv.email}</span>
                       <span className="tw-invite-meta">
-                        Sent {new Date(inv.sentAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
+                        Expires {new Date(inv.expiresAt).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}
                       </span>
                     </div>
                     <RoleBadge role={inv.role} />
-                    <span className={`tw-invite-status tw-invite-status--${inv.status}`}>{inv.status}</span>
-                    <button className="tw-revoke-btn" onClick={() => handleCancelInvite(inv.id)}>Cancel</button>
+                    <span className="tw-invite-status tw-invite-status--pending">pending</span>
                   </div>
                 ))}
               </div>
@@ -590,17 +534,28 @@ export default function TeamWorkspace({ onNavigate }) {
         {section === "activity" && (
           <div className="tw-activity-section">
             <p className="tw-activity-note">Recent workspace activity. Full audit log available in Workspace Settings.</p>
-            <div className="tw-activity-list">
-              {activity.map(a => (
-                <div key={a.id} className="tw-activity-row">
-                  <span className="tw-activity-dot" />
-                  <span className="tw-activity-actor">{a.actor}</span>
-                  <span className="tw-activity-action">{a.action}</span>
-                  <span className="tw-activity-ts">{a.ts}</span>
-                </div>
-              ))}
-            </div>
+            {loading ? (
+              <div className="k2-loading">Loading activity…</div>
+            ) : activity.length === 0 ? (
+              <div className="tw-empty">
+                <p className="tw-empty-title">No activity yet</p>
+              </div>
+            ) : (
+              <div className="tw-activity-list">
+                {activity.map((a, i) => (
+                  <div key={i} className="tw-activity-row">
+                    <span className="tw-activity-dot" />
+                    <span className="tw-activity-actor">{members.find(m => m.accountId === a.accountId)?.name || a.accountId}</span>
+                    <span className="tw-activity-action">{a.action}</span>
+                    {a.detail && <span className="tw-ws-act-detail">{a.detail}</span>}
+                    <span className="tw-activity-ts">{new Date(a.ts).toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
+        )}
+          </>
         )}
 
       </div>

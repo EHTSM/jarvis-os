@@ -25,7 +25,7 @@ const STATE_FILE = path.join(__dirname, "../../data/router-state.json");
 const PROVIDERS = {
   groq: {
     id: "groq", name: "Groq",
-    models: { default: "llama-3.3-70b-versatile", fast: "llama-3.1-8b-instant" },
+    models: { default: "openai/gpt-oss-120b", fast: "openai/gpt-oss-20b" },
     cost_per_1k: 0.0001,   // near-free
     base_quality: 0.72,
     base_latency_ms: 400,
@@ -69,6 +69,73 @@ const PROVIDERS = {
     cost_per_1k: 0,
     base_quality: 0.65,
     base_latency_ms: 2000,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  // ── Added for the AI Provider Orchestration mission — these already had
+  // real, working adapters in aiService.js but no smartRouter entry, so
+  // route()'s cost/quality/latency scoring never considered them.
+  deepseek: {
+    id: "deepseek", name: "DeepSeek",
+    models: { default: "deepseek-chat", fast: "deepseek-chat" },
+    cost_per_1k: 0.00014,
+    base_quality: 0.86,
+    base_latency_ms: 900,
+    capabilities: ["chat", "coding/ask", "coding/action", "coding/review", "completion"],
+  },
+  together: {
+    id: "together", name: "Together AI",
+    models: { default: "meta-llama/Llama-3-70b-chat-hf", fast: "meta-llama/Llama-3-70b-chat-hf" },
+    cost_per_1k: 0.0009,
+    base_quality: 0.83,
+    base_latency_ms: 900,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  fireworks: {
+    id: "fireworks", name: "Fireworks AI",
+    models: { default: "accounts/fireworks/models/llama-v3-70b-instruct", fast: "accounts/fireworks/models/llama-v3-70b-instruct" },
+    cost_per_1k: 0.0009,
+    base_quality: 0.82,
+    base_latency_ms: 600,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  cohere: {
+    id: "cohere", name: "Cohere",
+    models: { default: "command-r-plus", fast: "command-r-plus" },
+    cost_per_1k: 0.0025,
+    base_quality: 0.84,
+    base_latency_ms: 900,
+    capabilities: ["chat", "completion"],
+  },
+  nvidia: {
+    id: "nvidia", name: "NVIDIA NIM",
+    models: { default: "meta/llama-3.1-70b-instruct", fast: "meta/llama-3.1-70b-instruct" },
+    cost_per_1k: 0,
+    base_quality: 0.83,
+    base_latency_ms: 1000,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  lmstudio: {
+    id: "lmstudio", name: "LM Studio (Local)",
+    models: { default: "local-model", fast: "local-model" },
+    cost_per_1k: 0,
+    base_quality: 0.65,
+    base_latency_ms: 1800,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  grok: {
+    id: "grok", name: "Grok (x.ai)",
+    models: { default: "grok-2-latest", fast: "grok-2-latest" },
+    cost_per_1k: 0.002,
+    base_quality: 0.87,
+    base_latency_ms: 1000,
+    capabilities: ["chat", "coding/ask", "completion"],
+  },
+  qwen: {
+    id: "qwen", name: "Qwen (Alibaba DashScope)",
+    models: { default: "qwen-plus", fast: "qwen-plus" },
+    cost_per_1k: 0.0004,
+    base_quality: 0.83,
+    base_latency_ms: 700,
     capabilities: ["chat", "coding/ask", "completion"],
   },
 };
@@ -268,8 +335,20 @@ function _detectAvailableKeys() {
   if (process.env.ANTHROPIC_API_KEY)  available.push("claude");
   if (process.env.OPENAI_API_KEY)     available.push("openai");
   if (process.env.GEMINI_API_KEY)     available.push("gemini");
-  // Ollama always available if running locally
+  if (process.env.DEEPSEEK_API_KEY)   available.push("deepseek");
+  if (process.env.TOGETHER_API_KEY)   available.push("together");
+  if (process.env.FIREWORKS_API_KEY)  available.push("fireworks");
+  if (process.env.COHERE_API_KEY)     available.push("cohere");
+  if (process.env.NVIDIA_API_KEY)     available.push("nvidia");
+  if (process.env.GROK_API_KEY)       available.push("grok");
+  if (process.env.DASHSCOPE_API_KEY)  available.push("qwen");
+  // Local providers: available whenever the local server is reachable, not
+  // gated by an API key. route()'s caller-supplied availableKeys (e.g. from
+  // aiOrchestrator, which probes reachability) should be preferred over this
+  // default when accuracy matters — this optimistic default exists only for
+  // callers that don't pass availableKeys explicitly.
   available.push("ollama");
+  available.push("lmstudio");
   return available;
 }
 

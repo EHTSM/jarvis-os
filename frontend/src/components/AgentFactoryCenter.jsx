@@ -4,6 +4,9 @@ import { listManagedAgents, createManagedAgent, getAgentFactoryStats } from "../
 import { getPlugins, getCapabilities, getCapabilityMap, getTemplates, getManifest } from "../phase26Api";
 import EmptyState from "./EmptyState";
 import "./AgentFactoryCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 const KEY = "ooplix_agent_factory_v1";
 function _load(k, fb) { try { return JSON.parse(localStorage.getItem(k) || JSON.stringify(fb)); } catch { return fb; } }
@@ -13,7 +16,7 @@ const TEMPLATES = [
   { id: "sales",     icon: "💰", name: "Sales Agent",     color: "#00dc82", badge: "Revenue",   desc: "Qualifies leads, follows up, closes deals autonomously." },
   { id: "marketing", icon: "📣", name: "Marketing Agent", color: "var(--warning)", badge: "Growth", desc: "Runs campaigns, A/B tests, schedules content distribution." },
   { id: "seo",       icon: "🔍", name: "SEO Agent",       color: "var(--accent2)", badge: "Traffic", desc: "Keyword research, meta generation, rank tracking." },
-  { id: "support",   icon: "🎧", name: "Support Agent",   color: "#7c6fff", badge: "CX",       desc: "Handles tickets, resolves issues, escalates intelligently." },
+  { id: "support",   icon: "🎧", name: "Support Agent",   color: "var(--accent)", badge: "CX",       desc: "Handles tickets, resolves issues, escalates intelligently." },
   { id: "research",  icon: "🔬", name: "Research Agent",  color: "#00c6ff", badge: "Intel",   desc: "Crawls sources, synthesizes insights, builds briefs." },
   { id: "dev",       icon: "💻", name: "Dev Agent",       color: "#ff6464", badge: "Build",   desc: "Writes code, reviews PRs, automates CI tasks." },
   { id: "devops",    icon: "⚙️", name: "DevOps Agent",    color: "var(--warning)", badge: "Ops", desc: "Monitors infra, deploys builds, handles incidents." },
@@ -30,12 +33,16 @@ const SEED_AGENTS = [
 ];
 
 export default function AgentFactoryCenter({ onNavigate }) {
-  const [agents, setAgents]   = useState(() => _load(KEY, SEED_AGENTS));
+  const [agents, setAgents]   = useState(() => _load(KEY, null));
+  const [agentsLive, setAgentsLive] = useState(false);
   const [modal, setModal]     = useState(null);
   const [cloneSource, setClone] = useState(null);
   const [form, setForm]       = useState({ name: "", template: "sales", model: "claude-sonnet-4-6", description: "" });
   const [apiError, setApiError] = useState(null);
   const [trainMsg, setTrainMsg] = useState("");
+  // B19.3: both modals dismissed on backdrop click only. Escape now mirrors
+  // that, using the existing hook. Bound only while a modal is open.
+  useEscapeKey(!!modal, () => { setModal(null); setTrainMsg(""); });
 
   // p26 live data
   const [p26Tab,       setP26Tab]       = useState("plugins");
@@ -50,14 +57,19 @@ export default function AgentFactoryCenter({ onNavigate }) {
     listManagedAgents().then(res => {
       if (cancelled) return;
       const live = res?.agents;
-      if (Array.isArray(live) && live.length > 0) {
-        const mapped = live.map(a => ({
-          id:       a.id, name: a.name, template: a.type || "custom",
-          status:   a.status || "idle", runsToday: a.runsToday ?? 0,
-          model:    a.model || "claude-sonnet-4-6",
-          created:  a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "—",
-        }));
-        setAgents(mapped); _save(KEY, mapped);
+      if (Array.isArray(live)) {
+        setAgentsLive(true);
+        if (live.length > 0) {
+          const mapped = live.map(a => ({
+            id:       a.id, name: a.name, template: a.type || "custom",
+            status:   a.status || "idle", runsToday: a.runsToday ?? 0,
+            model:    a.model || "claude-sonnet-4-6",
+            created:  a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "—",
+          }));
+          setAgents(mapped); _save(KEY, mapped);
+        } else {
+          setAgents([]); _save(KEY, []);
+        }
       }
     }).catch(err => { if (!cancelled) setApiError(err.message); });
     return () => { cancelled = true; };
@@ -96,20 +108,22 @@ export default function AgentFactoryCenter({ onNavigate }) {
   function handleCreate() {
     const n = { id: "af_" + Date.now(), name: form.name || "New Agent", template: form.template, status: "idle", runsToday: 0, model: form.model, created: new Date().toISOString().slice(0,10) };
     saveAgents([n, ...agents]);
-    track("agent_factory_create", { template: form.template });
+    track.event("agent_factory_create", { template: form.template });
     createManagedAgent({ name: n.name, type: n.template, model: n.model }).catch(() => {});
     setModal(null);
   }
 
   function handleRetire(id) {
     saveAgents(agents.map(a => a.id === id ? { ...a, status: "retired" } : a));
-    track("agent_factory_retire", { id });
+    track.event("agent_factory_retire", { id });
   }
 
   const tmplOf = id => TEMPLATES.find(t => t.id === id) || TEMPLATES[0];
-  const active  = agents.filter(a => a.status !== "retired").length;
-  const retired = agents.filter(a => a.status === "retired").length;
-  const runsToday = agents.reduce((s, a) => s + (a.runsToday || 0), 0);
+  const showingFallback = !agentsLive && !!apiError;
+  const effectiveAgents = agents ?? (showingFallback ? SEED_AGENTS : []);
+  const active  = effectiveAgents.filter(a => a.status !== "retired").length;
+  const retired = effectiveAgents.filter(a => a.status === "retired").length;
+  const runsToday = effectiveAgents.reduce((s, a) => s + (a.runsToday || 0), 0);
 
   return (
     <div className="afc">
@@ -119,10 +133,14 @@ export default function AgentFactoryCenter({ onNavigate }) {
           <p className="afc-subtitle">Create, clone, train and retire AI agents. Launch from templates.</p>
         </div>
         <div className="afc-actions">
-          <button className="afc-btn afc-btn-ghost" onClick={() => track("afc_docs")}>Templates</button>
+          <button className="afc-btn afc-btn-ghost" onClick={() => track.event("afc_docs")}>Templates</button>
           <button className="afc-btn afc-btn-primary" onClick={openCreate}>+ Create Agent</button>
         </div>
       </div>
+
+      {showingFallback && (
+        <div className="ac-api-banner ac-api-banner--error">⚠ Live agent data unavailable — showing example data ({apiError}).</div>
+      )}
 
       <div className="afc-stats">
         <div className="afc-stat"><span className="afc-stat-val">{agents.length}</span><span className="afc-stat-lbl">Total</span></div>
@@ -135,7 +153,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       <div className="afc-section-title">Agent Templates</div>
       <div className="afc-templates">
         {TEMPLATES.map(t => (
-          <div key={t.id} className="afc-tmpl-card" onClick={() => { setForm({ name: t.name, template: t.id, model: "claude-sonnet-4-6", description: t.desc }); setModal("create"); }}>
+          <div key={t.id} className="afc-tmpl-card" {...clickableProps(() => { setForm({ name: t.name, template: t.id, model: "claude-sonnet-4-6", description: t.desc }); setModal("create"); })}>
             <div className="afc-tmpl-icon">{t.icon}</div>
             <div className="afc-tmpl-name">{t.name}</div>
             <div className="afc-tmpl-desc">{t.desc}</div>
@@ -167,7 +185,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       </div>
 
       {(modal === "create" || modal === "clone") && (
-        <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && setModal(null)}>
+        <div className="afc-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && setModal(null))}>
           <div className="afc-modal" role="dialog" aria-modal="true" aria-labelledby="afc-modal-title">
             <h2 className="afc-modal-title" id="afc-modal-title">{modal === "clone" ? `Clone: ${cloneSource?.name}` : "Create Agent"}</h2>
             <div className="afc-modal-form">
@@ -229,7 +247,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
                 <div className="afc-agent-name">{p.name ?? p.id}</div>
                 <div className="afc-agent-meta">{p.type ?? "plugin"}{p.version ? ` · v${p.version}` : ""}{p.description ? ` · ${p.description}` : ""}</div>
               </div>
-              <span className="afc-agent-status" style={{ color: p.enabled === false ? "var(--text-faint)" : "#22c55e" }}>
+              <span className="afc-agent-status" style={{ color: p.enabled === false ? "var(--text-faint)" : "var(--success)" }}>
                 {p.enabled === false ? "disabled" : "enabled"}
               </span>
             </div>
@@ -265,7 +283,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
                 <div className="afc-agent-name">{t.name ?? t.id}</div>
                 <div className="afc-agent-meta">{t.type ?? "template"}{t.description ? ` · ${t.description}` : ""}</div>
               </div>
-              <button className="afc-agent-btn" onClick={() => track("p26_template_use", { id: t.id })}>Use</button>
+              <button className="afc-agent-btn" onClick={() => track.event("p26_template_use", { id: t.id })}>Use</button>
             </div>
           ))}
         </div>
@@ -285,7 +303,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
       )}
 
       {modal === "train" && cloneSource && (
-        <div className="afc-modal-overlay" onClick={e => e.target === e.currentTarget && (setModal(null), setTrainMsg(""))}>
+        <div className="afc-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && (setModal(null), setTrainMsg("")))}>
           <div className="afc-modal" role="dialog" aria-modal="true" aria-labelledby="afc-train-title">
             <h2 className="afc-modal-title" id="afc-train-title">Train: {cloneSource.name}</h2>
             <div className="afc-modal-form">
@@ -310,7 +328,7 @@ export default function AgentFactoryCenter({ onNavigate }) {
             <div className="afc-modal-footer">
               <button className="afc-btn afc-btn-ghost" onClick={() => { setModal(null); setTrainMsg(""); }}>Cancel</button>
               <button className="afc-btn afc-btn-primary" onClick={() => {
-                track("agent_factory_train", { id: cloneSource.id });
+                track.event("agent_factory_train", { id: cloneSource.id });
                 setTrainMsg("Training request queued. You will be notified when fine-tuning completes.");
                 setTimeout(() => { setModal(null); setTrainMsg(""); }, 2000);
               }}>

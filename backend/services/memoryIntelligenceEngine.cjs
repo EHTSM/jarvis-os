@@ -59,9 +59,13 @@ function _score(node) {
 }
 
 // ── Rank ─────────────────────────────────────────────────────────────────
-function rankMemories({ type, minScore = 0, limit = 100 } = {}) {
+// M-4 (2026-08-28): orgId is an OPTIONAL filter threaded straight to
+// mpl.list() — same rule as everywhere else in this fix (supplied = exact-
+// match only, omitted = unchanged existing behavior for every non-route
+// internal caller of this function).
+function rankMemories({ type, minScore = 0, limit = 100, orgId } = {}) {
     const mpl   = _getMPL();
-    const { nodes } = mpl.list({ type, limit: 2000 });
+    const { nodes } = mpl.list({ type, limit: 2000, orgId });
     const scored = nodes
         .map(n => ({ ...n, recallScore: _score(n) }))
         .filter(n => n.recallScore >= minScore)

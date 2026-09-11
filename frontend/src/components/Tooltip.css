@@ -13,7 +13,7 @@
   border-radius: 5px;
   font-size: 11px;
   font-weight: 500;
-  color: rgba(255,255,255,0.85);
+  color: rgba(var(--fg-rgb), 0.92);
   pointer-events: none;
   animation: tt-in 120ms ease both;
   box-shadow: 0 4px 12px rgba(0,0,0,0.4);

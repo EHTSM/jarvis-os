@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./GrowthOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api   = (path, opts = {}) =>
@@ -43,7 +44,7 @@ function StatCard({ label, value, sub, accent }) {
 
 function Bar({ value, max = 100, color }) {
   const pct = Math.min(100, max > 0 ? Math.round((value / max) * 100) : 0);
-  const col = color || (pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#7c6af7");
+  const col = color || (pct >= 80 ? "var(--success)" : pct >= 50 ? "var(--warning)" : "#7c6af7");
   return (
     <div className="gos-bar-track">
       <div className="gos-bar-fill" style={{ width: `${pct}%`, background: col }} />
@@ -77,10 +78,21 @@ function useGrowth(path, deps = []) {
   return [data, load];
 }
 
+// Phase A.11.3 — this toast is used for BOTH success confirmations and real
+// backend error text (send/OTP/import handlers all do `toast(r.error)`), but
+// `.gos-toast` was hardcoded to the success green (#22c55e), so a genuine
+// failure — e.g. the real 400 "Email campaign sending is not available: CRM
+// leads in this deployment have no email address field…" — rendered in the
+// exact same green as "Campaign created". The optional second argument lets a
+// caller mark a message as an error so it renders with this file's OWN
+// already-defined red (the same #ef4444 `.gos-chip-red`/`.gos-btn-sm--danger`
+// use), matching the sibling DistributionOS/CreativeStudio surfaces which
+// already distinguish failure from success. Default stays "success", so every
+// existing single-argument call site is unchanged.
 function useToast() {
-  const [msg, setMsg] = useState("");
-  const toast = (m) => { setMsg(m); setTimeout(() => setMsg(""), 3000); };
-  const Toast = msg ? <span className="gos-toast">{msg}</span> : null;
+  const [msg, setMsg] = useState(null);
+  const toast = (m, type = "success") => { setMsg({ m, type }); setTimeout(() => setMsg(null), 3000); };
+  const Toast = msg ? <span className={`gos-toast${msg.type === "error" ? " gos-toast--error" : ""}`}>{msg.m}</span> : null;
   return [toast, Toast];
 }
 
@@ -101,10 +113,10 @@ function DashboardPanel() {
       </div>
 
       <div className="gos-stats-grid" style={{ gridTemplateColumns: "repeat(auto-fill,minmax(130px,1fr))" }}>
-        <StatCard label="Total Campaigns" value={k.totalCampaigns} accent="#22c55e" />
+        <StatCard label="Total Campaigns" value={k.totalCampaigns} accent="var(--success)" />
         <StatCard label="Total Reach"     value={(k.totalReach || 0).toLocaleString()} />
-        <StatCard label="Revenue"         value={`₹${(k.totalRevenue || 0).toLocaleString()}`} accent="#7c6fff" />
-        <StatCard label="Overall ROAS"    value={`${k.overallROAS}x`} accent="#4ecdc4" />
+        <StatCard label="Revenue"         value={`₹${(k.totalRevenue || 0).toLocaleString()}`} accent="var(--accent)" />
+        <StatCard label="Overall ROAS"    value={`${k.overallROAS}x`} accent="var(--accent2)" />
         <StatCard label="Audiences"       value={k.totalAudiences} sub={`${(k.totalMembers || 0).toLocaleString()} members`} />
         <StatCard label="Automations"     value={k.totalAutomations} sub={`${k.activeAutomations} active`} />
         <StatCard label="Templates"       value={k.totalTemplates} />
@@ -113,10 +125,10 @@ function DashboardPanel() {
 
       <div className="gos-channel-grid">
         {[
-          { label: "Email",    ch: d.email,    icon: "✉", color: "#7c6fff", meta: `${d.email?.avgOpenRate}% open · ${d.email?.sequences} seq · ${d.email?.abTests} A/B` },
-          { label: "SMS",      ch: d.sms,      icon: "◻", color: "#22c55e", meta: `${d.sms?.deliveryRate}% delivery · ${d.sms?.scheduled} scheduled` },
-          { label: "WhatsApp", ch: d.whatsapp, icon: "⬡", color: "#4ecdc4", meta: `${d.whatsapp?.avgReadRate}% read · ${d.whatsapp?.totalLeads} leads · ${d.whatsapp?.flows} flows` },
-          { label: "Push",     ch: d.push,     icon: "◈", color: "#f59e0b", meta: `${d.push?.avgClickRate}% CTR` },
+          { label: "Email",    ch: d.email,    icon: "✉", color: "var(--accent)", meta: `${d.email?.avgOpenRate}% open · ${d.email?.sequences} seq · ${d.email?.abTests} A/B` },
+          { label: "SMS",      ch: d.sms,      icon: "◻", color: "var(--success)", meta: `${d.sms?.deliveryRate}% delivery · ${d.sms?.scheduled} scheduled` },
+          { label: "WhatsApp", ch: d.whatsapp, icon: "⬡", color: "var(--accent2)", meta: `${d.whatsapp?.avgReadRate}% read · ${d.whatsapp?.totalLeads} leads · ${d.whatsapp?.flows} flows` },
+          { label: "Push",     ch: d.push,     icon: "◈", color: "var(--warning)", meta: `${d.push?.avgClickRate}% CTR` },
         ].map(({ label, ch, icon, color, meta }) => (
           <div key={label} className="gos-channel-card" style={{ borderTop: `2px solid ${color}` }}>
             <div className="gos-channel-icon" style={{ color }}>{icon}</div>
@@ -138,7 +150,7 @@ function DashboardPanel() {
                 <span className="gos-campaign-name">{c.name}</span>
                 <Chip>{c.type}</Chip>
                 <span className="gos-campaign-sent">{(c.sent || 0).toLocaleString()} sent</span>
-                {c.revenue > 0 && <span className="gos-campaign-sent" style={{ color: "#4ecdc4" }}>₹{c.revenue.toLocaleString()}</span>}
+                {c.revenue > 0 && <span className="gos-campaign-sent" style={{ color: "var(--accent2)" }}>₹{c.revenue.toLocaleString()}</span>}
                 <Chip color={c.status === "sent" ? "green" : "gray"}>{c.status}</Chip>
               </div>
             ))}
@@ -169,11 +181,35 @@ function EmailPanel() {
     setForm({ name: "", subject: "", fromName: "Ooplix", fromEmail: "", abTest: false, variantB: null });
     toast("Campaign created");
     reloadCamps();
+    // A.7 finding: the "+ New" form stayed open after a successful create
+    // (view never left "create"), so the fields reset but the founder was
+    // left staring at a fresh, still-active create form with no visible
+    // confirmation beyond a toast — reproduced live: this created two
+    // near-identical duplicate campaigns from what looked like one submit
+    // that "didn't seem to work." Returning to the list mirrors every other
+    // create flow in this app (e.g. Contacts' "+ New").
+    setView("campaigns");
   };
 
   const send = async (id) => {
-    await post(`/growth/email/campaigns/${id}/send`, {});
+    const r = await post(`/growth/email/campaigns/${id}/send`, {});
+    // Production Completion Week: api()'s fetch().then(r => r.json()) never
+    // checks response.ok, so a real backend error (e.g. "no email address
+    // data for this deployment") resolves as JSON like any success — this
+    // was silently reporting "Campaign sent!" for a call that failed.
+    if (r?.error) { toast(r.error, "error"); return; }
     toast("Campaign sent!");
+    reloadCamps();
+  };
+
+  // A.7 finding: there was no way to remove a mistaken/duplicate campaign —
+  // PATCH /growth/email/campaigns/:id already accepts any patch body
+  // (updateEmailCampaign() does a plain Object.assign), so archiving needs
+  // no new backend route, just a status flag + list-view filter, the same
+  // pattern this file already uses for "draft"/"sent" status everywhere else.
+  const archiveCampaign = async (id) => {
+    await patch(`/growth/email/campaigns/${id}`, { status: "archived" });
+    toast("Campaign archived");
     reloadCamps();
   };
 
@@ -183,9 +219,10 @@ function EmailPanel() {
     setSeqForm({ name: "", description: "", triggerEvent: "contact_created" });
     toast("Sequence created");
     reloadSeqs();
+    setView("sequences"); // same fix as createCampaign — see its comment above
   };
 
-  const list    = camps?.campaigns || [];
+  const list    = (camps?.campaigns || []).filter(c => c.status !== "archived");
   const seqList = seqs?.sequences  || [];
   const tplList = tmpls?.templates || [];
 
@@ -204,11 +241,11 @@ function EmailPanel() {
         <div>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"    value={list.length} />
-            <StatCard label="Sent"     value={list.filter(c => c.status === "sent").length} accent="#22c55e" />
+            <StatCard label="Sent"     value={list.filter(c => c.status === "sent").length} accent="var(--success)" />
             <StatCard label="Draft"    value={list.filter(c => c.status === "draft").length} />
             <StatCard label="Reach"    value={list.reduce((s,c)=>s+(c.stats?.sent||0),0).toLocaleString()} />
             <StatCard label="Opens"    value={list.reduce((s,c)=>s+(c.stats?.opened||0),0).toLocaleString()} />
-            <StatCard label="A/B Tests" value={list.filter(c => c.abTest).length} accent="#7c6fff" />
+            <StatCard label="A/B Tests" value={list.filter(c => c.abTest).length} accent="var(--accent)" />
           </div>
           <div className="gos-list">
             {list.length === 0 && <div className="gos-empty">No email campaigns yet. Create one to get started.</div>}
@@ -228,13 +265,14 @@ function EmailPanel() {
                   </div>
                 )}
                 {c.variantBStats?.sent > 0 && (
-                  <div className="gos-campaign-stats" style={{ color: "#7c6fff" }}>
+                  <div className="gos-campaign-stats" style={{ color: "var(--accent)" }}>
                     <span>B: {c.variantBStats.sent} sent</span>
                     <span>{c.variantBStats.opened} opened ({c.variantBStats.sent ? (c.variantBStats.opened/c.variantBStats.sent*100).toFixed(0) : 0}%)</span>
                   </div>
                 )}
                 <Chip color={c.status === "sent" ? "green" : "gray"}>{c.status}</Chip>
                 {c.status === "draft" && <button className="gos-btn-sm" onClick={() => send(c.id)}>Send</button>}
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveCampaign(c.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -326,10 +364,12 @@ function SMSPanel() {
     setForm({ name: "", body: "", senderId: "OOPLIX", bulk: true, unicode: false });
     toast("Campaign created");
     reload();
+    setView("campaigns"); // same "+New" form stayed open after create fix as GrowthOS Email — see its comment
   };
 
   const send = async (id) => {
-    await post(`/growth/sms/campaigns/${id}/send`, {});
+    const r = await post(`/growth/sms/campaigns/${id}/send`, {});
+    if (r?.error) { toast(r.error, "error"); return; }
     toast("SMS campaign sent!");
     reload();
   };
@@ -342,14 +382,23 @@ function SMSPanel() {
     reload();
   };
 
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed.
+  const archiveCampaign = async (id) => {
+    await patch(`/growth/sms/campaigns/${id}`, { status: "archived" });
+    toast("Campaign archived");
+    reload();
+  };
+
   const sendOTP = async () => {
     if (!otp.to) return;
-    await post("/growth/sms/otp", otp);
+    const r = await post("/growth/sms/otp", otp);
+    if (r?.error) { toast(r.error, "error"); return; }
     toast(`OTP sent to ${otp.to}`);
     setOtp({ to: "" });
   };
 
-  const list    = camps?.campaigns || [];
+  const list    = (camps?.campaigns || []).filter(c => c.status !== "archived");
   const tplList = tmpls?.templates || [];
 
   return (
@@ -367,8 +416,8 @@ function SMSPanel() {
         <div>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"     value={list.length} />
-            <StatCard label="Sent"      value={list.filter(c => c.status === "sent").length} accent="#22c55e" />
-            <StatCard label="Scheduled" value={list.filter(c => c.status === "scheduled").length} accent="#f59e0b" />
+            <StatCard label="Sent"      value={list.filter(c => c.status === "sent").length} accent="var(--success)" />
+            <StatCard label="Scheduled" value={list.filter(c => c.status === "scheduled").length} accent="var(--warning)" />
             <StatCard label="Total Sent" value={list.reduce((s,c)=>s+(c.stats?.sent||0),0).toLocaleString()} />
           </div>
           <div className="gos-list">
@@ -379,7 +428,7 @@ function SMSPanel() {
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="gos-campaign-name">{c.name}</div>
                   <div className="gos-campaign-meta">{c.body?.slice(0, 70)}{c.body?.length > 70 ? "…" : ""}</div>
-                  {c.scheduledAt && c.status === "scheduled" && <div className="gos-campaign-meta" style={{ color: "#f59e0b" }}>Scheduled: {new Date(c.scheduledAt).toLocaleString()}</div>}
+                  {c.scheduledAt && c.status === "scheduled" && <div className="gos-campaign-meta" style={{ color: "var(--warning)" }}>Scheduled: {new Date(c.scheduledAt).toLocaleString()}</div>}
                 </div>
                 {c.bulk && <Chip>bulk</Chip>}
                 {c.unicode && <Chip color="purple">unicode</Chip>}
@@ -391,6 +440,7 @@ function SMSPanel() {
                     <button className="gos-btn-sm" onClick={() => setSched({ id: c.id, scheduledAt: sched.scheduledAt }) || setView("schedule")}>Schedule</button>
                   </>
                 )}
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveCampaign(c.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -472,11 +522,20 @@ function WhatsAppPanel() {
     setForm({ name: "", body: "", flowId: null, leadQualification: false });
     toast("Broadcast created");
     reload();
+    setView("broadcasts"); // same "+New" form stayed open after create fix as GrowthOS Email — see its comment
   };
 
   const send = async (id) => {
-    await post(`/growth/whatsapp/broadcasts/${id}/send`, {});
-    toast("Broadcast sent!");
+    const r = await post(`/growth/whatsapp/broadcasts/${id}/send`, {});
+    if (r?.error) { toast(r.error, "error"); return; }
+    const c = r?.campaign;
+    // Production Completion Week: this now makes real per-recipient sends
+    // via whatsappService.js, so a partial failure (some recipients
+    // succeeded, some didn't — e.g. invalid numbers) is a real possible
+    // outcome, not just all-or-nothing.
+    toast(c?.stats?.failed > 0
+      ? `Broadcast sent — ${c.stats.delivered} delivered, ${c.stats.failed} failed`
+      : "Broadcast sent!");
     reload();
   };
 
@@ -528,8 +587,8 @@ function WhatsAppPanel() {
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Broadcasts"  value={campList.length} />
             <StatCard label="Total Sent"  value={campList.reduce((s,c)=>s+(c.stats?.sent||0),0).toLocaleString()} />
-            <StatCard label="Total Read"  value={campList.reduce((s,c)=>s+(c.stats?.read||0),0).toLocaleString()} accent="#4ecdc4" />
-            <StatCard label="Leads Gen'd" value={campList.reduce((s,c)=>s+(c.stats?.leads||0),0).toLocaleString()} accent="#22c55e" />
+            <StatCard label="Total Read"  value={campList.reduce((s,c)=>s+(c.stats?.read||0),0).toLocaleString()} accent="var(--accent2)" />
+            <StatCard label="Leads Gen'd" value={campList.reduce((s,c)=>s+(c.stats?.leads||0),0).toLocaleString()} accent="var(--success)" />
           </div>
           <div className="gos-list">
             {campList.length === 0 && <div className="gos-empty">No WhatsApp broadcasts yet.</div>}
@@ -543,9 +602,9 @@ function WhatsAppPanel() {
                 {c.stats?.sent > 0 && (
                   <div className="gos-campaign-stats">
                     <span>{c.stats.sent} sent</span>
-                    <span style={{ color: "#4ecdc4" }}>{c.stats.read} read</span>
+                    <span style={{ color: "var(--accent2)" }}>{c.stats.read} read</span>
                     <span>{c.stats.replied} replied</span>
-                    <span style={{ color: "#22c55e" }}>{c.stats.leads} leads</span>
+                    <span style={{ color: "var(--success)" }}>{c.stats.leads} leads</span>
                   </div>
                 )}
                 <Chip color={c.status === "sent" ? "green" : "gray"}>{c.status}</Chip>
@@ -685,10 +744,10 @@ function PushPanel() {
     <div>
       <div className="gos-push-platforms">
         {[
-          { icon: "◉", label: "Desktop",       desc: "Electron app push notifications", color: "#7c6fff" },
-          { icon: "◈", label: "Mobile-ready",  desc: "FCM-compatible payload structure", color: "#22c55e" },
-          { icon: "⬡", label: "Browser",        desc: "Web Push API (service worker)", color: "#4ecdc4" },
-          { icon: "⚡", label: "Auto Triggers",  desc: `${tlist.length} automation trigger rules`, color: "#f59e0b" },
+          { icon: "◉", label: "Desktop",       desc: "Electron app push notifications", color: "var(--accent)" },
+          { icon: "◈", label: "Mobile-ready",  desc: "FCM-compatible payload structure", color: "var(--success)" },
+          { icon: "⬡", label: "Browser",        desc: "Web Push API (service worker)", color: "var(--accent2)" },
+          { icon: "⚡", label: "Auto Triggers",  desc: `${tlist.length} automation trigger rules`, color: "var(--warning)" },
         ].map(p => (
           <div key={p.label} className="gos-push-platform-card" style={{ borderTop: `2px solid ${p.color}` }}>
             <span className="gos-push-icon" style={{ color: p.color }}>{p.icon}</span>
@@ -807,6 +866,7 @@ function AutomationPanel() {
     setSteps([]);
     toast("Automation created");
     reload();
+    setView("list"); // A.7 fix — same "+New" form stayed open after create bug as EmailPanel, see its comment
   };
 
   const toggleStatus = async (a) => {
@@ -814,7 +874,15 @@ function AutomationPanel() {
     reload();
   };
 
-  const list = autos?.automations || [];
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed.
+  const archiveAutomation = async (id) => {
+    await patch(`/growth/automations/${id}`, { status: "archived" });
+    toast("Automation archived");
+    reload();
+  };
+
+  const list = (autos?.automations || []).filter(a => a.status !== "archived");
 
   return (
     <div>
@@ -855,6 +923,7 @@ function AutomationPanel() {
                 <button className="gos-btn-sm" onClick={() => toggleStatus(a)}>
                   {a.status === "active" ? "Pause" : "Activate"}
                 </button>
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveAutomation(a.id)}>Archive</button>
               </div>
             ))}
           </div>
@@ -919,10 +988,13 @@ function AudiencePanel() {
   const [auds,  reload]  = useGrowth("/growth/audiences");
   const [tags,  reloadT] = useGrowth("/growth/tags");
   const [form,  setForm] = useState({ name: "", type: "list", tags: "", syncFromCRM: false });
-  const [tagForm, setTagForm] = useState({ name: "", color: "#7c6fff" });
+  const [tagForm, setTagForm] = useState({ name: "", color: "var(--accent)" });
   const [dynFilter, setDynFilter] = useState({ field: "source", op: "equals", value: "" });
   const [view,  setView] = useState("list");
   const [toast, Toast]   = useToast();
+  const [importTarget, setImportTarget] = useState(null);
+  const [importCsv, setImportCsv] = useState("");
+  const [importing, setImporting] = useState(false);
 
   const create = async () => {
     if (!form.name) return;
@@ -939,6 +1011,7 @@ function AudiencePanel() {
     setForm({ name: "", type: "list", tags: "", syncFromCRM: false });
     toast("Audience created");
     reload();
+    setView("list"); // A.7 fix — same "+New" form stayed open after create bug as EmailPanel, see its comment
   };
 
   const syncCRM = async (id) => {
@@ -953,18 +1026,42 @@ function AudiencePanel() {
     reload();
   };
 
+  const importContacts = async () => {
+    if (!importTarget || !importCsv.trim()) return;
+    setImporting(true);
+    try {
+      const r = await post(`/growth/audiences/${importTarget}/import`, { csv: importCsv });
+      if (r?.error) { toast(r.error, "error"); }
+      else {
+        toast(`Imported ${r.imported} · ${r.duplicates} duplicates · ${r.failed} failed`);
+        setImportTarget(null);
+        setImportCsv("");
+        reload();
+      }
+    } catch (e) { toast(e.message || "Import failed", "error"); }
+    finally { setImporting(false); }
+  };
+
   const createTag = async () => {
     if (!tagForm.name) return;
     await post("/growth/tags", tagForm);
-    setTagForm({ name: "", color: "#7c6fff" });
+    setTagForm({ name: "", color: "var(--accent)" });
     toast("Tag created");
     reloadT();
   };
 
-  const list    = auds?.audiences || [];
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed.
+  const archiveAudience = async (id) => {
+    await patch(`/growth/audiences/${id}`, { status: "archived" });
+    toast("Audience archived");
+    reload();
+  };
+
+  const list    = (auds?.audiences || []).filter(a => a.status !== "archived");
   const tagList = tags?.tags      || [];
 
-  const TYPE_COLOR = { list: "#22c55e", segment: "#7c6fff", dynamic: "#4ecdc4" };
+  const TYPE_COLOR = { list: "var(--success)", segment: "var(--accent)", dynamic: "var(--accent2)" };
 
   return (
     <div>
@@ -981,9 +1078,9 @@ function AudiencePanel() {
         <div>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total"   value={list.length} />
-            <StatCard label="Lists"    value={list.filter(a => a.type === "list").length} accent="#22c55e" />
-            <StatCard label="Segments" value={list.filter(a => a.type === "segment").length} accent="#7c6fff" />
-            <StatCard label="Dynamic"  value={list.filter(a => a.type === "dynamic").length} accent="#4ecdc4" />
+            <StatCard label="Lists"    value={list.filter(a => a.type === "list").length} accent="var(--success)" />
+            <StatCard label="Segments" value={list.filter(a => a.type === "segment").length} accent="var(--accent)" />
+            <StatCard label="Dynamic"  value={list.filter(a => a.type === "dynamic").length} accent="var(--accent2)" />
             <StatCard label="Members" value={list.reduce((s,a)=>s+(a.memberCount||0),0).toLocaleString()} />
           </div>
           <div className="gos-list">
@@ -1005,9 +1102,33 @@ function AudiencePanel() {
                 <span className="gos-campaign-sent">{(a.memberCount || 0).toLocaleString()} members</span>
                 {a.syncFromCRM && <button className="gos-btn-sm" onClick={() => syncCRM(a.id)}>Sync CRM</button>}
                 {a.type === "dynamic" && <button className="gos-btn-sm" onClick={() => evaluate(a.id)}>Refresh</button>}
+                {a.type !== "dynamic" && (
+                  <button className="gos-btn-sm" onClick={() => { setImportTarget(a.id); setImportCsv(""); }}>Import CSV</button>
+                )}
+                <button className="gos-btn-sm gos-btn-sm--danger" onClick={() => archiveAudience(a.id)}>Archive</button>
               </div>
             ))}
           </div>
+
+          {importTarget && (
+            <div className="gos-form" style={{ marginTop: 12 }}>
+              <div className="gos-form-title">Import contacts into "{list.find(a => a.id === importTarget)?.name || importTarget}"</div>
+              <textarea
+                className="gos-input"
+                style={{ width: "100%", minHeight: 100, fontFamily: "monospace", fontSize: 12 }}
+                placeholder={"phone,name\n+15551234567,Jane Doe\n+15559876543,John Smith"}
+                value={importCsv}
+                onChange={e => setImportCsv(e.target.value)}
+              />
+              <div className="gos-form-row" style={{ marginTop: 8 }}>
+                <button className="gos-btn" onClick={importContacts} disabled={importing || !importCsv.trim()}>
+                  {importing ? "Importing…" : "Import"}
+                </button>
+                <button className="gos-btn-sm" onClick={() => { setImportTarget(null); setImportCsv(""); }}>Cancel</button>
+              </div>
+              <p className="gos-hint">CSV with a "phone" column (required) and optional "name" and other fields. Each row becomes a CRM lead and is added to this audience. Max 5000 rows.</p>
+            </div>
+          )}
         </div>
       )}
 
@@ -1101,9 +1222,9 @@ function AnalyticsPanel() {
         <>
           <div className="gos-stats-grid" style={{ marginBottom: 12 }}>
             <StatCard label="Total Sent"    value={(overall.totalSent     || 0).toLocaleString()} />
-            <StatCard label="Total Conversions" value={(overall.totalConverted || 0).toLocaleString()} accent="#22c55e" />
-            <StatCard label="Total Revenue" value={`₹${(overall.totalRevenue  || 0).toLocaleString()}`} accent="#7c6fff" />
-            <StatCard label="Overall ROAS"  value={`${overall.overallROAS}x`} accent="#4ecdc4" />
+            <StatCard label="Total Conversions" value={(overall.totalConverted || 0).toLocaleString()} accent="var(--success)" />
+            <StatCard label="Total Revenue" value={`₹${(overall.totalRevenue  || 0).toLocaleString()}`} accent="var(--accent)" />
+            <StatCard label="Overall ROAS"  value={`${overall.overallROAS}x`} accent="var(--accent2)" />
           </div>
 
           <div className="gos-sub-title">By Channel</div>
@@ -1116,8 +1237,8 @@ function AnalyticsPanel() {
                   <span className="gos-campaign-meta">{(s.sent || 0).toLocaleString()} sent</span>
                   {s.opened  > 0 && <span className="gos-campaign-meta">{s.opened} opened ({s.sent ? (s.opened/s.sent*100).toFixed(1) : 0}%)</span>}
                   {s.clicked > 0 && <span className="gos-campaign-meta">{s.clicked} clicked</span>}
-                  {s.converted > 0 && <span className="gos-campaign-meta" style={{ color: "#22c55e" }}>{s.converted} conv.</span>}
-                  {s.revenue > 0 && <span className="gos-campaign-meta" style={{ color: "#7c6fff" }}>₹{s.revenue.toLocaleString()}</span>}
+                  {s.converted > 0 && <span className="gos-campaign-meta" style={{ color: "var(--success)" }}>{s.converted} conv.</span>}
+                  {s.revenue > 0 && <span className="gos-campaign-meta" style={{ color: "var(--accent)" }}>₹{s.revenue.toLocaleString()}</span>}
                 </div>
                 <Bar value={s.sent} max={overall?.totalSent || 1} />
               </div>
@@ -1133,7 +1254,7 @@ function AnalyticsPanel() {
                   <div key={c.id} className="gos-campaign-row">
                     <Chip>{c.type}</Chip>
                     <span className="gos-campaign-name">{c.name}</span>
-                    <span className="gos-campaign-sent" style={{ color: "#7c6fff" }}>₹{c.revenue.toLocaleString()}</span>
+                    <span className="gos-campaign-sent" style={{ color: "var(--accent)" }}>₹{c.revenue.toLocaleString()}</span>
                     <Chip color="purple">ROAS {c.roas}x</Chip>
                   </div>
                 ))}
@@ -1154,16 +1275,16 @@ function AnalyticsPanel() {
           <div className="gos-stats-grid">
             <StatCard label="Sent"        value={campAna.sent.toLocaleString()} />
             <StatCard label="Delivered"   value={campAna.delivered.toLocaleString()} />
-            <StatCard label="Open Rate"   value={`${campAna.openRate}%`}   accent="#22c55e" />
-            <StatCard label="Click Rate"  value={`${campAna.clickRate}%`}  accent="#7c6fff" />
-            <StatCard label="Conv. Rate"  value={`${campAna.conversionRate}%`} accent="#4ecdc4" />
-            <StatCard label="Revenue"     value={`₹${campAna.revenue.toLocaleString()}`} accent="#f59e0b" />
-            <StatCard label="ROAS"        value={`${campAna.roas}x`} accent="#7c6fff" />
+            <StatCard label="Open Rate"   value={`${campAna.openRate}%`}   accent="var(--success)" />
+            <StatCard label="Click Rate"  value={`${campAna.clickRate}%`}  accent="var(--accent)" />
+            <StatCard label="Conv. Rate"  value={`${campAna.conversionRate}%`} accent="var(--accent2)" />
+            <StatCard label="Revenue"     value={`₹${campAna.revenue.toLocaleString()}`} accent="var(--warning)" />
+            <StatCard label="ROAS"        value={`${campAna.roas}x`} accent="var(--accent)" />
           </div>
           {campAna.abTest && campAna.variantBStats && (
             <div className="gos-stats-grid" style={{ marginTop: 8 }}>
               <StatCard label="Variant B Sent"   value={campAna.variantBStats.sent} />
-              <StatCard label="Variant B Opens"  value={campAna.variantBStats.opened} accent="#7c6fff" />
+              <StatCard label="Variant B Opens"  value={campAna.variantBStats.opened} accent="var(--accent)" />
               <StatCard label="Variant B Clicks" value={campAna.variantBStats.clicked} />
             </div>
           )}
@@ -1193,9 +1314,21 @@ function TemplatesPanel() {
     setForm({ name: "", type: "email", category: "Custom", subject: "", body: "", variables: "" });
     toast("Template created");
     reload();
+    setView("marketplace"); // A.7 fix — same "+New" form stayed open after create bug as EmailPanel, see its comment
+  };
+
+  // A.7 fix — see EmailPanel's archiveCampaign comment: same PATCH-accepts-
+  // any-field pattern, no new backend route needed. Built-in templates are
+  // shipped defaults, not something a founder created — only custom ones
+  // (t.builtin === false) can be archived.
+  const archiveTemplate = async (id) => {
+    await patch(`/growth/templates/${id}`, { status: "archived" });
+    toast("Template archived");
+    reload();
   };
 
   const list = (templates?.templates || [])
+    .filter(t => t.status !== "archived")
     .filter(t => filter === "all" || t.type === filter)
     .filter(t => catFilter === "all" || t.category === catFilter);
 
@@ -1230,8 +1363,7 @@ function TemplatesPanel() {
           <div className="gos-template-grid">
             {list.map(t => (
               <div key={t.id}
-                className={`gos-template-card${selected?.id === t.id ? " selected" : ""}`}
-                onClick={() => setSelected(selected?.id === t.id ? null : t)}
+                className={`gos-template-card${selected?.id === t.id ? " selected" : ""}`} {...clickableProps(() => setSelected(selected?.id === t.id ? null : t))}
               >
                 <div className="gos-tpl-header">
                   <Chip>{t.type}</Chip>
@@ -1245,6 +1377,15 @@ function TemplatesPanel() {
                   <div className="gos-tag-cloud" style={{ marginTop: 6 }}>
                     {t.variables.map(v => <Chip key={v} color="purple">&#x7B;&#x7B;{v}&#x7D;&#x7D;</Chip>)}
                   </div>
+                )}
+                {!t.builtin && (
+                  <button
+                    className="gos-btn-sm gos-btn-sm--danger"
+                    style={{ marginTop: 8 }}
+                    onClick={(e) => { e.stopPropagation(); archiveTemplate(t.id); }}
+                  >
+                    Archive
+                  </button>
                 )}
               </div>
             ))}
@@ -1313,7 +1454,7 @@ function BenchmarkPanel() {
     setRunning(false);
   };
 
-  const READINESS_COLOR = { production_ready: "#22c55e", nearly_ready: "#f59e0b", needs_work: "#ef4444" };
+  const READINESS_COLOR = { production_ready: "var(--success)", nearly_ready: "var(--warning)", needs_work: "var(--danger)" };
 
   return (
     <div>
@@ -1327,17 +1468,17 @@ function BenchmarkPanel() {
         <>
           <div className="gos-stats-grid" style={{ marginBottom: 16 }}>
             <StatCard label="Score"     value={`${result.score}%`}              accent={READINESS_COLOR[result.marketingReadiness]} />
-            <StatCard label="Passed"    value={`${result.passing}/${result.total}`} accent="#22c55e" />
+            <StatCard label="Passed"    value={`${result.passing}/${result.total}`} accent="var(--success)" />
             <StatCard label="Readiness" value={result.marketingReadiness?.replace(/_/g," ")} accent={READINESS_COLOR[result.marketingReadiness]} />
-            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "#22c55e" : "#ef4444"} />
+            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "var(--success)" : "var(--danger)"} />
           </div>
 
           <div className="gos-list">
             {(result.checks || []).map(c => (
               <div key={c.id} className={`gos-campaign-row ${c.ok ? "" : "gos-row-fail"}`}>
-                <span style={{ color: c.ok ? "#22c55e" : "#ef4444", fontSize: 13, fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
+                <span style={{ color: c.ok ? "var(--success)" : "var(--danger)", fontSize: 13, fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
                 <span className="gos-campaign-name">{c.label}</span>
-                {c.error && <span className="gos-campaign-meta" style={{ color: "#ef4444" }}>{c.error}</span>}
+                {c.error && <span className="gos-campaign-meta" style={{ color: "var(--danger)" }}>{c.error}</span>}
                 <Chip color={c.ok ? "green" : "red"}>{c.ok ? "pass" : "fail"}</Chip>
               </div>
             ))}

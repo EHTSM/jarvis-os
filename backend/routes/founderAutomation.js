@@ -8,14 +8,25 @@
  */
 
 const router         = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 const _try = fn => { try { return fn(); } catch (e) { return null; } };
 const _fwr = () => _try(() => require("../services/founderWorkRegistry.cjs"));
 const _fae = () => _try(() => require("../services/founderAutomationEngine.cjs"));
 const _pbe = () => _try(() => require("../services/productionBibleEngine.cjs"));
 
-router.use(["/founder", "/bible"], requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same class of platform-wide,
+// not-tenant-scoped surface already fixed for /eos, /ent, /eco, /civ, /auto,
+// the ACP-9-12 family, and /execution/* (autonomousExecution.js) earlier
+// this session — zero orgId anywhere in founderWorkRegistry.cjs or
+// founderAutomationEngine.cjs (grep-confirmed). Previously gated by
+// requireAuth alone; live-reproduced with a real, non-operator customer
+// account: GET /founder/dashboard returned the real founder work
+// registry summary (56 workflows, real automation percentages, real
+// minutes-saved figures). No frontend consumer of any /founder/* or
+// /bible/* route exists anywhere in the codebase (grep-confirmed) — no
+// tenant-scoped equivalent surface to preserve.
+router.use(["/founder", "/bible"], requireAuth, operatorOnly);
 
 // ── Founder Work Registry ─────────────────────────────────────────────────────
 

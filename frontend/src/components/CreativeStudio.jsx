@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./CreativeStudio.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -34,6 +35,10 @@ const CAP_ICONS = {
 };
 
 const PLATFORMS = ["instagram","facebook","linkedin","pinterest","x","youtube","threads","blog","email","ads"];
+
+// Capabilities the registry declares but that have no backing /creative/* route —
+// listed for routing/credit metadata only, never actually invokable.
+const NO_ROUTE_CAPABILITIES = new Set(["presentation_generate"]);
 
 async function apiPost(path, body) {
   const r = await fetch(`${BASE}${path}`, {
@@ -174,14 +179,23 @@ function WorkspacePanel({ ws, caps }) {
       <div className="cs-section">
         <div className="cs-section-title">Capabilities ({caps.length})</div>
         <div className="cs-cap-grid">
-          {caps.map(c => (
-            <div key={c.id} className="cs-cap-card">
-              <span className="cs-cap-icon">{CAP_ICONS[c.id] || "◻"}</span>
-              <span className="cs-cap-label">{c.label}</span>
-              <span className="cs-cap-providers">{c.providerCount}p · {c.minCredits}cr</span>
-            </div>
-          ))}
+          {caps.map(c => {
+            const noRoute = NO_ROUTE_CAPABILITIES.has(c.id);
+            return (
+              <div key={c.id} className={`cs-cap-card${noRoute ? " cs-cap-card--noroute" : ""}`} title={noRoute ? "Listed in the capability registry but no studio is wired up to invoke it yet." : undefined}>
+                <span className="cs-cap-icon">{CAP_ICONS[c.id] || "◻"}</span>
+                <span className="cs-cap-label">{c.label}</span>
+                {noRoute
+                  ? <span className="cs-cap-noroute-tag">No studio yet</span>
+                  : <span className="cs-cap-providers">{c.providerCount}p · {c.minCredits}cr</span>}
+              </div>
+            );
+          })}
         </div>
+        <p className="cs-cap-footnote">
+          Figma and slide-deck/presentation studios aren't available yet — no backend capability exists for
+          Figma, and presentation generation is registered but has no working studio.
+        </p>
       </div>
     </div>
   );
@@ -401,7 +415,7 @@ function BrandPanel({ onComplete }) {
 
       <div className="cs-brand-list">
         {kits.map(kit => (
-          <div key={kit.id} className={`cs-brand-card${active === kit.id ? " active" : ""}`} onClick={() => setActive(kit.id === active ? null : kit.id)}>
+          <div key={kit.id} className={`cs-brand-card${active === kit.id ? " active" : ""}`} {...clickableProps(() => setActive(kit.id === active ? null : kit.id))}>
             <div className="cs-brand-name">{kit.name}</div>
             <div className="cs-brand-meta">{kit.industry || "—"}</div>
             <div className="cs-brand-colors">
@@ -433,6 +447,7 @@ function SocialPanel({ onComplete }) {
   const [result,   setResult]   = useState(null);
   const [busy,     setBusy]     = useState(false);
   const [hist,     setHist]     = useState([]);
+  const [publish,  setPublish]  = useState(null); // { busy, ok, error, url }
 
   useEffect(() => {
     apiGet("/creative/social/history?limit=10").then(r => { if (r.ok) setHist(r.history || []); });
@@ -440,13 +455,27 @@ function SocialPanel({ onComplete }) {
 
   async function generate() {
     if (!brief) return;
-    setBusy(true); setResult(null);
+    setBusy(true); setResult(null); setPublish(null);
     try {
       const r = await apiPost("/creative/social/generate", { platform, brief });
       setResult(r);
       if (r.ok && onComplete) onComplete();
     } catch (e) { setResult({ ok: false, error: e.message }); }
     finally { setBusy(false); }
+  }
+
+  // Publishing (real X/Twitter post via socialPostingService.cjs) is only
+  // wired for platform "x" — the other 9 platforms in PLATFORMS are
+  // caption-generation only, socialContentEngine.cjs never claimed to post
+  // to Instagram/Facebook/etc, so this button only appears where a real
+  // publish path exists (connect an account first via Connectors → X (Twitter)).
+  async function doPublish() {
+    if (!result?.entry?.id) return;
+    setPublish({ busy: true });
+    try {
+      const r = await apiPost("/creative/social/publish", { entryId: result.entry.id });
+      setPublish(r.ok ? { ok: true, url: r.url } : { ok: false, error: r.error });
+    } catch (e) { setPublish({ ok: false, error: e.message }); }
   }
 
   const platLabel = p => p.charAt(0).toUpperCase() + p.slice(1);
@@ -497,6 +526,21 @@ function SocialPanel({ onComplete }) {
             <div className="cs-social-section">
               <div className="cs-section-title">Variations</div>
               {result.result.variations.map((v, i) => <div key={i} className="cs-variation">{v}</div>)}
+            </div>
+          )}
+          {platform === "x" && (
+            <div className="cs-social-section">
+              <button className="cs-action-btn" onClick={doPublish} disabled={publish?.busy}>
+                {publish?.busy ? "Publishing…" : "Publish to X"}
+              </button>
+              {publish?.ok && (
+                <div className="cs-social-text" style={{ marginTop: 8 }}>
+                  ✓ Posted{publish.url ? <> — <a href={publish.url} target="_blank" rel="noreferrer">view post</a></> : null}
+                </div>
+              )}
+              {publish && !publish.busy && !publish.ok && (
+                <div className="cs-error-inline">{publish.error}</div>
+              )}
             </div>
           )}
         </div>
@@ -586,6 +630,7 @@ function AssetsPanel() {
                 <span className="cs-dim">{a.provider}</span>
                 <span className="cs-dim">{a.folder}</span>
                 <span className="cs-dim">{new Date(a.createdAt).toLocaleDateString()}</span>
+                {!a.url && <span className="cs-badge cs-badge--noroute" title="No real file was generated for this asset — description only.">no file</span>}
               </div>
             </div>
             <button className={`cs-fav-btn${a.favorite ? " active" : ""}`} onClick={() => toggleFav(a.id)}>
@@ -664,8 +709,29 @@ function PromptBox({ prompt, onChange, onRun, busy, placeholder, btnLabel = "Gen
 function ResultCard({ result }) {
   if (!result) return null;
   if (!result.ok) return <div className="cs-result-error">{result.error || "Request failed"}</div>;
+  const hasMedia = !!result.asset?.url;
+  // The route always threads the real generator's error through as
+  // result.output.generationError (e.g. a genuine DALL-E 401/quota failure)
+  // when a provider IS wired up but the live call itself failed — that's a
+  // materially different, more actionable situation for a founder than "no
+  // provider connected", so surface it verbatim when present instead of the
+  // generic connector-setup message.
+  const genError = result.output && typeof result.output === "object" ? result.output.generationError : null;
   return (
     <div className="cs-result-card">
+      {!hasMedia && genError && (
+        <div className="cs-result-noconnector">
+          ⚠ Generation failed: {genError}. Credits were still charged ({result.creditsUsed ?? "—"}).
+          Check the connected provider's API key/quota — below is a text description only.
+        </div>
+      )}
+      {!hasMedia && !genError && (
+        <div className="cs-result-noconnector">
+          ⚠ No connected provider produced a real file for this request. Credits were still charged
+          ({result.creditsUsed ?? "—"}). Connect a provider (Stability AI, ElevenLabs, Runway, etc.)
+          in Connector Center to generate real output — below is a text description only.
+        </div>
+      )}
       <div className="cs-result-row">
         <span className="cs-dim">Provider:</span> {result.decision?.providerName || result.decision?.provider || "—"}
         <span className="cs-dim" style={{ marginLeft: 12 }}>Credits:</span> {result.creditsUsed || "—"}
@@ -674,7 +740,7 @@ function ResultCard({ result }) {
       {result.output && typeof result.output === "object" && result.output.result && (
         <div className="cs-result-desc">{result.output.result}</div>
       )}
-      {result.asset?.url && (
+      {hasMedia && (
         <div className="cs-result-url">
           <a href={result.asset.url} target="_blank" rel="noreferrer">{result.asset.url.slice(0,60)}</a>
         </div>

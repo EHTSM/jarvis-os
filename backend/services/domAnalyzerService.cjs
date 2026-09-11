@@ -17,6 +17,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const DOM_DIR = path.join(__dirname, "../../data/odi/dom");
 
@@ -162,6 +163,11 @@ async function analyzePage({ pageId, url } = {}) {
     closeAfter = true;
 
     if (url) {
+      const safety = await assertSafeNavigationTarget(url);
+      if (!safety.safe) {
+        await session.closePage(pid).catch(() => {});
+        return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
+      }
       try { await page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 }); }
       catch (e) {
         await session.closePage(pid).catch(() => {});
@@ -232,8 +238,17 @@ function listAnalyses({ limit = 50 } = {}) {
     .filter(Boolean);
 }
 
+// Customer-Facing Sensitive Data, Export & File-Access Boundary Audit
+// (2026-08-21): filename was joined into DOM_DIR with zero sanitization —
+// live-reproduced, an authenticated customer requesting
+// GET /odi/dom/..%2F..%2F..%2Fpackage.json read a real file outside
+// DOM_DIR. Same path.basename() + containment-check pattern already used
+// by exportFileService.cjs's resolveLocal(), applied at the one place the
+// unsafe join happens rather than in the route.
 function getAnalysis(filename) {
-  const fp = path.join(DOM_DIR, filename);
+  const base = path.basename(String(filename || ""));
+  const fp = path.join(DOM_DIR, base);
+  if (!fp.startsWith(DOM_DIR + path.sep)) return null;
   if (!fs.existsSync(fp)) return null;
   return JSON.parse(fs.readFileSync(fp, "utf8"));
 }

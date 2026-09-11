@@ -1,9 +1,19 @@
 /**
- * Ooplix Brand System — OVERRIDE
+ * Ooplix Brand System — OVERRIDE (SUPERSEDED, kept for history)
  *
  * The mark is derived from the verb OVERRIDE:
  * a higher command sits above and displaces a lower command.
  * Two bars. No curves. No diagonals. No letters.
+ * The `mark.geometry` ratios below are correct and match the live
+ * implementation in ../design/OoplixMark.jsx.
+ *
+ * The `palette` below is NOT the live palette — it predates the current
+ * production tokens. The real, live, single source of truth for color is
+ * frontend/src/index.css:1-31 ("Ooplix Design System v2"), consumed by
+ * 20+ real components, and mirrored in assets/brand/brandRegistry.cjs.
+ * This file has zero imports anywhere in the codebase (verified via
+ * repo-wide search) — do not import it for new work; use index.css
+ * tokens or assets/brand/brandRegistry.cjs instead.
  *
  * Import: import { mark, palette, type, radius, shadow } from './brand';
  */

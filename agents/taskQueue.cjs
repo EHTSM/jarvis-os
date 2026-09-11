@@ -4,13 +4,56 @@
  * States: pending → running → completed | failed
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 const logger = require("../backend/utils/logger");
 
 const QUEUE_FILE = path.join(__dirname, "../data/task-queue.json");
 let _counter = Date.now();
 let _lastPulse = Date.now(); // Internal heartbeat
+
+// ERA-1 Phase 2A (2026-08-28) — orphaned tmp sweep, same pattern as
+// missionMemory.cjs's _sweepOrphanedTmp(). _save()'s per-call-unique tmp
+// filename (pid + random suffix) correctly prevents the cross-process
+// collision/ENOENT class, but a process SIGKILLed between writeFileSync and
+// renameSync leaves that one tmp file behind with no code path that ever
+// removes it — reproduced live via tests/runtime/10-c10-cross-system-
+// closure.test.cjs's "136-master-audit-crash-mid-write-atomic-safety" block
+// (a real subprocess SIGKILLed mid-write-loop). No correctness impact
+// (nothing ever reads a .tmp file, and the real QUEUE_FILE is never
+// affected — renameSync only ever swaps in a COMPLETE file), but unbounded
+// disk growth across repeated crash cycles, same class already fixed for
+// missionMemory.cjs and secretVault.cjs. Swept once at module load, only for
+// this store's own `task-queue.json.<pid>.<hex>.tmp` shape, with a grace
+// window so a genuinely in-flight concurrent write is never touched.
+const _TMP_RE = /^task-queue\.json\.\d+\.[0-9a-f]+\.tmp$/;
+const _TMP_GRACE_MS = 5 * 60 * 1000;
+
+function _sweepOrphanedTmp() {
+    try {
+        const dir = path.dirname(QUEUE_FILE);
+        const now = Date.now();
+        let removed = 0, bytes = 0;
+        for (const name of fs.readdirSync(dir)) {
+            if (!_TMP_RE.test(name)) continue;
+            const full = path.join(dir, name);
+            try {
+                const st = fs.statSync(full);
+                if (now - st.mtimeMs < _TMP_GRACE_MS) continue; // possibly an in-flight write
+                bytes += st.size;
+                fs.unlinkSync(full);
+                removed++;
+            } catch { /* raced with another sweep or a rename — fine either way */ }
+        }
+        if (removed) {
+            logger.warn(`[TaskQueue] Swept ${removed} orphaned tmp file(s) (${Math.round(bytes / 1024)} KB) ` +
+                `left by an interrupted write.`);
+        }
+    } catch { /* directory unreadable — never block startup on cleanup */ }
+}
+
+_sweepOrphanedTmp();
 
 // ── SQLite Shadow-Write Layer ─────────────────────────────────────────────
 // Passive mirror. If SQLite fails, runtime continues with JSON authoritative.
@@ -50,11 +93,32 @@ function _shadowDelete(id) {
 // ──────────────────────────────────────────────────────────────────────────
 
 
+// Read-through cache keyed on the file's mtime — _load() is called from 10
+// sites in this file plus getAll()/getQueue() are called directly from
+// dozens of read-only sites across the runtime (missionOrchestrator's
+// 3-second stage-monitor poll loop chief among them: every actively-
+// monitored mission stage re-reads and re-parses the entire queue file on
+// every single poll tick). mtime is updated by every _save() call (via
+// renameSync, which always produces a fresh mtime) regardless of which
+// process wrote it, so a stale cached read across processes is not
+// possible — any real write anywhere invalidates it. Same pattern already
+// verified correct in missionMemory.cjs's _loadMissions().
+let _queueCache = null; // { mtimeMs, tasks }
+
 function _load() {
+    let mtimeMs;
+    try { mtimeMs = fs.statSync(QUEUE_FILE).mtimeMs; }
+    catch { mtimeMs = null; } // file doesn't exist yet — fall through to the reset path below
+
+    if (mtimeMs !== null && _queueCache && _queueCache.mtimeMs === mtimeMs) {
+        return _queueCache.tasks;
+    }
+
     try {
         const raw = fs.readFileSync(QUEUE_FILE, "utf8");
         const parsed = JSON.parse(raw);
         if (!Array.isArray(parsed)) return [];
+        if (mtimeMs !== null) _queueCache = { mtimeMs, tasks: parsed };
         return parsed;
     } catch (err) {
         // Corrupt file mid-session — back up and reset so the queue stays alive
@@ -68,10 +132,19 @@ function _load() {
     }
 }
 
+// Final Production Integration mission, Blocker #6 fix — same real
+// cross-process tmp-path collision as missionMemory.cjs's _saveMissions,
+// reproduced during stress testing: a live server process and a second
+// process writing task-queue.json around the same time could each target
+// the identical literal ".tmp" path, and the first rename() would consume
+// it before the second call's renameSync ran, producing a genuine ENOENT.
+// Per-call-unique tmp filename (pid + random suffix, same pattern already
+// used by organizationService.cjs/secretVault.cjs/missionMemory.cjs this
+// session) eliminates that specific crash/corruption class.
 function _save(tasks) {
     const dir = path.dirname(QUEUE_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const tmp = QUEUE_FILE + ".tmp";
+    const tmp = `${QUEUE_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify(tasks, null, 2));
     fs.renameSync(tmp, QUEUE_FILE);  // atomic on POSIX — prevents partial-write corruption
 }
@@ -166,6 +239,43 @@ function recoverStale() {
     if (changed > 0) {
         _save(tasks);
         console.log(`[TaskQueue] recovered ${changed} stale running task(s) → pending`);
+    }
+
+    // Re-mirror any task whose SQLite row disagrees with the JSON authority.
+    //
+    // Phase B.6: _save() (JSON, authoritative) and _shadowUpsert() (SQLite
+    // mirror) are two separate writes, not one transaction. A crash in the
+    // window between them leaves the mirror permanently behind — reproduced
+    // deterministically, and observed for real on 10 tasks after the Phase B.5
+    // crash drills (JSON=completed while SQLite still said pending/running).
+    // Nothing repaired it: the loop above only re-mirrors tasks that are
+    // "running" in JSON, so a completed/pending disagreement was never
+    // revisited and survived every subsequent boot.
+    //
+    // This reconciles on the existing startup path using the existing
+    // _shadowUpsert — no new storage, no schema change, and JSON stays the
+    // single source of truth (the mirror is corrected toward JSON, never the
+    // reverse). Tasks present in SQLite but absent from JSON are left alone:
+    // pruneOldTasks() intentionally trims JSON to the last 50 terminal tasks
+    // while the mirror retains history, so that difference is by design.
+    try {
+        const { getDB } = require("../backend/db/sqlite.cjs");
+        const rows = getDB().prepare("SELECT id, status FROM tasks").all();
+        const mirrored = new Map(rows.map(r => [r.id, r.status]));
+        let resynced = 0;
+        for (const t of tasks) {
+            const m = mirrored.get(t.id);
+            if (m !== undefined && m !== t.status) {
+                _shadowUpsert(t);
+                resynced++;
+            }
+        }
+        if (resynced > 0) {
+            console.log(`[TaskQueue] re-mirrored ${resynced} task(s) whose SQLite status had drifted from JSON`);
+        }
+    } catch (err) {
+        // FAIL-SAFE: the mirror is non-authoritative — never block startup on it.
+        try { require("../backend/utils/logger").warn(`[TaskQueue] mirror reconcile skipped: ${err.message}`); } catch { /* ignore */ }
     }
 }
 

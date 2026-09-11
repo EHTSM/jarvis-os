@@ -34,10 +34,108 @@ const os      = require("os");
 const { exec, spawn } = require("child_process");
 const axios   = require("axios");
 
+// ── Main-process crash handling ───────────────────────────────────
+// Security/Reliability Hardening: renderer crashes were already handled
+// (render-process-gone / unresponsive, see _attachCrashHandlers below), but
+// the MAIN process itself had no uncaughtException/unhandledRejection
+// handler at all — a single unexpected throw or rejected promise anywhere
+// in main.cjs (IPC handlers, the health-poll watchdog, autoUpdater
+// callbacks, or even a startup error in a package require below) would
+// crash the whole Electron process with no recovery, no graceful shutdown
+// of the spawned backend child process, and no record of what happened.
+// Installed immediately after the core requires (before Store/autoUpdater,
+// which can themselves throw during construction/require) so it is active
+// for the entire remaining startup sequence, not just after windows exist.
+//
+// On a fatal error: log + persist the crash, attempt to cleanly stop the
+// backend child process (so it isn't orphaned as a zombie), and escalate
+// to a clean quit if the process is crash-looping rather than leaving an
+// undefined half-alive state running indefinitely.
+const MAIN_CRASH_FILE = path.join(app.getPath("userData"), "main_process_crashes.json");
+const MAX_MAIN_CRASHES_BEFORE_QUIT = 3;
+
+function _loadMainCrashCount() {
+    try { return JSON.parse(fs.readFileSync(MAIN_CRASH_FILE, "utf8")).count || 0; }
+    catch { return 0; }
+}
+function _saveMainCrashCount(n) {
+    try { fs.writeFileSync(MAIN_CRASH_FILE, JSON.stringify({ count: n, ts: new Date().toISOString() })); }
+    catch { /* best-effort — must never throw from inside a crash handler */ }
+}
+let _mainCrashCount = _loadMainCrashCount();
+
+function _handleFatalMainError(kind, err) {
+    // Never let the handler itself throw — that would defeat the purpose.
+    try {
+        _mainCrashCount++;
+        console.error(`[Electron] FATAL main-process ${kind}:`, err?.stack || err?.message || err);
+        _saveMainCrashCount(_mainCrashCount);
+
+        // Best-effort: don't leave the backend child process orphaned if
+        // the main process is about to exit or restart. _stopBackend is
+        // defined later in this file (function declarations are hoisted),
+        // and may not have started a backend yet — both are fine, the
+        // function itself no-ops if _backendProc was never set.
+        try { typeof _stopBackend === "function" && _stopBackend(); } catch { /* backend may not exist yet */ }
+
+        if (_mainCrashCount > MAX_MAIN_CRASHES_BEFORE_QUIT) {
+            // Crash-looping — recovering further would likely just crash
+            // again immediately. Quit cleanly instead of leaving a zombie
+            // or repeatedly-crashing process running in the background.
+            console.error("[Electron] Too many main-process crashes — quitting.");
+            try { isQuitting = true; } catch { /* isQuitting may not be declared yet this early */ }
+            try { app.quit(); } catch { /* fall through to force-exit below */ }
+            setTimeout(() => process.exit(1), 5_000).unref();
+            return;
+        }
+
+        // First few crashes: surface it visibly (a native dialog needs no
+        // renderer) and keep the process alive — any windows/tray already
+        // created survive a caught exception in, say, an IPC handler or an
+        // async callback; only genuinely fatal errors reach this
+        // process-level last-resort handler at all.
+        try {
+            if (app.isReady()) {
+                dialog.showErrorBox(
+                    "Ooplix encountered an internal error",
+                    `${kind}: ${err?.message || String(err)}\n\nThe application will attempt to continue running. If this keeps happening, please restart Ooplix.`
+                );
+            }
+        } catch { /* dialog itself must never crash the crash handler */ }
+    } catch { /* absolute last resort: swallow, never rethrow from here */ }
+}
+
+process.on("uncaughtException", (err) => _handleFatalMainError("uncaughtException", err));
+process.on("unhandledRejection", (reason) => _handleFatalMainError("unhandledRejection", reason instanceof Error ? reason : new Error(String(reason))));
+
+// Graceful shutdown on OS-level termination signals (e.g. a process
+// supervisor or `kill` sending SIGTERM/SIGINT directly) — previously only
+// app.on("will-quit") ran cleanup, which fires for app-initiated quits but
+// is not guaranteed to run for a raw signal delivered straight to the
+// process. Reuses the same _stopBackend teardown path so there is only one
+// shutdown routine, not a second parallel one.
+let _shuttingDownFromSignal = false;
+function _gracefulSignalShutdown(signal) {
+    if (_shuttingDownFromSignal) return; // avoid re-entrancy on a second signal
+    _shuttingDownFromSignal = true;
+    console.log(`[Electron] Received ${signal} — shutting down gracefully.`);
+    try { isQuitting = true; } catch { /* isQuitting may not be declared yet this early */ }
+    try { typeof _stopBackend === "function" && _stopBackend(); } catch { /* best-effort */ }
+    try { app.quit(); } catch { /* fall through to force-exit below */ }
+    setTimeout(() => process.exit(0), 5_000).unref();
+}
+process.on("SIGTERM", () => _gracefulSignalShutdown("SIGTERM"));
+process.on("SIGINT",  () => _gracefulSignalShutdown("SIGINT"));
+
 // ── Packages ──────────────────────────────────────────────────────
 let autoUpdater, Store;
 try { autoUpdater = require("electron-updater").autoUpdater; } catch { autoUpdater = null; }
-try { Store = require("electron-store"); } catch { Store = null; }
+try {
+    const electronStoreModule = require("electron-store");
+    Store = electronStoreModule && electronStoreModule.__esModule
+        ? electronStoreModule.default
+        : electronStoreModule;
+} catch { Store = null; }
 
 // ── Dev detection ─────────────────────────────────────────────────
 const _appStartTs = Date.now();
@@ -72,6 +170,116 @@ const store = Store ? new Store({
         updateChannel:   "latest",
     }
 }) : { get: (k, d) => d, set: () => {}, store: {} };
+
+// ── Offline write-replay queue ─────────────────────────────────────
+// Electron Production Completion mission — the app already detects
+// online/offline transitions (_startHealthPoll below, "backend-online"/
+// "backend-offline" IPC events) and has a read-only cache (cache-get/set/
+// clear), but nothing captured a write that failed while offline and
+// replayed it once connectivity returned — a mutating request (POST/PUT/
+// PATCH/DELETE) made while offline just failed and was lost.
+//
+// This queue is durable (persisted via the same electron-store instance
+// used for window state, so it survives an app restart while offline),
+// FIFO, and scoped to mutating methods only — GET requests are never
+// queued, since replaying a stale read is meaningless (a fresh GET after
+// reconnect is what the renderer should do instead). Capped at
+// MAX_QUEUE_ENTRIES to bound worst-case disk/memory use if the app is
+// offline for a long time.
+//
+// Security note: queued request bodies are persisted to disk in plaintext
+// (electron-store's JSON file, same as every other value in `store`) until
+// replayed. This is an accepted, bounded exposure consistent with this
+// app's existing threat model (window state/offlineCache already persist
+// unencrypted locally, and the on-disk file is only readable by the local
+// OS user), not a new category of risk — but a caller sending genuinely
+// sensitive payloads (raw passwords, not already-hashed/tokenized values)
+// through apiRequest() while offline should be aware they land on disk
+// until connectivity returns. No current frontend code calls apiRequest()
+// for a mutating request yet (grep confirms zero callers) — this queue is
+// prepared infrastructure ahead of that adoption.
+const MAX_QUEUE_ENTRIES = 200;
+const MUTATING_METHODS  = new Set(["POST", "PUT", "PATCH", "DELETE"]);
+
+function _loadWriteQueue() {
+    return store.get("offlineWriteQueue", []);
+}
+function _saveWriteQueue(q) {
+    store.set("offlineWriteQueue", q.slice(-MAX_QUEUE_ENTRIES));
+}
+function _enqueueWrite({ method, path: reqPath, body, timeout }) {
+    const q = _loadWriteQueue();
+    const entry = {
+        id:        `owq_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`,
+        method, path: reqPath, body, timeout,
+        queuedAt:  new Date().toISOString(),
+        attempts:  0,
+    };
+    q.push(entry);
+    _saveWriteQueue(q);
+    windows.main?.webContents.send("offline-write-queued", { id: entry.id, method, path: reqPath, queueLength: q.length });
+    return entry;
+}
+
+let _replayInFlight = false;
+// Replays every queued write in FIFO order against the now-reachable
+// backend. Stops at the first request that still fails (keeps FIFO
+// ordering meaningful — a later write often depends on an earlier one
+// having actually landed) rather than skipping ahead and replaying
+// out of order.
+async function _replayWriteQueue() {
+    if (_replayInFlight) return; // avoid overlapping replay runs from rapid online/offline flapping
+    _replayInFlight = true;
+    try {
+        let q = _loadWriteQueue();
+        if (!q.length) return;
+        windows.main?.webContents.send("offline-replay-started", { queueLength: q.length });
+
+        const results = [];
+        while (q.length) {
+            const entry = q[0];
+            entry.attempts++;
+            try {
+                const r = await axios({
+                    method:  entry.method,
+                    url:     `${API_URL}${entry.path}`,
+                    data:    entry.body,
+                    timeout: entry.timeout || 15_000,
+                    withCredentials: false,
+                });
+                results.push({ id: entry.id, method: entry.method, path: entry.path, ok: true, status: r.status });
+                q.shift(); // succeeded — remove and continue to the next queued write
+                _saveWriteQueue(q);
+            } catch (err) {
+                // A 4xx response means the backend genuinely rejected the
+                // request (e.g. validation error, now-stale data) — retrying
+                // it forever would never succeed, so drop it and continue
+                // rather than blocking every write behind it permanently.
+                // A network-level failure (no response) means we're still
+                // offline or the backend is still unreachable — stop here
+                // and preserve the rest of the queue for the next replay.
+                const status = err.response?.status;
+                if (status && status >= 400 && status < 500) {
+                    results.push({ id: entry.id, method: entry.method, path: entry.path, ok: false, status, error: err.message, dropped: true });
+                    q.shift();
+                    _saveWriteQueue(q);
+                    continue;
+                }
+                results.push({ id: entry.id, method: entry.method, path: entry.path, ok: false, error: err.message, willRetry: true });
+                _saveWriteQueue(q); // persist the incremented attempts count even though the entry stays queued
+                break;
+            }
+        }
+        windows.main?.webContents.send("offline-replay-completed", { results, remainingQueueLength: q.length });
+    } finally {
+        _replayInFlight = false;
+    }
+}
+
+function _getWriteQueueStatus() {
+    const q = _loadWriteQueue();
+    return { length: q.length, entries: q.map(e => ({ id: e.id, method: e.method, path: e.path, queuedAt: e.queuedAt, attempts: e.attempts })) };
+}
 
 // ── Window registry ───────────────────────────────────────────────
 const windows = {
@@ -180,6 +388,20 @@ function _makeWebPrefs(extra = {}) {
         contextIsolation:    true,
         enableRemoteModule:  false,
         webSecurity:         true,
+        // Mission 54 (2026-08-27): Electron's OS-level Chromium renderer
+        // sandbox was never explicitly enabled (Mission 53 finding).
+        // Verified compatible before enabling, not assumed: preload.cjs
+        // requires only "electron" itself (contextBridge/ipcRenderer) —
+        // zero Node built-ins, zero third-party modules — which is exactly
+        // the supported sandboxed-preload shape; the renderer bundle
+        // (frontend/build) has zero direct Node/require() usage anywhere
+        // (confirmed by a full-repo grep — the only fs/path requires in
+        // frontend/src are Jest-only staticAudits test files, never bundled
+        // into frontend/build); and every filesystem/shell/git/pty
+        // operation already lives in the main process behind ipcMain.handle,
+        // which this flag does not sandbox — only the renderer process is
+        // affected, so no IPC handler's own logic changes.
+        sandbox:             true,
         ...extra,
     };
 }
@@ -280,6 +502,8 @@ function createMainWindow() {
 
     windows.main.webContents.once("did-finish-load", () => {
         _saveCrashCount(0);
+        _mainCrashCount = 0;
+        _saveMainCrashCount(0);
         const startupMs = Date.now() - _appStartTs;
         windows.main?.webContents.send("runtime-ready",    { startupMs, buildOk: buildOk.ok });
         windows.main?.webContents.send("startup-success",  { startupMs });
@@ -323,6 +547,12 @@ function createFloatingWindow() {
     windows.floating.once("ready-to-show", () => windows.floating.show());
     windows.floating.on("closed", () => { windows.floating = null; });
 
+    // Mission 54 (2026-08-27): this window loads the same real app content
+    // as windows.main via _loadApp, but never got the will-navigate/
+    // window.open guard main.cjs's own createMainWindow() applies —
+    // Electron's un-hardened defaults applied here instead (Mission 53).
+    _installNavigationGuard(windows.floating);
+
     return windows.floating;
 }
 
@@ -348,6 +578,11 @@ function createSettingsWindow() {
     windows.settings.on("closed", () => { windows.settings = null; });
     // Remove menu bar in settings window
     windows.settings.setMenuBarVisibility(false);
+
+    // Mission 54 (2026-08-27): same gap as windows.floating above — this
+    // window also loads real app content via _loadApp and needs the same
+    // navigation guard windows.main already has.
+    _installNavigationGuard(windows.settings);
 
     return windows.settings;
 }
@@ -711,6 +946,12 @@ function _startHealthPoll(fast) {
             if (_wasOffline) {
                 _wasOffline = false;
                 windows.main?.webContents.send("backend-online");
+                // Connectivity just returned — replay any writes that were
+                // queued while offline. Fire-and-forget: _replayWriteQueue
+                // emits its own offline-replay-started/completed events for
+                // the renderer to react to; this poll tick must not block
+                // on however long a full replay takes.
+                _replayWriteQueue().catch(() => {});
             }
         } catch {
             if (!_wasOffline) {
@@ -777,19 +1018,34 @@ ipcMain.handle("send-command", async (_e, command) => {
 ipcMain.handle("api-request", async (_e, opts) => {
     try {
         if (!opts || typeof opts !== "object") return { success: false, error: "Invalid request" };
-        const method  = opts.method ?? "GET";
+        const method  = String(opts.method ?? "GET").toUpperCase();
         const p       = opts.path;
         const body    = opts.body;
         const timeout = opts.timeout ?? 15_000;
         if (typeof p !== "string" || !p.startsWith("/") || p.length > 1024) return { success: false, error: "Invalid path" };
-        if (!ALLOWED_METHODS.has(String(method).toUpperCase())) return { success: false, error: "Invalid method" };
+        if (!ALLOWED_METHODS.has(method)) return { success: false, error: "Invalid method" };
         if (typeof timeout !== "number" || timeout < 0 || timeout > 120_000) return { success: false, error: "Invalid timeout" };
-        const r = await axios({ method: String(method).toUpperCase(), url: `${API_URL}${p}`, data: body, timeout, withCredentials: false });
+        const r = await axios({ method, url: `${API_URL}${p}`, data: body, timeout, withCredentials: false });
         return { success: true, status: r.status, data: r.data };
     } catch (err) {
+        // Offline write replay: only mutating requests are queued (a failed
+        // GET should just be retried by the caller, not "replayed" later —
+        // there's nothing to preserve). Only a genuine network-level
+        // failure queues (no err.response at all — DNS/connection refused/
+        // timeout); a real 4xx/5xx from a reachable backend is a real
+        // rejection, not a connectivity problem, and must not be queued.
+        const method = String(opts?.method ?? "GET").toUpperCase();
+        const isNetworkFailure = !err.response;
+        if (opts && MUTATING_METHODS.has(method) && isNetworkFailure && typeof opts.path === "string") {
+            const entry = _enqueueWrite({ method, path: opts.path, body: opts.body, timeout: opts.timeout });
+            return { success: false, queued: true, queueId: entry.id, error: err.message, status: err.response?.status, data: err.response?.data };
+        }
         return { success: false, status: err.response?.status, error: err.message, data: err.response?.data };
     }
 });
+
+ipcMain.handle("get-offline-queue", () => _getWriteQueueStatus());
+ipcMain.handle("replay-offline-queue", async () => { await _replayWriteQueue(); return _getWriteQueueStatus(); });
 
 ipcMain.handle("get-server-health", async () => {
     try { await axios.get(`${API_URL}/health`, { timeout: 3_000 }); return { success: true, isHealthy: true }; }
@@ -828,8 +1084,20 @@ ipcMain.handle("show-notification", (_e, { title, body, silent }) => {
 });
 
 // ── Clipboard ─────────────────────────────────────────────────────
+const _clipHistory = [];
+const MAX_CLIP_HISTORY = 50;
+function _pushClipHistory(text) {
+    if (!text || _clipHistory[0] === text) return;
+    _clipHistory.unshift(text);
+    if (_clipHistory.length > MAX_CLIP_HISTORY) _clipHistory.length = MAX_CLIP_HISTORY;
+}
+
 ipcMain.handle("clipboard-read",  () => ({ text: clipboard.readText() }));
-ipcMain.handle("clipboard-write", (_e, text) => { clipboard.writeText(String(text)); return { ok: true }; });
+ipcMain.handle("clipboard-write", (_e, text) => {
+    clipboard.writeText(String(text));
+    _pushClipHistory(String(text));
+    return { ok: true };
+});
 
 // ── File system ───────────────────────────────────────────────────
 // Restrict file access to paths the user owns — no absolute traversal to /etc, /System etc.
@@ -874,12 +1142,168 @@ ipcMain.handle("fs-show-save-dialog", async (_e, opts = {}) => {
 });
 
 ipcMain.handle("fs-open-path", async (_e, p) => {
-    await shell.openPath(path.resolve(p));
+    // Mission 54 (2026-08-27): every other fs IPC handler (fs-read-file,
+    // fs-write-file, folder-sync-start, folder-sync-read-file) gates on
+    // _isSafePath() — this one didn't, so it could open any absolute path
+    // on the machine via the OS file handler/shell. Same containment as
+    // its siblings, not a new rule.
+    if (typeof p !== "string") return { ok: false, error: "Invalid path" };
+    const safe = path.resolve(p);
+    if (!_isSafePath(safe)) return { ok: false, error: "Access denied" };
+    await shell.openPath(safe);
     return { ok: true };
 });
 
 ipcMain.handle("fs-get-downloads-path", () => ({ path: app.getPath("downloads") }));
 ipcMain.handle("fs-get-home-path",      () => ({ path: os.homedir() }));
+
+// ── Printer ───────────────────────────────────────────────────────
+// Electron's own webContents printer APIs — real OS printer enumeration
+// and real print jobs, no third-party library.
+ipcMain.handle("printer-list", async (_e) => {
+    try {
+        const printers = await windows.main.webContents.getPrintersAsync();
+        return { ok: true, printers: printers.map(p => ({ name: p.name, displayName: p.displayName, status: p.status, isDefault: p.isDefault })) };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+ipcMain.handle("printer-print", async (_e, opts = {}) => {
+    // opts: { deviceName?, silent?, printBackground?, color?, copies?, landscape? }
+    return new Promise((resolve) => {
+        try {
+            windows.main.webContents.print(
+                { silent: !!opts.silent, printBackground: opts.printBackground !== false, deviceName: opts.deviceName, color: opts.color !== false, copies: opts.copies || 1, landscape: !!opts.landscape },
+                (success, failureReason) => resolve({ ok: success, error: success ? null : failureReason })
+            );
+        } catch (e) { resolve({ ok: false, error: e.message }); }
+    });
+});
+
+ipcMain.handle("printer-print-to-pdf", async (_e, opts = {}) => {
+    try {
+        const buffer = await windows.main.webContents.printToPDF(opts);
+        const savePath = opts.savePath ? path.resolve(opts.savePath) : path.join(app.getPath("downloads"), `ooplix-print-${Date.now()}.pdf`);
+        if (!_isSafePath(savePath)) return { ok: false, error: "Access denied" };
+        fs.writeFileSync(savePath, buffer);
+        return { ok: true, path: savePath };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+// ── Scanner ───────────────────────────────────────────────────────
+// No cross-platform TWAIN/WIA/SANE binding exists in pure Node/Electron
+// without a native addon (out of scope here) — real scanner *access* is
+// handed off to the OS's own scanning application rather than faked.
+// scanner-list-devices is a best-effort, read-only OS query (not a driver
+// integration); scanner-open-native-app launches the platform's built-in
+// scan utility so the user can scan+save a file, which the existing
+// fs-show-open-dialog / fs-read-file IPC then imports — no separate
+// "import scanned file" pipeline needed, it's the same file-picker path
+// used for any other local file.
+ipcMain.handle("scanner-list-devices", async () => {
+    try {
+        if (process.platform === "darwin") {
+            const out = await new Promise((resolve, reject) => {
+                exec("system_profiler SPUSBDataType SPCameraDataType -json", { timeout: 8000, maxBuffer: 1024 * 1024 }, (err, stdout) => {
+                    if (err) return reject(err);
+                    resolve(stdout);
+                });
+            });
+            return { ok: true, note: "Best-effort USB/camera device listing — not a scanner-specific API (macOS has no CLI scanner enumeration)", raw: JSON.parse(out) };
+        }
+        return { ok: true, note: `Device enumeration not implemented for platform "${process.platform}" — use scanner-open-native-app instead`, devices: [] };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+ipcMain.handle("scanner-open-native-app", async () => {
+    try {
+        if (process.platform === "darwin") {
+            await shell.openPath("/System/Applications/Image Capture.app");
+            return { ok: true, app: "Image Capture" };
+        }
+        if (process.platform === "win32") {
+            exec("start ms-screenclip:", () => {}); // best-effort; falls through to explorer below regardless
+            exec('start microsoft.windows.camera:', () => {});
+            exec("explorer.exe shell:AppsFolder\\Microsoft.WindowsScan_8wekyb3d8bbwe!App", () => {});
+            return { ok: true, app: "Windows Scan" };
+        }
+        return { ok: false, error: `No native scan app hand-off implemented for platform "${process.platform}"` };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+// ── Webcam / Microphone ───────────────────────────────────────────
+// Actual media capture happens in the renderer via the standard
+// navigator.mediaDevices.getUserMedia() Web API — Electron's main process
+// doesn't broker media frames. What main.cjs controls is *permission*
+// (see _installPermissionHandler below, which now allow-lists "media" only
+// for the app's own origin, not any origin the CSP happens to load) and
+// enumeration of device labels, which requires an active getUserMedia grant
+// first (a browser security rule, not an Electron limitation) — so
+// media-list-devices is a thin documented pass-through the renderer already
+// has via navigator.mediaDevices.enumerateDevices(), exposed here only so
+// callers with an IPC-first integration style have one place to look.
+ipcMain.handle("media-permission-status", (_e) => {
+    return { ok: true, cameraAllowed: ALLOWED_ORIGINS_FOR_MEDIA.length > 0, note: "Actual capture is via navigator.mediaDevices.getUserMedia() in the renderer" };
+});
+
+// ── Local folder sync ─────────────────────────────────────────────
+// fs.watch on a user-chosen folder; on add/change, read the file and hand
+// it to the renderer to POST to the backend's existing
+// /enterprise/physical/folder-sync/upload route (storageService-backed,
+// org/${orgId}/folder-sync/... key scoping — see enterprisePhysical.js).
+// main.cjs does the watching (Node fs, not available to the renderer) but
+// deliberately does NOT itself call the backend — network calls from
+// existing IPC handlers in this file consistently go through the
+// renderer's authenticated session (cookies), not a second, unauthenticated
+// HTTP client in the main process.
+const _folderWatchers = new Map(); // watchId -> { watcher, localPath, win }
+
+ipcMain.handle("folder-sync-start", async (_e, { localPath } = {}) => {
+    try {
+        if (typeof localPath !== "string") return { ok: false, error: "localPath required" };
+        const resolved = path.resolve(localPath);
+        if (!_isSafePath(resolved)) return { ok: false, error: "Access denied — path outside allowed roots" };
+        if (!fs.existsSync(resolved) || !fs.statSync(resolved).isDirectory()) return { ok: false, error: "Not a directory" };
+
+        const watchId = `wf_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+        const win = BrowserWindow.fromWebContents(_e.sender);
+        const watcher = fs.watch(resolved, { recursive: true }, (eventType, filename) => {
+            if (!filename) return;
+            const fullPath = path.join(resolved, filename);
+            let stat;
+            try { stat = fs.statSync(fullPath); } catch { return; } // deleted/transient — nothing to sync
+            if (!stat.isFile()) return;
+            win?.webContents.send("folder-sync-event", {
+                watchId, eventType, relativePath: filename.split(path.sep).join("/"), fullPath, sizeBytes: stat.size,
+            });
+        });
+        _folderWatchers.set(watchId, { watcher, localPath: resolved, win });
+        return { ok: true, watchId, localPath: resolved };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
+
+ipcMain.handle("folder-sync-stop", async (_e, { watchId } = {}) => {
+    const entry = _folderWatchers.get(watchId);
+    if (!entry) return { ok: false, error: "Unknown watchId" };
+    try { entry.watcher.close(); } catch { /* already closed */ }
+    _folderWatchers.delete(watchId);
+    return { ok: true, watchId };
+});
+
+ipcMain.handle("folder-sync-status", async () => {
+    return { ok: true, active: [..._folderWatchers.entries()].map(([watchId, e]) => ({ watchId, localPath: e.localPath })) };
+});
+
+ipcMain.handle("folder-sync-read-file", async (_e, { fullPath } = {}) => {
+    // Reads a changed file's bytes for the renderer to base64-encode and
+    // POST to /enterprise/physical/folder-sync/upload — reuses _isSafePath,
+    // does not introduce a second path-validation rule.
+    try {
+        const resolved = path.resolve(fullPath);
+        if (!_isSafePath(resolved)) return { ok: false, error: "Access denied" };
+        const data = fs.readFileSync(resolved);
+        return { ok: true, base64: data.toString("base64"), sizeBytes: data.length };
+    } catch (e) { return { ok: false, error: e.message }; }
+});
 
 // ── Shell exec (terminal integration) ────────────────────────────
 // Security: command must be a string; never eval; output capped at 64KB
@@ -1214,15 +1638,40 @@ ipcMain.handle("fs-read-tree", async (_e, { dir, depth = 3 }) => {
     }
 });
 
+// Mission 54 (2026-08-27): both handlers previously built a shell command
+// STRING via template-literal interpolation of renderer-controlled
+// query/pattern, then ran it through exec() (which invokes a real shell).
+// Neither the double-quote wrapping nor preload.cjs's _str() length/type
+// check escapes shell metacharacters — live-verified command injection
+// (Mission 53 audit) via a query/pattern like `x" ; touch <file> ; echo "`.
+// Fixed the same way git-diff/git-checkout already do in this same file:
+// spawn() with a real argv array, no shell involved, so there is no syntax
+// for injected metacharacters to break out into. The `head -N` pipe stage
+// is replaced by the same in-process `.slice(0, maxResults)` truncation
+// these handlers already applied to the shell output anyway.
 ipcMain.handle("fs-search", async (_e, { dir, query, maxResults = 50 }) => {
     return new Promise((resolve) => {
         if (!query || query.length < 2) return resolve({ ok: true, results: [] });
-        const cmd = process.platform === "win32"
-            ? `dir /s /b "${path.resolve(dir)}" | findstr /i "${query}"`
-            : `find "${path.resolve(dir)}" -not \\( -name "node_modules" -prune \\) -not \\( -name ".git" -prune \\) -iname "*${query}*" 2>/dev/null | head -${maxResults}`;
-        exec(cmd, { timeout: 8_000, maxBuffer: 256 * 1024 }, (_err, stdout) => {
-            const results = stdout.trim().split("\n").filter(Boolean).slice(0, maxResults);
-            resolve({ ok: true, results });
+        const safeDir = path.resolve(dir);
+        const args = process.platform === "win32"
+            ? ["/c", "dir", "/s", "/b", safeDir]
+            : ["-L", safeDir, "-not", "(", "-name", "node_modules", "-prune", ")", "-not", "(", "-name", ".git", "-prune", ")", "-iname", `*${query}*`];
+        const bin = process.platform === "win32" ? (process.env.COMSPEC || "cmd.exe") : "find";
+        const proc = spawn(bin, args);
+        let stdout = "";
+        proc.stdout.on("data", d => { stdout += d; });
+        proc.on("error", () => resolve({ ok: true, results: [] }));
+        const timer = setTimeout(() => { try { proc.kill(); } catch {} }, 8_000);
+        proc.on("close", () => {
+            clearTimeout(timer);
+            let lines = stdout.trim().split("\n").filter(Boolean);
+            // win32: findstr has no native glob-in-path equivalent to `dir /s /b | findstr`,
+            // so filter the recursive listing in-process instead of piping to a second process.
+            if (process.platform === "win32") {
+                const needle = query.toLowerCase();
+                lines = lines.filter(l => l.toLowerCase().includes(needle));
+            }
+            resolve({ ok: true, results: lines.slice(0, maxResults) });
         });
     });
 });
@@ -1230,8 +1679,20 @@ ipcMain.handle("fs-search", async (_e, { dir, query, maxResults = 50 }) => {
 ipcMain.handle("fs-grep", async (_e, { dir, pattern, maxResults = 100 }) => {
     return new Promise((resolve) => {
         if (!pattern) return resolve({ ok: true, results: [] });
-        const cmd = `grep -rn --include="*.js" --include="*.jsx" --include="*.ts" --include="*.tsx" --include="*.json" --include="*.md" -l "${pattern}" "${path.resolve(dir)}" 2>/dev/null | head -${maxResults}`;
-        exec(cmd, { timeout: 10_000, maxBuffer: 256 * 1024 }, (_err, stdout) => {
+        const safeDir = path.resolve(dir);
+        const args = [
+            "-rn",
+            "--include=*.js", "--include=*.jsx", "--include=*.ts", "--include=*.tsx",
+            "--include=*.json", "--include=*.md",
+            "-l", "--", pattern, safeDir,
+        ];
+        const proc = spawn("grep", args);
+        let stdout = "";
+        proc.stdout.on("data", d => { stdout += d; });
+        proc.on("error", () => resolve({ ok: true, results: [] }));
+        const timer = setTimeout(() => { try { proc.kill(); } catch {} }, 10_000);
+        proc.on("close", () => {
+            clearTimeout(timer);
             const results = stdout.trim().split("\n").filter(Boolean).slice(0, maxResults);
             resolve({ ok: true, results });
         });
@@ -1251,13 +1712,10 @@ ipcMain.handle("screenshot-window", async () => {
 });
 
 // ── Clipboard history ─────────────────────────────────────────────
-const _clipHistory = [];
-const MAX_CLIP_HISTORY = 50;
-
+// (_clipHistory + _pushClipHistory declared above with clipboard-read/write
+// so clipboard-write can populate history too — see line ~1062)
 ipcMain.handle("clipboard-push-history", (_e, text) => {
-    if (!text || _clipHistory[0] === text) return { ok: true };
-    _clipHistory.unshift(text);
-    if (_clipHistory.length > MAX_CLIP_HISTORY) _clipHistory.length = MAX_CLIP_HISTORY;
+    _pushClipHistory(text);
     return { ok: true };
 });
 
@@ -1511,11 +1969,27 @@ const ALLOWED_PERMISSIONS = new Set([
     "fullscreen",
 ]);
 
+// Module 6 (Physical Infrastructure): webcam/mic access is granted ONLY to
+// the app's own origin (API_URL — where the Ooplix renderer itself is
+// served from), never blanket-allowed for "media" the way ALLOWED_PERMISSIONS
+// does for the origin-agnostic permissions above. The CSP already permits
+// script/frame origins from Google/Firebase/reCAPTCHA for auth flows; if
+// "media" were added to ALLOWED_PERMISSIONS directly, any of those loaded
+// contexts could also request camera/mic. Checking requestingOrigin here
+// keeps that additive (new capability, not a widened blast radius for the
+// existing permissions).
+const ALLOWED_ORIGINS_FOR_MEDIA = [API_URL];
+
 function _installPermissionHandler() {
-    session.defaultSession.setPermissionRequestHandler((_webContents, permission, callback) => {
+    session.defaultSession.setPermissionRequestHandler((webContents, permission, callback, details) => {
+        if (permission === "media") {
+            const origin = details?.requestingUrl ? new URL(details.requestingUrl).origin : null;
+            return callback(!!origin && ALLOWED_ORIGINS_FOR_MEDIA.includes(origin));
+        }
         callback(ALLOWED_PERMISSIONS.has(permission));
     });
-    session.defaultSession.setPermissionCheckHandler((_webContents, permission) => {
+    session.defaultSession.setPermissionCheckHandler((webContents, permission, requestingOrigin) => {
+        if (permission === "media") return ALLOWED_ORIGINS_FOR_MEDIA.includes(requestingOrigin);
         return ALLOWED_PERMISSIONS.has(permission);
     });
 }
@@ -1549,7 +2023,13 @@ function _installSecurityHeaders() {
 function _installNavigationGuard(win) {
     // Prevent navigation away from the app origin
     win.webContents.on("will-navigate", (e, url) => {
-        const allowed = url.startsWith("http://localhost") ||
+        // Mission 58 (2026-08-27): the only real http://localhost load target
+        // in this codebase is the CRA dev server on port 3000 (_loadApp's
+        // `win.loadURL(\`http://localhost:3000?...\`)` in dev mode) — this
+        // previously allowed http://localhost on ANY port, wider than
+        // anything the app itself ever navigates to. Scoped to the exact
+        // dev port; production always loads file://, which is unaffected.
+        const allowed = url.startsWith("http://localhost:3000") ||
                         url.startsWith("file://") ||
                         url.startsWith("data:");
         if (!allowed) {

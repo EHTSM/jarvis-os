@@ -32,6 +32,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
 
 function _svc() { return require("../services/hybridWorkforceService.cjs"); }
 function _ok(res, data)         { res.json({ ok: true, ...data }); }
@@ -46,8 +47,28 @@ router.get("/workforce/constants", (req, res) => {
 });
 
 // ── Org worker listing ────────────────────────────────────────────────────────
-router.get("/workforce/org/:orgId/workers", (req, res) => {
-    try { _ok(res, _svc().listWorkersForOrg(req.params.orgId)); }
+// Security Hardening (Zero-Trust Competitor Remediation, Phase 1): this
+// route previously called listWorkersForOrg(req.params.orgId) directly,
+// gated only by the barrel-level requireAuth above — any authenticated
+// user could disclose any other org's human+AI worker roster (account ids,
+// org roles, dept/team assignment) by ID guessing/incrementing. Fix reuses
+// the exact mechanism orgMiddleware.cjs already provides for this — the
+// same attachOrg + requireOrgMember pair business.js's CRM routes use —
+// rather than inventing a new authorization check for this one route.
+// attachOrg resolves req.org/req.orgRole from :orgId via its X-Org-Id
+// header precedence (its highest-priority source). req.headers is a plain
+// mutable object in both Express 4 and 5 — req.query is NOT (Express 5's
+// req.query is a getter with no writable backing store, so an earlier
+// `req.query.orgId = req.params.orgId` here silently no-ops and attachOrg
+// falls through to its auto-resolve-from-membership path, which resolves
+// the CALLER's own org instead of the requested :orgId — a real bug this
+// project's own express@5 upgrade introduced into this exact pattern; the
+// header route avoids it without touching the shared middleware).
+router.get("/workforce/org/:orgId/workers", (req, res, next) => {
+    req.headers["x-org-id"] = req.params.orgId;
+    next();
+}, attachOrg, requireOrgMember, (req, res) => {
+    try { _ok(res, _svc().listWorkersForOrg(req.org.id)); }
     catch (e) { _err(res, e); }
 });
 

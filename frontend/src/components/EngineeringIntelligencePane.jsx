@@ -64,7 +64,7 @@ function _dur(ms) {
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 function GradeRing({ score = 0, grade = 'B', size = 64 }) {
-  const col = score >= 80 ? '#52d68a' : score >= 60 ? '#f0b429' : '#f55b5b';
+  const col = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--danger)';
   const r   = size / 2 - 5;
   const circ = 2 * Math.PI * r;
   const dash = (score / 100) * circ;
@@ -89,7 +89,7 @@ function GradeRing({ score = 0, grade = 'B', size = 64 }) {
 }
 
 function ScoreBar({ score = 0, label, size = 'md' }) {
-  const col = score >= 80 ? '#52d68a' : score >= 50 ? '#f0b429' : '#f55b5b';
+  const col = score >= 80 ? 'var(--success)' : score >= 50 ? 'var(--warning)' : 'var(--danger)';
   return (
     <div className={`eip-score-bar eip-score-bar--${size}`}>
       {label && <span className="eip-score-bar__label">{label}</span>}
@@ -277,7 +277,7 @@ function TabHotspots({ data }) {
             <div className="eip-hotspot-bar-wrap">
               <div
                 className="eip-hotspot-bar"
-                style={{ width: `${(s.hotScore / maxScore) * 100}%`, background: i < 3 ? '#f55b5b' : i < 6 ? '#f0b429' : '#7c6fff' }}
+                style={{ width: `${(s.hotScore / maxScore) * 100}%`, background: i < 3 ? 'var(--danger)' : i < 6 ? 'var(--warning)' : 'var(--accent)' }}
               />
             </div>
           </div>
@@ -298,7 +298,7 @@ function TabFailures({ data }) {
   if (!fails.length) return <Empty icon="✓" title="No recent failures" sub="Execution and mission failures will appear here" />;
 
   const typeIcon = { execution: '▶', mission: '◎', error: '✕' };
-  const typeColor = { execution: '#7c6fff', mission: '#f0b429', error: '#f55b5b' };
+  const typeColor = { execution: 'var(--accent)', mission: 'var(--warning)', error: 'var(--danger)' };
 
   return (
     <div className="eip-failures">
@@ -335,9 +335,9 @@ function TabTrends({ data }) {
   return (
     <div className="eip-trends">
       <div className="eip-trends__legend">
-        <span className="eip-legend-dot" style={{ background: '#f55b5b' }} /> Errors
-        <span className="eip-legend-dot" style={{ background: '#7c6fff' }} /> Missions
-        <span className="eip-legend-dot" style={{ background: '#f0b429' }} /> Failures
+        <span className="eip-legend-dot" style={{ background: 'var(--danger)' }} /> Errors
+        <span className="eip-legend-dot" style={{ background: 'var(--accent)' }} /> Missions
+        <span className="eip-legend-dot" style={{ background: 'var(--warning)' }} /> Failures
       </div>
       <div className="eip-trends__chart">
         {trends.map((b, i) => (
@@ -373,7 +373,7 @@ function TabTrends({ data }) {
         {trends.slice(-7).map((b, i) => (
           <div key={i} className="eip-trends__row">
             <span>{b.date || '—'}</span>
-            <span style={{ color: (b.errors || 0) > 0 ? '#f55b5b' : '#52d68a' }}>{b.errors || 0}</span>
+            <span style={{ color: (b.errors || 0) > 0 ? 'var(--danger)' : 'var(--success)' }}>{b.errors || 0}</span>
             <span>{b.missions || 0}</span>
             <span>{b.deployments || b.deploys || 0}</span>
           </div>
@@ -470,8 +470,8 @@ function TabTimeline({ data }) {
 
   const typeIcon  = { mission: '◎', commit: '⎇', exec_failure: '▶', failure: '✕', healing: '♥' };
   const typeColor = {
-    mission: '#7c6fff', commit: '#52d68a',
-    exec_failure: '#f55b5b', failure: '#f55b5b', healing: '#f0b429',
+    mission: 'var(--accent)', commit: 'var(--success)',
+    exec_failure: 'var(--danger)', failure: 'var(--danger)', healing: 'var(--warning)',
   };
 
   return (
@@ -480,7 +480,7 @@ function TabTimeline({ data }) {
         <div key={i} className="eip-tl-row">
           <div className="eip-tl-track">
             <div className="eip-tl-line-top" style={{ opacity: i === 0 ? 0 : 1 }} />
-            <div className="eip-tl-dot" style={{ background: typeColor[e.type] || '#8994b0' }}>
+            <div className="eip-tl-dot" style={{ background: typeColor[e.type] || 'var(--text-dim)' }}>
               {typeIcon[e.type] || '·'}
             </div>
             <div className="eip-tl-line-bot" style={{ opacity: i === events.length - 1 ? 0 : 1 }} />
@@ -596,9 +596,9 @@ function TabExecution({ data }) {
     <div className="eip-exec">
       <div className="eip-exec__stats">
         <div className="eip-exec-stat"><span className="eip-exec-stat__val">{ei.total || 0}</span><span className="eip-exec-stat__label">Total</span></div>
-        <div className="eip-exec-stat"><span className="eip-exec-stat__val" style={{ color: '#52d68a' }}>{ei.ok || 0}</span><span className="eip-exec-stat__label">OK</span></div>
-        <div className="eip-exec-stat"><span className="eip-exec-stat__val" style={{ color: '#f55b5b' }}>{ei.failed || 0}</span><span className="eip-exec-stat__label">Failed</span></div>
-        <div className="eip-exec-stat"><span className="eip-exec-stat__val" style={{ color: '#7c6fff' }}>{ei.successRate || 0}%</span><span className="eip-exec-stat__label">Success Rate</span></div>
+        <div className="eip-exec-stat"><span className="eip-exec-stat__val" style={{ color: 'var(--success)' }}>{ei.ok || 0}</span><span className="eip-exec-stat__label">OK</span></div>
+        <div className="eip-exec-stat"><span className="eip-exec-stat__val" style={{ color: 'var(--danger)' }}>{ei.failed || 0}</span><span className="eip-exec-stat__label">Failed</span></div>
+        <div className="eip-exec-stat"><span className="eip-exec-stat__val" style={{ color: 'var(--accent)' }}>{ei.successRate || 0}%</span><span className="eip-exec-stat__label">Success Rate</span></div>
         <div className="eip-exec-stat"><span className="eip-exec-stat__val">{_dur(ei.avgDurationMs)}</span><span className="eip-exec-stat__label">Avg Dur</span></div>
         <div className="eip-exec-stat"><span className="eip-exec-stat__val">{_dur(ei.p95DurationMs)}</span><span className="eip-exec-stat__label">p95 Dur</span></div>
         <div className="eip-exec-stat"><span className="eip-exec-stat__val">{ei.verificationRate || 0}%</span><span className="eip-exec-stat__label">Verified</span></div>
@@ -613,8 +613,8 @@ function TabExecution({ data }) {
           <div key={c.capability || i} className="eip-exec__row">
             <span className="eip-exec-cap">{c.capability}</span>
             <span>{c.count}</span>
-            <span style={{ color: c.failures > 0 ? '#f55b5b' : '#52d68a' }}>{c.failures}</span>
-            <span style={{ color: c.failRate >= 30 ? '#f55b5b' : c.failRate >= 10 ? '#f0b429' : '#52d68a' }}>{c.failRate}%</span>
+            <span style={{ color: c.failures > 0 ? 'var(--danger)' : 'var(--success)' }}>{c.failures}</span>
+            <span style={{ color: c.failRate >= 30 ? 'var(--danger)' : c.failRate >= 10 ? 'var(--warning)' : 'var(--success)' }}>{c.failRate}%</span>
           </div>
         ))}
         {!caps.length && <div className="eip-empty eip-empty--sm">No capability data</div>}
@@ -650,7 +650,7 @@ function TabGraphReasoning() {
         <table className="eip-exec__table"><tbody>
           {critical.map(d => (
             <tr key={d.key}>
-              <td><span className="eip-badge" style={{ background: d.risk === 'critical' ? '#ef4444' : '#f59e0b' }}>{d.risk}</span></td>
+              <td><span className="eip-badge" style={{ background: d.risk === 'critical' ? 'var(--danger)' : 'var(--warning)' }}>{d.risk}</span></td>
               <td><code>{d.type}:{d.id}</code></td>
               <td style={{ color: 'var(--text-dim)' }}>{d.explanation}</td>
             </tr>
@@ -663,7 +663,7 @@ function TabGraphReasoning() {
         <table className="eip-exec__table"><tbody>
           {spofs.map(s => (
             <tr key={s.type + s.id}>
-              <td><span className="eip-badge" style={{ background: '#ef4444' }}>SPOF</span></td>
+              <td><span className="eip-badge" style={{ background: 'var(--danger)' }}>SPOF</span></td>
               <td><code>{s.type}:{s.id}</code></td>
               <td style={{ color: 'var(--text-dim)' }}>{s.explanation}</td>
             </tr>
@@ -676,7 +676,7 @@ function TabGraphReasoning() {
         <table className="eip-exec__table"><tbody>
           {blocked.map(b => (
             <tr key={b.missionId}>
-              <td><span className="eip-badge" style={{ background: '#f59e0b' }}>blocked</span></td>
+              <td><span className="eip-badge" style={{ background: 'var(--warning)' }}>blocked</span></td>
               <td style={{ maxWidth: 200 }}>{b.objective}</td>
               <td style={{ color: 'var(--text-dim)' }}>{(b.blockers || []).join(', ')}</td>
             </tr>

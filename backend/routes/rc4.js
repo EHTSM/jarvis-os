@@ -4,10 +4,12 @@
  * All routes at /rc4/* require auth.
  */
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc = require("../services/rc4.cjs");
 
-router.use("/rc4", requireAuth);
+// OOPLIX V1 MASTER AUDIT (2026-08-16): same fix and same reasoning as rc1.js
+// — see that file's comment. rc4.cjs confirmed 0 orgId occurrences.
+router.use("/rc4", requireAuth, operatorOnly);
 
 function _ok(res, data)  { res.json({ ok: true, ...data }); }
 function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.message || String(e) }); }

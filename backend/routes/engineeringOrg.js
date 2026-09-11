@@ -35,7 +35,7 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 function _org()  { return require("../services/engineeringOrg.cjs"); }
 function _sup()  { return require("../services/agentRuntimeSupervisor.cjs"); }
@@ -65,7 +65,18 @@ router.get("/engorg/agents/:id", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/engorg/agents/:id/tick", requireAuth, async (req, res) => {
+// ENGINEERING OS dedicated verification (2026-08-15): enable/disable/tick act
+// on one of the 20 shared, platform-wide AI engineer agents — the same
+// control-plane class already found and fixed for /auto/v10/control/mode
+// (Autonomous OS) and /ent, /eco, /civ (Enterprise/Ecosystem/Civilization
+// Org). Live-reproduced: a non-operator tenant (Org B) successfully disabled
+// engorg_backend for every user on the platform via a bare requireAuth-only
+// route. Unlike creating/claiming a work item (a legitimate ordinary-user
+// action directing the AI org, matching the requireAuth-only precedent
+// already established for /bizorg and /missions), pausing/resuming/forcing
+// an immediate tick on a shared agent has no legitimate ordinary-user use
+// case and directly disrupts the platform-wide simulation for every tenant.
+router.post("/engorg/agents/:id/tick", requireAuth, operatorOnly, async (req, res) => {
   try {
     const result = await _sup().triggerTick(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -73,7 +84,7 @@ router.post("/engorg/agents/:id/tick", requireAuth, async (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/engorg/agents/:id/enable", requireAuth, (req, res) => {
+router.post("/engorg/agents/:id/enable", requireAuth, operatorOnly, (req, res) => {
   try {
     const result = _sup().enableAgent(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -81,7 +92,7 @@ router.post("/engorg/agents/:id/enable", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/engorg/agents/:id/disable", requireAuth, (req, res) => {
+router.post("/engorg/agents/:id/disable", requireAuth, operatorOnly, (req, res) => {
   try {
     const result = _sup().disableAgent(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -91,7 +102,7 @@ router.post("/engorg/agents/:id/disable", requireAuth, (req, res) => {
 
 router.get("/engorg/missions", requireAuth, (req, res) => {
   try {
-    const limit  = parseInt(req.query.limit) || 50;
+    const limit  = Math.max(1, parseInt(req.query.limit) || 50);
     const all    = _mm()?.listMissions({ limit: 500 }) || { missions: [] };
     const orgIds = new Set(require("../services/engineeringOrg.cjs").ENGINEERING_ORG.map(e => e.id));
     const missions = (all.missions || [])
@@ -147,7 +158,7 @@ router.post("/engorg/v2/epics", requireAuth, (req, res) => {
 router.get("/engorg/v2/work-items", requireAuth, (req, res) => {
   try {
     const { status, assignedTo, domain, epicId, priority } = req.query;
-    const limit = parseInt(req.query.limit) || 100;
+    const limit = Math.max(1, parseInt(req.query.limit) || 100);
     return res.json({ success: true, workItems: _st().listWorkItems({ status, assignedTo, domain, epicId, priority, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -260,7 +271,7 @@ router.get("/engorg/v2/reviews", requireAuth, (req, res) => {
 router.get("/engorg/v2/memory", requireAuth, (req, res) => {
   try {
     const { engineerId, type } = req.query;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = Math.max(1, parseInt(req.query.limit) || 50);
     return res.json({ success: true, memory: _st().getMemory({ engineerId, type, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });

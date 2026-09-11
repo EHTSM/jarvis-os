@@ -90,7 +90,7 @@ function RazorpayGuide({ onDismiss }) {
 
 // ── Payment Link Generator Panel ───────────────────────────────────────────────
 
-function LinkGenerator({ leads, onLinkCreated }) {
+export function LinkGenerator({ leads, onLinkCreated }) {
   const [form,       setForm]       = useState({ name: "", phone: "", amount: "", description: "" });
   const [loading,    setLoading]    = useState(false);
   const [result,     setResult]     = useState(null);
@@ -153,9 +153,10 @@ function LinkGenerator({ leads, onLinkCreated }) {
       <div className="pv2-panel-body">
 
         {/* Contact search */}
-        <label className="pv2-label">Customer (optional)</label>
+        <label className="pv2-label" htmlFor="pv2-customer">Customer (optional)</label>
         <div className="pv2-contact-search-wrap">
           <input
+            id="pv2-customer"
             className="pv2-input"
             placeholder="Search contacts…"
             value={contactQ}
@@ -176,16 +177,16 @@ function LinkGenerator({ leads, onLinkCreated }) {
         {(form.name || form.phone) && (
           <div className="pv2-prefill-row">
             <span className="pv2-prefill-tag">{form.name} · {form.phone}</span>
-            <button className="pv2-prefill-clear" onClick={() => setForm(f => ({ ...f, name: "", phone: "" }))}>✕</button>
+            <button className="pv2-prefill-clear" aria-label="Clear selected customer" onClick={() => setForm(f => ({ ...f, name: "", phone: "" }))}>✕</button>
           </div>
         )}
 
-        <label className="pv2-label">Amount (₹) <span className="pv2-req">*</span></label>
-        <input className="pv2-input" placeholder="15000" value={form.amount}
+        <label className="pv2-label" htmlFor="pv2-amount">Amount (₹) <span className="pv2-req">*</span></label>
+        <input id="pv2-amount" className="pv2-input" placeholder="15000" value={form.amount}
           onChange={e => set("amount", e.target.value)} inputMode="numeric" />
 
-        <label className="pv2-label">Description</label>
-        <input className="pv2-input" placeholder="Website redesign — 50% advance" value={form.description}
+        <label className="pv2-label" htmlFor="pv2-description">Description</label>
+        <input id="pv2-description" className="pv2-input" placeholder="Website redesign — 50% advance" value={form.description}
           onChange={e => set("description", e.target.value)} />
 
         {err && <p className="pv2-err">{err}</p>}
@@ -279,18 +280,21 @@ function WaFollowupPanel({ leads }) {
       <h2 className="pv2-panel-title">WhatsApp Follow-up</h2>
       <div className="pv2-panel-body">
 
-        <label className="pv2-label">Phone number</label>
-        <input className="pv2-input" placeholder="+91-9876543210" value={phone}
+        <label className="pv2-label" htmlFor="pv2-phone">Phone number</label>
+        <input id="pv2-phone" className="pv2-input" placeholder="+91-9876543210" value={phone}
           onChange={e => setPhone(e.target.value)} inputMode="tel" />
 
-        <label className="pv2-label">Message template</label>
-        <select className="pv2-input pv2-select" value={template} onChange={e => handleTemplate(e.target.value)}>
+        {/* B19.5: axe `select-name` (WCAG 4.1.2) — the label text already existed
+            but was never associated, so the control had no accessible name. */}
+        <label className="pv2-label" htmlFor="pv2-template">Message template</label>
+        <select id="pv2-template" className="pv2-input pv2-select" value={template} onChange={e => handleTemplate(e.target.value)}>
           <option value="">— choose template —</option>
           {WA_TEMPLATES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
         </select>
 
-        <label className="pv2-label">Message</label>
+        <label className="pv2-label" htmlFor="pv2-message">Message</label>
         <textarea
+          id="pv2-message"
           className="pv2-input pv2-textarea"
           placeholder="Type a message or choose a template above…"
           value={msg}

@@ -443,8 +443,16 @@ async function _discoverCloudflare() {
   if (!token) return found;
   try {
     const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+    // Timeout, Cancellation & Long-Running Operation Safety Audit
+    // (2026-08-16): no timeout at all — the sibling _discoverGitHub()
+    // function two above already correctly bounds its own https.get() calls
+    // via req.setTimeout(8000, ...); this one used the native fetch() API
+    // with no AbortSignal, so a hung Cloudflare response stalled the whole
+    // identity-discovery sweep indefinitely. AbortSignal.timeout() is the
+    // standard, built-in way to bound a native fetch() call — no new
+    // dependency or mechanism, matching the same 8s bound as the sibling.
     const _get = async (url) => {
-      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+      const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(8_000) });
       return res.json();
     };
     // Zones (domains)

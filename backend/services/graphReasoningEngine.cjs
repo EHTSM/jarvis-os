@@ -75,6 +75,15 @@ function _readEdgesAll() {
     try { return _kg()?.getEdges({ limit: 5000 }).edges || []; } catch { return []; }
 }
 
+// JARVIS INCIDENT REPAIR (2026-09-03, P0-3): hard ceiling on blocker-
+// resolution nesting depth, independent of the metadata.kind structural
+// exclusion in findBlockedMissions() — see generateRecommendations()'s
+// Source 2 for how this is applied. 1 matches the depth every real
+// historical "Resolve blockers for mission:" mission in this repo already
+// sits at (56/56 confirmed live, none deeper) — this makes that the ceiling
+// going forward rather than an incidental current maximum.
+const MAX_BLOCKER_DEPTH = 1;
+
 // Build in-degree map (toId → count) and out-degree map (fromId → count)
 function _degreeMap(edges) {
     const inDeg = {}, outDeg = {};
@@ -153,6 +162,30 @@ function findBlockedMissions({ limit = 20 } = {}) {
         const all = _mm()?.listMissions({ limit: 1000 }) || { missions: [] };
         const blocked = [];
         for (const m of all.missions) {
+            // A.5.2 runtime-stability finding: a "Resolve blockers for
+            // mission: X" mission (created below by the caller) could
+            // itself be picked up as blocked on a later tick — while
+            // subtask persistence was broken (see missionMemory.cjs's
+            // updateSubtask, fixed this pass) EVERY active mission with
+            // subtasks looked stuck, so this compounded into confirmed-live
+            // unbounded self-nesting ("Resolve blockers for mission:
+            // Resolve blockers for mission: ..."). Excluding these
+            // self-referential missions from ever being treated as
+            // blockable is defense-in-depth: it holds even if some future
+            // change reintroduces a way for a mission's subtasks to look
+            // permanently stuck.
+            //
+            // JARVIS INCIDENT REPAIR (2026-09-03, P0-3): the title-prefix
+            // check above was the ONLY guard — a future caller creating an
+            // equivalent mission under any other wording would bypass it
+            // silently. metadata.kind is now the primary, structural guard
+            // (set at creation time below, immune to objective-text
+            // changes); the title-prefix check is kept as a fallback for
+            // the 56 real historical missions created before this field
+            // existed, which have no metadata.kind and must remain excluded
+            // exactly as before.
+            if (m.metadata?.kind === "blocker_resolution") continue;
+            if (m.objective?.startsWith("Resolve blockers for mission:")) continue;
             // Check if any approval is pending
             const hasPendingApproval = (m.approvals || []).some(a => a.status === "pending");
             // Check if all subtasks are stuck (none started, none completed, mission active)
@@ -177,6 +210,13 @@ function findBlockedMissions({ limit = 20 } = {}) {
                     createdAt:  m.createdAt,
                     ownerId:    m.metadata?.ownerId,
                     orgId:      m.metadata?.orgId,
+                    // P0-3: this mission's own nesting depth, if it is itself
+                    // a blocker-resolution mission that somehow still reached
+                    // here (normally excluded above) — 0 for any ordinary
+                    // mission. generateRecommendations() uses this + 1 as the
+                    // depth of the candidate it would create, and refuses to
+                    // create one at/above MAX_BLOCKER_DEPTH.
+                    blockerDepth: Number.isFinite(m.metadata?.blockerDepth) ? m.metadata.blockerDepth : 0,
                 });
             }
         }
@@ -477,9 +517,22 @@ function generateRecommendations({ limit = 10, autoCreate = false } = {}) {
     } catch {}
 
     // Source 2: Blocked missions → recommend unblocking missions
+    //
+    // JARVIS INCIDENT REPAIR (2026-09-03, P0-3): a blocker-resolution mission
+    // now carries metadata.kind: "blocker_resolution" (the structural guard
+    // findBlockedMissions() checks above) and metadata.blockerDepth, computed
+    // from the blocked mission's OWN depth (0 for an ordinary mission, since
+    // findBlockedMissions() already excludes any mission that is itself a
+    // blocker-resolution mission — so bm here is always depth 0 in practice
+    // today). MAX_BLOCKER_DEPTH is a second, independent bound: even if a
+    // future change to findBlockedMissions()'s exclusion ever let a
+    // blocker-resolution mission be seen as blocked again, generation stops
+    // at this depth rather than relying solely on that one exclusion.
     try {
         const { blockedMissions } = findBlockedMissions({ limit: 5 });
         for (const bm of blockedMissions) {
+            const sourceDepth = Number.isFinite(bm.blockerDepth) ? bm.blockerDepth : 0;
+            if (sourceDepth >= MAX_BLOCKER_DEPTH) continue;
             candidates.push({
                 id:           `rec_unblock_${bm.missionId}`,
                 source:       "graph_reasoning",
@@ -493,7 +546,12 @@ function generateRecommendations({ limit = 10, autoCreate = false } = {}) {
                 autoMissionCandidate: {
                     objective: `Resolve blockers for mission: ${bm.objective}`,
                     priority:  "high",
-                    metadata:  { domain: "ops", blockedMissionId: bm.missionId },
+                    metadata:  {
+                        domain: "ops",
+                        blockedMissionId: bm.missionId,
+                        kind: "blocker_resolution",
+                        blockerDepth: sourceDepth + 1,
+                    },
                 },
             });
         }

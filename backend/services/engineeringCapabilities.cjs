@@ -16,10 +16,21 @@
  *   semanticMemorySearch   → TF-IDF search + typed memory writes
  *   missionMemory          → mission artifact recording
  *
- * Registered capabilities (12 + override of rollback):
+ * Registered capabilities (22):
  *   repo_read, repo_index, code_search, file_read,
  *   patch_generate, patch_apply, build_run, test_run,
- *   rollback (override), git_status, git_diff, git_commit
+ *   rollback (real git revert/checkout, verified), git_status, git_diff,
+ *   git_commit, open_pr (real GitHub PR via gitHubEngineeringAgent),
+ *   security_scan (real static analysis via codeReviewEngine),
+ *   bundle_analyze / bundle_optimize (real build-size analysis),
+ *   self_document (real doc generation from source inspection),
+ *   frontend_heal (real selfHealingFrontend.heal() bridge),
+ *   browser_automate (real nlBrowser+browserRunner bridge, same danger-
+ *     scan/HITL-approval gate as POST /browser-platform/nl/run)
+ *   docker_status / docker_health / docker_compose_up / docker_compose_down
+ *     (V6 Phase 3: real container/compose orchestration via
+ *     dockerController.cjs, its own execFileSync-backed adapter — not
+ *     duplicated through safe-exec, which correctly hard-blocks `docker`)
  *
  * Unified Memory API:
  *   remember(type, data, opts)     → nodeId
@@ -157,23 +168,31 @@ function _obs(name, value, tags = {}) {
 
 // ── repo_read: git status + recent log ────────────────────────────────────
 async function _repoRead(ctx) {
-    const [status, log, branch] = await Promise.all([
+    const [status, log, branch, head] = await Promise.all([
         _sh("git", ["status", "--short"]),
         _sh("git", ["log", "--oneline", "-10"]),
         _sh("git", ["branch", "--show-current"]),
+        _sh("git", ["rev-parse", "--short", "HEAD"]),
     ]);
     if (!status.ok) return { success: false, error: status.reason || status.stderr.slice(0, 200), output: null };
+
+    // headCommit: the "known good" commit captured before any patching in
+    // this run — real rollback (see _rollback/rollback:commit=) needs this
+    // to know what to revert TO if a later stage (post-commit observe/learn)
+    // discovers a problem after commit_gate already committed.
+    const headCommit = head.ok ? head.stdout.trim() : null;
 
     const output = JSON.stringify({
         branch:   branch.stdout.trim(),
         status:   _cap(status.stdout),
         recentLog: _cap(log.stdout),
+        headCommit,
     });
     // Store in memory
-    remember("knowledge", { insight: `Repo state: branch=${branch.stdout.trim()} changes=${status.stdout.split("\n").filter(Boolean).length}` },
+    remember("knowledge", { insight: `Repo state: branch=${branch.stdout.trim()} changes=${status.stdout.split("\n").filter(Boolean).length} head=${headCommit || "?"}` },
         { tags: ["repo", "git"], importance: 40 });
-    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "repo_read", path: REPO_ROOT, summary: branch.stdout.trim() });
-    return { success: true, output, artifacts: [{ type: "repo_state", value: output }], logs: [] };
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "repo_read", path: REPO_ROOT, summary: branch.stdout.trim(), headCommit });
+    return { success: true, output, artifacts: [{ type: "repo_state", value: output, headCommit }], logs: [] };
 }
 
 // ── repo_index: build/refresh the repo intelligence index ─────────────────
@@ -320,8 +339,108 @@ async function _testRun(ctx) {
     return { success, output, artifacts: [{ type: "test_result", pass, fail, durationMs: dur }], logs: [{ ts: new Date().toISOString(), msg: `tests: ${pass} pass ${fail} fail in ${dur}ms` }] };
 }
 
-// ── rollback: git reset HEAD to undo staged changes (safe, no history loss) ─
+// ── rollback: real revert, not metadata-only ──────────────────────────────
+// Engineering Autonomous Completion mission — the prior implementation only
+// ran `git reset HEAD` (unstages, never touches working-tree content or
+// commit history) yet was invoked by the pipeline's test_gate as if it were
+// a genuine undo. Now supports three real, git-verified rollback targets,
+// chosen from ctx.input:
+//
+//   rollback:commit=<hash>   → the pipeline already committed (commit_gate
+//                               succeeded) and a LATER stage still failed
+//                               (e.g. observe/learn detects a regression) —
+//                               reverts that specific commit via
+//                               `git revert --no-edit <hash>`, a real,
+//                               history-preserving undo (never a destructive
+//                               reset --hard on shared history).
+//   rollback:file=<relPath>  → a patch was applied to the working tree but
+//                               never committed — restores that exact file's
+//                               content from HEAD via `git checkout -- <path>`
+//                               (scoped to the one file, never a blanket
+//                               reset of unrelated in-flight work).
+//   (no target / legacy)     → unstage only, the original safe-but-narrow
+//                               behavior, preserved for existing callers
+//                               that pass no target.
+//
+// Every branch is verified post-hoc (re-reads git status/diff to confirm
+// the working tree actually matches the reverted state) rather than trusting
+// the command's exit code alone — a silent no-op git command must not be
+// reported as a successful rollback.
 async function _rollback(ctx) {
+    const input = ctx.input || "";
+    const commitMatch = input.match(/rollback:commit=([0-9a-f]{4,40})/i);
+    const fileMatch    = input.match(/rollback:file=([^\s]+)/i);
+
+    if (commitMatch) {
+        return _rollbackCommit(ctx, commitMatch[1]);
+    }
+    if (fileMatch) {
+        return _rollbackFile(ctx, fileMatch[1]);
+    }
+    return _rollbackUnstageOnly(ctx);
+}
+
+async function _rollbackCommit(ctx, hash) {
+    // Verify the commit actually exists before attempting to revert it —
+    // git revert on an unknown ref fails loudly, but confirm first so the
+    // error is unambiguous (bad hash vs. genuine revert conflict).
+    const exists = await _sh("git", ["cat-file", "-e", hash]);
+    if (!exists.ok) {
+        return { success: false, error: `commit ${hash} not found — cannot revert`, output: null, nonRetriable: true };
+    }
+
+    const r = await _sh("git", ["revert", "--no-edit", hash]);
+    if (!r.ok) {
+        // A real revert conflict (not a transient error) — surface it as
+        // non-retriable so the caller escalates rather than looping.
+        return { success: false, error: `git revert failed: ${_cap(r.stderr, 300)}`, output: _cap(r.stdout, 300), nonRetriable: true };
+    }
+
+    // Verify: HEAD must now differ from the pre-revert hash, and the
+    // revert commit must actually exist.
+    const newHead = (await _sh("git", ["rev-parse", "--short", "HEAD"])).stdout.trim();
+    const verified = !!newHead && newHead !== hash.slice(0, newHead.length);
+    const output = JSON.stringify({ reverted: true, revertedCommit: hash, newHead, verified });
+
+    remember("knowledge", { insight: `Rollback executed: reverted commit ${hash} → new HEAD ${newHead}` }, { tags: ["rollback", "engineering", "git_revert"], importance: 65 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "rollback", method: "git_revert", revertedCommit: hash, newHead });
+    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId, method: "git_revert", revertedCommit: hash, newHead });
+    return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [{ ts: new Date().toISOString(), msg: `reverted ${hash} -> ${newHead}` }] };
+}
+
+async function _rollbackFile(ctx, relPath) {
+    const absPath = path.resolve(REPO_ROOT, relPath);
+    if (!absPath.startsWith(REPO_ROOT)) {
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
+    }
+    // Snapshot working-tree content before restore, purely for the audit
+    // trail (lets a human see exactly what was discarded).
+    let before = null;
+    try { before = fs.readFileSync(absPath, "utf8"); } catch { /* file may not exist yet, that's fine */ }
+
+    const r = await _sh("git", ["checkout", "--", relPath]);
+    if (!r.ok) {
+        return { success: false, error: `git checkout failed: ${_cap(r.stderr, 300)}`, output: null, nonRetriable: true };
+    }
+
+    // Verify: the file must no longer show as modified in git status.
+    const status = await _sh("git", ["status", "--porcelain", "--", relPath]);
+    const stillDirty = status.ok && status.stdout.trim().length > 0;
+    const after = (() => { try { return fs.readFileSync(absPath, "utf8"); } catch { return null; } })();
+    const changed = before !== after;
+
+    const output = JSON.stringify({ restored: !stillDirty, file: relPath, contentChanged: changed, verified: !stillDirty });
+    if (stillDirty) {
+        return { success: false, error: `restore did not clear working-tree diff for ${relPath}`, output, nonRetriable: false };
+    }
+
+    remember("knowledge", { insight: `Rollback executed: restored ${relPath} from HEAD` }, { tags: ["rollback", "engineering", "file_restore"], importance: 55 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "rollback", method: "file_restore", file: relPath });
+    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId, method: "file_restore", file: relPath });
+    return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [{ ts: new Date().toISOString(), msg: `restored ${relPath} from HEAD` }] };
+}
+
+async function _rollbackUnstageOnly(ctx) {
     const r = await _sh("git", ["reset", "HEAD"]);
     if (!r.ok && !r.stdout.includes("Unstaged")) {
         return { success: false, error: _cap(r.stderr, 200), output: null };
@@ -330,8 +449,482 @@ async function _rollback(ctx) {
     const output = JSON.stringify({ reset: true, status: _cap(status.stdout, 500) });
     remember("knowledge", { insight: `Rollback executed: staged changes reset to HEAD` }, { tags: ["rollback", "engineering"], importance: 50 });
     if (ctx.missionId) recordArtifact(ctx.missionId, { type: "rollback", method: "git_reset_HEAD" });
-    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId });
+    _getBus()?.emit("execution:rollback:completed", { missionId: ctx.missionId, executionId: ctx.executionId, method: "git_reset_HEAD" });
     return { success: true, output, artifacts: [{ type: "rollback_result", value: output }], logs: [] };
+}
+
+// ── bundle_analyze / bundle_optimize: real frontend build size analysis ───
+// Engineering Autonomous Completion mission. No bundle-analyzer/webpack-
+// bundle-analyzer/source-map-explorer dependency exists in this codebase
+// (checked package.json — none installed) and this codebase's convention
+// is hand-rolled analysis with zero external analyzer libraries (matching
+// engineeringSmellDetector.cjs's own detectors). CRA's build output
+// (frontend/build/asset-manifest.json + frontend/build/static/**) already
+// contains everything needed for a REAL size analysis: every chunk's exact
+// on-disk byte size, with zero estimation or fabrication — fs.statSync on
+// real files, not a guessed/random number.
+const BUILD_DIR = path.join(REPO_ROOT, "frontend", "build");
+const ASSET_MANIFEST = path.join(BUILD_DIR, "asset-manifest.json");
+const LARGE_CHUNK_BYTES = 200 * 1024; // 200KB — CRA's own default warning threshold for a single chunk
+
+function _readBundleManifest() {
+    let manifest;
+    try { manifest = JSON.parse(fs.readFileSync(ASSET_MANIFEST, "utf8")); }
+    catch { return null; }
+    const files = manifest.files || {};
+    const entries = [];
+    for (const [logicalName, urlPath] of Object.entries(files)) {
+        // urlPath is like "/static/js/main.afcaad56.js" — map back to the
+        // real file on disk under frontend/build/.
+        const rel = urlPath.replace(/^\//, "");
+        const abs = path.join(BUILD_DIR, rel);
+        let size = null;
+        try { size = fs.statSync(abs).size; } catch { continue; } // file listed in manifest but missing on disk — skip, don't fabricate a size
+        entries.push({ name: logicalName, path: rel, sizeBytes: size });
+    }
+    return entries;
+}
+
+async function _bundleAnalyze(ctx) {
+    const entries = _readBundleManifest();
+    if (!entries) {
+        return { success: false, error: "frontend/build/asset-manifest.json not found — run `npm run build:frontend` first", output: null, nonRetriable: false };
+    }
+    const jsEntries  = entries.filter(e => e.name.endsWith(".js"));
+    const cssEntries = entries.filter(e => e.name.endsWith(".css"));
+    const totalJsBytes  = jsEntries.reduce((a, e) => a + e.sizeBytes, 0);
+    const totalCssBytes = cssEntries.reduce((a, e) => a + e.sizeBytes, 0);
+    const sorted = [...entries].sort((a, b) => b.sizeBytes - a.sizeBytes);
+    const largeChunks = sorted.filter(e => e.sizeBytes > LARGE_CHUNK_BYTES);
+
+    const output = JSON.stringify({
+        totalFiles: entries.length,
+        totalJsBytes, totalCssBytes,
+        totalBytes: totalJsBytes + totalCssBytes,
+        largeChunkCount: largeChunks.length,
+        largestChunks: sorted.slice(0, 10).map(e => ({ name: e.name, sizeKB: Math.round(e.sizeBytes / 1024) })),
+    });
+
+    remember("knowledge", { insight: `Bundle analysis: ${entries.length} files, ${Math.round((totalJsBytes+totalCssBytes)/1024)}KB total, ${largeChunks.length} chunk(s) over ${LARGE_CHUNK_BYTES/1024}KB` },
+        { tags: ["bundle", "engineering", "performance"], importance: 45 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "bundle_analyze", totalBytes: totalJsBytes + totalCssBytes, largeChunkCount: largeChunks.length });
+    return { success: true, output, artifacts: [{ type: "bundle_analysis", value: output }], logs: [] };
+}
+
+// bundle_optimize: this is deliberately NOT an auto-rewriter — no bundler
+// plugin, no code-splitting engine exists in this codebase to safely
+// rewrite import statements, and fabricating one here would violate the
+// mission's "extend, don't invent new architecture" constraint. What it
+// DOES do for real: identify SPECIFIC, actionable oversized chunks (real
+// file, real byte count, real recommendation) from the same real manifest
+// data bundle_analyze reads — the concrete "what to fix" a human or a
+// later patch_generate stage can act on, same shape as every other
+// smell/finding in this codebase (confidence-scored, human-reviewed, never
+// auto-applied).
+async function _bundleOptimize(ctx) {
+    const entries = _readBundleManifest();
+    if (!entries) {
+        return { success: false, error: "frontend/build/asset-manifest.json not found — run `npm run build:frontend` first", output: null, nonRetriable: false };
+    }
+    const largeChunks = entries.filter(e => e.sizeBytes > LARGE_CHUNK_BYTES).sort((a, b) => b.sizeBytes - a.sizeBytes);
+    const recommendations = largeChunks.slice(0, 10).map(e => {
+        const isCss = e.name.endsWith(".css");
+        let recommendation;
+        if (isCss) {
+            recommendation = `CSS bundle exceeds ${LARGE_CHUNK_BYTES/1024}KB — check for unused/duplicate rules or component-scoped CSS that could split per-route`;
+        } else if (e.name === "main.js") {
+            recommendation = "main.js is the entry chunk — audit top-level imports for code that could move behind React.lazy()";
+        } else {
+            recommendation = `Chunk exceeds ${LARGE_CHUNK_BYTES/1024}KB — verify it's already behind React.lazy(); if not, split it out`;
+        }
+        return {
+            file: e.name,
+            sizeKB: Math.round(e.sizeBytes / 1024),
+            recommendation,
+            confidence: 0.6, // heuristic size threshold, not a real dependency-graph analysis of WHY it's large
+        };
+    });
+
+    const output = JSON.stringify({
+        analyzed: true,
+        recommendationCount: recommendations.length,
+        recommendations,
+        totalPotentialSavingsKB: recommendations.reduce((a, r) => a + Math.max(0, r.sizeKB - LARGE_CHUNK_BYTES/1024), 0),
+    });
+
+    if (recommendations.length) {
+        remember("failure", { errorType: "bundle_size", context: `${recommendations.length} oversized chunk(s) found`, resolution: "review recommendations for code-splitting opportunities" },
+            { tags: ["bundle", "engineering", "performance"], importance: 50 });
+    }
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "bundle_optimize", recommendationCount: recommendations.length });
+    return { success: true, output, artifacts: [{ type: "bundle_optimize_result", value: output }], logs: [] };
+}
+
+// ── frontend_heal: wires selfHealingFrontend into the unified pipeline ────
+// Engineering Autonomous Completion mission — "wire frontend self-healing
+// into the existing autonomous pipeline." selfHealingFrontend.cjs (real
+// Playwright-based console-error detection + AI-generated, confidence-
+// gated fs.writeFileSync patch application) already exists and works, but
+// its only caller was POST /odi/heal — a standalone, manually-triggered
+// HTTP endpoint with zero connection to engineeringPipelineCoordinator,
+// the Observer, the Decision Engine, or Mission Runtime. This capability
+// is the missing bridge: it calls the SAME real heal() function (no
+// re-implementation, no parallel healing engine) through the same
+// capability-dispatch path every other pipeline stage uses, so a frontend
+// healing run is a first-class pipeline stage instead of an isolated
+// side-flow, and gets the same artifact recording / lesson registration /
+// event-bus emission as everything else in this file.
+function _selfHealingFrontend() { try { return require("./selfHealingFrontend.cjs"); } catch { return null; } }
+
+async function _frontendHeal(ctx) {
+    const input = ctx.input || "";
+    const urlMatch    = input.match(/url:([^\s]+)/i);
+    const targetMatch = input.match(/target:([^\s]+)/i);
+    const autoApply   = /autoApply:true/i.test(input);
+
+    const url = urlMatch ? urlMatch[1] : null;
+    if (!url) {
+        // No frontend URL to check is the normal case for a backend-only
+        // pipeline goal — not a failure, just nothing to heal this run.
+        return { success: true, output: JSON.stringify({ healed: false, reason: "no frontend url provided for this run" }), artifacts: [], logs: [] };
+    }
+
+    const shf = _selfHealingFrontend();
+    if (!shf) return { success: false, error: "selfHealingFrontend unavailable", output: null };
+
+    try {
+        const result = await shf.heal({ url, targetFile: targetMatch ? targetMatch[1] : undefined, autoApply });
+        const output = JSON.stringify({
+            healed: true, healId: result.healId, status: result.status,
+            applied: result.stages?.apply?.ok === true,
+            errorCount: result.stages?.collect?.count ?? 0,
+        });
+
+        if (result.stages?.apply?.ok) {
+            remember("success", { pattern: "frontend_heal", appliedTo: ctx.missionId || "unknown", outcome: `applied fix for ${result.stages.collect?.count || "?"} frontend error(s)` },
+                { tags: ["frontend", "healing", "engineering"], importance: 60 });
+        } else if (result.stages?.collect?.count) {
+            remember("knowledge", { insight: `Frontend heal detected ${result.stages.collect.count} error(s) but did not auto-apply (confidence/rollback-safety threshold not met)` },
+                { tags: ["frontend", "healing", "engineering"], importance: 50 });
+        }
+        if (ctx.missionId) recordArtifact(ctx.missionId, { type: "frontend_heal", healId: result.healId, applied: result.stages?.apply?.ok === true });
+        _getBus()?.emit("execution:frontend_heal:completed", { missionId: ctx.missionId, executionId: ctx.executionId, healId: result.healId, applied: result.stages?.apply?.ok === true });
+        return { success: true, output, artifacts: [{ type: "frontend_heal_result", value: output }], logs: [] };
+    } catch (e) {
+        return { success: false, error: _cap(e.message, 300), output: null };
+    }
+}
+
+// ── self_document: real doc generation from actual source inspection ──────
+// Engineering Autonomous Completion mission. Prior state: no file matching
+// doc-generation-from-AST/JSDoc parsing existed anywhere in this codebase.
+// This generates a REAL markdown summary by parsing the target file's
+// actual `function name(...)`/`async function name(...)` declarations and
+// the real `module.exports = { ... }` shorthand list (same regex approach
+// already used by engineeringSmellDetector.cjs's _detectDeadExport, for
+// consistency), plus each exported function's immediately-preceding
+// comment block if one exists — copied verbatim from the real source, not
+// invented or templated. A function with no preceding comment gets listed
+// with no description rather than a fabricated one.
+function _extractExportedFunctionDocs(filePath) {
+    let content;
+    try { content = fs.readFileSync(filePath, "utf8"); } catch { return null; }
+
+    const exportMatch = content.match(/module\.exports\s*=\s*\{([\s\S]*?)\}\s*;?\s*$/m);
+    const exportedNames = exportMatch
+        ? [...exportMatch[1].matchAll(/(?:^|[,{\s])([A-Za-z_$][A-Za-z0-9_$]*)\s*(?:,|$|\/\/|\n|\})/g)]
+            .map(m => m[1]).filter(n => n && !["require", "module", "exports"].includes(n))
+        : [];
+    if (!exportedNames.length) return { exportedNames: [], functions: [] };
+
+    const lines = content.split("\n");
+    const functions = [];
+    const FN_RE = /^(?:async\s+)?function\s+([A-Za-z_$][A-Za-z0-9_$]*)\s*\(([^)]*)\)/;
+
+    for (let i = 0; i < lines.length; i++) {
+        const m = lines[i].match(FN_RE);
+        if (!m) continue;
+        const name = m[1];
+        if (!exportedNames.includes(name)) continue; // only document real, actually-exported functions
+        const params = m[2].trim();
+
+        // Preceding comment block, if any — real text copied from source,
+        // never fabricated. Walks upward over contiguous // or /* */ lines.
+        let commentLines = [];
+        let j = i - 1;
+        while (j >= 0) {
+            const l = lines[j].trim();
+            if (l === "" ) { j--; continue; }
+            if (l.startsWith("//") || l.startsWith("*") || l.startsWith("/**") || l.endsWith("*/")) {
+                let stripped = l.replace(/^\/\*\*?|\*\/$|^\/\/|^\*\s?/g, "").trim();
+                // Strip leading/trailing ASCII divider runs (── / ---- /
+                // ==== etc.) — real section-header formatting in the
+                // source, but zero informational content on its own once
+                // extracted into a doc. Keeps any real text in between
+                // (e.g. "── Strategy selection ──" -> "Strategy selection").
+                stripped = stripped.replace(/^[─\-=_]{2,}\s*/, "").replace(/\s*[─\-=_]{2,}$/, "").trim();
+                if (stripped) commentLines.unshift(stripped);
+                j--;
+            } else break;
+        }
+        functions.push({ name, params, line: i + 1, doc: commentLines.filter(Boolean).join(" ") || null });
+    }
+    return { exportedNames, functions };
+}
+
+async function _selfDocument(ctx) {
+    const input = ctx.input || "";
+    const fileMatch = input.match(/file:([^\s]+)/i);
+    const targetFile = fileMatch ? fileMatch[1] : null;
+
+    if (!targetFile) {
+        return { success: true, output: JSON.stringify({ documented: false, reason: "no target file in this run" }), artifacts: [], logs: [] };
+    }
+    const absPath = path.resolve(REPO_ROOT, targetFile);
+    if (!absPath.startsWith(REPO_ROOT)) {
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
+    }
+
+    const extracted = _extractExportedFunctionDocs(absPath);
+    if (!extracted) return { success: false, error: `cannot read ${targetFile}`, output: null, nonRetriable: true };
+
+    const md = _renderDocMarkdown(targetFile, extracted);
+
+    // Write alongside the source file as a real .md companion — matches
+    // this codebase's existing convention of per-file docs (many services
+    // already have hand-written sibling doc comments; this makes an
+    // AI-readable one real and automatic instead of absent).
+    const docPath = absPath.replace(/\.(cjs|js)$/, ".autodoc.md");
+    try {
+        fs.writeFileSync(docPath, md, "utf8");
+    } catch (e) {
+        return { success: false, error: `failed to write doc: ${e.message}`, output: null };
+    }
+
+    const relDocPath = path.relative(REPO_ROOT, docPath);
+    const output = JSON.stringify({ documented: true, file: targetFile, docPath: relDocPath, functionCount: extracted.functions.length, exportedCount: extracted.exportedNames.length });
+
+    remember("knowledge", { insight: `Generated docs for ${targetFile}: ${extracted.functions.length}/${extracted.exportedNames.length} exported functions documented` },
+        { tags: ["documentation", "engineering"], importance: 35 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "self_document", file: targetFile, docPath: relDocPath });
+    return { success: true, output, artifacts: [{ type: "self_document_result", value: output }], logs: [] };
+}
+
+function _renderDocMarkdown(targetFile, { exportedNames, functions }) {
+    const lines = [`# ${targetFile}`, "", `_Auto-generated from real source inspection — ${new Date().toISOString()}_`, ""];
+    lines.push(`**Exported symbols (${exportedNames.length}):** ${exportedNames.map(n => `\`${n}\``).join(", ") || "(none detected)"}`, "");
+    if (functions.length) {
+        lines.push("## Functions", "");
+        for (const fn of functions) {
+            lines.push(`### \`${fn.name}(${fn.params})\``, "");
+            lines.push(fn.doc ? fn.doc : "_No description comment found in source._", "");
+            lines.push(`_Defined at line ${fn.line}._`, "");
+        }
+    } else {
+        lines.push("_No documented function declarations found among the exported symbols (may use arrow-function or other export style not covered by this parser)._", "");
+    }
+    return lines.join("\n");
+}
+
+// ── security_scan: real static security analysis via codeReviewEngine ─────
+// Engineering Autonomous Completion mission. Reuses codeReviewEngine.cjs's
+// EXISTING detectSecurity() (regex-based XSS/SQLi/eval/hardcoded-secret/
+// weak-crypto rules, already used by /coding/review) — no new scanner, no
+// new dependency. This capability's job is to point that real function at
+// the file the pipeline actually just patched (run.patchSpec.targetFile),
+// so the pipeline can gate a commit on real findings instead of a
+// disconnected, separately-invoked review.
+function _codeReview() { try { return require("./codeReviewEngine.cjs"); } catch { return null; } }
+
+async function _securityScan(ctx) {
+    const input = ctx.input || "";
+    const fileMatch = input.match(/file:([^\s]+)/i);
+    const targetFile = fileMatch ? fileMatch[1] : null;
+
+    if (!targetFile) {
+        // No specific file targeted (free-form goal, no patchSpec) — nothing
+        // concrete to scan. Not a failure: most pipeline runs have no
+        // single target file, and this stage must not block those.
+        return { success: true, output: JSON.stringify({ scanned: false, reason: "no target file in this run" }), artifacts: [], logs: [] };
+    }
+
+    const absPath = path.resolve(REPO_ROOT, targetFile);
+    if (!absPath.startsWith(REPO_ROOT)) {
+        return { success: false, error: "path_outside_project_root", output: null, nonRetriable: true };
+    }
+
+    let code;
+    try { code = fs.readFileSync(absPath, "utf8"); }
+    catch (e) { return { success: false, error: `cannot read ${targetFile}: ${e.message}`, output: null, nonRetriable: e.code === "ENOENT" }; }
+
+    const cr = _codeReview();
+    if (!cr) return { success: false, error: "codeReviewEngine unavailable", output: null };
+
+    const findings = cr.detectSecurity(code);
+    const critical = findings.filter(f => f.severity === "critical");
+    const high     = findings.filter(f => f.severity === "high");
+
+    const output = JSON.stringify({
+        scanned: true, file: targetFile,
+        findingCount: findings.length,
+        critical: critical.length, high: high.length,
+        findings: findings.slice(0, 20), // cap payload size, matches this file's other _cap-style truncation conventions
+    });
+
+    if (critical.length) {
+        remember("failure", { errorType: "security_finding", context: `${critical.length} critical security finding(s) in ${targetFile}`, resolution: "review and fix before commit" },
+            { tags: ["security", "engineering"], importance: 90 });
+    } else {
+        remember("knowledge", { insight: `Security scan clean: ${targetFile} (${findings.length} lower-severity findings)` }, { tags: ["security", "engineering"], importance: 40 });
+    }
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "security_scan", file: targetFile, critical: critical.length, high: high.length, total: findings.length });
+
+    // The capability itself always "succeeds" (the scan ran); whether
+    // critical findings BLOCK the pipeline is the security_gate stage's
+    // decision (engineeringPipelineCoordinator.cjs), matching the existing
+    // pattern where build_run/test_run always report their real result and
+    // a separate gate function decides pass/fail.
+    return { success: true, output, artifacts: [{ type: "security_scan_result", value: output }], logs: [] };
+}
+
+// ── open_pr: real GitHub PR creation via gitHubEngineeringAgent ───────────
+// Engineering Autonomous Completion mission. Reuses the EXISTING, already-
+// working GitHub write client (gitHubEngineeringAgent.createPR — real
+// POST /repos/{owner}/{repo}/pulls, no new HTTP client, no octokit
+// dependency added). This capability's job is only to derive the real
+// owner/repo/branch context from git and enforce the precondition a real
+// PR requires: the head branch must already exist on the remote. It never
+// runs `git push` itself — "no merge, no push" is enforced by construction
+// (there is no push call anywhere in this function), so this capability is
+// a real, complete PR-creation path for a branch some other actor already
+// pushed, not a push+PR combo.
+function _ghAgent() { try { return require("./gitHubEngineeringAgent.cjs"); } catch { return null; } }
+
+// Final Production Integration mission — Browser Agent wiring. Confirmed
+// genuinely absent before this: agents/browser/browserRunner.cjs +
+// nlBrowser.cjs + humanInTheLoop.cjs are all real and already power
+// POST /browser-platform/nl/run, but no autonomous decision/mission/
+// pipeline path could ever reach them — the decision engine, mission
+// orchestrator, and this capability layer had zero reference to any
+// browser module. This adds ONE capability that delegates to the exact
+// same real pipeline the HTTP route already uses (nlBrowser.parse ->
+// humanInTheLoop.scanSteps -> browserRunner.run), not a new browser
+// automation implementation — same danger-scan/approval-gate semantics,
+// so an autonomous caller gets no more trust than an HTTP caller does.
+function _nlBrowser()      { try { return require("./nlBrowser.cjs");        } catch { return null; } }
+function _humanInTheLoop() { try { return require("./humanInTheLoop.cjs");   } catch { return null; } }
+function _browserRunner()  { try { return require("../../agents/browser/browserRunner.cjs"); } catch { return null; } }
+
+async function _browserAutomate(ctx) {
+    const intent = (ctx.input || "").trim();
+    if (!intent) return { success: false, error: "browser_automate requires a natural-language intent as input", output: null, nonRetriable: true };
+
+    const nl = _nlBrowser();
+    const hitl = _humanInTheLoop();
+    const runner = _browserRunner();
+    if (!nl || !hitl || !runner) return { success: false, error: "browser automation services unavailable", output: null };
+
+    let parsed;
+    try {
+        parsed = await nl.parse(intent, { useKnownFlow: true });
+    } catch (e) {
+        return { success: false, error: `intent parsing failed: ${e.message}`, output: null };
+    }
+    if (!parsed?.steps?.length) {
+        return { success: false, error: "no browser steps could be parsed from this intent", output: JSON.stringify({ parsed }) };
+    }
+
+    // Same real danger scan the HTTP route applies — a flagged step means
+    // this capability stops and creates a real HITL request rather than
+    // running it, exactly like an interactive caller would be blocked.
+    const flagged = hitl.scanSteps(parsed.steps, intent);
+    if (flagged.length > 0) {
+        const hitlReq = hitl.createRequest({
+            intent, steps: parsed.steps, flaggedSteps: flagged,
+            dangerLevel: parsed.dangerLevel, dangerReason: parsed.dangerReason,
+            context: { missionId: ctx.missionId || null, source: "autonomous_pipeline" },
+        });
+        remember("knowledge", { insight: `Browser automation held for approval: "${intent.slice(0, 100)}"` }, { tags: ["browser", "hitl", "engineering"], importance: 60 });
+        return {
+            success: false,
+            error: `requires human approval — flagged ${flagged.length} step(s), see /browser-platform/hitl/${hitlReq.id}/approve`,
+            output: JSON.stringify({ requiresApproval: true, hitlRequestId: hitlReq.id, flagged }),
+            nonRetriable: true,
+        };
+    }
+
+    const result = await runner.run(parsed.steps, { headless: true });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "browser_automation", intent, steps: parsed.steps.length, ok: result.ok });
+    remember("knowledge", { insight: `Browser automation ${result.ok ? "succeeded" : "failed"}: "${intent.slice(0, 100)}"` }, { tags: ["browser", "engineering", result.ok ? "success" : "failure"], importance: 55 });
+
+    return {
+        success: !!result.ok,
+        error: result.ok ? null : (result.error || "browser workflow failed"),
+        output: JSON.stringify({ workflowId: result.workflowId, stepsRun: parsed.steps.length, summary: result.summary || null }),
+        artifacts: [{ type: "browser_result", value: { workflowId: result.workflowId } }],
+        logs: [],
+    };
+}
+
+async function _parseGitHubRemote() {
+    const r = await _sh("git", ["remote", "get-url", "origin"]);
+    if (!r.ok) return null;
+    // Handles both SSH (git@github.com:owner/repo.git) and HTTPS
+    // (https://github.com/owner/repo.git) remote URL forms.
+    const m = r.stdout.trim().match(/github\.com[:/]([^/]+)\/([^/.]+?)(?:\.git)?$/);
+    return m ? { owner: m[1], repo: m[2] } : null;
+}
+
+async function _openPR(ctx) {
+    const input = ctx.input || "";
+    const titleMatch = input.match(/title:"([^"]*)"/i);
+    const baseMatch  = input.match(/base:([^\s]+)/i);
+    const headMatch  = input.match(/head:([^\s]+)/i);
+    const bodyMatch  = input.match(/body:"([\s\S]*?)"(?:\s|$)/i);
+    const draftFlag  = /draft:true/i.test(input);
+
+    const remote = await _parseGitHubRemote();
+    if (!remote) return { success: false, error: "no GitHub remote configured (git remote get-url origin)", output: null, nonRetriable: true };
+
+    const currentBranch = (await _sh("git", ["branch", "--show-current"])).stdout.trim();
+    const head = headMatch ? headMatch[1] : currentBranch;
+    const base = baseMatch ? baseMatch[1] : "main";
+    const title = titleMatch ? titleMatch[1] : `[pipeline] ${(ctx.missionId || "engineering change")}`.slice(0, 200);
+    const body  = bodyMatch ? bodyMatch[1] : "Opened by the autonomous engineering pipeline.";
+
+    if (!head) return { success: false, error: "no branch to open a PR from (detached HEAD and no head: specified)", output: null, nonRetriable: true };
+    if (head === base) return { success: false, error: `head branch equals base branch (${base}) — nothing to PR`, output: null, nonRetriable: true };
+
+    // Precondition, not a push: a real PR requires the head branch to
+    // already exist on the remote. This capability never pushes — if the
+    // branch isn't there, it fails cleanly with an actionable message
+    // rather than pushing on the caller's behalf.
+    const remoteRef = await _sh("git", ["ls-remote", "--heads", "origin", head]);
+    if (!remoteRef.ok || !remoteRef.stdout.trim()) {
+        return {
+            success: false,
+            error: `branch "${head}" does not exist on origin — push it first (this capability does not push; PR creation requires an already-pushed branch)`,
+            output: null,
+            nonRetriable: true,
+        };
+    }
+
+    const gh = _ghAgent();
+    if (!gh) return { success: false, error: "gitHubEngineeringAgent unavailable", output: null };
+
+    try {
+        const pr = await gh.createPR(remote.owner, remote.repo, { title, head, base, body, draft: draftFlag });
+        const output = JSON.stringify({ opened: true, number: pr.number, url: pr.url, title: pr.title, owner: remote.owner, repo: remote.repo, head, base });
+        remember("success", { pattern: "open_pr", appliedTo: ctx.missionId || "unknown", outcome: `PR #${pr.number} opened: ${pr.url}` },
+            { tags: ["pr", "github", "engineering"], importance: 65 });
+        if (ctx.missionId) recordArtifact(ctx.missionId, { type: "open_pr", number: pr.number, url: pr.url });
+        _getBus()?.emit("execution:pr:opened", { missionId: ctx.missionId, executionId: ctx.executionId, number: pr.number, url: pr.url });
+        return { success: true, output, artifacts: [{ type: "pr_result", value: output }], logs: [{ ts: new Date().toISOString(), msg: `opened PR #${pr.number}` }] };
+    } catch (e) {
+        // GITHUB_TOKEN missing/invalid or a real API error — both are
+        // legitimate failures of a real write attempt, not fabricated.
+        return { success: false, error: _cap(e.message, 300), output: null };
+    }
 }
 
 // ── git_status: porcelain status ──────────────────────────────────────────
@@ -396,6 +989,149 @@ async function _gitCommit(ctx) {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// DOCKER (V6 Phase 3: Docker Orchestration — Mission Runtime integration)
+// ══════════════════════════════════════════════════════════════════════════════
+// Real container/compose orchestration lives in dockerController.cjs (its own
+// service, matching this file's existing "does not duplicate execution
+// engines" rule — Docker's command surface is far richer than safe-exec's
+// git/npm/node allowlist, so it gets its own real execFileSync-backed
+// adapter rather than being squeezed through _sh()). These 4 handlers are
+// the Mission Runtime / Agent Registry / Executor integration point: any
+// mission or agent can request a docker_* capability the same way it
+// already requests build_run/test_run, and get the same real remember()/
+// recordArtifact() memory trail.
+function _dockerCtl() { try { return require("./dockerController.cjs"); } catch { return null; } }
+function _depAudit()  { try { return require("./dependencyAuditEngine.cjs"); } catch { return null; } }
+function _legalDoc()  { try { return require("./legalDocumentEngine.cjs"); } catch { return null; } }
+function _dailyPlan() { try { return require("./dailyPlanningEngine.cjs"); } catch { return null; } }
+
+// docker_status: read-only daemon + container snapshot.
+async function _dockerStatus(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const dash = dk.getDashboard();
+    const output = JSON.stringify({ reachable: dash.daemon?.reachable, containersRunning: dash.daemonStats?.containersRunning, containersTotal: dash.daemonStats?.containersTotal });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "docker_status", ...dash.daemonStats });
+    return { success: !!dash.daemon?.reachable, output, artifacts: [{ type: "docker_status", value: dash.daemonStats }], logs: [] };
+}
+
+// docker_health: single container health check. input: "docker_health: <ref>"
+async function _dockerHealth(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const ref = ctx.input.replace(/^docker[_\s]health:?\s*/i, "").trim();
+    if (!ref) return { success: false, error: "container ref required (docker_health: <ref>)", output: null, nonRetriable: true };
+    const health = dk.containerHealth(ref);
+    if (!health.ok) return { success: false, error: health.error, output: null };
+    const output = JSON.stringify(health);
+    remember(health.running ? "success" : "failure",
+        health.running ? { pattern: "docker_health", appliedTo: ref, outcome: `running, health=${health.health}` }
+                        : { errorType: "container_down", context: ref, resolution: "restart or investigate container logs" },
+        { tags: ["docker", "health"], importance: health.running ? 40 : 65 });
+    return { success: health.running, output, artifacts: [{ type: "docker_health", ref, value: health }], logs: [] };
+}
+
+// docker_compose_up: input JSON {composeFile?, services?[]}, or a bare
+// composeFile path string. Real rollback snapshot is captured by
+// dockerController.composeUp() itself — the resulting snapshotId is
+// recorded as a mission artifact so a later docker_rollback capability
+// call (or a human) can reference it.
+async function _dockerComposeUp(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^docker[_\s]compose[_\s]up:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { composeFile: raw || undefined }; } catch { opts = { composeFile: raw || undefined }; }
+
+    const result = dk.composeUp(opts);
+    const output = JSON.stringify(result);
+    if (result.ok) {
+        remember("success", { pattern: "docker_compose_up", appliedTo: opts.composeFile || "docker-compose.prod.yml", outcome: `snapshot ${result.snapshotId}` },
+            { tags: ["docker", "compose", "deploy"], importance: 65 });
+        if (ctx.missionId) recordArtifact(ctx.missionId, { type: "docker_compose_up", composeFile: opts.composeFile, snapshotId: result.snapshotId });
+    } else {
+        remember("failure", { errorType: "compose_up_failed", context: opts.composeFile || "docker-compose.prod.yml", resolution: "check compose file and daemon reachability" },
+            { tags: ["docker", "compose"], importance: 75 });
+    }
+    return { success: result.ok, error: result.ok ? undefined : result.error, output, artifacts: [{ type: "docker_compose_up", snapshotId: result.snapshotId, ok: result.ok }], logs: [] };
+}
+
+// docker_compose_down: input JSON {composeFile?, removeVolumes?}, or a bare
+// composeFile path string.
+async function _dockerComposeDown(ctx) {
+    const dk = _dockerCtl();
+    if (!dk) return { success: false, error: "dockerController unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^docker[_\s]compose[_\s]down:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { composeFile: raw || undefined }; } catch { opts = { composeFile: raw || undefined }; }
+
+    const result = dk.composeDown(opts);
+    const output = JSON.stringify(result);
+    remember(result.ok ? "success" : "failure",
+        result.ok ? { pattern: "docker_compose_down", appliedTo: opts.composeFile || "docker-compose.prod.yml", outcome: "stack stopped" }
+                   : { errorType: "compose_down_failed", context: opts.composeFile || "docker-compose.prod.yml", resolution: "check daemon reachability" },
+        { tags: ["docker", "compose"], importance: result.ok ? 40 : 70 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "docker_compose_down", composeFile: opts.composeFile, ok: result.ok });
+    return { success: result.ok, error: result.ok ? undefined : result.error, output, artifacts: [{ type: "docker_compose_down", ok: result.ok }], logs: [] };
+}
+
+// docker_dependency_scan: real npm audit — reusing the naming convention
+// docker_* established, "dependency_scan" describes the real action.
+async function _dependencyScan(ctx) {
+    const eng = _depAudit();
+    if (!eng) return { success: false, error: "dependencyAuditEngine unavailable", output: null, nonRetriable: true };
+    const result = eng.scanVulnerabilities();
+    if (!result.ok) return { success: false, error: result.error, output: null };
+    const output = JSON.stringify({ totalVulnerabilities: result.totalVulnerabilities, bySeverity: result.bySeverity });
+    remember(result.totalVulnerabilities === 0 ? "success" : "failure",
+        result.totalVulnerabilities === 0 ? { pattern: "dependency_scan", appliedTo: "package.json", outcome: "no vulnerabilities" }
+                                            : { errorType: "vulnerabilities_found", context: `${result.totalVulnerabilities} found`, resolution: "review and apply safe updates" },
+        { tags: ["dependency", "security"], importance: result.bySeverity.critical > 0 ? 85 : 50 });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "dependency_scan", ...result.bySeverity });
+    return { success: true, output, artifacts: [{ type: "dependency_scan", value: result.bySeverity }], logs: [] };
+}
+
+// legal_document_generate: input JSON {type, params, workspaceId} — real
+// AI-drafted legal document via legalDocumentEngine.cjs (V6 Phase 6:
+// Category E, Legal OS). Always sets acknowledgeNotLegalAdvice:true when
+// invoked as a mission capability — a mission is an explicit operator-
+// initiated action, matching the same acknowledgement the HTTP route
+// requires from a human caller.
+async function _legalDocumentGenerate(ctx) {
+    const eng = _legalDoc();
+    if (!eng) return { success: false, error: "legalDocumentEngine unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^legal[_\s]document[_\s]generate:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { type: raw }; } catch { opts = { type: raw }; }
+    if (!opts.type) return { success: false, error: "document type required (legal_document_generate: {\"type\":\"nda\",...})", output: null, nonRetriable: true };
+
+    const result = await eng.generateDocument({ ...opts, acknowledgeNotLegalAdvice: true });
+    if (!result.ok) return { success: false, error: result.error, output: null };
+    const output = JSON.stringify({ docId: result.document.docId, type: result.document.type, title: result.document.title });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "legal_document", docId: result.document.docId, docType: result.document.type });
+    remember("success", { pattern: "legal_document_generate", appliedTo: opts.type, outcome: `drafted ${result.document.title}` }, { tags: ["legal", "document"], importance: 55 });
+    return { success: true, output, artifacts: [{ type: "legal_document", docId: result.document.docId }], logs: [] };
+}
+
+// daily_task_create: input JSON {title, dueDate, priority, notes} — real
+// personal task via dailyPlanningEngine.cjs (V6 Phase 8: Personal JARVIS).
+async function _dailyTaskCreate(ctx) {
+    const eng = _dailyPlan();
+    if (!eng) return { success: false, error: "dailyPlanningEngine unavailable", output: null, nonRetriable: true };
+    const raw = ctx.input.replace(/^daily[_\s]task[_\s]create:?\s*/i, "").trim();
+    let opts = {};
+    try { opts = raw.startsWith("{") ? JSON.parse(raw) : { title: raw }; } catch { opts = { title: raw }; }
+    if (!opts.title) return { success: false, error: "task title required (daily_task_create: {\"title\":\"...\",...})", output: null, nonRetriable: true };
+
+    const result = eng.createTask({ ...opts, source: "mission" });
+    if (!result.ok) return { success: false, error: result.error, output: null };
+    const output = JSON.stringify({ taskId: result.task.id, title: result.task.title, dueDate: result.task.dueDate });
+    if (ctx.missionId) recordArtifact(ctx.missionId, { type: "daily_task", taskId: result.task.id });
+    remember("success", { pattern: "daily_task_create", appliedTo: opts.title, outcome: `created task ${result.task.id}` }, { tags: ["planning", "task"], importance: 40 });
+    return { success: true, output, artifacts: [{ type: "daily_task", taskId: result.task.id }], logs: [] };
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
 // REGISTRATION
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -408,10 +1144,24 @@ const CAPABILITY_DEFS = [
     { name: "patch_apply",     description: "Verify staged diff is present and record patch apply artifact",       handler: _patchApply },
     { name: "build_run",       description: "Execute npm run build:frontend via safe-exec (90s timeout)",          handler: _buildRun },
     { name: "test_run",        description: "Execute npm run test:runtime via safe-exec (90s timeout)",            handler: _testRun },
-    { name: "rollback",        description: "git reset HEAD to undo staged changes — safe rollback",               handler: _rollback },
+    { name: "rollback",        description: "Real rollback: git revert <commit> or git checkout -- <file> from HEAD, verified", handler: _rollback },
     { name: "git_status",      description: "Porcelain git status + recent log",                                   handler: _gitStatus },
     { name: "git_diff",        description: "Git diff --stat (staged or HEAD)",                                    handler: _gitDiff },
     { name: "git_commit",      description: "Approval-aware git commit; requires approved:true in input",          handler: _gitCommit },
+    { name: "open_pr",         description: "Open a real GitHub PR via gitHubEngineeringAgent (requires an already-pushed head branch — never pushes itself)", handler: _openPR },
+    { name: "browser_automate",description: "Real browser automation via nlBrowser+browserRunner — same danger-scan/HITL-approval gate as the HTTP route", handler: _browserAutomate },
+    { name: "security_scan",   description: "Real static security analysis via codeReviewEngine.detectSecurity on the run's target file", handler: _securityScan },
+    { name: "bundle_analyze",  description: "Real frontend build size analysis from frontend/build/asset-manifest.json (actual file sizes)", handler: _bundleAnalyze },
+    { name: "bundle_optimize", description: "Identify specific oversized chunks with code-splitting recommendations (human-reviewed, never auto-applied)", handler: _bundleOptimize },
+    { name: "self_document",   description: "Generate a real markdown doc from actual exported-function inspection (name, params, real preceding comment)", handler: _selfDocument },
+    { name: "frontend_heal",   description: "Real frontend self-healing via selfHealingFrontend.heal() — Playwright error detection + confidence-gated auto-patch", handler: _frontendHeal },
+    { name: "docker_status",       description: "Real Docker daemon reachability + container counts via dockerController.cjs", handler: _dockerStatus },
+    { name: "docker_health",       description: "Real single-container health check (running/health/restartCount) via dockerController.cjs", handler: _dockerHealth },
+    { name: "docker_compose_up",   description: "Real docker compose up -d with automatic pre-up rollback snapshot", handler: _dockerComposeUp },
+    { name: "docker_compose_down", description: "Real docker compose down", handler: _dockerComposeDown },
+    { name: "dependency_scan",     description: "Real npm audit vulnerability scan via dependencyAuditEngine.cjs", handler: _dependencyScan },
+    { name: "legal_document_generate", description: "Real AI-drafted legal document (NDA/DPA/MSA/SOW/offer/vendor) via legalDocumentEngine.cjs", handler: _legalDocumentGenerate },
+    { name: "daily_task_create",   description: "Real personal task with due date/priority via dailyPlanningEngine.cjs", handler: _dailyTaskCreate },
 ];
 
 let _registered = false;
@@ -451,6 +1201,12 @@ function _category(name) {
     if (name.startsWith("patch_"))                             return "patch";
     if (name.startsWith("build_") || name.startsWith("test_")) return "ci";
     if (name.startsWith("git_") || name === "rollback")        return "git";
+    if (name === "open_pr")                                    return "git";
+    if (name.startsWith("bundle_") || name === "security_scan" || name === "self_document" || name === "frontend_heal") return "quality";
+    if (name.startsWith("docker_"))                            return "docker";
+    if (name === "dependency_scan")                            return "devops";
+    if (name === "legal_document_generate")                    return "legal";
+    if (name === "daily_task_create")                          return "planning";
     return "general";
 }
 

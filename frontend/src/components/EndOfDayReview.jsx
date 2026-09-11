@@ -15,15 +15,35 @@ export default function EndOfDayReview({ onClose }) {
       fetch(`${BASE}/lessons`,                  { credentials: "include" }).then(r => r.json()).catch(() => ({ lessons: [] })),
       fetch(`${BASE}/engineering/intelligence`, { credentials: "include" }).then(r => r.json()).catch(() => ({})),
     ]).then(([missionsData, lessonsData, intelData]) => {
-      const missions = (missionsData.missions || [])
+      const missions = (Array.isArray(missionsData?.missions) ? missionsData.missions : [])
         .filter(m => m.updatedAt?.startsWith(today) || m.createdAt?.startsWith(today))
         .slice(0, 8);
-      const lessons = (lessonsData.lessons || lessonsData || []).slice(0, 5);
+      // A.11 UX consistency: `lessonsData.lessons || lessonsData` fell through to
+      // the RESPONSE OBJECT whenever the endpoint returned anything without a
+      // `lessons` key — including the real error body {"error":"Unauthorized"} —
+      // and `.slice()` on that object threw, crashing the whole review with
+      // "(o.lessons || o || []).slice is not a function". Measured live.
+      // Array.isArray() is the guard already used 102× across the app.
+      const lessons = (Array.isArray(lessonsData?.lessons) ? lessonsData.lessons
+        : Array.isArray(lessonsData) ? lessonsData : []).slice(0, 5);
       const signals = intelData.signals?.slice(0, 3) || [];
       setData({ missions, lessons, signals, date: today });
       setLoading(false);
     });
   }, []);
+
+  // A.11.1 UX consistency fix: every other real dismissible overlay in the
+  // app (CommandPalette.jsx's handleKey, ConfirmDialog.jsx's onKey) closes
+  // on Escape. This modal already closes on backdrop click and the ✕/Close
+  // Review buttons, but had no Escape handler at all — the one interaction
+  // a founder is most likely to reach for muscle-memory-first after using
+  // ⌘K or any confirm dialog elsewhere in the same session. Same pattern,
+  // same event, no new UI.
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
 
   const suggestions = [
     "Review open missions and close any stale ones.",

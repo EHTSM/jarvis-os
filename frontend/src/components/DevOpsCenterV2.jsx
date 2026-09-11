@@ -7,7 +7,14 @@ import {
   listAlerts, resolveAlert, getServiceMap,
 } from "../phase25Api";
 import { getAIStatus } from "../aiApi";
+import * as dockerApi from "../dockerApi";
+import * as deployStrategyApi from "../deploymentStrategyApi";
+import * as depAuditApi from "../dependencyAuditApi";
+import * as terminalApi from "../computerTerminalApi";
+import SampleDataNotice from "./SampleDataNotice";
+import { useConfirm } from "./ConfirmDialog";
 import "./DevOpsCenterV2.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -22,6 +29,9 @@ const TABS = [
   { id: "services",    label: "Service Health"},
   { id: "patches",     label: "Patches"      },
   { id: "dlq",         label: "Recovery"     },
+  { id: "docker",      label: "Docker"       },
+  { id: "dependencies",label: "Dependencies" },
+  { id: "terminal",    label: "Terminal"     },
 ];
 
 const SEED_DEPLOYMENTS = [
@@ -122,18 +132,18 @@ function SkelRow({ cols = 3 }) {
   );
 }
 
-const SEV_COLOR = { critical:"#f55b5b", warning:"#f0b429", low:"#4ecdc4", info:"#8994b0" };
+const SEV_COLOR = { critical:"var(--danger)", warning:"var(--warning)", low:"var(--accent2)", info:"var(--text-dim)" };
 const STATUS_COLOR = {
-  healthy:"#52d68a", active:"#52d68a", ok:"#52d68a", success:"#52d68a",
-  degraded:"#f0b429", warning:"#f0b429", running:"#7c6fff",
-  failed:"#f55b5b", critical:"#f55b5b", down:"#f55b5b",
-  rollback:"#f0b429", standby:"#8994b0", resolved:"#52d68a", open:"#f0b429",
+  healthy:"var(--success)", active:"var(--success)", ok:"var(--success)", success:"var(--success)",
+  degraded:"var(--warning)", warning:"var(--warning)", running:"var(--accent)",
+  failed:"var(--danger)", critical:"var(--danger)", down:"var(--danger)",
+  rollback:"var(--warning)", standby:"var(--text-dim)", resolved:"var(--success)", open:"var(--warning)",
 };
-function sc(s) { return STATUS_COLOR[s] || "#8994b0"; }
+function sc(s) { return STATUS_COLOR[s] || "var(--text-dim)"; }
 
 // ── Tab: Runtime ──────────────────────────────────────────────────────
 
-function TabRuntime({ addToast }) {
+export function TabRuntime({ addToast }) {
   const [status,     setStatus]     = useState(null);
   const [history,    setHistory]    = useState([]);
   const [loading,    setLoading]    = useState(true);
@@ -141,6 +151,7 @@ function TabRuntime({ addToast }) {
   const [resuming,    setResuming]    = useState(false);
   const [restarting,  setRestarting]  = useState(false);
   const [emergency,   setEmergency]   = useState(false);
+  const [confirm, ConfirmUI] = useConfirm();
 
   useEffect(() => {
     setLoading(true);
@@ -159,12 +170,29 @@ function TabRuntime({ addToast }) {
   const mode = status?.mode || "normal";
 
   async function handleStop() {
+    // The single most destructive control in the app — halts all queued and
+    // in-flight tasks platform-wide, for every customer — previously fired
+    // immediately on click with zero confirmation, less friction than
+    // deleting a single CRM contact. Reusing the same useConfirm pattern
+    // every other destructive action in the app already goes through.
+    const ok = await confirm({
+      title: "Activate emergency stop?",
+      message: "This halts all queued and in-flight tasks for every customer on the platform, immediately. Resume restores normal operation.",
+      danger: true,
+      confirmLabel: "Emergency Stop",
+    });
+    if (!ok) return;
     setStopping(true);
     try {
-      await emergencyStop("operator_initiated");
+      // emergencyStop() never throws — it catches internally and resolves
+      // {success:false, error} on a real failure, same class of bug fixed
+      // across BusinessOS in the prior mission. Without this check, a
+      // rejected emergency stop still showed "activated" as if it worked.
+      const r = await emergencyStop("operator_initiated");
+      if (r?.success === false) throw new Error(r.error || "Emergency stop failed");
       setEmergency(true);
       addToast("Emergency stop activated", "error");
-      track("emergency_stop");
+      track.event("emergency_stop");
     } catch (e) { addToast(`Stop failed: ${e.message}`, "error"); }
     finally    { setStopping(false); }
   }
@@ -172,10 +200,16 @@ function TabRuntime({ addToast }) {
   async function handleResume() {
     setResuming(true);
     try {
-      await emergencyResume();
+      // Same class of bug as handleStop above — emergencyResume() never
+      // throws, so a real failure must be read from the response, not
+      // assumed from a successful promise resolution. A false "resumed"
+      // here would be worse than the false "activated": the platform stays
+      // in emergency stop while the UI claims it's back to normal.
+      const r = await emergencyResume();
+      if (r?.success === false) throw new Error(r.error || "Resume failed");
       setEmergency(false);
       addToast("Execution resumed", "success");
-      track("emergency_resume");
+      track.event("emergency_resume");
     } catch (e) { addToast(`Resume failed: ${e.message}`, "error"); }
     finally    { setResuming(false); }
   }
@@ -191,7 +225,7 @@ function TabRuntime({ addToast }) {
       });
       if (!r.ok) throw new Error(`HTTP ${r.status}`);
       addToast("Workers restarted — runtime recovering", "success");
-      track("workers_restarted");
+      track.event("workers_restarted");
       setTimeout(() => {
         getRuntimeStatus().then(s => { setStatus(s); setRestarting(false); }).catch(() => setRestarting(false));
       }, 3000);
@@ -201,10 +235,11 @@ function TabRuntime({ addToast }) {
     }
   }
 
-  const LOG_LEVEL_COLOR = { running:"#7c6fff", success:"#52d68a", error:"#f55b5b", warning:"#f0b429", info:"#8994b0" };
+  const LOG_LEVEL_COLOR = { running:"var(--accent)", success:"var(--success)", error:"var(--danger)", warning:"var(--warning)", info:"var(--text-dim)" };
 
   return (
     <div className="dv2-runtime-root">
+      {ConfirmUI}
       {emergency && (
         <div className="dv2-emergency-banner">
           <span>⏹ EMERGENCY STOP ACTIVE</span>
@@ -219,11 +254,11 @@ function TabRuntime({ addToast }) {
           <p className="dv2-section-label">Runtime Status</p>
           {loading ? <SkelRow cols={2} /> : (
             <div className="dv2-rt-meta">
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Mode</span><span className="dv2-rt-val" style={{ color: mode === "emergency" ? "#f55b5b" : "#52d68a" }}>{mode.toUpperCase()}</span></div>
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Emergency Stop</span><span className="dv2-rt-val" style={{ color: emergency ? "#f55b5b" : "#52d68a" }}>{emergency ? "ACTIVE" : "INACTIVE"}</span></div>
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Running</span><span className="dv2-rt-val" style={{ color: "#7c6fff" }}>{q.running ?? "—"}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Mode</span><span className="dv2-rt-val" style={{ color: mode === "emergency" ? "var(--danger)" : "var(--success)" }}>{mode.toUpperCase()}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Emergency Stop</span><span className="dv2-rt-val" style={{ color: emergency ? "var(--danger)" : "var(--success)" }}>{emergency ? "ACTIVE" : "INACTIVE"}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Running</span><span className="dv2-rt-val" style={{ color: "var(--accent)" }}>{q.running ?? "—"}</span></div>
               <div className="dv2-rt-row"><span className="dv2-rt-key">Queued</span><span className="dv2-rt-val">{q.queued ?? "—"}</span></div>
-              <div className="dv2-rt-row"><span className="dv2-rt-key">Failed</span><span className="dv2-rt-val" style={{ color: "#f55b5b" }}>{q.failed ?? "—"}</span></div>
+              <div className="dv2-rt-row"><span className="dv2-rt-key">Failed</span><span className="dv2-rt-val" style={{ color: "var(--danger)" }}>{q.failed ?? "—"}</span></div>
               <div className="dv2-rt-row"><span className="dv2-rt-key">Executor</span><span className="dv2-rt-val dv2-mono">{status?.executor || "agents/executor.cjs"}</span></div>
             </div>
           )}
@@ -268,12 +303,12 @@ function TabRuntime({ addToast }) {
             {[0,1,2,3].map(i => <SkelRow key={i} cols={4} />)}
           </div>
         ) : history.length === 0 ? (
-          <div className="dv2-empty"><span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span><p className="dv2-empty-title">Queue is clear</p></div>
+          <div className="dv2-empty"><span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span><p className="dv2-empty-title">Queue is clear</p></div>
         ) : (
           <div className="dv2-log-list">
             {history.slice(0, 15).map((e, i) => {
               const s = e.status || "info";
-              const dotC = LOG_LEVEL_COLOR[s] || "#8994b0";
+              const dotC = LOG_LEVEL_COLOR[s] || "var(--text-dim)";
               return (
                 <div key={e.id || i} className="dv2-log-row">
                   <span className="dv2-log-ts dv2-mono">{_timeAgo(e.timestamp || e.createdAt)}</span>
@@ -294,12 +329,104 @@ function TabRuntime({ addToast }) {
 
 // ── Tab: Deployments ──────────────────────────────────────────────────
 
-function TabDeployments({ addToast }) {
+function StrategyDeployPanel({ addToast }) {
+  const [envs,       setEnvs]       = useState([]);
+  const [runs,       setRuns]       = useState([]);
+  const [loading,    setLoading]    = useState(true);
+  const [mode,       setMode]       = useState("blue-green"); // "blue-green" | "canary"
+  const [composeFile,setComposeFile]= useState("");
+  const [healthUrl,  setHealthUrl]  = useState("");
+  const [service,    setService]    = useState("");
+  const [totalReplicas, setTotalReplicas] = useState(3);
+  const [canaryReplicas, setCanaryReplicas] = useState(1);
+  const [running,    setRunning]    = useState(false);
+
+  const refresh = useCallback(() => {
+    Promise.all([
+      deployStrategyApi.listEnvironments().catch(() => null),
+      deployStrategyApi.listStrategyRuns({ limit: 10 }).catch(() => null),
+    ]).then(([e, r]) => {
+      setEnvs(e?.environments || []);
+      setRuns(r?.runs || []);
+    }).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  async function handleDeploy() {
+    if (!composeFile) { addToast("composeFile is required", "error"); return; }
+    if (!healthUrl)   { addToast("healthUrl is required — cutover is health-gated", "error"); return; }
+    if (mode === "canary" && (!service || !totalReplicas)) {
+      addToast("service and totalReplicas are required for canary", "error");
+      return;
+    }
+    setRunning(true);
+    try {
+      const result = mode === "blue-green"
+        ? await deployStrategyApi.blueGreenDeploy({ composeFile, healthUrl })
+        : await deployStrategyApi.canaryDeploy({ composeFile, healthUrl, service, totalReplicas: +totalReplicas, canaryReplicas: +canaryReplicas });
+      if (result?.ok) {
+        addToast(`${mode === "blue-green" ? "Blue/green" : "Canary"} deploy ${result.rolledBack ? "rolled back" : "promoted"} — run ${result.runId}`, result.rolledBack ? "error" : "success");
+      } else {
+        addToast(`Deploy failed: ${result?.error || "unknown error"}`, "error");
+      }
+    } catch (e) {
+      addToast(`Deploy request failed: ${e.message}`, "error");
+    } finally {
+      setRunning(false);
+      refresh();
+    }
+  }
+
+  return (
+    <div className="dv2-strategy-panel">
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Blue/Green & Canary Deploy</span>
+        {envs.length > 0 && <span className="dv2-strategy-envcount">{envs.length} registered environment(s)</span>}
+      </div>
+      <div className="dv2-strategy-mode">
+        {["blue-green", "canary"].map(m => (
+          <button key={m} className={`dv2-filter-chip${mode===m?" dv2-filter-chip--active":""}`} onClick={() => setMode(m)}>{m}</button>
+        ))}
+      </div>
+      <div className="dv2-strategy-form">
+        <input className="dv2-search" placeholder="composeFile (e.g. docker-compose.yml)" value={composeFile} onChange={e => setComposeFile(e.target.value)} />
+        <input className="dv2-search" placeholder="healthUrl (e.g. http://localhost:5050/health)" value={healthUrl} onChange={e => setHealthUrl(e.target.value)} />
+        {mode === "canary" && (
+          <>
+            <input className="dv2-search" placeholder="service name" value={service} onChange={e => setService(e.target.value)} />
+            <input className="dv2-search" type="number" min="1" placeholder="canary replicas" value={canaryReplicas} onChange={e => setCanaryReplicas(e.target.value)} style={{ maxWidth: 140 }} />
+            <input className="dv2-search" type="number" min="1" placeholder="total replicas" value={totalReplicas} onChange={e => setTotalReplicas(e.target.value)} style={{ maxWidth: 140 }} />
+          </>
+        )}
+        <button className={`dv2-btn dv2-btn--primary${running ? " dv2-btn--loading" : ""}`} onClick={handleDeploy} disabled={running}>
+          {running ? "⟳ Deploying…" : `▶ Run ${mode}`}
+        </button>
+      </div>
+      <div className="dv2-strategy-runs">
+        {loading ? <SkelRow cols={4} /> : runs.length === 0 ? (
+          <p className="dv2-cs-sub">No strategy runs yet.</p>
+        ) : runs.map(r => (
+          <div key={r.id} className="dv2-strategy-run-row">
+            <span className="dv2-dr-status dv2-chip" style={{ color: sc(r.ok ? "success" : "failed"), background: (r.ok ? "#2ecc71" : "var(--danger)")+"15" }}>{r.ok ? "success" : (r.rolledBack ? "rolled back" : "failed")}</span>
+            <span className="dv2-dr-repo dv2-mono">{r.type}</span>
+            <span className="dv2-dr-version dv2-mono">{r.composeFile}</span>
+            <span className="dv2-dr-ts">{r.ts ? _timeAgo(r.ts) : "—"}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function TabDeployments({ addToast }) {
   const [deployments, setDeployments] = useState(SEED_DEPLOYMENTS);
+  const [isSample,    setIsSample]    = useState(true);
   const [loading,     setLoading]     = useState(true);
   const [envFilter,   setEnvFilter]   = useState("all");
   const [expanded,    setExpanded]    = useState(null);
   const [rolling,     setRolling]     = useState(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   useEffect(() => {
     Promise.all([
@@ -308,6 +435,7 @@ function TabDeployments({ addToast }) {
     ]).then(([list, hist]) => {
       const raw = list?.deployments || hist?.history || (Array.isArray(list) ? list : null) || (Array.isArray(hist) ? hist : null);
       if (raw && raw.length > 0) {
+        setIsSample(false);
         setDeployments(raw.map(d => ({
           id:       d.id,
           env:      d.environment || d.env || "production",
@@ -331,6 +459,8 @@ function TabDeployments({ addToast }) {
 
   return (
     <div className="dv2-deploy-root">
+      {ConfirmUI}
+      {!loading && isSample && <SampleDataNotice label="sample deployment history" />}
       <div className="dv2-deploy-summary">
         {Object.entries(counts).map(([k, v]) => (
           <div key={k} className="dv2-ds-cell">
@@ -340,13 +470,7 @@ function TabDeployments({ addToast }) {
         ))}
       </div>
 
-      <div className="dv2-coming-soon">
-        <span className="dv2-cs-icon">◎</span>
-        <div>
-          <p className="dv2-cs-title">One-click Deploy & Rollback <span className="csb-beta-badge">BETA</span></p>
-          <p className="dv2-cs-sub">Interactive deploy pipeline with canary release, blue/green switching, and automated rollback. Until then: <code className="dv2-code">pm2 restart all</code></p>
-        </div>
-      </div>
+      <StrategyDeployPanel addToast={addToast} />
 
       <div className="dv2-deploy-filter">
         {["all","production","staging","development"].map(e => (
@@ -357,12 +481,12 @@ function TabDeployments({ addToast }) {
       <div className="dv2-deploy-list">
         {loading ? [0,1,2].map(i => <div key={i} className="dv2-deploy-row"><SkelRow cols={5} /></div>) : (
           filtered.map(d => {
-            const ec = ENV_COLORS[d.env] || "#8994b0";
+            const ec = ENV_COLORS[d.env] || "var(--text-dim)";
             const dc = sc(d.status);
             const isOpen = expanded === d.id;
             return (
               <div key={d.id} className={`dv2-deploy-row${isOpen?" dv2-deploy-row--open":""}`}>
-                <div className="dv2-dr-top" onClick={() => setExpanded(isOpen ? null : d.id)}>
+                <div className="dv2-dr-top" {...clickableProps(() => setExpanded(isOpen ? null : d.id))}>
                   <span className="dv2-dr-env" style={{ color: ec, background: ec+"15" }}>{d.env}</span>
                   <span className="dv2-dr-repo dv2-mono">{d.repo}</span>
                   <span className="dv2-dr-version dv2-mono">{d.version}</span>
@@ -378,10 +502,28 @@ function TabDeployments({ addToast }) {
                     <div className="dv2-dr-detail-row"><span>Duration</span><span>{d.duration}</span></div>
                     {d.status === "failed" && (
                       <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={async () => {
+                        // Rollback reverses a real deployment — previously fired
+                        // immediately on click with zero confirmation (the same
+                        // gap fixed for every other destructive action across
+                        // this audit arc), and a real backend failure (a 404
+                        // "deployment not found" or a 500 error, both thrown by
+                        // rollbackDeploy) was mislabeled "Rollback API not
+                        // available" at "info" severity — misrepresenting a
+                        // genuine failure as a harmless non-issue.
+                        const ok = await confirm({
+                          title: `Roll back ${d.repo}?`,
+                          message: `This reverts the ${d.env} deployment of ${d.repo} (${d.version}) to its previous version.`,
+                          danger: true,
+                          confirmLabel: "Roll back",
+                        });
+                        if (!ok) return;
                         setRolling(d.id);
-                        try { await import("../phase25Api").then(m => m.rollbackDeploy(d.id)); addToast(`Rollback initiated for ${d.repo}`, "info"); }
-                        catch { addToast("Rollback API not available", "info"); }
-                        finally { setRolling(null); }
+                        try {
+                          await import("../phase25Api").then(m => m.rollbackDeploy(d.id));
+                          addToast(`Rollback initiated for ${d.repo}`, "success");
+                        } catch (e) {
+                          addToast(`Rollback failed: ${e.message || "unknown error"}`, "error");
+                        } finally { setRolling(null); }
                       }} disabled={rolling === d.id}>
                         {rolling === d.id ? "⟳ Rolling back…" : "↩ Rollback"}
                       </button>
@@ -399,10 +541,11 @@ function TabDeployments({ addToast }) {
 
 // ── Tab: Observability ────────────────────────────────────────────────
 
-function TabObservability({ addToast }) {
-  const [slos,    setSlos]    = useState(SEED_SLOS);
-  const [svcMap,  setSvcMap]  = useState(null);
-  const [loading, setLoading] = useState(true);
+export function TabObservability({ addToast }) {
+  const [slos,     setSlos]     = useState(SEED_SLOS);
+  const [isSample, setIsSample] = useState(true);
+  const [svcMap,   setSvcMap]   = useState(null);
+  const [loading,  setLoading]  = useState(true);
 
   useEffect(() => {
     Promise.all([
@@ -410,7 +553,7 @@ function TabObservability({ addToast }) {
       getServiceMap().catch(() => null),
     ]).then(([s, m]) => {
       const arr = s?.slos || (Array.isArray(s) ? s : null);
-      if (arr && arr.length > 0) setSlos(arr);
+      if (arr && arr.length > 0) { setSlos(arr); setIsSample(false); }
       if (m) setSvcMap(m);
     }).finally(() => setLoading(false));
   }, []);
@@ -431,7 +574,7 @@ function TabObservability({ addToast }) {
     const pct = isInvert
       ? Math.min(Math.round((slo.target / Math.max(slo.current, 1)) * 100), 100)
       : Math.min(Math.round((slo.current / slo.target) * 100), 100);
-    const color = slo.status === "ok" ? "#52d68a" : slo.status === "warning" ? "#f0b429" : "#f55b5b";
+    const color = slo.status === "ok" ? "var(--success)" : slo.status === "warning" ? "var(--warning)" : "var(--danger)";
     const label = isInvert
       ? `${slo.current}ms (target <${slo.target}ms)`
       : `${slo.current}% (target ${slo.target}%)`;
@@ -454,6 +597,7 @@ function TabObservability({ addToast }) {
     <div className="dv2-obs-root">
       <div className="dv2-panel dv2-slo-panel">
         <p className="dv2-section-label">SLO Status</p>
+        {!loading && isSample && <SampleDataNotice label="sample SLO targets" />}
         {loading ? [0,1,2].map(i => <SkelRow key={i} cols={4} />) : (
           slos.map(slo => <SloBar key={slo.id} slo={slo} />)
         )}
@@ -461,13 +605,18 @@ function TabObservability({ addToast }) {
 
       <div className="dv2-panel dv2-dep-panel">
         <p className="dv2-section-label">Dependency Map</p>
+        {/* Mission 46: DEPS is a static illustrative array with no live
+            source (getServiceMap() is fetched into svcMap but never rendered
+            anywhere in this component) — disclosed like the SLO panel above
+            rather than left presented as a live topology. */}
+        {!loading && <SampleDataNotice label="illustrative dependency topology" />}
         <div className="dv2-dep-list">
           {DEPS.map((d, i) => (
             <div key={i} className="dv2-dep-row">
               <span className="dv2-dep-from">{d.from}</span>
-              <span className="dv2-dep-arrow" style={{ color: d.state === "ok" ? "#52d68a" : "#f55b5b" }}>→</span>
+              <span className="dv2-dep-arrow" style={{ color: d.state === "ok" ? "var(--success)" : "var(--danger)" }}>→</span>
               <span className="dv2-dep-to">{d.to}</span>
-              <span className="dv2-dep-dot" style={{ background: d.state === "ok" ? "#52d68a" : "#f55b5b" }} />
+              <span className="dv2-dep-dot" style={{ background: d.state === "ok" ? "var(--success)" : "var(--danger)" }} />
             </div>
           ))}
         </div>
@@ -486,7 +635,7 @@ function TabObservability({ addToast }) {
 
 // ── Tab: Telemetry ────────────────────────────────────────────────────
 
-function TabTelemetry({ addToast }) {
+export function TabTelemetry({ addToast }) {
   const [ops,      setOps]      = useState(null);
   const [metrics,  setMetrics]  = useState(null);
   const [sysM,     setSysM]     = useState(null);
@@ -517,8 +666,8 @@ function TabTelemetry({ addToast }) {
   const port        = ops?.port ?? 5050;
 
   const memPct = memUsed && memTotal ? Math.min(Math.round((memUsed / memTotal) * 100), 100) : (memUsed ? Math.min(Math.round((memUsed / 512) * 100), 100) : 0);
-  const memColor = memPct > 85 ? "#f55b5b" : memPct > 65 ? "#f0b429" : "#52d68a";
-  const cpuColor = cpuPct > 85 ? "#f55b5b" : cpuPct > 60 ? "#f0b429" : "#52d68a";
+  const memColor = memPct > 85 ? "var(--danger)" : memPct > 65 ? "var(--warning)" : "var(--success)";
+  const cpuColor = cpuPct > 85 ? "var(--danger)" : cpuPct > 60 ? "var(--warning)" : "var(--success)";
 
   const PERF_EPS = [
     { path:"POST /jarvis",       ms: avgMs || 320, max:1000 },
@@ -532,12 +681,12 @@ function TabTelemetry({ addToast }) {
     <div className="dv2-tel-root">
       <div className="dv2-kpi-strip">
         {[
-          { label:"Uptime",       val: uptimeSecs > 0 ? _fmtUptime(uptimeSecs) : "—", color:"#52d68a" },
+          { label:"Uptime",       val: uptimeSecs > 0 ? _fmtUptime(uptimeSecs) : "—", color:"var(--success)" },
           { label:"Memory",       val: memUsed ? `${memUsed} MB` : "—",               color: memColor },
           { label:"CPU",          val: cpuPct ? `${cpuPct}%` : "—",                   color: cpuColor },
           { label:"Avg Response", val: avgMs ? `${avgMs}ms` : "—",                    color:"#c0c8dc" },
           { label:"P95",          val: p95 ? `${p95}ms` : "—",                        color:"#c0c8dc" },
-          { label:"Total Reqs",   val: totalReqs ? totalReqs.toLocaleString() : "—",  color:"#7c6fff" },
+          { label:"Total Reqs",   val: totalReqs ? totalReqs.toLocaleString() : "—",  color:"var(--accent)" },
         ].map(({ label, val, color }) => (
           <div key={label} className="dv2-kpi">
             <span className="dv2-kpi-val" style={{ color }}>{val}</span>
@@ -596,9 +745,14 @@ function TabTelemetry({ addToast }) {
 
       <div className="dv2-panel" style={{ marginTop: 14 }}>
         <p className="dv2-section-label">Endpoint Latency (avg)</p>
+        {/* Mission 46: 4 of 5 rows are permanently hardcoded (only the
+            first row falls back to the real avgMs when available) — no
+            per-endpoint latency API exists yet, so this is disclosed as
+            illustrative rather than presented as live measurement. */}
+        {!loading && <SampleDataNotice label="illustrative endpoint latency" />}
         {PERF_EPS.map(ep => {
           const pct = Math.min(Math.round((ep.ms / ep.max) * 100), 100);
-          const color = ep.ms < 200 ? "#52d68a" : ep.ms < 600 ? "#f0b429" : "#f55b5b";
+          const color = ep.ms < 200 ? "var(--success)" : ep.ms < 600 ? "var(--warning)" : "var(--danger)";
           return (
             <div key={ep.path} className="dv2-ep-row">
               <span className="dv2-ep-path dv2-mono">{ep.path}</span>
@@ -663,7 +817,7 @@ function TabModels({ addToast }) {
     const isFirst   = i === 0;
     const ok        = p.health?.ok === true;
     const status    = isActive ? "active" : ok ? "ready" : p.configured ? "degraded" : "not configured";
-    const statusColor = isActive ? "#52d68a" : ok ? "#4ecdc4" : p.configured ? "#f0b429" : "#8994b0";
+    const statusColor = isActive ? "var(--success)" : ok ? "var(--accent2)" : p.configured ? "var(--warning)" : "var(--text-dim)";
     return { ...p, ...meta, isActive, isFirst, status, statusColor };
   });
 
@@ -681,7 +835,7 @@ function TabModels({ addToast }) {
         <div className="dv2-router-meta">
           <div className="dv2-rt-row">
             <span className="dv2-rt-key">Active provider</span>
-            <span className="dv2-rt-val" style={{ color: activeProvider ? "#52d68a" : "#8994b0" }}>
+            <span className="dv2-rt-val" style={{ color: activeProvider ? "var(--success)" : "var(--text-dim)" }}>
               {loading ? "—" : (activeProvider ? activeProvider.toUpperCase() : "none yet")}
             </span>
           </div>
@@ -697,7 +851,7 @@ function TabModels({ addToast }) {
           </div>
           <div className="dv2-rt-row">
             <span className="dv2-rt-key">Failures</span>
-            <span className="dv2-rt-val" style={{ color: (aiStatus?.failCount ?? 0) > 0 ? "#f0b429" : "#52d68a" }}>
+            <span className="dv2-rt-val" style={{ color: (aiStatus?.failCount ?? 0) > 0 ? "var(--warning)" : "var(--success)" }}>
               {loading ? "—" : (aiStatus?.failCount ?? "—")}
             </span>
           </div>
@@ -709,7 +863,7 @@ function TabModels({ addToast }) {
       </div>
 
       <div className="dv2-models-grid">
-        {(loading ? AI_PROVIDERS_SEED.map(p => ({ ...p, statusColor:"#8994b0", status:"loading", isActive:false })) : providerCards).map(p => (
+        {(loading ? AI_PROVIDERS_SEED.map(p => ({ ...p, statusColor:"var(--text-dim)", status:"loading", isActive:false })) : providerCards).map(p => (
           <div key={p.id} className={`dv2-panel dv2-model-card${p.isActive ? " dv2-model-card--active" : ""}`}>
             <div className="dv2-mc-top">
               <div className="dv2-mc-ident">
@@ -722,13 +876,13 @@ function TabModels({ addToast }) {
             </div>
             <div className="dv2-mc-meta">
               <div className="dv2-mc-row"><span>Health</span>
-                <span style={{ color: p.health?.ok ? "#52d68a" : "#f55b5b" }}>
+                <span style={{ color: p.health?.ok ? "var(--success)" : "var(--danger)" }}>
                   {loading ? "—" : (p.health?.ok ? "✓ reachable" : (p.health?.reason || "unreachable"))}
                 </span>
               </div>
               <div className="dv2-mc-row"><span>Cost</span><strong>{p.cost}</strong></div>
               <div className="dv2-mc-row"><span>API key</span>
-                <span style={{ color: p.configured ? "#52d68a" : "#f55b5b" }}>
+                <span style={{ color: p.configured ? "var(--success)" : "var(--danger)" }}>
                   {loading ? "—" : (p.configured ? "✓ Set" : "✗ Missing")}
                 </span>
               </div>
@@ -751,7 +905,7 @@ function TabModels({ addToast }) {
             <p className="dv2-section-label">Evolution Score</p>
             <p className="dv2-evo-sub">Self-improvement index based on successful task completion, error rate, and suggestion adoption</p>
           </div>
-          <span className="dv2-evo-score" style={{ color: evoScore >= 80 ? "#52d68a" : evoScore >= 60 ? "#f0b429" : "#f55b5b" }}>
+          <span className="dv2-evo-score" style={{ color: evoScore >= 80 ? "var(--success)" : evoScore >= 60 ? "var(--warning)" : "var(--danger)" }}>
             {loading ? "—" : evoScore}
             <span className="dv2-evo-denom">/100</span>
           </span>
@@ -767,17 +921,26 @@ function TabModels({ addToast }) {
 
       <div className="dv2-panel dv2-suggestions-panel">
         <p className="dv2-section-label">AI Suggestions</p>
+        {/* Mission 58: EVO_SUGGESTIONS is a hardcoded illustrative array —
+            Approve/Dismiss previously called only addToast() with no
+            backend mutation, no state change; the item stayed "pending"
+            forever regardless of clicks (Mission 43B finding: false-success
+            UI action, not merely stale data — CLAUDE.md §17). No real
+            backend endpoint exists for suggestion approve/dismiss (checked:
+            zero matching routes anywhere in backend/routes/), so wiring a
+            real mutation is out of this mission's smallest-fix scope —
+            disclosed instead, same SampleDataNotice pattern already used
+            for this file's other two illustrative panels (Dependency Map,
+            Endpoint Latency — both fixed by Mission 46) and the buttons
+            that claimed a fake action are removed rather than left
+            clickable-but-inert. */}
+        {!loading && <SampleDataNotice label="illustrative AI suggestions — no backend action wired" />}
         {EVO_SUGGESTIONS.map(sg => (
           <div key={sg.id} className="dv2-sg-row">
-            <span className="dv2-sg-dot" style={{ color: sg.status === "applied" ? "#52d68a" : "#7c6fff" }}>○</span>
+            <span className="dv2-sg-dot" style={{ color: sg.status === "applied" ? "var(--success)" : "var(--accent)" }}>○</span>
             <span className="dv2-sg-text">{sg.text}</span>
-            {sg.status === "pending" ? (
-              <div className="dv2-sg-actions">
-                <button className="dv2-btn dv2-btn--ghost dv2-btn--xs" onClick={() => addToast("Suggestion approved", "success")}>Approve</button>
-                <button className="dv2-btn dv2-btn--ghost dv2-btn--xs" onClick={() => addToast("Suggestion dismissed", "info")}>Dismiss</button>
-              </div>
-            ) : (
-              <span className="dv2-chip dv2-chip--xs" style={{ color:"#52d68a", background:"rgba(82,214,138,.1)", borderColor:"rgba(82,214,138,.2)" }}>applied</span>
+            {sg.status === "applied" && (
+              <span className="dv2-chip dv2-chip--xs" style={{ color:"var(--success)", background:"rgba(82,214,138,.1)", borderColor:"rgba(82,214,138,.2)" }}>applied</span>
             )}
           </div>
         ))}
@@ -790,6 +953,7 @@ function TabModels({ addToast }) {
 
 function TabLogs({ addToast }) {
   const [logs,      setLogs]      = useState(SEED_LOGS);
+  const [isSample,  setIsSample]  = useState(true);
   const [loading,   setLoading]   = useState(true);
   const [levelF,    setLevelF]    = useState("all");
   const [typeF,     setTypeF]     = useState("all");
@@ -800,6 +964,7 @@ function TabLogs({ addToast }) {
     getRuntimeHistory(50).catch(() => null).then(h => {
       const arr = Array.isArray(h) ? h : (h?.history || []);
       if (arr.length > 0) {
+        setIsSample(false);
         setLogs(arr.slice(0, 50).map((e, i) => ({
           id:    e.id || `h${i}`,
           ts:    _timeAgo(e.timestamp || e.createdAt),
@@ -826,6 +991,7 @@ function TabLogs({ addToast }) {
 
   return (
     <div className="dv2-logs-root">
+      {!loading && isSample && <SampleDataNotice label="sample log entries" />}
       <div className="dv2-logs-summary">
         {Object.entries(counts).map(([k, v]) => (
           <div key={k} className="dv2-ls-cell" style={{ borderColor: LEVEL_COLORS[k]+"30" }}>
@@ -865,13 +1031,11 @@ function TabLogs({ addToast }) {
             <div className="dv2-empty"><span className="dv2-empty-icon">◎</span><p className="dv2-empty-title">No matching log entries</p></div>
           ) : (
             filtered.map(l => {
-              const lc = LEVEL_COLORS[l.level] || "#8994b0";
+              const lc = LEVEL_COLORS[l.level] || "var(--text-dim)";
               const isOpen = expanded === l.id;
               return (
-                <div
-                  key={l.id}
-                  className={`dv2-log-row dv2-log-row--clickable${isOpen?" dv2-log-row--open":""}`}
-                  onClick={() => setExpanded(isOpen ? null : l.id)}
+                <div key={l.id}
+                  className={`dv2-log-row dv2-log-row--clickable${isOpen?" dv2-log-row--open":""}`} {...clickableProps(() => setExpanded(isOpen ? null : l.id))}
                 >
                   <span className="dv2-log-ts dv2-mono">{l.ts}</span>
                   <span className="dv2-log-level" style={{ color: lc, minWidth:40 }}>{l.level.toUpperCase()}</span>
@@ -894,8 +1058,9 @@ function TabLogs({ addToast }) {
 
 // ── Tab: Alerts ───────────────────────────────────────────────────────
 
-function TabAlerts({ addToast }) {
+export function TabAlerts({ addToast }) {
   const [alerts,   setAlerts]   = useState(SEED_ALERTS);
+  const [isSample, setIsSample] = useState(true);
   const [loading,  setLoading]  = useState(true);
   const [sevFilter,setSevFilter]= useState("all");
   const [statusF,  setStatusF]  = useState("open");
@@ -905,20 +1070,25 @@ function TabAlerts({ addToast }) {
   useEffect(() => {
     listAlerts({ limit: 30 }).catch(() => null).then(r => {
       const arr = r?.alerts || (Array.isArray(r) ? r : null);
-      if (arr && arr.length > 0) setAlerts(arr);
+      if (arr && arr.length > 0) { setAlerts(arr); setIsSample(false); }
     }).finally(() => setLoading(false));
   }, []);
 
   async function handleResolve(a) {
     setResolving(a.id);
     try {
-      await resolveAlert(a.id);
+      const r = await resolveAlert(a.id);
+      if (r?.success === false) throw new Error(r.error || "Failed to resolve alert");
       setAlerts(prev => prev.map(x => x.id === a.id ? { ...x, status:"resolved" } : x));
       addToast(`Alert resolved: ${a.title.slice(0, 40)}…`, "success");
-      track("alert_resolve", { alertId: a.id });
-    } catch {
-      setAlerts(prev => prev.map(x => x.id === a.id ? { ...x, status:"resolved" } : x));
-      addToast("Alert marked resolved", "info");
+      track.event("alert_resolve", { alertId: a.id });
+    } catch (e) {
+      // Mission 46 P1: this catch previously marked the alert resolved
+      // locally and toasted "Alert marked resolved" at info severity even
+      // when resolveAlert() actually failed — a genuine backend failure
+      // (network error, 500, timeout — _fetch throws on all of these) was
+      // presented as success, hiding that the alert is still open.
+      addToast(`Resolve failed: ${e.message}`, "error");
     } finally {
       setResolving(null);
     }
@@ -936,6 +1106,7 @@ function TabAlerts({ addToast }) {
 
   return (
     <div className="dv2-alerts-root">
+      {!loading && isSample && <SampleDataNotice label="sample alerts" />}
       <div className="dv2-alerts-summary">
         <div className="dv2-as-cell dv2-as-cell--critical">
           <span className="dv2-as-val">{criticalCount}</span>
@@ -971,18 +1142,16 @@ function TabAlerts({ addToast }) {
         {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
           filtered.length === 0 ? (
             <div className="dv2-empty">
-              <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+              <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
               <p className="dv2-empty-title">No alerts in this view</p>
             </div>
           ) : (
             filtered.map(a => {
-              const sc2 = SEV_COLOR[a.severity] || "#8994b0";
+              const sc2 = SEV_COLOR[a.severity] || "var(--text-dim)";
               const isOpen = expanded === a.id;
               return (
-                <div
-                  key={a.id}
-                  className={`dv2-alert-row${a.severity === "critical" && a.status === "open" ? " dv2-alert-row--critical" : ""}${isOpen ? " dv2-alert-row--open" : ""}`}
-                  onClick={() => setExpanded(isOpen ? null : a.id)}
+                <div key={a.id}
+                  className={`dv2-alert-row${a.severity === "critical" && a.status === "open" ? " dv2-alert-row--critical" : ""}${isOpen ? " dv2-alert-row--open" : ""}`} {...clickableProps(() => setExpanded(isOpen ? null : a.id))}
                 >
                   <div className="dv2-ar-top">
                     <span className="dv2-sev-pill" style={{ color: sc2, background: sc2+"15" }}>{a.severity}</span>
@@ -990,7 +1159,7 @@ function TabAlerts({ addToast }) {
                     <span className="dv2-ar-service dv2-mono">{a.service}</span>
                     <span className="dv2-ar-ts">{a.created}</span>
                     <span className="dv2-chip dv2-chip--xs" style={{
-                      color: a.status === "resolved" ? "#52d68a" : "#f0b429",
+                      color: a.status === "resolved" ? "var(--success)" : "var(--warning)",
                       background: a.status === "resolved" ? "rgba(82,214,138,.1)" : "rgba(240,180,41,.1)",
                       borderColor: a.status === "resolved" ? "rgba(82,214,138,.2)" : "rgba(240,180,41,.2)",
                     }}>{a.status}</span>
@@ -1026,6 +1195,7 @@ function TabServices({ addToast }) {
   const [online,   setOnline]   = useState(null);
   const [ops,      setOps]      = useState(null);
   const [services, setServices] = useState(SEED_SERVICES);
+  const [isSample, setIsSample] = useState(true);
   const [loading,  setLoading]  = useState(true);
 
   useEffect(() => {
@@ -1035,13 +1205,11 @@ function TabServices({ addToast }) {
     ]).then(([h, o]) => {
       setOnline(h);
       setOps(o);
-      if (o?.services) {
-        const merged = SEED_SERVICES.map(s => {
-          const live = o.services[s.id] || o.services[s.name?.toLowerCase()] || {};
-          return { ...s, ...live };
-        });
-        setServices(merged);
-      }
+      // /ops's real `services` shape is {whatsapp,payments,telegram,groq}
+      // booleans, not per-service uptime/latency/memory/cpu rows — there is
+      // no live per-service metrics endpoint yet, so this tab's detailed
+      // rows always remain illustrative. Surfaced honestly via
+      // SampleDataNotice below rather than silently passed off as live.
     }).finally(() => setLoading(false));
   }, []);
 
@@ -1049,25 +1217,26 @@ function TabServices({ addToast }) {
 
   return (
     <div className="dv2-svc-root">
+      {!loading && isSample && <SampleDataNotice label="illustrative service rows (live health flags above are real)" />}
       <div className="dv2-svc-header">
         <div className="dv2-svc-hkpis">
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: online ? "#52d68a" : "#f55b5b" }}>{online ? "ONLINE" : "OFFLINE"}</span>
+            <span className="dv2-kpi-val" style={{ color: online ? "var(--success)" : "var(--danger)" }}>{online ? "ONLINE" : "OFFLINE"}</span>
             <span className="dv2-kpi-label">Backend Status</span>
           </div>
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: "#52d68a" }}>{healthyCount}</span>
+            <span className="dv2-kpi-val" style={{ color: "var(--success)" }}>{healthyCount}</span>
             <span className="dv2-kpi-label">Services healthy</span>
           </div>
           <div className="dv2-kpi">
-            <span className="dv2-kpi-val" style={{ color: services.length - healthyCount > 0 ? "#f0b429" : "#52d68a" }}>
+            <span className="dv2-kpi-val" style={{ color: services.length - healthyCount > 0 ? "var(--warning)" : "var(--success)" }}>
               {services.length - healthyCount}
             </span>
             <span className="dv2-kpi-label">Degraded</span>
           </div>
         </div>
         <div className="dv2-overall-health">
-          <span className="dv2-oh-dot" style={{ background: healthyCount === services.length ? "#52d68a" : "#f0b429" }} />
+          <span className="dv2-oh-dot" style={{ background: healthyCount === services.length ? "var(--success)" : "var(--warning)" }} />
           <span className="dv2-oh-label">{healthyCount === services.length ? "All systems operational" : `${services.length - healthyCount} service(s) degraded`}</span>
         </div>
       </div>
@@ -1103,17 +1272,371 @@ function TabServices({ addToast }) {
   );
 }
 
+// ── Tab: Docker (V6 Phase 3: Docker Orchestration) ─────────────────────
+// Real data only — no seed/sample fallback, unlike TabServices above,
+// since /computer/docker/* returns genuine live daemon/container state
+// with no illustrative gap to fill.
+
+export function TabDocker({ addToast }) {
+  const [dashboard, setDashboard] = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
+  const [acting,    setActing]    = useState(null); // containerId currently being acted on
+  const [expanded,  setExpanded]  = useState(null);
+  const [logs,      setLogs]      = useState({});   // containerId -> log text
+  const [confirm, ConfirmUI] = useConfirm();
+
+  const refresh = useCallback(() => {
+    setLoading(true);
+    dockerApi.getDashboard()
+      .then(d => { setDashboard(d); setError(null); })
+      .catch(e => setError(e.message || "Failed to load Docker dashboard"))
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  const act = async (ref, action, fn) => {
+    setActing(ref + action);
+    try {
+      const r = await fn(ref);
+      if (r?.ok !== false) {
+        addToast?.(`${action} ${ref}: ok`, "success");
+        refresh();
+      } else {
+        addToast?.(`${action} ${ref} failed: ${r?.error || "unknown error"}`, "error");
+      }
+    } catch (e) {
+      addToast?.(`${action} ${ref} failed: ${e.message}`, "error");
+    } finally {
+      setActing(null);
+    }
+  };
+
+  const loadLogs = async (ref) => {
+    if (expanded === ref) { setExpanded(null); return; }
+    setExpanded(ref);
+    if (!logs[ref]) {
+      try {
+        const r = await dockerApi.getContainerLogs(ref, 50);
+        setLogs(prev => ({ ...prev, [ref]: r.ok ? r.logs : (r.error || "no logs") }));
+      } catch (e) {
+        setLogs(prev => ({ ...prev, [ref]: e.message }));
+      }
+    }
+  };
+
+  if (loading && !dashboard) return <div className="dv2-empty">Loading Docker status…</div>;
+  if (error && !dashboard) return <div className="dv2-empty">⚠ {error}</div>;
+
+  const daemon    = dashboard?.daemon || {};
+  const dstats    = dashboard?.daemonStats || {};
+  const containers = dashboard?.containers || [];
+
+  return (
+    <div className="dv2-svc-root">
+      {ConfirmUI}
+      <div className="dv2-svc-header">
+        <div className="dv2-svc-hkpis">
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val" style={{ color: daemon.reachable ? "var(--success)" : "var(--danger)" }}>
+              {daemon.reachable ? "REACHABLE" : "UNREACHABLE"}
+            </span>
+            <span className="dv2-kpi-label">Docker Daemon</span>
+          </div>
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val" style={{ color: "var(--success)" }}>{dstats.containersRunning ?? "—"}</span>
+            <span className="dv2-kpi-label">Running</span>
+          </div>
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val">{dstats.containersTotal ?? "—"}</span>
+            <span className="dv2-kpi-label">Total containers</span>
+          </div>
+          <div className="dv2-kpi">
+            <span className="dv2-kpi-val">{dstats.imagesTotal ?? "—"}</span>
+            <span className="dv2-kpi-label">Images</span>
+          </div>
+        </div>
+        <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={refresh} disabled={loading}>
+          {loading ? "Refreshing…" : "Refresh"}
+        </button>
+      </div>
+
+      {daemon.serverVersion && (
+        <div className="dv2-sc-provider" style={{ marginBottom: 12 }}>
+          Server {daemon.serverVersion} ({daemon.serverOs}) · Client {daemon.clientVersion}
+        </div>
+      )}
+
+      {containers.length === 0 && !loading && (
+        <div className="dv2-empty">No containers found.</div>
+      )}
+
+      <div className="dv2-svc-grid">
+        {containers.map(c => {
+          const running = (c.State || "").toLowerCase() === "running";
+          const color = running ? "var(--success)" : "var(--text-dim)";
+          const ref = c.ID || c.Names;
+          return (
+            <div key={ref} className={`dv2-svc-card${!running ? " dv2-svc-card--degraded" : ""}`}>
+              <div className="dv2-sc-top">
+                <span className="dv2-sc-dot" style={{ background: color }} />
+                <span className="dv2-sc-name">{c.Names}</span>
+                <span className="dv2-chip dv2-chip--xs" style={{ color, background: color+"15", borderColor: color+"30" }}>{c.State}</span>
+              </div>
+              <div className="dv2-sc-meta">
+                <span className="dv2-sc-stat">Image: <strong>{c.Image}</strong></span>
+                {c.Ports && <span className="dv2-sc-stat">Ports: <strong>{c.Ports}</strong></span>}
+                <span className="dv2-sc-stat">Up: <strong>{c.RunningFor}</strong></span>
+              </div>
+              <div className="dv2-sc-provider" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {running ? (
+                  <>
+                    <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" disabled={acting === ref+"restart"} onClick={() => act(ref, "restart", dockerApi.restartContainer)}>Restart</button>
+                    <button className="dv2-btn dv2-btn--xs dv2-btn--danger" disabled={acting === ref+"stop"} onClick={async () => {
+                      // Stopping a running container has no auto-recovery
+                      // (unlike Restart, which comes back up on its own) —
+                      // previously fired immediately on click with zero
+                      // confirmation, the same gap fixed for every other
+                      // destructive action across this audit arc.
+                      const ok = await confirm({
+                        title: `Stop ${c.Names}?`,
+                        message: "The container will stop immediately and will not restart on its own. Anything depending on it will go down until it's started again.",
+                        danger: true,
+                        confirmLabel: "Stop",
+                      });
+                      if (!ok) return;
+                      act(ref, "stop", dockerApi.stopContainer);
+                    }}>Stop</button>
+                  </>
+                ) : (
+                  <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" disabled={acting === ref+"start"} onClick={() => act(ref, "start", dockerApi.startContainer)}>Start</button>
+                )}
+                <button className="dv2-btn dv2-btn--xs dv2-btn--ghost" onClick={() => loadLogs(ref)}>
+                  {expanded === ref ? "Hide logs" : "Logs"}
+                </button>
+              </div>
+              {expanded === ref && (
+                <pre style={{ fontSize: "0.68rem", maxHeight: 180, overflow: "auto", background: "rgba(0,0,0,.25)", padding: 8, borderRadius: 6, marginTop: 6, whiteSpace: "pre-wrap" }}>
+                  {logs[ref] || "Loading…"}
+                </pre>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// ── Tab: Dependencies (V6 Phase 5) ──────────────────────────────────────
+
+const DEP_SEVERITY_COLORS = { critical:"#f55b5b", high:"#f0703c", moderate:"#f0b429", low:"#4ecdc4", info:"#8994b0" };
+
+function TabDependencies({ addToast }) {
+  const [scan,      setScan]      = useState(null);
+  const [outdated,  setOutdated]  = useState(null);
+  const [stats,     setStats]     = useState(null);
+  const [loading,   setLoading]   = useState(true);
+  const [scanning,  setScanning]  = useState(false);
+  const [updating,  setUpdating]  = useState(null); // packageName currently updating
+
+  const refresh = useCallback(() => {
+    Promise.all([
+      depAuditApi.getLastScan().catch(() => null),
+      depAuditApi.listOutdated().catch(() => null),
+      depAuditApi.getStats().catch(() => null),
+    ]).then(([s, o, st]) => {
+      setScan(s?.scan || null);
+      setOutdated(o?.packages || []);
+      setStats(st?.stats || null);
+    }).finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+
+  async function runScan() {
+    setScanning(true);
+    try {
+      const r = await depAuditApi.scanVulnerabilities();
+      if (r?.ok) addToast(`Scan complete — ${r.totalVulnerabilities} vulnerabilit${r.totalVulnerabilities === 1 ? "y" : "ies"} found`, r.totalVulnerabilities > 0 ? "error" : "success");
+      else addToast(`Scan failed: ${r?.error || "unknown error"}`, "error");
+    } catch (e) {
+      addToast(`Scan request failed: ${e.message}`, "error");
+    } finally {
+      setScanning(false);
+      refresh();
+    }
+  }
+
+  async function runUpdate(packageName) {
+    setUpdating(packageName);
+    try {
+      const r = await depAuditApi.applySafeUpdate(packageName);
+      if (r?.ok) addToast(`${packageName} updated and regression-verified`, "success");
+      else addToast(`${packageName} update failed${r?.reverted ? " — reverted" : ""}: ${r?.error || "unknown error"}`, "error");
+    } catch (e) {
+      addToast(`Update request failed: ${e.message}`, "error");
+    } finally {
+      setUpdating(null);
+      refresh();
+    }
+  }
+
+  if (loading) return <div className="dv2-empty">Loading dependency status…</div>;
+
+  return (
+    <div className="dv2-svc-root">
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Dependency Vulnerability Scan</span>
+        <button className={`dv2-btn dv2-btn--primary dv2-btn--sm${scanning ? " dv2-btn--loading" : ""}`} onClick={runScan} disabled={scanning}>
+          {scanning ? "⟳ Scanning…" : "▶ Run npm audit"}
+        </button>
+      </div>
+
+      {stats && (
+        <div className="dv2-deploy-summary">
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.scans || 0}</span><span className="dv2-ds-label">scans run</span></div>
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.vulnerabilitiesFound || 0}</span><span className="dv2-ds-label">vulns found</span></div>
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.updatesApplied || 0}</span><span className="dv2-ds-label">updates applied</span></div>
+          <div className="dv2-ds-cell"><span className="dv2-ds-val">{stats.updatesReverted || 0}</span><span className="dv2-ds-label">reverted</span></div>
+        </div>
+      )}
+
+      {scan ? (
+        <div className="dv2-strategy-runs">
+          {scan.packages.length === 0 ? (
+            <p className="dv2-cs-sub">Last scan ({_timeAgo(scan.ts)}): no known vulnerabilities.</p>
+          ) : scan.packages.map(p => (
+            <div key={p.name} className="dv2-strategy-run-row">
+              <span className="dv2-dr-status dv2-chip" style={{ color: DEP_SEVERITY_COLORS[p.severity], background: DEP_SEVERITY_COLORS[p.severity]+"15" }}>{p.severity}</span>
+              <span className="dv2-dr-repo dv2-mono">{p.name}</span>
+              <span className="dv2-dr-version dv2-mono">{p.range}</span>
+              <span className="dv2-dr-ts">{p.fixAvailable ? "fix available" : "no fix yet"}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="dv2-cs-sub">No scan yet — click "Run npm audit" above.</p>
+      )}
+
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Outdated Packages</span>
+      </div>
+      <div className="dv2-strategy-runs">
+        {(outdated || []).length === 0 ? (
+          <p className="dv2-cs-sub">All packages up to date, or not yet checked.</p>
+        ) : outdated.map(p => (
+          <div key={p.name} className="dv2-strategy-run-row">
+            <span className="dv2-dr-repo dv2-mono">{p.name}</span>
+            <span className="dv2-dr-version dv2-mono">{p.current} → {p.wanted}{p.majorBump ? ` (latest ${p.latest})` : ""}</span>
+            <span className="dv2-dr-ts">{p.majorBump ? "major bump — not auto-updatable" : "semver-safe"}</span>
+            <button
+              className="dv2-btn dv2-btn--ghost dv2-btn--xs"
+              disabled={!p.semverSafe || updating === p.name}
+              onClick={() => runUpdate(p.name)}
+              title={p.majorBump ? "Only wanted (semver-safe) updates are applied automatically" : ""}
+            >
+              {updating === p.name ? "⟳ Updating…" : "Update + verify"}
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Tab: Terminal ─────────────────────────────────────────────────────
+// terminalController.cjs (real execFileSync-based, no-shell execution,
+// per-binary allowlist, real command history) had zero frontend consumer.
+
+function TabTerminal({ addToast }) {
+  const [cmd, setCmd]           = useState("");
+  const [running, setRunning]   = useState(false);
+  const [history, setHistory]   = useState([]);
+  const [loading, setLoading]   = useState(true);
+  const bottomRef = useRef(null);
+
+  const refresh = useCallback(() => {
+    terminalApi.listCommands({ limit: 30 })
+      .then(r => setHistory((r?.commands || []).slice().reverse()))
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { refresh(); }, [refresh]);
+  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [history]);
+
+  const run = async (e) => {
+    e.preventDefault();
+    const c = cmd.trim();
+    if (!c || running) return;
+    setCmd("");
+    setRunning(true);
+    try {
+      const r = await terminalApi.run(c);
+      if (r?.ok === false) addToast(`Blocked or failed: ${r.error || "unknown error"}`, "error");
+      refresh();
+    } catch (e2) {
+      addToast(`Terminal request failed: ${e2.message}`, "error");
+    } finally {
+      setRunning(false);
+    }
+  };
+
+  if (loading) return <div className="dv2-empty">Loading terminal…</div>;
+
+  return (
+    <div className="dv2-svc-root">
+      <div className="dv2-strategy-header">
+        <span className="dv2-cs-title">Terminal</span>
+        <span className="dv2-cs-sub">Real execFileSync execution — no shell, per-binary allowlist. Not a general-purpose shell.</span>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 420, overflowY: "auto", marginBottom: 12, fontFamily: "monospace", fontSize: 12 }}>
+        {history.length === 0 ? (
+          <p className="dv2-cs-sub">No commands run yet.</p>
+        ) : history.map(h => (
+          <div key={h.cmdId} style={{ padding: "8px 10px", background: "rgba(255,255,255,0.03)", borderRadius: 5 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", color: h.status === "success" ? "var(--success)" : h.status === "failed" ? "var(--danger)" : "var(--warning)" }}>
+              <span>$ {h.cmd}</span>
+              <span>{h.status}{h.durationMs != null ? ` · ${h.durationMs}ms` : ""}</span>
+            </div>
+            {h.output && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "#c8ccd8" }}>{h.output.slice(0, 1000)}</pre>}
+            {h.error && <pre style={{ margin: "6px 0 0", whiteSpace: "pre-wrap", color: "var(--danger)" }}>{h.error.slice(0, 1000)}</pre>}
+          </div>
+        ))}
+        <div ref={bottomRef} />
+      </div>
+
+      <form onSubmit={run} style={{ display: "flex", gap: 8 }}>
+        <input
+          value={cmd}
+          onChange={e => setCmd(e.target.value)}
+          placeholder="e.g. git status"
+          style={{ flex: 1, fontFamily: "monospace" }}
+          disabled={running}
+        />
+        <button className="dv2-btn dv2-btn--primary dv2-btn--sm" type="submit" disabled={running || !cmd.trim()}>
+          {running ? "⟳ Running…" : "Run"}
+        </button>
+      </form>
+    </div>
+  );
+}
+
 // ── Tab: Patches ──────────────────────────────────────────────────────
 
-const PATCH_STATUS_COLOR = { pending:"#f0b429", applied:"#52d68a", rolled_back:"#f55b5b", failed:"#f55b5b" };
+const PATCH_STATUS_COLOR = { pending:"var(--warning)", applied:"var(--success)", rolled_back:"var(--danger)", failed:"var(--danger)" };
 
-function TabPatches({ addToast }) {
+export function TabPatches({ addToast }) {
   const [patches,    setPatches]    = useState([]);
   const [loading,    setLoading]    = useState(true);
   const [statusF,    setStatusF]    = useState("all");
   const [applying,   setApplying]   = useState(null);
   const [verifying,  setVerifying]  = useState(null);
   const [expanded,   setExpanded]   = useState(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -1128,6 +1651,16 @@ function TabPatches({ addToast }) {
 
   async function handleApply(p) {
     if (applying) return;
+    // Applying an AI-generated patch writes to a real repository file —
+    // same risk class as TabDeployments' Rollback / TabDocker's Stop,
+    // which both gate on confirm() (Mission 28). This tab had none.
+    const ok = await confirm({
+      title: `Apply patch to ${p.filePath || p.id}?`,
+      message: "This will write the AI-generated change to the real file. You can roll it back afterward, but the file on disk changes immediately.",
+      danger: true,
+      confirmLabel: "Apply",
+    });
+    if (!ok) return;
     setApplying(p.id);
     try {
       const r = await fetch(`/runtime/patches/${p.id}/apply`, {
@@ -1140,7 +1673,7 @@ function TabPatches({ addToast }) {
       } else {
         addToast(`Apply failed: ${r.error}`, "error");
       }
-      track("patch_applied");
+      track.event("patch_applied");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setApplying(null); }
   }
@@ -1158,12 +1691,21 @@ function TabPatches({ addToast }) {
       } else {
         addToast(`Verify: ${r.error || "done"}`, "info");
       }
-      track("patch_verified");
+      track.event("patch_verified");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setVerifying(null); }
   }
 
   async function handleRollback(p) {
+    // Reverting an applied patch also writes to the real file — same
+    // confirmation requirement as Apply above.
+    const ok = await confirm({
+      title: `Revert patch to ${p.filePath || p.id}?`,
+      message: "This will undo the applied change on the real file immediately.",
+      danger: true,
+      confirmLabel: "Revert",
+    });
+    if (!ok) return;
     try {
       const r = await fetch(`/runtime/patches/${p.id}/rollback`, {
         method: "POST", headers: { "Content-Type": "application/json" },
@@ -1175,12 +1717,13 @@ function TabPatches({ addToast }) {
       } else {
         addToast(`Rollback failed: ${r.error}`, "error");
       }
-      track("patch_rollback");
+      track.event("patch_rollback");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
   }
 
   return (
     <div style={{ padding: "4px 0" }}>
+      {ConfirmUI}
       <div style={{ display: "flex", gap: 6, alignItems: "center", marginBottom: 12, flexWrap: "wrap" }}>
         {["all","pending","applied","rolled_back"].map(s => (
           <button key={s}
@@ -1194,18 +1737,17 @@ function TabPatches({ addToast }) {
       {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
         patches.length === 0 ? (
           <div className="dv2-empty">
-            <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+            <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
             <p className="dv2-empty-title">No patches in this view</p>
             <p className="dv2-empty-sub">Patches are created when you ask JARVIS to fix or modify a file.</p>
           </div>
         ) : (
           patches.map(p => {
-            const col = PATCH_STATUS_COLOR[p.status] || "#8994b0";
+            const col = PATCH_STATUS_COLOR[p.status] || "var(--text-dim)";
             const isOpen = expanded === p.id;
             return (
               <div key={p.id}
-                className={`dv2-alert-row${isOpen ? " dv2-alert-row--open" : ""}`}
-                onClick={() => setExpanded(isOpen ? null : p.id)}
+                className={`dv2-alert-row${isOpen ? " dv2-alert-row--open" : ""}`} {...clickableProps(() => setExpanded(isOpen ? null : p.id))}
               >
                 <div className="dv2-ar-top">
                   <span className="dv2-sev-pill" style={{ color: col, background: col + "15" }}>{p.status || "pending"}</span>
@@ -1249,21 +1791,32 @@ function TabPatches({ addToast }) {
 
 // ── Tab: Recovery (DLQ) ───────────────────────────────────────────────
 
-function TabDLQ({ addToast }) {
+export function TabDLQ({ addToast }) {
   const [entries,    setEntries]    = useState([]);
   const [total,      setTotal]      = useState(0);
   const [loading,    setLoading]    = useState(true);
+  const [error,      setError]      = useState(null);
   const [recovering, setRecovering] = useState(false);
   const [removing,   setRemoving]   = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
     try {
+      // getDLQ() never throws — it catches internally and resolves
+      // {success:false, error} on a real backend failure. Without this
+      // check, that shape fell through to entries=[], and the panel showed
+      // a green "Dead letter queue is empty ✓" — a false all-clear on the
+      // one screen that exists to surface recoverable failed tasks. Same
+      // bug class fixed across BusinessOS/CommandCenter/WorkspaceSettings.
       const r = await getDLQ(30);
+      if (r?.success === false) throw new Error(r.error || "Failed to load recovery queue");
       setEntries(r?.entries || []);
       setTotal(r?.total || 0);
-    } catch { setEntries([]); }
-    finally { setLoading(false); }
+      setError(null);
+    } catch (e) {
+      setEntries([]);
+      setError(e.message || "Failed to load recovery queue");
+    } finally { setLoading(false); }
   }, []);
 
   useEffect(() => { load(); }, [load]);
@@ -1274,7 +1827,7 @@ function TabDLQ({ addToast }) {
       const r = await recoverDLQ();
       addToast(r.success ? `Requeued ${r.queued || 0} task(s)` : `Recovery failed: ${r.error}`, r.success ? "success" : "error");
       if (r.success) await load();
-      track("dlq_recover_all");
+      track.event("dlq_recover_all");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setRecovering(false); }
   }
@@ -1289,7 +1842,7 @@ function TabDLQ({ addToast }) {
       } else {
         addToast(`Remove failed: ${r.error}`, "error");
       }
-      track("dlq_remove");
+      track.event("dlq_remove");
     } catch (e) { addToast(`Error: ${e.message}`, "error"); }
     finally { setRemoving(null); }
   }
@@ -1298,7 +1851,7 @@ function TabDLQ({ addToast }) {
     <div style={{ padding: "4px 0" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 14 }}>
         <div>
-          <span style={{ fontSize: 22, fontWeight: 700, color: total > 0 ? "#f0b429" : "#52d68a" }}>{total}</span>
+          <span style={{ fontSize: 22, fontWeight: 700, color: total > 0 ? "var(--warning)" : "var(--success)" }}>{total}</span>
           <span style={{ fontSize: 11, color: "var(--dv2-text2)", marginLeft: 6 }}>failed task{total !== 1 ? "s" : ""} in queue</span>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
@@ -1315,10 +1868,17 @@ function TabDLQ({ addToast }) {
         </div>
       </div>
 
-      {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : (
+      {loading ? [0,1,2].map(i => <div key={i} className="dv2-alert-row"><SkelRow cols={4} /></div>) : error ? (
+        <div className="dv2-empty">
+          <span className="dv2-empty-icon" style={{ color: "var(--danger)" }}>⚠</span>
+          <p className="dv2-empty-title">Couldn't load the recovery queue</p>
+          <p className="dv2-empty-sub">{error}</p>
+          <button className="dv2-btn dv2-btn--ghost dv2-btn--sm" onClick={load}>Retry</button>
+        </div>
+      ) : (
         entries.length === 0 ? (
           <div className="dv2-empty">
-            <span className="dv2-empty-icon" style={{ color:"#52d68a" }}>✓</span>
+            <span className="dv2-empty-icon" style={{ color:"var(--success)" }}>✓</span>
             <p className="dv2-empty-title">Dead letter queue is empty</p>
             <p className="dv2-empty-sub">Failed tasks that exhaust retries will appear here for manual recovery.</p>
           </div>
@@ -1326,7 +1886,7 @@ function TabDLQ({ addToast }) {
           entries.map(e => (
             <div key={e.taskId} className="dv2-alert-row">
               <div className="dv2-ar-top">
-                <span className="dv2-sev-pill" style={{ color:"#f55b5b", background:"rgba(245,91,91,.1)" }}>failed</span>
+                <span className="dv2-sev-pill" style={{ color:"var(--danger)", background:"rgba(245,91,91,.1)" }}>failed</span>
                 <span className="dv2-ar-title" style={{ flex: 1 }}>
                   {(e.task?.input || e.input || e.taskId || "").slice(0, 60)}
                 </span>
@@ -1342,7 +1902,7 @@ function TabDLQ({ addToast }) {
                 </button>
               </div>
               {e.error && (
-                <div style={{ padding: "4px 8px 6px", fontSize: 10, color: "#f55b5b", fontFamily: "monospace", wordBreak: "break-all" }}>
+                <div style={{ padding: "4px 8px 6px", fontSize: 10, color: "var(--danger)", fontFamily: "monospace", wordBreak: "break-all" }}>
                   {e.error.slice(0, 200)}
                 </div>
               )}
@@ -1366,7 +1926,7 @@ export default function DevOpsCenterV2({ onNavigate }) {
   }, []);
   const removeToast = useCallback(id => setToasts(t => t.filter(x => x.id !== id)), []);
 
-  useEffect(() => { track("devops_v2_viewed"); }, []);
+  useEffect(() => { track.event("devops_v2_viewed"); }, []);
 
   return (
     <div className="dv2-root">
@@ -1400,6 +1960,9 @@ export default function DevOpsCenterV2({ onNavigate }) {
         {tab === "services"     && <TabServices      addToast={addToast} />}
         {tab === "patches"      && <TabPatches       addToast={addToast} />}
         {tab === "dlq"          && <TabDLQ           addToast={addToast} />}
+        {tab === "docker"       && <TabDocker        addToast={addToast} />}
+        {tab === "dependencies" && <TabDependencies  addToast={addToast} />}
+        {tab === "terminal"     && <TabTerminal      addToast={addToast} />}
       </div>
 
       <div className="dv2-toast-container">

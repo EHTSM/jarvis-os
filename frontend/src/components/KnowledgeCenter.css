@@ -266,3 +266,49 @@
 @media (prefers-reduced-motion: reduce) {
   .kc-content, .kc-modal, .kc-toast, .kc-result-card { animation: none; }
 }
+
+/* ── Master Residual Closure (2026-08-15, C10-009): real graph explorer ── */
+.kc-empty-sub    { font-size: 13px; color: var(--text-dim); margin: 0; max-width: 440px; }
+.kc-empty--error .kc-empty-icon,
+.kc-empty--error .kc-empty-title { color: var(--danger, var(--warning)); }
+
+.kc-graph-layout {
+  display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 16px; align-items: start;
+}
+.kc-graph-browser {
+  background: var(--surface-base); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 14px; min-height: 240px;
+}
+.kg-node-list {
+  display: flex; flex-direction: column; gap: 2px; margin-top: 10px;
+  max-height: 480px; overflow-y: auto;
+}
+.kg-node-row {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 8px 10px; background: none; border: 1px solid transparent;
+  border-radius: var(--radius-sm); color: var(--text); font-family: inherit;
+  font-size: 13px; text-align: left; cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-out);
+}
+.kg-node-row:hover { background: rgba(255,255,255,0.05); }
+.kg-node-row--selected { background: rgba(124,111,255,0.12); border-color: rgba(124,111,255,0.28); }
+.kg-node-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.kg-node-label { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kg-node-id { font-size: 11px; color: var(--text-faint); font-family: var(--font-mono, monospace); }
+
+.kg-impact-panel {
+  background: var(--surface-base); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 16px; min-height: 240px;
+}
+.kg-impact-title { font-size: 14px; font-weight: 700; color: var(--text); margin: 0 0 4px; }
+.kg-impact-count { font-size: 12.5px; color: var(--text-dim); margin: 0 0 14px; }
+.kg-impact-group { margin-bottom: 12px; }
+.kg-impact-group-label { display: block; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 4px; }
+.kg-impact-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 3px; }
+.kg-impact-list li { font-size: 13px; color: var(--text-dim); padding: 3px 0; }
+.kg-impact-none { font-size: 13px; color: var(--text-dim); }
+
+@media (max-width: 780px) {
+  .kc-graph-layout { grid-template-columns: 1fr; }
+}

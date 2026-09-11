@@ -26,7 +26,14 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DIR = path.join(__dirname, "../../data/engorg");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/engorg/). When set,
+// redirects to an isolated per-process subdirectory so any engineering-org test suite reaching
+// this layer stops writing real records into production data/engorg/ (Mission 97/98 class).
+const DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `engorg.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/engorg");
 const STATE_FILE  = path.join(DIR, "state.json");
 const KPI_FILE    = path.join(DIR, "kpis.json");
 const MEMORY_FILE = path.join(DIR, "memory.json");

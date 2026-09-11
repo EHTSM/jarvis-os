@@ -93,6 +93,16 @@ function _buildJourney(lead, healthRecord) {
 
   return {
     customerId:      lead.userId || lead.phone || lead.chatId || `unknown_${Date.now()}`,
+    // B.21-class cross-tenant fix (same pattern already applied to
+    // customerSupportEngine.cjs's tickets): journeys carried no orgId at all,
+    // so listJourneys() returned every organization's customer journeys to
+    // every caller — reproduced live: two real orgs each received the
+    // identical 68-journey list, including the same customerId per org.
+    // crmService leads already carry a real orgId (see crmService.js); this
+    // propagates it through so journeys can finally be scoped the same way
+    // tickets already are. null for legacy/direct-signup records exactly as
+    // crmService's own null-orgId leads behave.
+    orgId:           lead.orgId || null,
     name:            lead.name || "Unknown",
     phone:           lead.phone || null,
     status,
@@ -153,15 +163,31 @@ function syncJourneys() {
   return { ok: true, synced: journeys.length, byStage };
 }
 
-function getJourney(customerId) {
-  return _load().journeys.find(j => j.customerId === customerId) || null;
+function getJourney(customerId, orgId = null) {
+  const j = _load().journeys.find(x => x.customerId === customerId);
+  if (!j) return null;
+  // Same scoping rule as listJourneys() below — see its comment.
+  if (orgId && (j.orgId || null) !== orgId) return null;
+  return j;
 }
 
-function listJourneys({ stage, churnRisk, limit = 50 } = {}) {
+function listJourneys({ stage, churnRisk, limit = 50, orgId = null } = {}) {
   let list = _load().journeys;
-  if (stage)     list = list.filter(j => j.stage === churnRisk ? true : j.stage === stage);
+  // Cross-tenant fix — see the orgId comment on _buildJourney() above.
+  // Legacy rows with no orgId are EXCLUDED from a scoped call rather than
+  // attributed to whoever asks, matching customerSupportEngine.listTickets().
+  // An unscoped call (orgId omitted) keeps prior behaviour for internal
+  // callers such as stats aggregation.
+  if (orgId) list = list.filter(j => j.orgId === orgId);
+  // `if (stage) list = list.filter(j => j.stage === churnRisk ? true : j.stage === stage)`
+  // previously compared a string (j.stage) to a boolean (churnRisk-derived
+  // ternary) whenever churnRisk was falsy — always false, so any call with
+  // `stage` set and no `churnRisk` silently emptied the list before the
+  // correct filter on the next line ever ran. The `stage && !churnRisk`
+  // branch below was unreachable dead code protecting against a case this
+  // line had already destroyed. Filter on stage and churnRisk independently.
+  if (stage)     list = list.filter(j => j.stage === stage);
   if (churnRisk) list = list.filter(j => j.churnRisk === churnRisk);
-  if (stage && !churnRisk) list = list.filter(j => j.stage === stage);
   return { ok: true, journeys: list.slice(0, limit), total: list.length };
 }
 
@@ -173,12 +199,20 @@ function getStageDistribution() {
   return { ok: true, stages: byStage, total: d.journeys.length };
 }
 
-function advanceStage(customerId, toStage) {
+// Customer-Reachable API / Data-Access Boundary Audit (2026-08-21): orgId is
+// OPTIONAL, same convention as getJourney()/listJourneys() above — when
+// supplied, the target journey's own orgId must match or the call is
+// rejected, exactly like getJourney()'s existing check. Previously had no
+// orgId parameter at all, so any authenticated customer (verified as a
+// member of *some* org by customerOrg.js's router-level requireOrgMember)
+// could advance a foreign org's customer lifecycle stage — live-reproduced.
+function advanceStage(customerId, toStage, orgId = null) {
   if (!LIFECYCLE_STAGES.includes(toStage)) return { ok: false, error: `invalid stage: ${toStage}` };
   const d   = _load();
   const idx = d.journeys.findIndex(j => j.customerId === customerId);
   if (idx < 0) return { ok: false, error: "journey not found" };
   const j = d.journeys[idx];
+  if (orgId && (j.orgId || null) !== orgId) return { ok: false, error: "journey not found" };
   const prevStage = j.stage;
   j.stage      = toStage;
   j.stageIndex = LIFECYCLE_STAGES.indexOf(toStage);
@@ -193,7 +227,21 @@ function getStats() {
   const d = _load();
   const churnRisks = { critical: 0, high: 0, medium: 0, low: 0 };
   d.journeys.forEach(j => { churnRisks[j.churnRisk] = (churnRisks[j.churnRisk] || 0) + 1; });
-  return { ...d.stats, churnRisks, updatedAt: d.updatedAt };
+
+  // Phase B.16: this spread the stored d.stats, whose byStage was computed by
+  // syncJourneys() from the *pre-merge* lead list. Because customerId prefers
+  // lead.userId, several leads collapse into one journey (7 customerIds were
+  // shared by 2–5 leads each), so byStage counted leads while total counted
+  // distinct customers. Reproduced live: total=60 with byStage summing to 71,
+  // and the two customer-reporting surfaces disagreed on the same question —
+  // getStats said lead=17/qualification=43 while getStageDistribution() said
+  // 12/37 from the same store. Recompute from the stored journeys so both
+  // agree; getStageDistribution() already did exactly this.
+  const byStage = {};
+  LIFECYCLE_STAGES.forEach(s => { byStage[s] = 0; });
+  d.journeys.forEach(j => { byStage[j.stage] = (byStage[j.stage] || 0) + 1; });
+
+  return { ...d.stats, total: d.journeys.length, byStage, churnRisks, updatedAt: d.updatedAt };
 }
 
 module.exports = {

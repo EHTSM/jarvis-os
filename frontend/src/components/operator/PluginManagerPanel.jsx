@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 const PLUGINS = [
   {
@@ -81,7 +82,7 @@ export default function PluginManagerPanel({ addNotification }) {
       <div
         className="op-panel-header"
         style={{ cursor: "pointer", userSelect: "none", background: "rgba(0,184,217,0.05)" }}
-        onClick={() => setExpanded(!expanded)}
+        {...clickableProps(() => setExpanded(!expanded))}
       >
         <span className="op-panel-title">Optional Plugins {expanded ? "▲" : "▼"}</span>
         <span className="op-panel-meta">

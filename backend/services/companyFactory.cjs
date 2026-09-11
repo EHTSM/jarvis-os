@@ -48,6 +48,12 @@ const _ae  = () => _try(() => require("./approvalEngine.cjs"));
 const _cle = () => _try(() => require("./continuousLearningEngine.cjs"));
 const _eme = () => _try(() => require("./engineeringMemoryEngine.cjs"));
 const _fwr = () => _try(() => require("./founderWorkRegistry.cjs"));
+const _vault = () => _try(() => require("./secretVault.cjs"));
+const _deptReg = () => _try(() => require("./departmentTemplateRegistry.cjs"));
+const _agentRegistry = () => _try(() => require("../../agents/runtime/agentRegistry.cjs"));
+const _org = () => _try(() => require("./organizationService.cjs"));
+const _contract = () => _try(() => require("./capabilityContract.cjs"));
+const _skillReg = () => _try(() => require("./skillRegistry.cjs"));
 
 function _ts()  { return new Date().toISOString(); }
 function _id()  { return `cf_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`; }
@@ -130,6 +136,57 @@ function _buildChecklist(blueprint) {
   return [...base, ...(specific[blueprint.templateId] || [])];
 }
 
+// ── Blueprint Contract Validation (Universal Composition Engine —
+// Completion Gaps, Phase 1) ──────────────────────────────────────────────
+// Assembles a real, honest composition blueprint from the SAME composed
+// department/skill data already produced by departmentTemplateRegistry.cjs
+// and skillRegistry.cjs (no new schema, no fabricated entities), then
+// validates the whole thing against capabilityContract.cjs's
+// validateBlueprint(). A structurally invalid blueprint is REJECTED
+// (createCompany returns ok:false) rather than silently proceeding —
+// this is the enforcement point Phase 2 of the original mission left
+// unbuilt.
+function _assembleBlueprintForContract(company, template, composedDepartments) {
+  const contract = _contract();
+  const skillReg = _skillReg();
+  if (!contract) return null;
+
+  const companyEntity = { id: company?.id || "pending", name: company?.name || "unknown", niche: template?.id || "unknown" };
+
+  // Departments — real composed data, each carrying its own real skill
+  // name strings (department.skills, already the true output of
+  // departmentTemplateRegistry.composeDepartment()).
+  const departments = composedDepartments.map((d, i) => ({
+    id: `dept_${i}_${d.templateKey}`,
+    templateKey: d.templateKey,
+    label: d.label,
+    skillIds: d.skills || [],
+  }));
+
+  // Skills — resolve each unique skill name referenced by any department
+  // against the REAL skill registry. A skill name with no real registry
+  // entry is honestly reported as a missing skill (never fabricated) by
+  // simply not being included — the reference-chain check below will
+  // then correctly flag any department that references it as a
+  // reference-integrity failure, surfacing the gap rather than hiding it.
+  const uniqueSkillNames = [...new Set(departments.flatMap(d => d.skillIds))];
+  const skills = [];
+  for (const skillName of uniqueSkillNames) {
+    const real = skillReg?.getSkill?.(skillName);
+    if (real) skills.push({ id: real.id, name: real.name, category: real.category, riskLevel: real.riskLevel, executionHandler: real.executionHandler, version: real.version });
+  }
+
+  return { company: companyEntity, departments, skills };
+}
+
+function _validateCompanyBlueprint(company, template, composedDepartments) {
+  const contract = _contract();
+  if (!contract?.validateBlueprint) return { ok: true, errors: [], skipped: true };
+  const blueprint = _assembleBlueprintForContract(company, template, composedDepartments);
+  if (!blueprint) return { ok: true, errors: [], skipped: true };
+  return contract.validateBlueprint(blueprint);
+}
+
 // ── Main pipeline ─────────────────────────────────────────────────────────────
 
 async function createCompany({
@@ -137,9 +194,11 @@ async function createCompany({
   name,           // Optional explicit company name
   templateId,     // Optional explicit template override
   founder = "founder",
+  creatorAccountId, // Real authenticated accountId — becomes org_owner of the backing org
   skipApproval = false,
 } = {}) {
   if (!idea && !name) return { ok: false, error: "idea or name required" };
+  if (!creatorAccountId) return { ok: false, error: "creatorAccountId is required" };
 
   const runId   = _id();
   const started = Date.now();
@@ -187,16 +246,59 @@ async function createCompany({
   const workspace = wsResult.workspace;
   _step("workspace", { workspaceId: workspace.id, repos: workspace.repositories?.repositories?.length, missions: workspace.registeredMissions?.length, readiness: workspace.readinessScore });
 
+  // ─ Step 7b: Compose departments from the matched template ────────────────
+  // Uses departmentTemplateRegistry.cjs (100-COMPANY P1 mission Phase 3) —
+  // derives the department set a template genuinely implies from its own
+  // teamTypes/capabilities, then reports each department's real
+  // composability against the live agent registry. No department record
+  // is created here (organizationService.createDepartment() requires an
+  // authenticated requestingAccountId and happens after the org exists at
+  // step 11) — this step produces the composed plan that a later step or
+  // caller can use to actually create departments via the existing,
+  // unmodified organizationService API.
+  const composedDepartments = _try(() => _deptReg()?.composeDepartmentsForTemplate?.(template, _agentRegistry())) || [];
+  _step("departments_composed", {
+    count: composedDepartments.length,
+    composableNow: composedDepartments.filter(d => d.composable).length,
+    requiresNewCapability: composedDepartments.filter(d => d.requiresNewCapability).length,
+    departments: composedDepartments.map(d => ({ key: d.templateKey, label: d.label, composable: d.composable })),
+  });
+
+  // ─ Step 7c: Blueprint Contract Validation (Universal Composition Engine
+  // Completion Gaps, Phase 1) ────────────────────────────────────────────
+  // Validates the composed blueprint (Company + Departments + Skills, and
+  // the department->skill reference chain) against capabilityContract.cjs
+  // BEFORE any org/department records are created. A structurally invalid
+  // blueprint (missing required fields, a raw secret smuggled in, or a
+  // department referencing a skill that doesn't genuinely exist in the
+  // real skill registry) rejects the run here rather than silently
+  // proceeding to create a company with broken composition.
+  const blueprintValidation = _validateCompanyBlueprint({ id: blueprint.id, name: companyName }, template, composedDepartments);
+  _step("blueprint_validated", { ok: blueprintValidation.ok, errorCount: blueprintValidation.errors.length, errors: blueprintValidation.errors.slice(0, 20) });
+  if (!blueprintValidation.ok) {
+    return { ok: false, error: "blueprint failed contract validation: " + blueprintValidation.errors.join("; "), timeline };
+  }
+
   // ─ Step 8: Workforce allocation ──────────────────────────────────────────
+  // Real execution (not dryRun): runMission's non-dryRun path calls the
+  // existing autonomousExecutionEngine.executeWorkflow() when a workflow ID
+  // can be inferred from the mission title/domain — which already enforces
+  // Class B founder-approval pause and Class C hard-block (see
+  // autonomousExecutionEngine.cjs) — or otherwise falls back to a bounded
+  // engorg dispatch simulation. Nothing here bypasses the existing approval
+  // architecture; see 100-COMPANY-GAP-LIST.md P0 #3 / REALITY-AUDIT Part 7.
   const wfResult = await _try(() => _wm()?.runMission?.({
     title:          `Staff ${companyName} core team`,
     domain:         template.id,
     priority:       "high",
     requiredSkills: template.skills.slice(0, 5),
     teamType:       template.teamTypes[0],
-    dryRun:         true,
+    dryRun:         false,
   }));
-  _step("workforce", { teamType: wfResult?.teamType, agents: wfResult?.teamSize, coverage: wfResult?.team?.skillCoverage });
+  // runMission's non-dryRun return shape is { ok, ...missionRecord } — team
+  // isn't nested (unlike the dryRun shape), skillCoverage is top-level. See
+  // workforceManager.cjs runMission() missionRecord construction.
+  _step("workforce", { teamType: wfResult?.teamType, agents: wfResult?.teamSize, coverage: wfResult?.skillCoverage, executionOutcome: wfResult?.execution?.outcome || null });
 
   // ─ Step 9: Production checklist ─────────────────────────────────────────
   const checklist = _buildChecklist(blueprint);
@@ -205,16 +307,75 @@ async function createCompany({
   // ─ Step 10: Register in platform ─────────────────────────────────────────
   _step("register");
 
-  // ─ Step 11: Create lifecycle record ──────────────────────────────────────
-  const lcResult = _cle_e()?.createCompany?.({ blueprintId: blueprint.id, workspaceId: workspace.id, name: companyName, templateId: template.id });
+  // ─ Step 11: Create lifecycle record (provisions the backing organization) ─
+  const lcResult = _cle_e()?.createCompany?.({ blueprintId: blueprint.id, workspaceId: workspace.id, name: companyName, templateId: template.id, creatorAccountId });
+  if (!lcResult?.ok) return { ok: false, error: "lifecycle/org provisioning failed: " + lcResult?.error, timeline };
   const company  = lcResult?.company;
-  _step("lifecycle", { companyId: company?.id, stage: company?.stage });
+  _step("lifecycle", { companyId: company?.id, stage: company?.stage, orgId: company?.orgId });
+
+  // ─ Step 11a: Instantiate composed departments as real org department records ─
+  // Uses the existing, unmodified organizationService.createDepartment() API
+  // — no new department data model. Only creates a real department record
+  // for families that are genuinely composable right now (skips
+  // requiresNewCapability:true families — creating a department record
+  // for a family with zero working agent/skill behind it would be an
+  // empty label, not real capability; see departmentTemplateRegistry.cjs
+  // Phase 3). creatorAccountId is the org owner (real org_owner role,
+  // assigned at org creation — see organizationService.createOrg()),
+  // so this call passes the same real permission check any operator
+  // action would.
+  const createdDepartments = [];
+  if (company?.orgId) {
+    for (const dept of composedDepartments) {
+      if (!dept.composable) continue;
+      try {
+        const rec = _org()?.createDepartment?.(
+          company.orgId,
+          {
+            name: dept.label,
+            description: `Auto-composed from template "${template.id}" (${dept.templateKey})`,
+            leadAccountId: creatorAccountId,
+            // Persist the real composed metadata (skills/connectors/
+            // permissions/approvalPolicies/kpis/composable status) onto
+            // the department record instead of discarding it after this
+            // step — Universal Composition Engine Phase 3 fix.
+            composition: {
+              templateKey: dept.templateKey,
+              skills: dept.skills || [],
+              connectors: dept.connectors || [],
+              permissions: dept.permissions || [],
+              approvalPolicies: dept.approvalPolicies || [],
+              kpis: dept.kpis || [],
+              composable: dept.composable,
+              missingCapabilities: dept.missingCapabilities || [],
+            },
+          },
+          creatorAccountId
+        );
+        if (rec) createdDepartments.push({ id: rec.id, key: dept.templateKey, label: dept.label });
+      } catch (e) {
+        // Non-fatal — a single department creation failure (e.g. duplicate
+        // name on a re-run) does not block company creation.
+      }
+    }
+  }
+  _step("departments_created", { count: createdDepartments.length, departments: createdDepartments });
+
+  // ─ Step 11b: Connector readiness (report only — never auto-connect) ──────
+  // No connector can be attached automatically: every connector requires a
+  // real credential value (secretVault.storeSecret), and none exist yet for
+  // a brand-new org. Per REALITY-AUDIT Part 7 / GAP-LIST P0 #3, this step
+  // exists so the company record honestly reflects NEEDS_CREDENTIALS instead
+  // of silently omitting connector state or fabricating a connected one.
+  const configuredSecrets = _vault()?.listSecrets?.({ orgId: company?.orgId }) || [];
+  const connectorStatus   = configuredSecrets.length > 0 ? "PARTIALLY_CONFIGURED" : "NEEDS_CREDENTIALS";
+  _step("connectors", { orgId: company?.orgId, requiredCapabilities: template.capabilities, configuredConnectorIds: configuredSecrets.map(s => s.connectorId), status: connectorStatus });
 
   // ─ Step 12: Pass initial gates for planning stage ─────────────────────────
   if (company?.id) {
     _cle_e()?.passGate?.(company.id, "blueprint_approved",  { evidence: "Blueprint auto-generated" });
     _cle_e()?.passGate?.(company.id, "workspace_ready",     { evidence: "Workspace auto-built" });
-    _cle_e()?.passGate?.(company.id, "team_allocated",      { evidence: "Workforce dry-run complete" });
+    _cle_e()?.passGate?.(company.id, "team_allocated",      { evidence: `Workforce mission executed (team=${wfResult?.teamSize ?? 0}, outcome=${wfResult?.execution?.outcome || "unknown"})` });
   }
 
   // ─ Step 13: Learn + record ───────────────────────────────────────────────
@@ -240,6 +401,7 @@ async function createCompany({
   const run = {
     id:           runId,
     companyId:    company?.id,
+    orgId:        company?.orgId,
     companyName,
     templateId:   template.id,
     blueprintId:  blueprint.id,
@@ -264,6 +426,8 @@ async function createCompany({
   return {
     ok: true,
     companyId:    company?.id,
+    orgId:        company?.orgId,
+    company,
     companyName,
     templateId:   template.id,
     templateName: template.name,
@@ -281,6 +445,36 @@ async function createCompany({
     status:       "ready",
     durationMs:   run.durationMs,
   };
+}
+
+// ── Clone ─────────────────────────────────────────────────────────────────────
+// Reuses the exact same 13-step pipeline as createCompany() — a clone is a
+// fresh, fully real company/org/blueprint/workspace, seeded from the source
+// company's templateId (its "recipe"). Company blueprints have no
+// per-company customization beyond templateId today (skills/capabilities/
+// techStack/kpis are 100% template-derived — see companyBlueprintEngine.cjs
+// and its read-only /blueprints/:id/status-only PATCH route), so templateId
+// is the complete, honest definition of "what this company was built from."
+// No new blueprint-generation logic is introduced.
+
+async function cloneCompany({ sourceCompanyId, name, creatorAccountId, skipApproval = false } = {}) {
+  if (!sourceCompanyId) return { ok: false, error: "sourceCompanyId is required" };
+  if (!creatorAccountId) return { ok: false, error: "creatorAccountId is required" };
+
+  const source = _cle_e()?.getCompany?.(sourceCompanyId);
+  if (!source) return { ok: false, error: "source company not found" };
+
+  const cloneName = name || `${source.name} (Clone)`;
+  const result = await createCompany({
+    name: cloneName,
+    templateId: source.templateId,
+    founder: source.creatorAccountId || "founder",
+    creatorAccountId,
+    skipApproval,
+  });
+
+  if (result.ok) result.clonedFrom = sourceCompanyId;
+  return result;
 }
 
 // ── Name extractor ────────────────────────────────────────────────────────────
@@ -314,7 +508,11 @@ function getStats() {
 
 module.exports = {
   createCompany,
+  cloneCompany,
   getRun,
   listRuns,
   getStats,
+  // Universal Composition Engine — Completion Gaps, Phase 1
+  validateCompanyBlueprint: _validateCompanyBlueprint,
+  assembleBlueprintForContract: _assembleBlueprintForContract,
 };

@@ -26,6 +26,8 @@ const path    = require("path");
 const crypto  = require("crypto");
 const { execSync, spawnSync } = require("child_process");
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg } = require("../middleware/orgMiddleware.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
 const ai      = require("../services/aiService");
 const logger  = require("../utils/logger");
 
@@ -35,7 +37,17 @@ function _loadPatchHistory() {
     try { return JSON.parse(fs.readFileSync(PATCH_HISTORY_PATH, "utf8")); } catch { return { patches: [] }; }
 }
 function _savePatchHistory(store) {
-    fs.writeFileSync(PATCH_HISTORY_PATH, JSON.stringify(store, null, 2));
+    // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+    // (2026-08-21): unguarded write — a real failure reached several
+    // /coding/* route catch blocks (apply-patch, generate-patch,
+    // undo-patch) as a raw fs error embedding the absolute path of
+    // data/ai-patch-history.json.
+    try {
+        fs.writeFileSync(PATCH_HISTORY_PATH, JSON.stringify(store, null, 2));
+    } catch (e) {
+        logger.error(`[CodingAssistant] patch history write failed: ${e.message}`);
+        throw new Error("Could not save patch history");
+    }
 }
 function _addToPatchHistory(entry) {
     const store = _loadPatchHistory();
@@ -56,6 +68,55 @@ function _clean(str, max = 8000) {
     return str.trim().slice(0, max);
 }
 
+/**
+ * A.10 fix: aiService.callAI() does not throw when every provider fails — it
+ * resolves to the sentinel string "AI backend unavailable...". Every route in
+ * this file used to return that sentinel as { ok: true, reply }, so a total
+ * provider outage (expired key, exhausted rate limit) was rendered to the
+ * developer as if the Copilot had actually answered with that sentence.
+ * Throwing here routes it into each handler's existing catch block, which
+ * already returns an honest 500 with the real message — no per-call-site
+ * changes needed. Same sentinel check creativeStudio.js (A.7) and ai.js
+ * (A.10) already use.
+ */
+async function _callAI(prompt, opts) {
+    const reply = await ai.callAI(prompt, opts);
+    if (typeof reply !== "string" || !reply.trim() || reply.startsWith("AI backend unavailable")) {
+        throw new Error(reply || "AI generation returned no content. Check provider API keys in your .env file.");
+    }
+    return reply;
+}
+
+// Command Injection & Process Execution Deep Security Sweep (2026-08-21):
+// cwd is caller-supplied (req.body.cwd) on every route in this file and was
+// passed straight into execSync's { cwd } option with zero validation. The
+// command TEXT itself is always a fixed string (no injection into the
+// shell command), but cwd controls WHERE that fixed git command runs — an
+// arbitrary directory-read/disclosure vector, not classic command
+// injection. Live-reproduced (via a safe, self-created test git repo, not
+// against any real system/user data): pointing cwd at any real git
+// repository elsewhere on the host returns that repo's actual commit log,
+// diff --stat, and full diff content — including realistic secret-shaped
+// file content — which flows into the AI system prompt (_buildRepoContext)
+// and, for /coding/review, directly into the review prompt. This is a
+// legitimate product feature in the intended single-operator Electron
+// desktop deployment (cwd = whatever local project folder the user opened
+// in the IDE), but the backend has no way to distinguish that trusted
+// local caller from a remote multi-tenant web customer hitting this same
+// HTTP API directly — so the fix targets the concretely dangerous case
+// (a handful of always-sensitive absolute system roots) rather than
+// restricting cwd to one fixed directory, which would break the real
+// open-any-project-folder feature this route exists for. Shared with
+// codingBundle.js (same vulnerability, same fix) via backend/utils/
+// cwdSafety.cjs, following the same "single shared choke point" pattern
+// already established by urlSafety.cjs's assertSafeNavigationTarget().
+const _safeCwd = require("../utils/cwdSafety.cjs").safeCwd;
+
+// _gitLog/_gitDiffStat/_buildRepoContext below are called with an already-
+// sanitized cwd — every route handler in this file runs its own req.body/
+// req.query.cwd through _safeCwd(cwd, req) BEFORE passing it down here, so
+// these two functions trust the value they're given rather than
+// re-deriving req.user.role themselves (they have no access to `req`).
 /** Run git log in cwd, return last N commit subjects. Silently fails. */
 function _gitLog(cwd, n = 10) {
     if (!cwd) return "";
@@ -73,12 +134,23 @@ function _gitDiffStat(cwd) {
     } catch { return ""; }
 }
 
-/** Get recent mission context (last 5 active/in-progress missions). */
-function _missionContext() {
+/**
+ * Get recent mission context (last 5 active/in-progress missions).
+ *
+ * MASTER RECOVERY (2026-08-15, C10-004 / C9 mission-context leak): this
+ * previously called listMissions({limit:5}) with NO org filter — proven
+ * live in C.9 to inject an unrelated organization's mission objective text
+ * into the AI's prompt for any caller. missionMemory.cjs's orgId filter is
+ * OPTIONAL (see that file's header comment — required would break 74 other
+ * internal consumers), so the fix here is at the actual tenant-facing call
+ * site: pass the real orgId through, scoping this specific AI-context read
+ * without touching the shared service's core contract.
+ */
+function _missionContext(orgId) {
     try {
         const mm = _missionMemory();
         if (!mm) return "";
-        const { missions } = mm.listMissions({ limit: 5 });
+        const { missions } = mm.listMissions({ limit: 5, orgId: orgId || undefined });
         if (!missions.length) return "";
         return missions.map(m =>
             `Mission [${m.status}]: ${m.objective.slice(0, 120)}` +
@@ -113,7 +185,7 @@ function _graphContext() {
  * Assemble a full repository context block for the AI system prompt.
  * Only includes non-empty sections.
  */
-function _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedFiles }) {
+function _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedFiles, orgId }) {
     const parts = [];
 
     parts.push("You are an expert software engineering assistant embedded inside Ooplix, a developer IDE.");
@@ -129,7 +201,7 @@ function _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedF
         if (diffStat) parts.push(`\n## Uncommitted Changes (diff --stat)\n${diffStat}`);
     }
 
-    const missions = _missionContext();
+    const missions = _missionContext(orgId);
     if (missions) parts.push(`\n## Active Missions\n${missions}`);
 
     const rules = _rulesContext();
@@ -157,6 +229,29 @@ function _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedF
 
 // ── All routes require auth ───────────────────────────────────────────────────
 router.use("/coding", requireAuth);
+// MASTER RECOVERY (2026-08-15, C10-004): attachOrg is non-blocking — same
+// contract as the equivalent workspace-scoped middleware used elsewhere —
+// it only attaches req.org when resolvable, never rejects a request.
+// Needed so _missionContext() below can scope AI mission-context injection
+// to the caller's real org instead of leaking across tenants.
+router.use("/coding", attachOrg);
+router.use("/coding", rateLimiter(30, 60_000));
+// Command Injection & Process Execution Deep Security Sweep (2026-08-21):
+// applied once here, before every route handler runs, so no individual
+// route can forget to sanitize cwd before it reaches _buildRepoContext()'s
+// execSync calls or any of this file's other cwd-driven git/scan sinks —
+// see cwdSafety.cjs for the full finding. req.body is a plain parsed
+// object and can be rewritten in place safely. req.query CANNOT — Express
+// 5 makes it a getter re-derived from req.url on every access, so an
+// assignment to req.query.cwd silently no-ops (verified directly against
+// this app's actual express version). GET routes that read a query-string
+// cwd (GET /coding/context, GET /coding/smells) instead read
+// req.safeQueryCwd, stashed here.
+router.use("/coding", (req, res, next) => {
+    if (req.body && "cwd" in req.body) req.body.cwd = _safeCwd(req.body.cwd, req);
+    if (req.query && "cwd" in req.query) req.safeQueryCwd = _safeCwd(req.query.cwd, req);
+    next();
+});
 
 // ── POST /coding/ask — free-form question with full repo context ──────────────
 router.post("/coding/ask", async (req, res) => {
@@ -173,14 +268,14 @@ router.post("/coding/ask", async (req, res) => {
 
         if (!question?.trim()) return res.status(400).json({ ok: false, error: "question required" });
 
-        const system = _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedFiles });
+        const system = _buildRepoContext({ cwd, fileContent, filePath, symbolContext, relatedFiles, orgId: req.org?.id });
 
-        const reply = await ai.callAI(_clean(question, 2000), {
+        const reply = await _callAI(_clean(question, 2000), {
             system,
             history: history.slice(-10).map(h => ({ role: h.role, content: h.content })),
         });
 
-        res.json({ ok: true, reply, contextUsed: { hasCwd: !!cwd, hasFile: !!fileContent, hasMissions: !!_missionContext(), hasRules: !!_rulesContext() } });
+        res.json({ ok: true, reply, contextUsed: { hasCwd: !!cwd, hasFile: !!fileContent, hasMissions: !!_missionContext(req.org?.id), hasRules: !!_rulesContext() } });
     } catch (err) {
         logger.error(`[CodingAsk] ${err.message}`);
         res.status(500).json({ ok: false, error: err.message });
@@ -206,10 +301,10 @@ router.post("/coding/action", async (req, res) => {
 
         const instruction = ACTION_PROMPTS[action] || `Perform the following action on this code: ${action}`;
 
-        const system = _buildRepoContext({ cwd, filePath, symbolContext});
+        const system = _buildRepoContext({ cwd, filePath, symbolContext, orgId: req.org?.id });
 
         const prompt = `${instruction}\n\nLanguage: ${language}\n\`\`\`${language}\n${_clean(code, 6000)}\n\`\`\``;
-        const reply  = await ai.callAI(prompt, { system });
+        const reply  = await _callAI(prompt, { system });
 
         // Extract patch if action is refactor/fix
         let patch = null;
@@ -236,10 +331,10 @@ router.post("/coding/explain-file", async (req, res) => {
         const { filePath, fileContent, cwd } = req.body;
         if (!fileContent) return res.status(400).json({ ok: false, error: "fileContent required" });
 
-        const system = _buildRepoContext({ cwd, filePath, fileContent});
+        const system = _buildRepoContext({ cwd, filePath, fileContent, orgId: req.org?.id });
         const prompt = `Explain this file comprehensively:\n- What it does\n- Key functions/classes and their roles\n- Dependencies and what they provide\n- Non-obvious design decisions\n- How it fits into the broader codebase`;
 
-        const reply = await ai.callAI(prompt, { system });
+        const reply = await _callAI(prompt, { system });
         res.json({ ok: true, reply, text: reply });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
@@ -252,7 +347,7 @@ router.post("/coding/find-impl", async (req, res) => {
         const { query, cwd, symbolIndex = [] } = req.body;
         if (!query) return res.status(400).json({ ok: false, error: "query required" });
 
-        const system = _buildRepoContext({ cwd});
+        const system = _buildRepoContext({ cwd, orgId: req.org?.id });
 
         // Build symbol context from the passed symbol index
         let symbolCtx = "";
@@ -269,7 +364,7 @@ router.post("/coding/find-impl", async (req, res) => {
         }
 
         const prompt = `The developer is asking: "${_clean(query, 400)}"\n\nBased on the repository context and symbol index, answer: where is this implemented? Provide specific file paths and line numbers if available.${symbolCtx}`;
-        const reply = await ai.callAI(prompt, { system });
+        const reply = await _callAI(prompt, { system });
         res.json({ ok: true, reply, text: reply });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
@@ -288,10 +383,10 @@ router.post("/coding/summarize", async (req, res) => {
             `### ${filePaths[i] || `File ${i+1}`}\n\`\`\`\n${_clean(c, 1200)}\n\`\`\``
         ).join("\n\n");
 
-        const system = _buildRepoContext({ cwd});
+        const system = _buildRepoContext({ cwd, orgId: req.org?.id });
         const prompt = `Summarize this module${moduleName ? ` (${moduleName})` : ""}:\n- Purpose\n- Public API surface\n- Key dependencies\n- Architecture decisions\n\n${contentBlock}`;
 
-        const reply = await ai.callAI(prompt, { system });
+        const reply = await _callAI(prompt, { system });
         res.json({ ok: true, reply, text: reply });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
@@ -301,7 +396,7 @@ router.post("/coding/summarize", async (req, res) => {
 // ── POST /coding/review — review changes before commit ───────────────────────
 router.post("/coding/review", async (req, res) => {
     try {
-        const { cwd, diff } = req.body;
+        const { diff, cwd } = req.body; // already sanitized by the router-level middleware above
 
         let diffContent = diff;
         if (!diffContent && cwd) {
@@ -313,12 +408,12 @@ router.post("/coding/review", async (req, res) => {
             } catch {}
         }
 
-        const system = _buildRepoContext({ cwd});
+        const system = _buildRepoContext({ cwd, orgId: req.org?.id });
         const prompt = diffContent
             ? `Review these changes before commit. Check for bugs, security issues, missing tests, style violations:\n\`\`\`diff\n${_clean(diffContent, 8000)}\n\`\`\``
             : "Describe the current state of uncommitted changes and suggest what to review before committing.";
 
-        const reply  = await ai.callAI(prompt, { system });
+        const reply  = await _callAI(prompt, { system });
         const issues = [];
         const lines  = reply.split("\n");
         for (const line of lines) {
@@ -335,13 +430,13 @@ router.post("/coding/review", async (req, res) => {
 // ── POST /coding/refactor — multi-file refactor ───────────────────────────────
 router.post("/coding/refactor", async (req, res) => {
     try {
-        const { files = [], goal, cwd } = req.body;
+        const { files = [], goal, cwd, apply = false, commitMsg, requireApproval = true } = req.body;
         if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });
 
-        const system = _buildRepoContext({ cwd});
+        const system = _buildRepoContext({ cwd, orgId: req.org?.id });
         const prompt = `Perform this refactor: "${_clean(goal, 500)}"\n\nFiles involved:\n${files.map(f => `- ${f}`).join("\n")}\n\nProvide: 1) Summary of changes, 2) For each file: the full new content in a fenced code block labelled with the file path.`;
 
-        const reply   = await ai.callAI(prompt, { system });
+        const reply   = await _callAI(prompt, { system });
         const patches = [];
         const re      = /```(?:\w+)?(?:\s*\/\/\s*(.+?))?\n([\s\S]+?)```/g;
         let   m;
@@ -349,9 +444,43 @@ router.post("/coding/refactor", async (req, res) => {
             if (m[1]) patches.push({ file: m[1].trim(), content: m[2].trim(), diff: "" });
         }
 
-        res.json({ ok: true, summary: reply.slice(0, 500), reply, patches });
+        // Engineering Autonomous Completion mission — "unify patch
+        // generation": previously this only ever returned a preview, no
+        // matter what the caller wanted. apply:true now writes the
+        // generated patches for real through the SAME shared apply path
+        // /coding/apply-patch uses (_applyPatchSpecs/_launchPipelineForPatch)
+        // — same real fs.writeFileSync, same real `git add`, same real
+        // patch history, same real Engineering Pipeline launch (including
+        // the new security_gate/build_gate/test_gate stages, so a bad
+        // multi-file refactor gets caught the same way a single-file patch
+        // does). Default remains preview-only — apply is opt-in so every
+        // existing caller of this route keeps its current behavior exactly.
+        if (!apply) {
+            return res.json({ ok: true, summary: reply.slice(0, 500), reply, patches, applied: false });
+        }
+
+        if (!patches.length) {
+            return res.json({ ok: true, summary: reply.slice(0, 500), reply, patches, applied: false, note: "no fenced file patches found in AI reply — nothing to apply" });
+        }
+
+        const ROOT = cwd || path.join(__dirname, "../../");
+        const patchSpecs = patches.map(p => ({
+            targetFile:  p.file,
+            fullContent: p.content,
+        }));
+
+        const { histId, applied } = _applyPatchSpecs({ patchSpecs, goal, cwd, commitMsg, requireApproval, sourceLabel: "refactor", orgId: req.org?.id });
+        const pipeline = await _launchPipelineForPatch(histId, goal, patchSpecs, requireApproval);
+
+        res.json({
+            ok: true, summary: reply.slice(0, 500), reply, patches,
+            applied: true, histId, appliedFiles: applied, staged: true, pipeline,
+            message: pipeline
+                ? `Applied ${applied.length} file(s), pipeline ${pipeline.pipelineId} started`
+                : `Applied ${applied.length} file(s) and staged — pipeline unavailable`,
+        });
     } catch (err) {
-        res.status(500).json({ ok: false, error: err.message });
+        res.status(err.status || 500).json({ ok: false, error: err.message });
     }
 });
 
@@ -361,13 +490,13 @@ router.post("/coding/explain-error", async (req, res) => {
         const { error: errorText, cwd, fileContent, filePath } = req.body;
         if (!errorText?.trim()) return res.status(400).json({ ok: false, error: "error field required" });
 
-        const system = _buildRepoContext({ cwd, fileContent, filePath});
+        const system = _buildRepoContext({ cwd, fileContent, filePath, orgId: req.org?.id });
 
         const rules = _rulesContext();
         const engineeringCtx = rules ? `\n\nKnown engineering rules:\n${rules}` : "";
 
         const prompt = `Explain this error and provide a fix:\n\`\`\`\n${_clean(errorText, 3000)}\n\`\`\`${engineeringCtx}`;
-        const reply  = await ai.callAI(prompt, { system });
+        const reply  = await _callAI(prompt, { system });
 
         const fixMatch = reply.match(/(?:fix|solution|resolution)[:\s]+([^.]+\.)/i);
         const fix      = fixMatch ? fixMatch[1].trim() : null;
@@ -390,7 +519,7 @@ router.post("/coding/generate-patch", async (req, res) => {
         const { goal, cwd, filePath, fileContent, symbolContext } = req.body;
         if (!goal?.trim()) return res.status(400).json({ ok: false, error: "goal required" });
 
-        const system = _buildRepoContext({ cwd, fileContent, filePath, symbolContext });
+        const system = _buildRepoContext({ cwd, fileContent, filePath, symbolContext, orgId: req.org?.id });
 
         const prompt = `You are a code modification assistant. Given a goal, produce a structured patch proposal.
 
@@ -418,7 +547,7 @@ Respond with ONLY valid JSON matching this schema (no markdown fences, no preamb
 
 If you cannot produce a safe, targeted patch (e.g. the change requires understanding files you don't have), set patchSpecs to [] and explain in the explanation field.`;
 
-        const raw = await ai.callAI(prompt, { system });
+        const raw = await _callAI(prompt, { system });
 
         let proposal;
         try {
@@ -439,6 +568,17 @@ If you cannot produce a safe, targeted patch (e.g. the change requires understan
         }
 
         // Validate patchSpecs — check each targetFile exists and patchTarget is found
+        //
+        // Client Error Sanitization Deep Sweep (2026-08-21): cwd is caller-
+        // supplied (req.body.cwd, above) and used unvalidated as the base for
+        // this fs.readFileSync — live-reproduced, a targetFile that exists
+        // but is unreadable (EACCES) or is a directory (EISDIR) throws a raw
+        // Node error containing the absolute resolved path, e.g.
+        // "EACCES: permission denied, open '/etc/shadow'". existsSync itself
+        // is safe (never throws), so this can only fire on that narrower
+        // exists-but-unreadable case — same fix shape already applied to
+        // this file's _applyPatchSpecs(): keep the caller-relative name in
+        // the response, drop the raw fs error.
         const ROOT = cwd || path.join(__dirname, "../../");
         const validation = (proposal.patchSpecs || []).map(spec => {
             try {
@@ -452,7 +592,7 @@ If you cannot produce a safe, targeted patch (e.g. the change requires understan
                 if (count > 1) return { ...spec, valid: false, error: `patchTarget appears ${count} times — ambiguous` };
                 return { ...spec, valid: true, error: null };
             } catch (e) {
-                return { ...spec, valid: false, error: e.message };
+                return { ...spec, valid: false, error: `Could not read ${spec.targetFile}` };
             }
         });
 
@@ -473,6 +613,122 @@ If you cannot produce a safe, targeted patch (e.g. the change requires understan
     }
 });
 
+// ── Unified patch application ─────────────────────────────────────────────────
+// Engineering Autonomous Completion mission — "unify patch generation": both
+// /coding/apply-patch (string-replace patchSpecs) and /coding/refactor's new
+// apply mode (full-file-content patches, see below) now write files, stage
+// them, record history, and launch the Engineering Pipeline through this ONE
+// function, instead of each route having its own copy of that logic. Two
+// patch shapes are supported per spec:
+//   - string-replace: { targetFile, patchTarget, patchReplacement }
+//   - full-content:    { targetFile, fullContent }
+// Both produce the exact same downstream effects (real fs.writeFileSync,
+// real `git add`, real patch-history record, real pipeline launch).
+// Client Error / Failure-Honesty Leakage Audit (2026-08-21): a real fs
+// operation failure here (permission-denied, disk full, read-only mount,
+// etc.) previously reached the route's catch block as a raw Node error —
+// live-reproduced, an ordinary authenticated customer's POST
+// /coding/apply-patch with a target directory the process can't create
+// returned "ENOENT: no such file or directory, mkdir '/root/blocked...'"
+// verbatim, leaking the real absolute server filesystem root. Node's fs
+// errors always embed the absolute path they operated on, even when the
+// caller only ever supplied a relative one. Wrapped here (the one place
+// these calls happen) rather than in every route's catch block — reuses
+// spec.targetFile (the already-safe, caller-relative name) instead of the
+// absolute path the raw error would have named.
+function _safeFsOp(fn, targetFile) {
+    try { return fn(); }
+    catch (e) {
+        throw Object.assign(new Error(`Failed to write ${targetFile}`), { status: 500 });
+    }
+}
+
+function _applyPatchSpecs({ patchSpecs, goal, cwd, commitMsg, requireApproval, sourceLabel, orgId }) {
+    const ROOT = cwd || path.join(__dirname, "../../");
+    const applied   = [];
+    const originals = [];
+
+    for (const spec of patchSpecs) {
+        const absPath = path.isAbsolute(spec.targetFile) ? spec.targetFile : path.join(ROOT, spec.targetFile);
+        const isFullContent = typeof spec.fullContent === "string";
+
+        if (isFullContent) {
+            // Full-file-content patch (e.g. from /coding/refactor) — the
+            // file may be new (refactor can propose splitting code into a
+            // new file), so unlike string-replace mode this doesn't
+            // require the file to already exist.
+            const original = _safeFsOp(() => fs.existsSync(absPath) ? fs.readFileSync(absPath, "utf8") : null, spec.targetFile);
+            _safeFsOp(() => fs.mkdirSync(path.dirname(absPath), { recursive: true }), spec.targetFile);
+            _safeFsOp(() => fs.writeFileSync(absPath, spec.fullContent, "utf8"), spec.targetFile);
+            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
+            applied.push(spec.targetFile);
+        } else {
+            if (!fs.existsSync(absPath)) throw Object.assign(new Error(`File not found: ${spec.targetFile}`), { status: 400 });
+            const original = _safeFsOp(() => fs.readFileSync(absPath, "utf8"), spec.targetFile);
+            if (!original.includes(spec.patchTarget)) throw Object.assign(new Error(`patchTarget not found in ${spec.targetFile}`), { status: 400 });
+            const patched = original.replace(spec.patchTarget, spec.patchReplacement);
+            _safeFsOp(() => fs.writeFileSync(absPath, patched, "utf8"), spec.targetFile);
+            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
+            applied.push(spec.targetFile);
+        }
+    }
+
+    // Stage the changed files
+    for (const f of originals) {
+        spawnSync("git", ["add", f.absPath], { cwd: ROOT });
+    }
+
+    // Record in the shared patch history.
+    // MASTER RECOVERY (2026-08-15, patch-history tenant scoping, C.9 finding):
+    // this store previously had no orgId field at all — C.9 proved live that
+    // GET /coding/patch-history returned byte-identical global data to two
+    // unrelated tenants, including full file diffs. orgId is recorded here
+    // (optional field, same non-breaking pattern as C10-004's missionMemory
+    // fix — nothing else reads this file besides the routes below, so there
+    // are no other internal consumers to preserve compatibility for).
+    const histId = crypto.randomUUID();
+    _addToPatchHistory({
+        id:          histId,
+        orgId:       orgId || null,
+        goal,
+        source:      sourceLabel || "apply-patch",
+        commitMsg:   commitMsg || `feat: ${goal.slice(0, 80)} [ai-patch]`,
+        patchSpecs,
+        originals:   originals.map(o => ({ targetFile: o.targetFile, originalContent: o.originalContent })),
+        appliedFiles: applied,
+        appliedAt:   new Date().toISOString(),
+        status:      "staged",
+        pipelineId:  null,
+    });
+
+    return { histId, applied, originals, ROOT };
+}
+
+async function _launchPipelineForPatch(histId, goal, patchSpecs, requireApproval) {
+    let pipeline = null;
+    try {
+        const pc = require("../services/engineeringPipelineCoordinator.cjs");
+        const pipelinePromise = pc.runPipeline(goal, {
+            patchSpec:      patchSpecs[0], // primary spec for pipeline validation
+            requireApproval,
+            priority:       "high",
+        });
+        pipelinePromise.catch(e => logger.warn(`[ApplyPatch] pipeline error: ${e.message}`));
+        await new Promise(r => setTimeout(r, 80));
+        const active = pc.getActivePipelines();
+        pipeline = active[active.length - 1] || null;
+        if (pipeline) {
+            const store = _loadPatchHistory();
+            const rec   = store.patches.find(p => p.id === histId);
+            if (rec) { rec.pipelineId = pipeline.pipelineId; rec.status = "pipeline_running"; }
+            _savePatchHistory(store);
+        }
+    } catch (e) {
+        logger.warn(`[ApplyPatch] pipeline launch failed: ${e.message}`);
+    }
+    return pipeline;
+}
+
 // ── POST /coding/apply-patch — apply patchSpecs via Engineering Pipeline ──────
 router.post("/coding/apply-patch", async (req, res) => {
     try {
@@ -480,70 +736,8 @@ router.post("/coding/apply-patch", async (req, res) => {
         if (!patchSpecs.length) return res.status(400).json({ ok: false, error: "patchSpecs required" });
         if (!goal?.trim())      return res.status(400).json({ ok: false, error: "goal required" });
 
-        const ROOT = cwd || path.join(__dirname, "../../");
-
-        // Step 1: Apply each patchSpec as a string replacement, save originals for undo
-        const applied  = [];
-        const originals = [];
-        for (const spec of patchSpecs) {
-            const absPath = path.isAbsolute(spec.targetFile)
-                ? spec.targetFile
-                : path.join(ROOT, spec.targetFile);
-            if (!fs.existsSync(absPath)) {
-                return res.status(400).json({ ok: false, error: `File not found: ${spec.targetFile}` });
-            }
-            const original = fs.readFileSync(absPath, "utf8");
-            if (!original.includes(spec.patchTarget)) {
-                return res.status(400).json({ ok: false, error: `patchTarget not found in ${spec.targetFile}` });
-            }
-            const patched = original.replace(spec.patchTarget, spec.patchReplacement);
-            fs.writeFileSync(absPath, patched, "utf8");
-            originals.push({ targetFile: spec.targetFile, absPath, originalContent: original });
-            applied.push(spec.targetFile);
-        }
-
-        // Step 2: Stage the changed files
-        for (const f of originals) {
-            spawnSync("git", ["add", f.absPath], { cwd: ROOT });
-        }
-
-        // Step 3: Record in patch history
-        const histId = crypto.randomUUID();
-        _addToPatchHistory({
-            id:          histId,
-            goal,
-            commitMsg:   commitMsg || `feat: ${goal.slice(0, 80)} [ai-patch]`,
-            patchSpecs,
-            originals:   originals.map(o => ({ targetFile: o.targetFile, originalContent: o.originalContent })),
-            appliedFiles: applied,
-            appliedAt:   new Date().toISOString(),
-            status:      "staged",
-            pipelineId:  null,
-        });
-
-        // Step 4: Kick off Engineering Pipeline with the already-staged patch
-        let pipeline = null;
-        try {
-            const pc = require("../services/engineeringPipelineCoordinator.cjs");
-            const pipelinePromise = pc.runPipeline(goal, {
-                patchSpec:      patchSpecs[0], // primary spec for pipeline validation
-                requireApproval,
-                priority:       "high",
-            });
-            pipelinePromise.catch(e => logger.warn(`[ApplyPatch] pipeline error: ${e.message}`));
-            await new Promise(r => setTimeout(r, 80));
-            const active = pc.getActivePipelines();
-            pipeline = active[active.length - 1] || null;
-            // Update history with pipeline ID
-            if (pipeline) {
-                const store = _loadPatchHistory();
-                const rec   = store.patches.find(p => p.id === histId);
-                if (rec) { rec.pipelineId = pipeline.pipelineId; rec.status = "pipeline_running"; }
-                _savePatchHistory(store);
-            }
-        } catch (e) {
-            logger.warn(`[ApplyPatch] pipeline launch failed: ${e.message}`);
-        }
+        const { histId, applied } = _applyPatchSpecs({ patchSpecs, goal, cwd, commitMsg, requireApproval, sourceLabel: "apply-patch", orgId: req.org?.id });
+        const pipeline = await _launchPipelineForPatch(histId, goal, patchSpecs, requireApproval);
 
         res.json({
             ok:         true,
@@ -557,7 +751,7 @@ router.post("/coding/apply-patch", async (req, res) => {
         });
     } catch (err) {
         logger.error(`[ApplyPatch] ${err.message}`);
-        res.status(500).json({ ok: false, error: err.message });
+        res.status(err.status || 500).json({ ok: false, error: err.message });
     }
 });
 
@@ -577,10 +771,25 @@ router.post("/coding/convert-to-mission", async (req, res) => {
             { description: "Commit with conventional commit message", status: "pending" },
         ];
 
+        // MSN-1 (2026-08-28): previously omitted orgId entirely. A mission
+        // with no orgId lands in resourceOwnership.cjs's "shared/unowned"
+        // bucket, actionable by any authenticated caller system-wide, not
+        // just the tenant whose AI session proposed the patch.
+        //
+        // Gated on req.orgRole, not bare req.org?.id: attachOrg (mounted
+        // above on this barrel) sets req.org from ANY client-suppliable
+        // selector (X-Org-Id header/query/body orgId) with no membership
+        // check of its own; req.orgRole is only ever set from a real
+        // organizationService lookup. Stamping bare req.org?.id would let a
+        // non-member mint another org's real id onto a mission they create
+        // simply by supplying that id in a header. A caller with no real
+        // membership falls through to orgId-less (shared), unchanged
+        // behavior.
         const mission = mm.createMission({
             objective: goal,
             priority:  riskLevel === "high" ? "high" : riskLevel === "medium" ? "medium" : "low",
             subtasks,
+            orgId: (req.org?.id && req.orgRole) ? req.org.id : undefined,
             metadata: {
                 source:       "ai-patch-proposal",
                 affectedFiles,
@@ -597,25 +806,199 @@ router.post("/coding/convert-to-mission", async (req, res) => {
     }
 });
 
+// ── GET /coding/context — repo/coding status summary ───────────────────────────
+// OOPLIX V1 MASTER AUDIT (2026-08-16, B23-03 closure): 2 real, live-mounted
+// components (WorkspaceHealth.jsx, DevDashboard.jsx) have called this route
+// since B.23 first flagged it — it never existed. Both `.catch()`-degrade
+// honestly (a genuine 404 never crashed either component), which is why this
+// sat as a disclosed gap rather than a live incident. Recovered here purely
+// by composing existing, already-real, already-org-scoped services — no new
+// architecture: missionMemory.cjs (the caller's own active/in-progress
+// missions, same query shape _missionContext() above already uses),
+// engineeringSmellDetector.cjs (same mtime-cached scan() /coding/smells
+// already calls — C3's 60s cache means this does not reintroduce the
+// full-repo-rescan cost C3 fixed), and the caller's own recent patch history
+// (same org-scoped store /coding/patch-history already reads). Git branch
+// resolution reuses the same execSync+timeout+silent-fail pattern as the
+// existing _gitLog()/_gitDiffStat() helpers, not a new shell-exec mechanism.
+router.get("/coding/context", (req, res) => {
+    try {
+        // Command Injection & Process Execution Deep Security Sweep
+        // (2026-08-21): the two most severe findings in this file were
+        // here — sd.scan(root) recursively walks and reads the CONTENT of
+        // every code file under an arbitrary caller-supplied cwd (real
+        // filenames + tech-debt metadata returned directly in `smells`,
+        // no AI-provider round-trip required), and the git branch lookup
+        // below discloses an arbitrary repo's branch name — both fully
+        // reachable via a single non-operator GET request with zero
+        // downstream dependency. Live-reproduced with a safe, self-created
+        // test repo. req.safeQueryCwd is already sanitized by the
+        // router-level middleware above (operator-only + sensitive-root
+        // denylist) — req.query.cwd itself is NOT reassigned here, since
+        // Express 5 makes req.query a read-derived getter.
+        const cwd = req.safeQueryCwd;
+        const orgId = req.org?.id;
+
+        let activeMission = null;
+        try {
+            const mm = _missionMemory();
+            const { missions } = mm?.listMissions?.({ status: "in_progress", limit: 1, orgId: orgId || undefined }) || {};
+            activeMission = missions?.[0] ? { id: missions[0].id, title: missions[0].objective?.slice(0, 120) || null } : null;
+        } catch { /* honest empty — never fabricate a mission */ }
+
+        let smells = [];
+        try {
+            const sd = _smellDetector();
+            const root = cwd || path.join(__dirname, "../../");
+            smells = sd?.scan?.(root)?.smells || [];
+        } catch { /* honest empty — smell detector unavailable */ }
+
+        let recentPatch = null;
+        if (orgId) {
+            try {
+                const store = _loadPatchHistory();
+                recentPatch = store.patches.find(p => p.orgId === orgId) || null;
+            } catch { /* honest null */ }
+        }
+
+        let branch = null;
+        if (cwd) {
+            try {
+                branch = execSync("git rev-parse --abbrev-ref HEAD", { cwd, timeout: 3000, encoding: "utf8" }).trim() || null;
+            } catch { /* honest null — not a git repo, or git unavailable */ }
+        }
+
+        res.json({ ok: true, activeMission, recentPatch: recentPatch ? { id: recentPatch.id, goal: recentPatch.goal || null } : null, smells: smells.slice(0, 50), branch });
+    } catch (err) {
+        logger.error(`[CodingContext] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 // ── GET /coding/patch-history — list applied AI patches ───────────────────────
+// MASTER RECOVERY (2026-08-15): previously returned every tenant's patches
+// unfiltered — C.9 proved live that two unrelated orgs got byte-identical
+// responses, including full file diffs. Now filters to the caller's own
+// org. Records written before this fix (orgId: null) are correctly
+// invisible to everyone, not misattributed to whichever org asks first.
 router.get("/coding/patch-history", (req, res) => {
     try {
         const { limit = 20 } = req.query;
+        if (!req.org?.id) return res.json({ ok: true, patches: [] });
         const store = _loadPatchHistory();
-        res.json({ ok: true, patches: store.patches.slice(0, Number(limit)) });
+        const mine  = store.patches.filter(p => p.orgId === req.org.id);
+        res.json({ ok: true, patches: mine.slice(0, Number(limit)) });
     } catch (err) {
         res.status(500).json({ ok: false, error: err.message });
     }
 });
 
+// Enterprise Capability Expansion mission — real ZIP project export.
+// Confirmed genuinely absent before this: patch history only exposed JSON
+// metadata (goal, patchSpecs, diffs) — there was no way to download the
+// actual current file contents a patch touched as a real archive. Reuses
+// patch-history's own appliedFiles list (same records /coding/undo-patch
+// already reads) and reads each file's CURRENT on-disk bytes (not the
+// stored before/after diff text) via archiver, a real streaming ZIP
+// writer — no placeholder/manifest-only archive.
+router.get("/coding/patch-history/:histId/export", async (req, res) => {
+    try {
+        const store = _loadPatchHistory();
+        const rec = store.patches.find(p => p.id === req.params.histId);
+        // MASTER RECOVERY (2026-08-15): same ownership check as the list
+        // route — a direct-ID export request for a patch belonging to a
+        // different org (or created before org-scoping existed) must not
+        // succeed. 404 (not 403), matching this codebase's established
+        // convention of not confirming existence to a non-owner.
+        if (!rec || !req.org?.id || rec.orgId !== req.org.id) return res.status(404).json({ ok: false, error: "patch not found" });
+
+        // Mission 78 pre-VPS audit: this route was added after the 2026-08-21
+        // Command Injection & Process Execution Deep Security Sweep (see this
+        // file's own header comment and the router-level middleware around
+        // line 250) and never received the same fix — it read req.query.cwd
+        // directly, bypassing the sanitized req.safeQueryCwd every other
+        // query-cwd route in this file already uses. Live impact: any
+        // authenticated org member who owns a patch record could set
+        // ?cwd=/etc (or any host directory readable by the server process)
+        // and have this route read arbitrary files into the exported ZIP via
+        // path.join(ROOT, rel) below, not just files from the real project
+        // root. Fixed to match this file's own established convention
+        // exactly: use the already-sanitized req.safeQueryCwd the shared
+        // middleware stashes for every route, rather than re-deriving it or
+        // reading the raw query value.
+        const ROOT = req.safeQueryCwd || path.join(__dirname, "../../");
+        const archiver = require("archiver");
+        const { PassThrough } = require("stream");
+        const stream = new PassThrough();
+        const archive = archiver("zip", { zlib: { level: 9 } });
+        const chunks = [];
+        stream.on("data", c => chunks.push(c));
+        archive.pipe(stream);
+
+        const manifest = {
+            id: rec.id, goal: rec.goal, source: rec.source, commitMsg: rec.commitMsg,
+            appliedAt: rec.appliedAt, status: rec.status, appliedFiles: rec.appliedFiles,
+        };
+        archive.append(JSON.stringify(manifest, null, 2), { name: "MANIFEST.json" });
+
+        let included = 0;
+        for (const rel of rec.appliedFiles || []) {
+            // Mission 78 pre-VPS audit: `rel` values originate from AI-
+            // generated patch content (patchSpecs.targetFile, set from the
+            // model's own response text elsewhere in this file), not a
+            // trusted internal identifier — treating an absolute `rel` as a
+            // literal filesystem path let a stored record read any
+            // host-readable file regardless of ROOT's own safety, and a
+            // relative `rel` containing ".." could still escape ROOT after
+            // path.join. Reject both shapes rather than trusting stored
+            // patch data as a path-safety boundary.
+            if (typeof rel !== "string" || path.isAbsolute(rel) || rel.split(/[\\/]/).includes("..")) continue;
+            const abs = path.join(ROOT, rel);
+            if (fs.existsSync(abs) && fs.statSync(abs).isFile()) {
+                archive.append(fs.readFileSync(abs), { name: `files/${rel.replace(/^[/\\]+/, "")}` });
+                included++;
+            }
+        }
+
+        const done = new Promise((resolve, reject) => {
+            stream.on("end", resolve);
+            archive.on("error", reject);
+        });
+        await archive.finalize();
+        await done;
+        const buffer = Buffer.concat(chunks);
+
+        const exportFiles = require("../services/exportFileService.cjs");
+        const result = await exportFiles.persist(buffer, {
+            filename: `patch-${rec.id}.zip`,
+            mimeType: "application/zip",
+            orgId: null,
+            accountId: req.user?.sub || req.user?.id || null,
+            capability: "coding_patch_zip_export",
+            tags: ["coding", "patch", "zip-export"],
+        });
+        res.json({ ok: true, ...result, filesIncluded: included });
+    } catch (err) {
+        logger.error(`[PatchZipExport] ${err.message}`);
+        res.status(500).json({ ok: false, error: err.message });
+    }
+});
+
 // ── POST /coding/undo-patch — revert the most recent or a specific AI patch ───
+// MASTER RECOVERY (2026-08-15): this is the most severe half of the
+// patch-history leak — a WRITE, not just a read. Before this fix, any
+// authenticated user could revert (undo, reverting real files on disk)
+// ANY tenant's patch by direct histId, or even the platform's globally
+// most-recent non-undone patch with no ID at all. Both branches now only
+// ever consider the caller's own org's patches.
 router.post("/coding/undo-patch", (req, res) => {
     try {
         const { histId, cwd } = req.body;
+        if (!req.org?.id) return res.status(404).json({ ok: false, error: "Patch not found" });
         const store  = _loadPatchHistory();
         const idx    = histId
-            ? store.patches.findIndex(p => p.id === histId)
-            : store.patches.findIndex(p => p.status !== "undone");
+            ? store.patches.findIndex(p => p.id === histId && p.orgId === req.org.id)
+            : store.patches.findIndex(p => p.status !== "undone" && p.orgId === req.org.id);
 
         if (idx === -1) return res.status(404).json({ ok: false, error: "Patch not found" });
 
@@ -629,11 +1012,31 @@ router.post("/coding/undo-patch", (req, res) => {
                 const absPath = path.isAbsolute(orig.targetFile)
                     ? orig.targetFile
                     : path.join(ROOT, orig.targetFile);
-                fs.writeFileSync(absPath, orig.originalContent, "utf8");
-                spawnSync("git", ["add", absPath], { cwd: ROOT });
+                if (orig.originalContent === null) {
+                    // File was newly created by this patch (e.g. a
+                    // full-content refactor patch that split code into a
+                    // new file) — undo means removing it, not writing the
+                    // literal string "null".
+                    if (fs.existsSync(absPath)) fs.unlinkSync(absPath);
+                    spawnSync("git", ["rm", "--cached", "--ignore-unmatch", absPath], { cwd: ROOT });
+                } else {
+                    fs.writeFileSync(absPath, orig.originalContent, "utf8");
+                    spawnSync("git", ["add", absPath], { cwd: ROOT });
+                }
                 undone.push(orig.targetFile);
             } catch (e) {
-                errors.push(`${orig.targetFile}: ${e.message}`);
+                // Residual Filesystem Path & Sensitive Error Leakage Deep
+                // Sweep (2026-08-21): same class as this file's already-
+                // fixed _applyPatchSpecs() leak, but at the undo step — the
+                // stored patch record's targetFile (which the original
+                // requireAuth customer chose, possibly absolute) is
+                // resolved again here, and a real fs failure (EACCES,
+                // ENOSPC, deleted parent dir) leaked the resolved absolute
+                // path via e.message. Live-reproduced with a safe scratch
+                // fixture. Keeps the already-safe, caller-relative
+                // targetFile name in the response; drops the raw fs error.
+                logger.warn(`[UndoPatch] restore failed for ${orig.targetFile}: ${e.message}`);
+                errors.push(`${orig.targetFile}: could not restore`);
             }
         }
 
@@ -657,7 +1060,8 @@ function _smellDetector() { return _try(() => require("../services/engineeringSm
 // ── GET /coding/smells — scan repo and return recommendation cards ─────────────
 router.get("/coding/smells", async (req, res) => {
     try {
-        const { cwd, enrichAI } = req.query;
+        const { enrichAI } = req.query;
+        const cwd = req.safeQueryCwd; // req.query.cwd itself is NOT reassigned — Express 5's req.query is a read-derived getter
         const root = cwd || path.join(__dirname, "../../");
 
         const sd = _smellDetector();
@@ -676,7 +1080,7 @@ router.get("/coding/smells", async (req, res) => {
                     const fileContent = fs.existsSync(absPath)
                         ? fs.readFileSync(absPath, "utf8").slice(0, 3000)
                         : "";
-                    const system = _buildRepoContext({ cwd: root, filePath: smell.file, fileContent });
+                    const system = _buildRepoContext({ cwd: root, filePath: smell.file, fileContent, orgId: req.org?.id });
                     const prompt = `Given this engineering smell: "${smell.detail}" in file ${smell.file} at line ${smell.line || "unknown"}, and the hint: "${smell.patchHint}", generate ONLY valid JSON:
 {
   "patchTarget": "exact string to replace (must appear in file, short)",
@@ -684,7 +1088,7 @@ router.get("/coding/smells", async (req, res) => {
   "explanation": "one line"
 }
 If you cannot produce a safe, targeted single-string replacement, respond with {"patchTarget":null}.`;
-                    const raw   = await ai.callAI(prompt, { system });
+                    const raw   = await _callAI(prompt, { system });
                     const m     = raw.match(/\{[\s\S]+\}/);
                     if (m) {
                         const parsed = JSON.parse(m[0]);
@@ -782,7 +1186,7 @@ ${symbolContext ? `\nSymbol context: ${symbolContext}` : ''}`;
 
         const prompt = `Complete this code:\n\`\`\`\n${_clean(prefix, 1200)}\n\`\`\`\nCompletion (continue from last character, no prefix repeat):`;
 
-        const raw = await ai.callAI(prompt, { system });
+        const raw = await _callAI(prompt, { system });
 
         // Strip any accidental fence
         const completion = raw
@@ -812,7 +1216,7 @@ router.post("/coding/hover", async (req, res) => {
             return res.status(400).json({ ok: false, error: `unknown action: ${action}` });
         }
 
-        const system = _buildRepoContext({ cwd, fileContent, filePath });
+        const system = _buildRepoContext({ cwd, fileContent, filePath, orgId: req.org?.id });
         const rules  = _rulesContext();
 
         const ACTION_PROMPTS = {
@@ -825,7 +1229,7 @@ router.post("/coding/hover", async (req, res) => {
             fix:      `This line may have a bug:\n\`${codeLine}\`\nReturn: 1) what the bug is, 2) the fixed line.`,
         };
 
-        const reply = await ai.callAI(ACTION_PROMPTS[action], { system });
+        const reply = await _callAI(ACTION_PROMPTS[action], { system });
 
         // For refactor/tests/optimize/document/fix — extract patchSpec if applicable
         let patchSpec = null;
@@ -855,7 +1259,15 @@ function _loadACP5Metrics() {
     try { return JSON.parse(fs.readFileSync(ACP5_METRICS_FILE, "utf8")); }
     catch { return { ghostTriggered: 0, ghostAccepted: 0, hoverActions: {}, sessionsWithAccept: 0, totalLatencyMs: 0, samples: 0 }; }
 }
-function _saveACP5Metrics(m) { fs.writeFileSync(ACP5_METRICS_FILE, JSON.stringify(m, null, 2)); }
+function _saveACP5Metrics(m) {
+    // Same fix as _savePatchHistory() above — unguarded write, same leak class.
+    try {
+        fs.writeFileSync(ACP5_METRICS_FILE, JSON.stringify(m, null, 2));
+    } catch (e) {
+        logger.error(`[CodingAssistant] metrics write failed: ${e.message}`);
+        throw new Error("Could not save metrics");
+    }
+}
 
 router.post("/coding/metrics/record", (req, res) => {
     try {

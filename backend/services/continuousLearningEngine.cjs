@@ -73,7 +73,40 @@ function _rid() { return `rec_${Date.now()}_${(++_seq).toString(36)}`; }
 // (autonomousEvolutionOrg, autonomousKnowledgeOrg, businessOrg), making this
 // the dominant steady-state leak. Reassigning keeps memory and disk bounded
 // together — same fix as autonomousTaskLoop.cjs's _cycles/_learning.
-function _saveLessons() { try { _lessons = _lessons.slice(-2000); _wj(LESSONS_FILE, _lessons); } catch { /* non-fatal */ } }
+// The plain slice(-2000) above is pure FIFO, which is correct for bounding the
+// leak but discards by age alone. Measured on the live store: the cap was full at
+// exactly 2000 with a retention window of ~71 MINUTES, because autonomous writers
+// churn it continuously (businessIntelligenceEngine alone held 960 entries).
+// A memory written through the user-facing POST /memory/remember therefore
+// returned { stored: true } and was genuinely on disk, but was silently evicted
+// within the hour — confirmed: two probe lessons written during this pass were
+// absent from lessons.json minutes later while the file sat at exactly 2000.
+//
+// Retention is now two-tier, with the SAME overall cap and no schema change:
+// explicitly-authored lessons (anything not written by an autonomous engine) are
+// kept in a reserved slice, and machine-generated churn fills the remainder.
+// Autonomous lessons still evict FIFO exactly as before.
+const LESSON_CAP          = 2000;
+const AUTHORED_RESERVE    = 500;   // authored lessons protected from machine churn
+const _AUTONOMOUS_SOURCE  = /^(?:acp10|auto|ako_|bizorg_|biz_|reviewer_agent|businessIntelligenceEngine|autonomous|evolution|knowledge)/i;
+
+function _isAuthored(l) {
+    return !_AUTONOMOUS_SOURCE.test(String(l && l.source || ""));
+}
+
+function _trimLessons(list) {
+    if (list.length <= LESSON_CAP) return list;
+    const authored = list.filter(_isAuthored);
+    const machine  = list.filter(l => !_isAuthored(l));
+    const keepAuthored = authored.slice(-Math.min(authored.length, AUTHORED_RESERVE));
+    const keepMachine  = machine.slice(-Math.max(0, LESSON_CAP - keepAuthored.length));
+    // Restore original chronological order so downstream slice(-N)/timeline
+    // consumers keep seeing oldest→newest exactly as before.
+    const keep = new Set([...keepAuthored, ...keepMachine]);
+    return list.filter(l => keep.has(l));
+}
+
+function _saveLessons() { try { _lessons = _trimLessons(_lessons); _wj(LESSONS_FILE, _lessons); } catch { /* non-fatal */ } }
 function _saveRecs()    { try { _recs    = _recs.slice(-500);    _wj(RECS_FILE,    _recs);    } catch { /* non-fatal */ } }
 
 // ── Data loading ─────────────────────────────────────────────────────────
@@ -252,6 +285,74 @@ function getLessons({ type, severity, source, limit = 100, offset = 0 } = {}) {
     return { lessons: rows.slice(offset, offset + limit), total: rows.length };
 }
 
+/**
+ * Attach a proposed applyLearningRecord() action to a lesson so a human
+ * approver can review and apply it later — this never applies anything
+ * itself (that still requires an explicit approvedBy via
+ * applyLearningRecord). Lets automated sources (e.g. the engineering
+ * pipeline's "learn" stage) surface a concrete, bounded suggestion instead
+ * of only free-text `recommendation`.
+ */
+function attachSuggestedAction(lessonId, action) {
+    const lesson = _lessons.find(l => l.lessonId === lessonId);
+    if (!lesson) return null;
+    if (!action?.agentId || typeof action?.weightDelta !== "number") return null;
+    lesson.suggestedAction = { agentId: action.agentId, weightDelta: Math.max(-0.2, Math.min(0.2, action.weightDelta)) };
+    _saveLessons();
+    return lesson.suggestedAction;
+}
+
+// ── Universal Composition Engine Phase 12: approval-gated write-back ──────
+// This engine's analysis (runFullAnalysis/analyzeFailures/analyzeSuccesses)
+// is genuine, but every lesson's `applied` field is created false and
+// nothing previously ever flipped it — a real, confirmed write-only gap
+// (25+ read-side consumers only ever display lessons, never change
+// behavior from them). This closes that gap with exactly ONE narrow,
+// human-approval-gated write-back: nudging agentRegistry's tie-breaking
+// preferenceWeight. It deliberately does NOT rewrite taskRouter.cjs's
+// static TASK_TYPE_MAP, does NOT modify any source file, and does NOT
+// self-apply without an explicit approvedBy — this is OPERATIONAL
+// learning only. Code/architecture evolution is a fundamentally
+// different, separately-gated concern (Phase 13, Capability Evolution).
+function _agentReg() { try { return require("../../agents/runtime/agentRegistry.cjs"); } catch { return null; } }
+
+/**
+ * Apply a lesson's recommendation as an operational weight nudge. Only
+ * ever flips `applied:true` after this function is called with an
+ * explicit approvedBy — there is no code path that sets applied:true
+ * any other way (confirmed: grep for "applied: true"/"applied:true"
+ * anywhere else in this file returns nothing).
+ *
+ * @param {string} lessonId
+ * @param {{ agentId: string, weightDelta: number }} action  the operational nudge to apply
+ * @param {string} approvedBy  required — who approved this application
+ */
+function applyLearningRecord(lessonId, action, approvedBy) {
+    if (!approvedBy) throw new Error("applyLearningRecord requires an explicit approvedBy — no self-applied learning");
+    const lesson = _lessons.find(l => l.lessonId === lessonId);
+    if (!lesson) throw new Error(`Lesson not found: ${lessonId}`);
+    if (lesson.applied) throw new Error(`Lesson ${lessonId} was already applied`);
+    if (!action?.agentId || typeof action?.weightDelta !== "number") {
+        throw new Error("action requires { agentId, weightDelta }");
+    }
+
+    const reg = _agentReg();
+    if (!reg) throw new Error("agentRegistry unavailable — cannot apply learning record");
+    const agentRecord = reg.get(action.agentId);
+    if (!agentRecord) throw new Error(`Unknown agent: ${action.agentId}`);
+
+    const newWeight = reg.setPreferenceWeight(action.agentId, agentRecord.preferenceWeight + action.weightDelta);
+
+    lesson.applied     = true;
+    lesson.appliedAt   = new Date().toISOString();
+    lesson.appliedBy   = approvedBy;
+    lesson.appliedAction = { agentId: action.agentId, weightDelta: action.weightDelta, resultingWeight: newWeight };
+    _saveLessons();
+
+    logger.info(`[LearningEngine] Applied lesson ${lessonId} — ${action.agentId} preferenceWeight -> ${newWeight} (approved by ${approvedBy})`);
+    return { ...lesson };
+}
+
 // ── Recommendations ──────────────────────────────────────────────────────
 function _upsertRecommendation(rec) {
     const existing = _recs.findIndex(r => r.title === rec.title);
@@ -350,4 +451,10 @@ function startAutoAnalysis() {
     setInterval(_run, AUTO_ANALYSIS_INTERVAL_MS).unref();
 }
 
-module.exports = { analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis };
+module.exports = {
+    analyzeFailures, analyzeSuccesses, createLesson, runFullAnalysis, getLessons, getRecommendations, updateRecommendation, getStats, startAutoAnalysis,
+    // Universal Composition Engine Phase 12
+    applyLearningRecord,
+    // Autonomous Learning Engine V2
+    attachSuggestedAction,
+};

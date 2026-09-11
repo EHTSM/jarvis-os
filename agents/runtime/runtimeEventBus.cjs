@@ -28,7 +28,29 @@ let   _seq       = 0;
 // ── Subscribers ────────────────────────────────────────────────────
 // Map<clientId, { fn: Function, connectedAt: number, eventCount: number }>
 const _subscribers  = new Map();
-const MAX_SUBS      = 20;   // hard cap — prevents runaway connection leaks
+// Runtime Event Bus Reliability, Isolation & Backpressure Audit (2026-08-16):
+// was 20. That cap only ever accounted for SSE/browser connections (its own
+// comment: "prevents runaway connection leaks"), but this bus's real
+// subscriber population also includes a large, fixed set of internal,
+// code-registered subscriptions — one per cross-org workflow wiring
+// (akoWorkflow, aeoWorkflow, executiveWorkflow, ecosystemWorkflow,
+// enterpriseWorkflow, civilizationWorkflow, businessOrgWorkflow,
+// engineeringOrgWorkflow, plus autonomousOrg/platformOrg/
+// orgAutomationCenter/automationService/missionOrchestrator/
+// autonomousDecisionEngine) — 70 real subscribe() call sites, counted
+// directly, each registered exactly once at server startup and living for
+// the process lifetime (not "runaway" — fixed and known). Confirmed live in
+// server.js's real startup order: engineeringOrg (12 subs) + businessOrg
+// (19 subs) alone already reached 31, exceeding the old cap of 20 before
+// the next 6 organizations even attempted their own registration —
+// subscribe() throws past the cap, and every caller wraps that in a bare
+// try{}catch{} (silently swallowing it), so most of this platform's
+// cross-org automation event wiring was silently, permanently failing to
+// register with zero error surfaced anywhere. Raised to comfortably cover
+// the real fixed internal population plus genuine SSE headroom, preserving
+// the exact single-cap mechanism (no new bus architecture) — a genuine
+// runaway SSE leak is still bounded, just at a realistic number.
+const MAX_SUBS      = 150;
 
 // ── Event rate tracking (sliding 60-second window) ─────────────────
 const _eventTimes   = [];

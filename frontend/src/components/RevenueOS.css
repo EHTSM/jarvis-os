@@ -1,16 +1,16 @@
 /* G4 Revenue Operating System — RevenueOS.css */
 :root {
-  --ro-bg:      #0d0d11;
-  --ro-surface: #141418;
-  --ro-border:  #1e1e28;
-  --ro-text:    #e0e0e8;
-  --ro-muted:   #888;
-  --ro-accent:  #7c6fff;
-  --ro-green:   #22c55e;
-  --ro-teal:    #4ecdc4;
-  --ro-yellow:  #f59e0b;
-  --ro-red:     #ef4444;
-  --ro-purple:  #a78bfa;
+  --ro-bg: var(--bg);
+  --ro-surface: var(--surface);
+  --ro-border: var(--border);
+  --ro-text: var(--text);
+  --ro-muted: var(--text-dim);
+  --ro-accent: var(--accent);
+  --ro-green: var(--success);
+  --ro-teal: var(--accent2);
+  --ro-yellow: var(--warning);
+  --ro-red: var(--danger);
+  --ro-purple: var(--accent);
 }
 
 .ro-root {
@@ -238,7 +238,7 @@
   background:  var(--ro-accent);
   border:      none;
   border-radius: 5px;
-  color:       #fff;
+  color: var(--on-accent);
   cursor:      pointer;
   padding:     6px 14px;
   font-size:   12px;

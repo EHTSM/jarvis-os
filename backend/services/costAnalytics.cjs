@@ -53,6 +53,18 @@ function costByWorkspace(opts = {}) {
 }
 
 /**
+ * Cost breakdown by organization. orgId is a newer field on usage events
+ * (added alongside the AI Provider Orchestration mission's per-org budget
+ * enforcement) — filters out the "null"/"unknown" bucket the same way
+ * costByMission already does for events with no missionId, since most
+ * historical events predate orgId and would otherwise dominate the report
+ * with a meaningless "unknown" row.
+ */
+function costByOrg(opts = {}) {
+  return usageMetering.aggregateCost("orgId", opts).filter(r => r.key && r.key !== "null" && r.key !== "unknown");
+}
+
+/**
  * Cost breakdown by mission.
  */
 function costByMission(opts = {}) {
@@ -145,6 +157,30 @@ function perAccount(accountId, opts = {}) {
 }
 
 /**
+ * Per-org cost report — reads usageMetering.summary with fromLedger:true so
+ * it reflects full history, not just the in-memory ring (same reasoning as
+ * orgBudgets.cjs's spend check: an org's real monthly usage can exceed the
+ * ring buffer's capacity well before an account's usually-lower volume does).
+ */
+function perOrg(orgId, opts = {}) {
+  const usage = usageMetering.summary({ ...opts, orgId, fromLedger: true });
+  const budgets = require("./orgBudgets.cjs");
+  const budget = budgets.getOrgBudget(orgId);
+  return {
+    orgId,
+    aiCostUsd:  usage.totalCostUsd,
+    requests:   usage.totalRequests,
+    tokens:     usage.totalTokens,
+    byProvider: usage.byProvider,
+    budget: {
+      monthlyCapUsd: budget.monthlyCapUsd,
+      monthlyRequestCap: budget.monthlyRequestCap,
+      pctOfCapUsed: budget.monthlyCapUsd ? parseFloat(((usage.totalCostUsd / budget.monthlyCapUsd) * 100).toFixed(1)) : null,
+    },
+  };
+}
+
+/**
  * Commercial benchmark — can the platform sustain free tier?
  */
 function benchmark() {
@@ -210,9 +246,11 @@ module.exports = {
   costByProvider,
   costByUser,
   costByWorkspace,
+  costByOrg,
   costByMission,
   profitSummary,
   perAccount,
+  perOrg,
   benchmark,
   PLAN_REVENUE_USD_MONTH,
 };

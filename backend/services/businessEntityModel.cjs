@@ -270,6 +270,13 @@ function createBusinessMission(entityType, entity, opts = {}) {
     if (!orch) throw new Error("missionOrchestrator not available");
 
     const missionOpts = entityToMission(entityType, entity, opts);
+    // B.21 tenant-scoping fix — see getPipelineSummary() below. Business
+    // missions carried no orgId at all (verified: 285 of 285 in the live store
+    // had none), so every company's pipeline view showed a platform-wide
+    // total. Stamp the owning org onto the mission metadata at creation, using
+    // the metadata mechanism that is already there, so the summary can filter.
+    const orgId = opts.orgId || entity.orgId || null;
+    if (orgId) missionOpts.metadata = { ...(missionOpts.metadata || {}), orgId };
     const mission = orch.createManual({ ...missionOpts, goal: missionOpts.objective });
 
     // Record a business-specific lesson on creation
@@ -293,12 +300,16 @@ function createBusinessMission(entityType, entity, opts = {}) {
 function listBusinessMissions(opts = {}) {
     const mem = _mem();
     if (!mem) return { missions: [], total: 0 };
-    const { entityType, status, limit = 50 } = opts;
+    const { entityType, status, limit = 50, orgId = null } = opts;
     const all = mem.listMissions({ status, limit: 500 });
     let missions = (all.missions || []).filter(m => {
         const meta = m.metadata || {};
         if (meta.domain !== "business") return false;
         if (entityType && meta.entityType !== entityType) return false;
+        // B.21: same tenant-scoping rule as getPipelineSummary(). A caller that
+        // identifies its org sees only that org's business missions; legacy
+        // records with no orgId are excluded rather than attributed.
+        if (orgId && meta.orgId !== orgId) return false;
         return true;
     });
     if (limit) missions = missions.slice(0, limit);
@@ -324,7 +335,7 @@ function getBusinessRules() {
  * getPipelineSummary() — counts per entity type and stage.
  * Reads from missionMemory, groups by entityType.
  */
-function getPipelineSummary() {
+function getPipelineSummary(orgId = null) {
     const mem = _mem();
     if (!mem) return {};
     const all = mem.listMissions({ limit: 1000 });
@@ -332,6 +343,14 @@ function getPipelineSummary() {
     for (const m of (all.missions || [])) {
         const meta = m.metadata || {};
         if (meta.domain !== "business") continue;
+        // B.21: this summary is rendered as the COMPANY's own pipeline in the
+        // business and executive views. Unfiltered, it reported a platform-wide
+        // total to every tenant — two separate companies each saw the same
+        // "lead: 17", a figure belonging to neither of them. When a caller
+        // identifies its org, return only that org's missions. Legacy missions
+        // created before this fix carry no orgId and are therefore excluded
+        // from a scoped call rather than being attributed to whoever asks.
+        if (orgId && meta.orgId !== orgId) continue;
         const et = meta.entityType || "unknown";
         if (!summary[et]) summary[et] = { total: 0, byStage: {}, byStatus: {} };
         summary[et].total++;

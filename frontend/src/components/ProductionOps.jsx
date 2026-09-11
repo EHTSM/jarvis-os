@@ -1,6 +1,7 @@
 // CO1 Production Infrastructure — ProductionOps.jsx
 import React, { useState, useCallback, useEffect } from "react";
 import "./ProductionOps.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -499,8 +500,7 @@ function LaunchChecklistPanel() {
       </div>
       <div className="po-list">
         {filtered.map(item => (
-          <div key={item.id} className={`po-checklist-item ${item.done ? "done" : ""} ${item.critical ? "critical" : ""}`}
-            onClick={() => toggle(item.id, !item.done)}>
+          <div key={item.id} className={`po-checklist-item ${item.done ? "done" : ""} ${item.critical ? "critical" : ""}`} {...clickableProps(() => toggle(item.id, !item.done))}>
             <div className={`po-check-box ${item.done ? "done" : ""}`}>{item.done ? "✓" : ""}</div>
             <div style={{ flex: 1 }}>
               <div className="po-check-lbl">{item.label}</div>

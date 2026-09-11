@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { getOpsData, getStats } from "../telemetryApi";
 import "./Logs.css";
 
@@ -231,6 +232,7 @@ const FILTERS = [
 // ── Root Activity V2 ───────────────────────────────────────────────────────────
 
 export default function Logs({ opsData: opsDataProp, stats: statsProp, onNavigate }) {
+  const { user } = useAuth();
   const [liveOps,   setLiveOps]   = useState(null);
   const [liveStats, setLiveStats] = useState(null);
   const [filter,    setFilter]    = useState("all");
@@ -238,13 +240,20 @@ export default function Logs({ opsData: opsDataProp, stats: statsProp, onNavigat
   const [loading,   setLoading]   = useState(true);
   const [lastRefresh, setLastRefresh] = useState(null);
 
+  // Workflow Coverage Completion finding: /ops and /stats are operatorOnly
+  // server-side; this component already receives opsData/stats as props
+  // from App.jsx's own (already role-gated) poll, but also independently
+  // re-fetched both here unconditionally — a non-operator founder visiting
+  // Activity/Logs fired a 403 on both regardless of the prop-based data
+  // already being correct for them.
   const refresh = useCallback(async () => {
+    if (user?.role !== "operator") { setLoading(false); setLastRefresh(Date.now()); return; }
     const [ops, st] = await Promise.all([getOpsData(), getStats()]);
     setLiveOps(ops);
     setLiveStats(st);
     setLoading(false);
     setLastRefresh(Date.now());
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     refresh();

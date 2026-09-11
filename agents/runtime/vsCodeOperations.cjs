@@ -47,6 +47,24 @@ function _absPath(filePath) {
     return path.normalize(path.isAbsolute(filePath) ? filePath : path.join(process.cwd(), filePath));
 }
 
+// Residual Filesystem Path & Sensitive Error Leakage Deep Sweep (2026-08-21):
+// validateFileTarget()/previewPatch()/applyPatch()/recordPatchApplication()
+// all return the real absolute server path (derived from process.cwd()) in
+// their `absPath`/`filePath` fields — not an error leak, a designed-in
+// field, which is why prior error-message sweeps missed it. Reachable via
+// POST /runtime/vscode/{validate-file,preview-patch,record-patch} behind
+// requireAuth only (any ordinary customer), with no caller found in either
+// the web frontend or the actual vscode-extension/ client — this field is
+// unused by any real product surface. absPath/filePath stay unchanged here
+// (still used internally throughout this file for the real
+// fs.readFileSync/writeFileSync calls, and by callers within this module);
+// the client-facing strip happens at the HTTP route layer instead — see
+// backend/routes/runtime.js's /runtime/vscode/* handlers.
+function _clientFacingPath(absPath) {
+    const rel = path.relative(process.cwd(), absPath);
+    return rel.startsWith("..") ? path.basename(absPath) : rel;
+}
+
 function _isPathInWorkspace(filePath) {
     const cwd = path.resolve(process.cwd());
     const target = path.resolve(filePath);
@@ -422,4 +440,5 @@ function patchHistory({ sessionId, replayId, limit = 20 } = {}) {
 module.exports = {
     validateFileTarget, previewPatch, recordPatchApplication, applyPatch,
     listReplayEdits, saveEditorContext, findContextualFiles, patchHistory,
+    _clientFacingPath,
 };

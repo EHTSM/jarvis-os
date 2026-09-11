@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useId } from 'react';
 import './TerminalPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // xterm + addons — loaded only inside Electron (no-op in browser)
 let XTerminal, FitAddon, WebLinksAddon, SearchAddon;
@@ -40,11 +41,11 @@ function TerminalInstance({ sessionId, active, cwd, onTitleChange }) {
       theme: {
         background: '#0d0d0d',
         foreground: '#d4d4d4',
-        cursor:     '#10b981',
-        black:      '#1e1e1e', brightBlack:   '#6b7280',
-        red:        '#f87171', brightRed:     '#ef4444',
-        green:      '#34d399', brightGreen:   '#10b981',
-        yellow:     '#fbbf24', brightYellow:  '#f59e0b',
+        cursor:     'var(--success)',
+        black:      '#1e1e1e', brightBlack:   'var(--text-dim)',
+        red:        '#f87171', brightRed:     'var(--danger)',
+        green:      '#34d399', brightGreen:   'var(--success)',
+        yellow:     '#fbbf24', brightYellow:  'var(--warning)',
         blue:       '#60a5fa', brightBlue:    '#3b82f6',
         magenta:    '#a78bfa', brightMagenta: '#8b5cf6',
         cyan:       '#22d3ee', brightCyan:    '#06b6d4',
@@ -216,9 +217,7 @@ export default function TerminalPanel({ cwd, className = '', onClose }) {
           >
             <span className="terminal-tab__dot" />
             <span className="terminal-tab__title">{tab.title}</span>
-            <span
-              className="terminal-tab__close"
-              onClick={(e) => closeTab(idx, e)}
+            <span className="terminal-tab__close" {...clickableProps((e) => closeTab(idx, e))}
               title="Close (Ctrl+Shift+W)"
             >×</span>
           </button>

@@ -15,11 +15,26 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireWorkspaceMember, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/governanceService.cjs");
 
 router.use("/governance", requireAuth);
-router.use(attachWorkspace);
+router.use("/governance", attachWorkspace);
+// governanceService.cjs's _ws(workspaceId) performs no membership check at
+// all — it lazily creates a policy store for ANY workspaceId string and
+// returns it unconditionally, so this route's real tenant isolation depends
+// entirely on requireWorkspaceMember below.
+//
+// C.9 audit (2026-08-14) found this file's original attachWorkspace/
+// requireWorkspaceMember registration used router.use(fn) with NO path
+// prefix. Because router-level use() without a path applies to every request
+// that reaches the router afterward — not just this file's own routes — that
+// missing prefix leaked this gate (and the equivalent ones in security.js,
+// admin.js, automation.js) onto every route mounted later in routes/index.js,
+// including all of /coding/*. Reproduced in isolation with a minimal Express
+// app. Fixed by scoping both calls to "/governance", matching the requireAuth
+// line above. This route's isolation no longer depends on an accident.
+router.use("/governance", requireWorkspaceMember);
 
 function _wsId(req) {
   return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";

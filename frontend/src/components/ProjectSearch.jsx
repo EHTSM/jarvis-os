@@ -6,6 +6,7 @@
  */
 import React, { useState, useCallback, useRef, useEffect, memo } from 'react';
 import './ProjectSearch.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api        = () => window.electronAPI;
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -38,16 +39,14 @@ function ResultGroup({ file, matches, cwd, query, isRegex, caseSensitive, onJump
 
   return (
     <div className="ps-group">
-      <div className="ps-group__header" onClick={() => setCollapsed(c => !c)}>
+      <div className="ps-group__header" {...clickableProps(() => setCollapsed(c => !c))}>
         <span className="ps-group__arrow">{collapsed ? '▸' : '▾'}</span>
         <span className="ps-group__file" title={file}>{relPath}</span>
         <span className="ps-group__count">{matches.length}</span>
       </div>
       {!collapsed && matches.map((m, i) => (
-        <div
-          key={i}
-          className="ps-match-row"
-          onClick={() => onJump?.(file, m.line)}
+        <div key={i}
+          className="ps-match-row" {...clickableProps(() => onJump?.(file, m.line))}
           title={`Line ${m.line}`}
         >
           <span className="ps-match-row__line">{m.line}</span>

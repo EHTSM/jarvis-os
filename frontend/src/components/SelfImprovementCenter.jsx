@@ -237,7 +237,7 @@ export default function SelfImprovementCenter({ onNavigate }) {
                 <div className="sic-rec-title">{r.title}</div>
                 <div className="sic-rec-desc">{r.desc}</div>
               </div>
-              <button className="sic-apply-btn" onClick={() => track("sic_apply", {title: r.title})}>Apply</button>
+              <button className="sic-apply-btn" onClick={() => track.event("sic_apply", {title: r.title})}>Apply</button>
             </div>
           ))}
         </div>
@@ -260,23 +260,23 @@ export default function SelfImprovementCenter({ onNavigate }) {
                     <span style={{ fontWeight: 700, fontSize: 12, color: "#e2e8f0" }}>
                       {r.title ?? r.type ?? `Report #${i + 1}`}
                     </span>
-                    <span style={{ fontSize: 10, color: "#64748b" }}>
+                    <span style={{ fontSize: 10, color: "var(--text-dim)" }}>
                       {r.createdAt ? new Date(r.createdAt).toLocaleDateString() : ""}
                     </span>
                   </div>
                   {score != null && (
                     <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                       <div style={{ flex: 1, height: 3, background: "#1e2130", borderRadius: 2, overflow: "hidden" }}>
-                        <div style={{ width: score + "%", height: "100%", background: score >= 80 ? "#22c55e" : score >= 60 ? "#eab308" : "#ef4444", borderRadius: 2 }} />
+                        <div style={{ width: score + "%", height: "100%", background: score >= 80 ? "var(--success)" : score >= 60 ? "#eab308" : "var(--danger)", borderRadius: 2 }} />
                       </div>
-                      <span style={{ fontSize: 10, color: score >= 80 ? "#22c55e" : score >= 60 ? "#eab308" : "#ef4444", fontWeight: 700 }}>{score}%</span>
+                      <span style={{ fontSize: 10, color: score >= 80 ? "var(--success)" : score >= 60 ? "#eab308" : "var(--danger)", fontWeight: 700 }}>{score}%</span>
                     </div>
                   )}
                   {r.summary && <div style={{ fontSize: 11, color: "#94a3b8", lineHeight: 1.5 }}>{r.summary}</div>}
                   {Array.isArray(r.recommendations) && r.recommendations.length > 0 && (
                     <div style={{ marginTop: 6 }}>
                       {r.recommendations.slice(0, 3).map((rec, j) => (
-                        <div key={j} style={{ fontSize: 10, color: "#64748b", padding: "2px 0" }}>• {rec.title ?? rec.action ?? rec}</div>
+                        <div key={j} style={{ fontSize: 10, color: "var(--text-dim)", padding: "2px 0" }}>• {rec.title ?? rec.action ?? rec}</div>
                       ))}
                     </div>
                   )}
@@ -286,7 +286,7 @@ export default function SelfImprovementCenter({ onNavigate }) {
           )}
           {metrics && (
             <div style={{ background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 5, padding: "10px 12px", marginTop: 8 }}>
-              <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: "#64748b", marginBottom: 8 }}>Live Metrics</div>
+              <div style={{ fontSize: 10, textTransform: "uppercase", letterSpacing: "0.1em", color: "var(--text-dim)", marginBottom: 8 }}>Live Metrics</div>
               {Object.entries(metrics).slice(0, 6).map(([k, v]) => (
                 <div key={k} style={{ display: "flex", justifyContent: "space-between", fontSize: 11, padding: "2px 0", color: "#94a3b8" }}>
                   <span>{k.replace(/_/g, " ")}</span>
@@ -308,7 +308,7 @@ export default function SelfImprovementCenter({ onNavigate }) {
           ) : (
             providers.map((p, i) => {
               const isOk = p.status === "active" || p.status === "healthy" || p.available === true;
-              const statusColor = isOk ? "#22c55e" : p.status === "degraded" ? "#eab308" : "#ef4444";
+              const statusColor = isOk ? "var(--success)" : p.status === "degraded" ? "#eab308" : "var(--danger)";
               return (
                 <div key={p.id ?? p.name ?? i} style={{
                   background: "#0f1117", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 5,
@@ -318,16 +318,16 @@ export default function SelfImprovementCenter({ onNavigate }) {
                     <div style={{ fontWeight: 700, fontSize: 13, color: "#e2e8f0", marginBottom: 2 }}>
                       {p.name ?? p.provider ?? p.id}
                     </div>
-                    {p.model && <div style={{ fontSize: 10, color: "#64748b" }}>Model: {p.model}</div>}
-                    {p.description && <div style={{ fontSize: 10, color: "#64748b", marginTop: 2 }}>{p.description}</div>}
+                    {p.model && <div style={{ fontSize: 10, color: "var(--text-dim)" }}>Model: {p.model}</div>}
+                    {p.description && <div style={{ fontSize: 10, color: "var(--text-dim)", marginTop: 2 }}>{p.description}</div>}
                   </div>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
                     <span style={{
                       fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 10,
                       background: statusColor + "18", color: statusColor, border: `1px solid ${statusColor}44`,
                     }}>{p.status ?? (p.available ? "active" : "unknown")}</span>
-                    {p.latency != null && <span style={{ fontSize: 10, color: "#64748b" }}>{p.latency}ms</span>}
-                    {p.cost != null && <span style={{ fontSize: 10, color: "#64748b" }}>${p.cost}/1k</span>}
+                    {p.latency != null && <span style={{ fontSize: 10, color: "var(--text-dim)" }}>{p.latency}ms</span>}
+                    {p.cost != null && <span style={{ fontSize: 10, color: "var(--text-dim)" }}>${p.cost}/1k</span>}
                   </div>
                 </div>
               );

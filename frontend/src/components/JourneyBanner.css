@@ -1,6 +1,6 @@
 /* ── JourneyBanner ─────────────────────────────────────────────────────────── */
 .jb-root {
-  background: rgba(8, 12, 22, 0.98);
+  background: var(--surface2);
   border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   flex-shrink: 0;
   font-family: system-ui, sans-serif;
@@ -23,7 +23,7 @@
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,0.07);
   background: transparent;
-  color: #4a5470;
+  color: var(--text-dim);
   font-size: 10px;
   font-weight: 600;
   font-family: inherit;
@@ -31,9 +31,11 @@
   transition: all 0.12s;
   white-space: nowrap;
 }
-.jb-journey-pill:hover { color: #8994b0; border-color: rgba(255,255,255,0.12); }
+.jb-journey-pill:hover { color: var(--text-dim); border-color: rgba(255,255,255,0.12); }
 .jb-journey-pill--active {
-  color: var(--accent, #7c6fff);
+  /* B19.5: accent text on its own 0.09 brand tint — the --on-accent-tint case.
+     Flagged in light mode at 390px, where this pill is reachable. */
+  color: var(--on-accent-tint);
   border-color: rgba(124,111,255,0.35);
   background: rgba(124,111,255,0.09);
 }
@@ -42,14 +44,14 @@
   margin-left: auto;
   background: none;
   border: none;
-  color: #374151;
+  color: var(--text-dim);
   font-size: 12px;
   cursor: pointer;
   padding: 2px 4px;
   transition: color 0.12s;
   font-family: inherit;
 }
-.jb-dismiss:hover { color: #8994b0; }
+.jb-dismiss:hover { color: var(--text-dim); }
 
 /* Step track */
 .jb-track {
@@ -80,15 +82,15 @@
 }
 .jb-step:disabled { cursor: default; }
 
-.jb-step--done  { color: #4a5470; }
-.jb-step--done:hover { color: #64748b; background: rgba(255,255,255,0.03); }
+.jb-step--done  { color: var(--text-dim); }
+.jb-step--done:hover { color: var(--text-dim); background: rgba(255,255,255,0.03); }
 .jb-step--active {
   color: var(--accent, #7c6fff);
   background: rgba(124,111,255,0.10);
   border-color: rgba(124,111,255,0.25);
 }
-.jb-step--future { color: #2a3050; }
-.jb-step--future:not(:disabled):hover { color: #4a5470; background: rgba(255,255,255,0.02); }
+.jb-step--future { color: var(--text-faint); }
+.jb-step--future:not(:disabled):hover { color: var(--text-dim); background: rgba(255,255,255,0.02); }
 
 .jb-step-icon { font-size: 11px; }
 .jb-step-label { font-size: 10px; }
@@ -136,7 +138,9 @@
 
 .jb-pct {
   font-size: 9px;
-  color: var(--accent, #7c6fff);
+  /* B19.5: 9px accent text — well under the large-text threshold, so it needs
+     the full 4.5:1. */
+  color: var(--on-accent-tint);
   font-weight: 700;
   min-width: 26px;
 }
@@ -154,7 +158,7 @@
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #374151;
+  color: var(--text-dim);
   font-weight: 700;
   flex-shrink: 0;
 }
@@ -162,13 +166,13 @@
 .jb-current-val {
   font-size: 10px;
   font-weight: 700;
-  color: #cbd5e1;
+  color: var(--text);
   flex-shrink: 0;
 }
 
 .jb-current-desc {
   font-size: 10px;
-  color: #4a5470;
+  color: var(--text-dim);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -199,7 +203,7 @@
 .jb-complete-badge {
   font-size: 10px;
   font-weight: 700;
-  color: #22c55e;
+  color: var(--success);
   padding: 2px 8px;
   border-radius: 999px;
   background: rgba(34,197,94,0.09);
@@ -213,7 +217,7 @@
   align-items: center;
   gap: 4px;
   font-size: 10px;
-  color: #4a5470;
+  color: var(--text-dim);
   flex-wrap: nowrap;
   overflow: hidden;
 }
@@ -221,7 +225,7 @@
 .jb-breadcrumb-journey {
   font-size: 10px;
   font-weight: 700;
-  color: #374151;
+  color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   flex-shrink: 0;
@@ -229,7 +233,7 @@
 }
 
 .jb-bc-sep {
-  color: #2a3050;
+  color: var(--text-faint);
   flex-shrink: 0;
 }
 
@@ -246,11 +250,11 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
-.jb-bc-step--done   { color: #374151; }
-.jb-bc-step--done:hover { color: #64748b; }
+.jb-bc-step--done   { color: var(--text-dim); }
+.jb-bc-step--done:hover { color: var(--text-dim); }
 .jb-bc-step--active { color: var(--accent, #7c6fff); cursor: default; }
-.jb-bc-step--future { color: #2a3050; }
-.jb-bc-step--future:not(:disabled):hover { color: #4a5470; }
+.jb-bc-step--future { color: var(--text-faint); }
+.jb-bc-step--future:not(:disabled):hover { color: var(--text-dim); }
 
 .jb-bc-next {
   background: none;

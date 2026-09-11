@@ -42,7 +42,7 @@ const EVENTS = [
 const TAG_COLORS = {
   strategy:"var(--accent2)", technical:"var(--danger)", showcase:"var(--success)",
   integrations:"var(--accent)", feedback:"var(--warning)", automation:"var(--accent2)",
-  workflow:"#a78bfa", payments:"#52d68a",
+  workflow:"#a78bfa", payments:"var(--success)",
 };
 
 export default function CommunityCenter({ onNavigate }) {

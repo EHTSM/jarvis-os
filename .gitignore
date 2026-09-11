@@ -42,6 +42,17 @@ dist/
 # tracked build artifacts and bloats the repo — untracked as of this change.
 frontend/build/
 
+# Mobile build output — same reasoning as frontend/build/ above.
+# mobile/android/ IS tracked (real Capacitor project scaffolding, `npx cap
+# add android` output — source, not a build artifact) but its own Gradle
+# build/ directories and the compiled APK/AAB outputs are not.
+mobile/build/
+mobile/android/**/build/
+mobile/android/.gradle/
+mobile/android/local.properties
+*.apk
+*.aab
+
 # OS
 
 # Benchmark/Debug/Temp artifacts
@@ -52,11 +63,44 @@ persistent_session.js
 queue.json
 
 # Test files and scripts
-tests/
+# Mission 61 (2026-08-27): the previous blanket `tests/` ignore silently
+# hid 77 legitimate certification test files (50 tests/runtime/*.test.cjs,
+# 27 tests/security/*.cjs) from git/CI, even though they exist and are
+# exercised locally, because a negated (!) pattern cannot re-include a path
+# whose parent directory is itself excluded (git-scm.com/docs/gitignore).
+# The fix is to ignore each non-certification tests/ subdirectory by name
+# instead of the whole tree, so tests/runtime/ and tests/security/ are no
+# longer excluded and their real contents can be tracked. This intentionally
+# leaves every other subdirectory's ignored status unchanged.
+tests/.DS_Store
+tests/burnin/
+tests/chaos/
+tests/evaluation/
+tests/integration/
+tests/legacy/
+tests/operator/
+tests/profiling/
+tests/smoke/
+tests/stability/
+tests/stress/
+tests/workflows/
+# Ephemeral one-off Playwright verification drivers under tests/security/ —
+# not part of the node:test/custom-runner corpus run-test-suite.cjs invokes
+# (no test framework hooks; hardcoded to a since-deleted session scratchpad
+# path; read credential filenames from outside the repo). Keep ignored.
+tests/security/_*_scratch_driver.cjs
 .DS_Store
 Thumbs.db
 _archive/
-tests/legacy/
 key.properties
 ooplix-release.keystore
 *.keystore
+
+# Ephemeral verification scripts — never part of the codebase, one-off
+# real-service verification scripts written during missions.
+scratchpad/
+
+# Private credential workbook — contains operator-entered secret values.
+# Must NEVER be committed. See docs/audits/CREDENTIAL-CANONICAL-MAP.md.
+private/credentials/
+private/

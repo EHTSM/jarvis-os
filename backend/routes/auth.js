@@ -2,9 +2,18 @@
 const router      = require("express").Router();
 const crypto      = require("crypto");
 const rateLimiter = require("../middleware/rateLimiter");
-const { signJWT, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
+const { signJWT, verifyJWT, revokeToken, requireAuth, COOKIE_NAME, TOKEN_EXPIRY } = require("../middleware/authMiddleware");
 const auditLog    = require("../utils/auditLog.cjs");
 const accountSvc  = require("../services/accountService");
+const logger      = require("../utils/logger");
+const _try = fn => { try { return fn(); } catch { return null; } };
+const _sso = () => _try(() => require("../services/ssoService.cjs"));
+const _policy = () => _try(() => require("../services/policyService.cjs"));
+const _orgSvc = () => _try(() => require("../services/organizationService.cjs"));
+
+function _resolvePrimaryOrgId(accountId) {
+  return _try(() => _orgSvc()?.resolveContext?.(accountId)?.primaryOrg?.orgId) || null;
+}
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -38,20 +47,69 @@ function _handleLogin(req, res) {
     if (!result.success) {
       return res.status(401).json({ error: result.error || "Invalid email or password" });
     }
+
+    const primaryOrgId = _resolvePrimaryOrgId(result.account.id);
+
+    // Organization login policy: an org can require its members to sign in
+    // via its configured SSO connection only. Checked only after a real,
+    // successful password verification (never before) so this can't be used
+    // as an email-enumeration oracle.
+    try {
+      _sso()?.assertPasswordLoginAllowed?.(result.account);
+    } catch (e) {
+      if (e?.code === "sso_required") {
+        auditLog.recordAuth({ action: "login_denied", operator: result.account.id, method: "password", reason: "sso_required" });
+        return res.status(403).json({ error: e.message, code: "sso_required", orgId: e.orgId, provider: e.provider });
+      }
+      throw e;
+    }
+
+    // Allowed-providers policy: an org can restrict login to a specific set
+    // of providers (e.g. only "saml", excluding plain "password").
+    if (primaryOrgId) {
+      try {
+        _policy()?.assertProviderAllowed?.(primaryOrgId, "password");
+      } catch (e) {
+        if (e?.code === "provider_not_allowed") {
+          auditLog.recordAuth({ action: "login_denied", operator: result.account.id, method: "password", reason: "provider_not_allowed" });
+          return res.status(403).json({ error: e.message, code: e.code });
+        }
+        throw e;
+      }
+    }
+
+    // MFA enforcement: if the org requires it, a valid TOTP code must be
+    // provided in the same request (mfaToken) or enrollment/entry is denied.
+    if (primaryOrgId) {
+      try {
+        _policy()?.assertMfaSatisfied?.(primaryOrgId, result.account, req.body?.mfaToken);
+      } catch (e) {
+        if (e?.code) {
+          auditLog.recordAuth({ action: "login_denied", operator: result.account.id, method: "password", reason: e.code });
+          return res.status(e.status || 403).json({ error: e.message, code: e.code });
+        }
+        throw e;
+      }
+    }
+
+    const sessionSeconds = primaryOrgId ? _policy()?.getSessionTimeoutSeconds?.(primaryOrgId, TOKEN_EXPIRY) || TOKEN_EXPIRY : TOKEN_EXPIRY;
     const jwtPayload = {
       role:  result.account.role || "user",
       sub:   result.account.id,
       email: result.account.email,
       iat:   Math.floor(Date.now() / 1000),
-      exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
+      exp:   Math.floor(Date.now() / 1000) + sessionSeconds,
     };
     try {
       const token = signJWT(jwtPayload);
-      res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
+      res.cookie(COOKIE_NAME, token, { ...COOKIE_OPTS, maxAge: sessionSeconds * 1000 });
     } catch (e) {
       return res.status(500).json({ error: "JWT signing failed — JWT_SECRET not configured" });
     }
     auditLog.recordAuth({ action: "login", operator: result.account.id, method: "email" });
+    // Supplementary org-scoped event (recordAuth's fixed shape has no orgId
+    // field) so Module 3's per-org login history can actually filter by org.
+    if (primaryOrgId) auditLog.append({ type: "login.password", orgId: primaryOrgId, accountId: result.account.id, method: "password" });
     return res.json({ success: true, role: result.account.role, email: result.account.email });
   }
 
@@ -94,6 +152,36 @@ function _handleLogin(req, res) {
 }
 
 function _handleLogout(req, res) {
+  // MASTER RECOVERY (2026-08-15, C10-027): this previously only cleared the
+  // cookie — the token itself remained fully valid (accepted by verifyJWT)
+  // until its natural expiry, even after explicit logout. This route has no
+  // requireAuth gate (a client with an already-invalid/expired cookie must
+  // still be able to call logout without erroring), so req.user is not
+  // populated here — read the raw cookie directly to recover the token's
+  // jti and revoke it server-side via the new revocation ledger.
+  const cookies = req.headers.cookie || "";
+  const match = cookies.split(";").map(s => s.trim()).find(s => s.startsWith(`${COOKIE_NAME}=`));
+  if (match) {
+    try {
+      const token   = decodeURIComponent(match.slice(COOKIE_NAME.length + 1));
+      const payload = verifyJWT(token);
+      if (payload?.jti) revokeToken(payload.jti, payload.exp);
+    } catch { /* malformed cookie — nothing to revoke, still clear it below */ }
+  } else {
+    // Mission 45: a mobile (Bearer-authenticated) client has no cookie to
+    // read here — this route intentionally has no requireAuth gate (see
+    // comment above), so recover the token from the Authorization header
+    // the same way, revoke its jti the same way, so mobile logout actually
+    // invalidates the token server-side instead of only "forgetting" it
+    // client-side while it remains valid until natural expiry.
+    const authHeader = req.headers.authorization || "";
+    if (authHeader.startsWith("Bearer ")) {
+      try {
+        const payload = verifyJWT(authHeader.slice(7).trim());
+        if (payload?.jti) revokeToken(payload.jti, payload.exp);
+      } catch { /* malformed/absent token — nothing to revoke */ }
+    }
+  }
   auditLog.recordAuth({ action: "logout", operator: req.user });
   res.clearCookie(COOKIE_NAME, { path: "/" });
   res.json({ success: true });
@@ -113,15 +201,36 @@ function _handleRefresh(req, res) {
       iat:   Math.floor(Date.now() / 1000),
       exp:   Math.floor(Date.now() / 1000) + TOKEN_EXPIRY,
     });
+    // MASTER RECOVERY (2026-08-15, C10-027): revoke the OLD token's jti on
+    // refresh, not just on explicit logout. Without this, refreshing (which
+    // requireAuth's own success already proves the caller holds a valid
+    // token for) issued a second, independently-valid token while leaving
+    // the first one live until its original expiry — two valid tokens for
+    // one session where only one should exist after a refresh.
+    if (u.jti) revokeToken(u.jti, u.exp);
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
     auditLog.recordAuth({ action: "refresh", operator: u.sub || u.role, method: "cookie" });
-    res.json({ success: true, role: u.role });
+    // Mission 45: same rationale as _handleFirebaseSession — return the new
+    // token in the body too so a Bearer-authenticated (mobile) caller can
+    // rotate its stored token exactly like the cookie is rotated for web.
+    res.json({ success: true, role: u.role, token });
   } catch {
     res.status(500).json({ error: "JWT signing failed" });
   }
 }
 
-function _handleForgotPassword(req, res) {
+// Email Ecosystem mission: sendPasswordReset() is now async (it was
+// previously called without await, inside a try/catch that could never
+// catch a real send failure — that function doesn't throw, it resolves
+// to {ok,error}). This route's response contract is deliberately
+// UNCHANGED — always {success:true} with the same generic message,
+// regardless of real email delivery outcome, since anti-enumeration
+// (never revealing whether an account exists) is a genuine, correct
+// security property here. What was missing was ever recording the real
+// outcome anywhere; betaReadiness.sendPasswordReset() now does that via
+// the audit log internally — this route just needs to actually await
+// the call so that logging happens before the request completes.
+async function _handleForgotPassword(req, res) {
   const { email } = req.body || {};
   if (!email || typeof email !== "string" || !email.includes("@")) {
     return res.status(400).json({ error: "Valid email required" });
@@ -129,7 +238,7 @@ function _handleForgotPassword(req, res) {
   // Delegate to betaReadiness which generates a real token and sends the email
   try {
     const beta = require("../services/betaReadiness.cjs");
-    const result = beta.sendPasswordReset(email.toLowerCase().trim());
+    const result = await beta.sendPasswordReset(email.toLowerCase().trim());
     auditLog.recordAuth({ action: "forgot_password", operator: email.toLowerCase().trim(), method: "email" });
     return res.json({ success: true, message: result.message });
   } catch {
@@ -196,7 +305,7 @@ async function _handleFirebaseSession(req, res) {
     if (process.env.NODE_ENV === "production") {
       return res.status(503).json({ error: "Firebase auth not configured" });
     }
-    if (process.env.NODE_ENV !== "production") console.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
+    if (process.env.NODE_ENV !== "production") logger.warn("[Auth] firebase-admin not initialised — skipping token verification (dev only)");
   }
 
   const cleanEmail = email.trim().toLowerCase();
@@ -217,6 +326,38 @@ async function _handleFirebaseSession(req, res) {
     }
   }
 
+  // Mission 33 — MFA End-to-End Certification (2026-08-22): this path issued
+  // a session cookie unconditionally, with none of _handleLogin's three
+  // login-policy checks (provider-allowed, MFA) — confirmed via source trace
+  // (grep for assertMfaSatisfied/assertProviderAllowed in this function
+  // returned zero hits) that a Google/Phone login for an org that requires
+  // password-login MFA completely bypassed it, since this route never
+  // consulted the org's policy at all. Same fix as _handleLogin: resolve the
+  // account's primary org and run the identical two assertions, in the same
+  // order, before signing the session token — no new policy engine, reusing
+  // policyService.cjs exactly as the password path already does.
+  const primaryOrgId = _try(() => require("../services/organizationService.cjs")?.resolveContext?.(account.id)?.primaryOrg?.orgId) || null;
+  if (primaryOrgId) {
+    try {
+      _policy()?.assertProviderAllowed?.(primaryOrgId, provider || "firebase");
+    } catch (e) {
+      if (e?.code === "provider_not_allowed") {
+        auditLog.recordAuth({ action: "login_denied", operator: account.id, method: provider || "firebase", reason: "provider_not_allowed" });
+        return res.status(403).json({ error: e.message, code: e.code });
+      }
+      throw e;
+    }
+    try {
+      _policy()?.assertMfaSatisfied?.(primaryOrgId, account, req.body?.mfaToken);
+    } catch (e) {
+      if (e?.code) {
+        auditLog.recordAuth({ action: "login_denied", operator: account.id, method: provider || "firebase", reason: e.code });
+        return res.status(e.status || 403).json({ error: e.message, code: e.code });
+      }
+      throw e;
+    }
+  }
+
   try {
     const token = signJWT({
       role:  account.role || "user",
@@ -227,7 +368,15 @@ async function _handleFirebaseSession(req, res) {
     });
     res.cookie(COOKIE_NAME, token, COOKIE_OPTS);
     auditLog.recordAuth({ action: "login", operator: account.id, method: provider || "firebase" });
-    res.json({ success: true, role: account.role, email: account.email });
+    // Mission 45 — Capacitor Mobile Auth Remediation (2026-08-24): also
+    // return the same signed JWT in the response body, alongside the cookie
+    // (web callers keep working unchanged, they simply ignore this field).
+    // A native Capacitor WebView cannot reliably rely on the HttpOnly cookie
+    // cross-origin, so the mobile client stores this token and sends it as
+    // `Authorization: Bearer` instead — the exact token requireAuth's new
+    // Bearer path already validates via the unmodified verifyJWT(). Never
+    // logged; returned once, directly in this single response body.
+    res.json({ success: true, role: account.role, email: account.email, token });
   } catch {
     res.status(500).json({ error: "JWT signing failed" });
   }
@@ -241,6 +390,11 @@ const _forgotRL       = rateLimiter(5,  15 * 60_000);
 const _firebaseRL     = rateLimiter(20, 5 * 60_000);
 
 const _resetRL = rateLimiter(5, 15 * 60_000);
+// Security Token Audit (2026-08-16): verify-email had no rate limit at all
+// (unlike reset-password's identical-shape _resetRL). 256-bit token entropy
+// already makes brute force computationally infeasible either way, but this
+// closes the inconsistency defense-in-depth, matching established precedent.
+const _verifyEmailRL = rateLimiter(10, 15 * 60_000);
 
 router.post("/auth/login",              _loginRL,    _handleLogin);
 router.post("/auth/logout",                          _handleLogout);
@@ -248,8 +402,8 @@ router.get("/auth/me",                  requireAuth, _handleMe);
 router.post("/auth/refresh",            requireAuth, _handleRefresh);
 router.post("/auth/forgot-password",    _forgotRL,   _handleForgotPassword);
 router.post("/auth/reset-password",     _resetRL,    _handleResetPassword);  // Mission 6: real reset
-router.get("/auth/verify-email",                     _handleVerifyEmail);    // Mission 6: email verify
-router.post("/auth/verify-email",                    _handleVerifyEmail);    // Mission 6: email verify (POST form)
+router.get("/auth/verify-email",        _verifyEmailRL, _handleVerifyEmail); // Mission 6: email verify
+router.post("/auth/verify-email",       _verifyEmailRL, _handleVerifyEmail); // Mission 6: email verify (POST form)
 router.post("/auth/firebase-session",   _firebaseRL, _handleFirebaseSession);
 
 // /api/* aliases — same handlers, respond before ops.js requireAuth gate
@@ -259,7 +413,7 @@ router.get("/api/auth/me",              requireAuth, _handleMe);
 router.post("/api/auth/refresh",        requireAuth, _handleRefresh);
 router.post("/api/auth/forgot-password",_forgotRL,   _handleForgotPassword);
 router.post("/api/auth/reset-password", _resetRL,    _handleResetPassword);
-router.get("/api/auth/verify-email",                 _handleVerifyEmail);
+router.get("/api/auth/verify-email",    _verifyEmailRL, _handleVerifyEmail);
 router.post("/api/auth/firebase-session",_firebaseRL, _handleFirebaseSession);
 
 module.exports = router;

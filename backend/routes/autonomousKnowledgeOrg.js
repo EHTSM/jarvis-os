@@ -45,12 +45,19 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 function _org() { return require("../services/autonomousKnowledgeOrg.cjs"); }
 function _sup() { return require("../services/agentRuntimeSupervisor.cjs"); }
 function _st()  { try { return require("../services/akoState.cjs");         } catch { return null; } }
 function _wf()  { try { return require("../services/akoWorkflow.cjs");      } catch { return null; } }
+
+// OOPLIX V1 MASTER AUDIT (2026-08-16, endpoint authorization sweep): same
+// fix as the sibling Level 2/3 files (engineeringOrg.js/businessOrg.js) —
+// tick/enable/disable are platform-wide agent-control mutations, zero
+// orgId anywhere in akoState.cjs/autonomousKnowledgeOrg.cjs, reads/v4
+// workflow routes intentionally left at requireAuth matching the same
+// established precedent.
 
 // ── Agent management ──────────────────────────────────────────────────────────
 
@@ -72,7 +79,7 @@ router.get("/ako/agents/:id", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/ako/agents/:id/tick", requireAuth, async (req, res) => {
+router.post("/ako/agents/:id/tick", requireAuth, operatorOnly, async (req, res) => {
   try {
     const result = await _sup().triggerTick(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -80,7 +87,7 @@ router.post("/ako/agents/:id/tick", requireAuth, async (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/ako/agents/:id/enable", requireAuth, (req, res) => {
+router.post("/ako/agents/:id/enable", requireAuth, operatorOnly, (req, res) => {
   try {
     const result = _sup().enableAgent(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -88,7 +95,7 @@ router.post("/ako/agents/:id/enable", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/ako/agents/:id/disable", requireAuth, (req, res) => {
+router.post("/ako/agents/:id/disable", requireAuth, operatorOnly, (req, res) => {
   try {
     const result = _sup().disableAgent(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });

@@ -10,7 +10,7 @@ function _save(k,v){localStorage.setItem(k,JSON.stringify(v));}
 // ── Tool registry seed ────────────────────────────────────────────────
 const SEED_TOOLS = [
   {
-    id: "t_github", name: "GitHub", icon: "◉", color: "#e6edf3", category: "engineering",
+    id: "t_github", name: "GitHub", icon: "◉", color: "var(--text)", category: "engineering",
     status: "healthy", health: 100, owner: "DevOps Agent",
     permissions: ["read_repos","write_code","post_comments","read_ci","trigger_workflows"],
     usedBy: ["dev","devops"], callsToday: 47, callsTotal: 1820, errorRate: "0.4%",
@@ -58,7 +58,7 @@ const SEED_TOOLS = [
     config: { apiVersion: "Bot API 7.x", baseUrl: "api.telegram.org", rateLimit: "30 msg/s" },
   },
   {
-    id: "t_openrouter", name: "OpenRouter", icon: "⊕", color: "#7c6fff", category: "ai",
+    id: "t_openrouter", name: "OpenRouter", icon: "⊕", color: "var(--accent)", category: "ai",
     status: "healthy", health: 99, owner: "System",
     permissions: ["inference","model_routing","streaming"],
     usedBy: ["seo","marketing","content","support","sales","dev","research","analytics"], callsToday: 134, callsTotal: 6420, errorRate: "0.1%",
@@ -66,7 +66,7 @@ const SEED_TOOLS = [
     config: { apiVersion: "v1", baseUrl: "openrouter.ai/api", rateLimit: "per-model" },
   },
   {
-    id: "t_ollama", name: "Ollama", icon: "◎", color: "#52d68a", category: "ai",
+    id: "t_ollama", name: "Ollama", icon: "◎", color: "var(--success)", category: "ai",
     status: "degraded", health: 62, owner: "Dev Agent",
     permissions: ["local_inference","model_pull","streaming"],
     usedBy: ["dev","research"], callsToday: 8, callsTotal: 210, errorRate: "3.1%",
@@ -76,9 +76,9 @@ const SEED_TOOLS = [
 ];
 
 const AGENT_COLORS = {
-  dev:"#e6edf3", devops:"#fc6d26", marketing:"#f0b429", content:"#7c6fff",
-  support:"#52d68a", sales:"#da552f", research:"#a78bfa", analytics:"#38bdf8",
-  seo:"#4ecdc4",
+  dev:"var(--text)", devops:"#fc6d26", marketing:"var(--warning)", content:"var(--accent)",
+  support:"var(--success)", sales:"#da552f", research:"#a78bfa", analytics:"#38bdf8",
+  seo:"var(--accent2)",
 };
 
 const STATUS_CFG = {

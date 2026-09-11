@@ -27,6 +27,46 @@ const stream = require("stream");
 function _env(k)    { return process.env[k] || ""; }
 function _has(...ks){ return ks.every(k => !!_env(k)); }
 
+// ── Key safety ────────────────────────────────────────────────────────────────
+// Defense-in-depth: every current caller (enterprisePhysical.js,
+// companyFactory.js, exportFileService.cjs) already validates/sanitizes the
+// key suffix or orgId before calling in, but that validation lives at each
+// call site, not here — a future caller that forgets it would silently
+// reintroduce cross-tenant object access via "../other-org/...". Reject the
+// same shape here so the guarantee holds regardless of caller diligence,
+// per CLAUDE.md's repeated-defect-class rule (a sibling check present on
+// existing callers but not enforced at the shared choke point).
+function _unsafeKey(key) {
+  return typeof key !== "string" || key.includes("..") || key.startsWith("/");
+}
+
+// ── Retry / transient-error classification ──────────────────────────────────
+// No shared retry helper exists in this codebase (confirmed: every service
+// hand-rolls its own) — matches aiService.js's _isRetryable shape (network
+// codes + 429/5xx retryable, 4xx auth/client errors are not) combined with
+// executionEngine.cjs's capped exponential backoff, per the established
+// per-file-inline convention rather than introducing a new shared module.
+const RETRYABLE_CODES = new Set(["ECONNRESET", "ECONNREFUSED", "ETIMEDOUT", "ENOTFOUND", "EAI_AGAIN"]);
+function _isRetryableStatus(status) { return status === 429 || (status >= 500 && status <= 599); }
+function _isRetryableError(err)     { return RETRYABLE_CODES.has(err?.code) || err?.message === "timeout"; }
+function _backoffMs(attempt)        { return Math.min(300 * Math.pow(2, attempt), 4000); }
+function _sleep(ms)                 { return new Promise(r => setTimeout(r, ms)); }
+
+async function _withRetry(fn, { retries = 2 } = {}) {
+  let lastErr = null;
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      const res = await fn();
+      if (!_isRetryableStatus(res.status) || attempt === retries) return res;
+    } catch (e) {
+      lastErr = e;
+      if (!_isRetryableError(e) || attempt === retries) throw e;
+    }
+    await _sleep(_backoffMs(attempt));
+  }
+  if (lastErr) throw lastErr;
+}
+
 // ── Provider detection ────────────────────────────────────────────────────────
 
 function detectProvider() {
@@ -154,10 +194,11 @@ function _s3Req({ method, prov, key, body, contentType, queryParams = {}, timeou
 // ── Public API ────────────────────────────────────────────────────────────────
 
 async function upload(key, body, contentType = "application/octet-stream") {
+  if (_unsafeKey(key)) return { ok: false, error: "Invalid storage key: must not contain '..' or start with '/'" };
   const prov = detectProvider();
   if (!prov.configured) return { ok: false, error: "No storage provider configured" };
   try {
-    const res = await _s3Req({ method: "PUT", prov, key, body, contentType });
+    const res = await _withRetry(() => _s3Req({ method: "PUT", prov, key, body, contentType }));
     const ok  = res.status === 200;
     const url = ok ? `${prov.endpoint}/${prov.bucket}/${key}` : null;
     return { ok, provider: prov.provider, url, status: res.status,
@@ -166,10 +207,11 @@ async function upload(key, body, contentType = "application/octet-stream") {
 }
 
 async function download(key) {
+  if (_unsafeKey(key)) return { ok: false, error: "Invalid storage key: must not contain '..' or start with '/'" };
   const prov = detectProvider();
   if (!prov.configured) return { ok: false, error: "No storage provider configured" };
   try {
-    const res = await _s3Req({ method: "GET", prov, key });
+    const res = await _withRetry(() => _s3Req({ method: "GET", prov, key }));
     const ok  = res.status === 200;
     return { ok, provider: prov.provider, body: ok ? res.body : null,
       contentType: res.headers["content-type"] || null, status: res.status,
@@ -178,10 +220,11 @@ async function download(key) {
 }
 
 async function deleteObject(key) {
+  if (_unsafeKey(key)) return { ok: false, error: "Invalid storage key: must not contain '..' or start with '/'" };
   const prov = detectProvider();
   if (!prov.configured) return { ok: false, error: "No storage provider configured" };
   try {
-    const res = await _s3Req({ method: "DELETE", prov, key });
+    const res = await _withRetry(() => _s3Req({ method: "DELETE", prov, key }));
     const ok  = res.status === 204 || res.status === 200;
     return { ok, provider: prov.provider, status: res.status,
       error: ok ? null : `HTTP ${res.status}` };
@@ -192,7 +235,7 @@ async function listObjects(prefix = "") {
   const prov = detectProvider();
   if (!prov.configured) return { ok: false, error: "No storage provider configured" };
   try {
-    const res = await _s3Req({ method: "GET", prov, key: "", queryParams: { "list-type": "2", prefix, "max-keys": "100" } });
+    const res = await _withRetry(() => _s3Req({ method: "GET", prov, key: "", queryParams: { "list-type": "2", prefix, "max-keys": "100" } }));
     const ok  = res.status === 200;
     const xml = res.body.toString();
     const keys = [...xml.matchAll(/<Key>([^<]+)<\/Key>/g)].map(m => m[1]);
@@ -202,7 +245,10 @@ async function listObjects(prefix = "") {
 }
 
 // Presigned URL — generates the URL client-side without a network call
+const MAX_SIGNED_URL_EXPIRY_SECONDS = 7 * 24 * 3600; // S3/R2's own SigV4 hard ceiling
 function signedUrl(key, expiresSeconds = 3600) {
+  if (_unsafeKey(key)) return { ok: false, error: "Invalid storage key: must not contain '..' or start with '/'" };
+  const expires = Math.min(Math.max(1, Number(expiresSeconds) || 3600), MAX_SIGNED_URL_EXPIRY_SECONDS);
   const prov = detectProvider();
   if (!prov.configured) return { ok: false, error: "No storage provider configured" };
   const cr = _creds(prov);
@@ -221,7 +267,7 @@ function signedUrl(key, expiresSeconds = 3600) {
       "X-Amz-Algorithm":  "AWS4-HMAC-SHA256",
       "X-Amz-Credential": credential,
       "X-Amz-Date":       dateStr,
-      "X-Amz-Expires":    String(expiresSeconds),
+      "X-Amz-Expires":    String(expires),
       "X-Amz-SignedHeaders": "host",
     });
 
@@ -231,7 +277,7 @@ function signedUrl(key, expiresSeconds = 3600) {
     qp.set("X-Amz-Signature", _hmac(sigKey, stringToSign, "hex"));
 
     const url = `${prov.endpoint}/${prov.bucket}/${key}?${qp.toString()}`;
-    return { ok: true, provider: prov.provider, url, expiresIn: expiresSeconds };
+    return { ok: true, provider: prov.provider, url, expiresIn: expires };
   } catch (e) { return { ok: false, provider: prov.provider, error: e.message }; }
 }
 

@@ -4,9 +4,12 @@ import {
   listMemoryNodes,
   searchMemory,
   memoryStats,
+  archiveMemoryNode,
 } from "../phase18Api";
 import { getKnowledge, addKnowledge, deleteKnowledge } from "../personalApi";
 import "./MemoryOSV2.css";
+import { clickableProps } from "../hooks/useClickableProps";
+import SampleDataNotice from "./SampleDataNotice";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -19,16 +22,16 @@ const TABS = [
 ];
 
 const TYPE_META = {
-  context: { label: "context",  color: "#7c6fff", bg: "rgba(124,111,255,.12)" },
-  user:    { label: "user",     color: "#4ecdc4", bg: "rgba(78,205,196,.12)"  },
-  event:   { label: "event",    color: "#f0b429", bg: "rgba(240,180,41,.10)"  },
-  summary: { label: "summary",  color: "#5dc8f5", bg: "rgba(93,200,245,.10)"  },
-  error:   { label: "error",    color: "#f55b5b", bg: "rgba(245,91,91,.10)"   },
-  task:    { label: "task",     color: "#52d68a", bg: "rgba(82,214,138,.10)"  },
-  company: { label: "company",  color: "#f0b429", bg: "rgba(240,180,41,.10)"  },
-  project: { label: "project",  color: "#4ecdc4", bg: "rgba(78,205,196,.12)"  },
-  agent:   { label: "agent",    color: "#f55b5b", bg: "rgba(245,91,91,.10)"   },
-  workflow:{ label: "workflow",  color: "#52d68a", bg: "rgba(82,214,138,.10)"  },
+  context: { label: "context",  color: "var(--accent)", bg: "rgba(124,111,255,.12)" },
+  user:    { label: "user",     color: "var(--accent2)", bg: "rgba(78,205,196,.12)"  },
+  event:   { label: "event",    color: "var(--warning)", bg: "rgba(240,180,41,.10)"  },
+  summary: { label: "summary",  color: "var(--info)", bg: "rgba(93,200,245,.10)"  },
+  error:   { label: "error",    color: "var(--danger)", bg: "rgba(245,91,91,.10)"   },
+  task:    { label: "task",     color: "var(--success)", bg: "rgba(82,214,138,.10)"  },
+  company: { label: "company",  color: "var(--warning)", bg: "rgba(240,180,41,.10)"  },
+  project: { label: "project",  color: "var(--accent2)", bg: "rgba(78,205,196,.12)"  },
+  agent:   { label: "agent",    color: "var(--danger)", bg: "rgba(245,91,91,.10)"   },
+  workflow:{ label: "workflow",  color: "var(--success)", bg: "rgba(82,214,138,.10)"  },
 };
 
 const SHARED_NODES = [
@@ -73,11 +76,11 @@ const RECENT_QUERIES = [
 ];
 
 const KNOWLEDGE_CATS = [
-  { id: "product",      label: "Product",     icon: "◈", color: "#7c6fff" },
-  { id: "sales",        label: "Sales",       icon: "◎", color: "#f0b429" },
-  { id: "engineering",  label: "Engineering", icon: "⬟", color: "#4ecdc4" },
-  { id: "support",      label: "Support",     icon: "◉", color: "#52d68a" },
-  { id: "legal",        label: "Legal",       icon: "▷", color: "#f55b5b" },
+  { id: "product",      label: "Product",     icon: "◈", color: "var(--accent)" },
+  { id: "sales",        label: "Sales",       icon: "◎", color: "var(--warning)" },
+  { id: "engineering",  label: "Engineering", icon: "⬟", color: "var(--accent2)" },
+  { id: "support",      label: "Support",     icon: "◉", color: "var(--success)" },
+  { id: "legal",        label: "Legal",       icon: "▷", color: "var(--danger)" },
 ];
 
 const DOC_TYPES = {
@@ -85,7 +88,7 @@ const DOC_TYPES = {
   docx: { label: "DOC", color: "#2980b9" },
   pptx: { label: "PPT", color: "#e67e22" },
   web:  { label: "WEB", color: "#27ae60" },
-  txt:  { label: "TXT", color: "#8994b0" },
+  txt:  { label: "TXT", color: "var(--text-dim)" },
 };
 
 const SEED_DOCS = [
@@ -118,6 +121,34 @@ function _timeAgo(iso) {
   } catch { return "—"; }
 }
 
+// Real /p18/memory nodes (backend/services/semanticMemory) have no title/body/
+// content fields — only `key` (a slug) and `value` (an object, typically
+// {errorType, context, resolution, recurrenceCount} for insight nodes, or an
+// arbitrary payload for other types). Reading e.title/e.body/e.content — which
+// never exist on this shape — silently fell through to "Untitled" for every
+// real entry. Prefer legacy title/body fields if present (for any other
+// caller of this component that might still supply them), otherwise build a
+// readable title/snippet from the real value object.
+function _entryTitle(e) {
+  if (e.title) return e.title;
+  if (typeof e.body === "string" && e.body) return e.body.slice(0, 60);
+  if (e.value && typeof e.value === "object") {
+    return e.value.errorType || e.value.context || e.key || "Untitled";
+  }
+  if (typeof e.value === "string" && e.value) return e.value.slice(0, 60);
+  return e.key || "Untitled";
+}
+
+function _entrySnippet(e) {
+  if (typeof e.body === "string" && e.body) return e.body;
+  if (typeof e.content === "string" && e.content) return e.content;
+  if (e.value && typeof e.value === "object") {
+    return e.value.resolution || e.value.context || "";
+  }
+  if (typeof e.value === "string") return e.value;
+  return e.title || "";
+}
+
 function TypeChip({ type }) {
   const m = TYPE_META[type] || TYPE_META.context;
   return (
@@ -138,7 +169,7 @@ function Toast({ msg, type, onDone }) {
 
 // ── Memory Index tab ──────────────────────────────────────────────────
 
-function TabIndex({ entries, loading, apiDown }) {
+function TabIndex({ entries, loading, apiDown, onDelete, deletingId }) {
   const [search, setSearch]   = useState("");
   const [typeF,  setTypeF]    = useState("all");
   const [expanded, setExpanded] = useState(null);
@@ -150,7 +181,11 @@ function TabIndex({ entries, loading, apiDown }) {
   const filtered = entries.filter(e => {
     const matchType = typeF === "all" || e.type === typeF;
     const q = search.toLowerCase();
-    const matchQ = !q || (e.title || "").toLowerCase().includes(q) || (e.body || "").toLowerCase().includes(q) || (e.tags || []).some(t => t.includes(q));
+    const matchQ = !q
+      || _entryTitle(e).toLowerCase().includes(q)
+      || _entrySnippet(e).toLowerCase().includes(q)
+      || (e.key || "").toLowerCase().includes(q)
+      || (e.tags || []).some(t => t.includes(q));
     return matchType && matchQ;
   });
 
@@ -214,17 +249,17 @@ function TabIndex({ entries, loading, apiDown }) {
       ) : (
         <>
           <div className="mov2-index-list">
-            {shown.map(e => (
-              <div
-                key={e.id}
-                className={`mov2-entry-row${expanded === e.id ? " mov2-entry-row--open" : ""}`}
-                onClick={() => setExpanded(v => v === e.id ? null : e.id)}
+            {shown.map(e => {
+              const rowId = e.id || e.nodeId;
+              return (
+              <div key={rowId}
+                className={`mov2-entry-row${expanded === rowId ? " mov2-entry-row--open" : ""}`} {...clickableProps(() => setExpanded(v => v === rowId ? null : rowId))}
               >
                 <TypeChip type={e.type} />
                 <div className="mov2-entry-main">
-                  <span className="mov2-entry-title">{e.title || e.body?.slice(0, 60) || "Untitled"}</span>
-                  {expanded === e.id && (
-                    <p className="mov2-entry-body">{e.body || e.content || e.title}</p>
+                  <span className="mov2-entry-title">{_entryTitle(e)}</span>
+                  {expanded === rowId && (
+                    <p className="mov2-entry-body">{_entrySnippet(e) || _entryTitle(e)}</p>
                   )}
                   {(e.tags?.length > 0) && (
                     <div className="mov2-entry-tags">
@@ -233,8 +268,19 @@ function TabIndex({ entries, loading, apiDown }) {
                   )}
                 </div>
                 <span className="mov2-entry-ts">{_timeAgo(e.created || e.createdAt || e.lastUpdated)}</span>
+                {onDelete && (e.nodeId || e.id) && (
+                  <button
+                    className="mov2-doc-del"
+                    title="Delete memory"
+                    disabled={deletingId === (e.nodeId || e.id)}
+                    onClick={(ev) => { ev.stopPropagation(); onDelete(e.nodeId || e.id); }}
+                  >
+                    {deletingId === (e.nodeId || e.id) ? "…" : "✕"}
+                  </button>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
           {hasMore && (
             <button className="mov2-load-more" onClick={() => setPage(p => p + 1)}>
@@ -281,15 +327,13 @@ function TabShared() {
 
       <div className="mov2-shared-grid">
         {filtered.map(n => (
-          <div
-            key={n.id}
-            className={`mov2-shared-node${selected === n.id ? " mov2-shared-node--selected" : ""}`}
-            onClick={() => setSelected(v => v === n.id ? null : n.id)}
+          <div key={n.id}
+            className={`mov2-shared-node${selected === n.id ? " mov2-shared-node--selected" : ""}`} {...clickableProps(() => setSelected(v => v === n.id ? null : n.id))}
           >
             <div className="mov2-node-top">
               <span
                 className="mov2-node-scope"
-                style={{ color: SCOPE_COLORS[n.scope] || "#7c6fff", background: (SCOPE_COLORS[n.scope] || "#7c6fff") + "18" }}
+                style={{ color: SCOPE_COLORS[n.scope] || "var(--accent)", background: (SCOPE_COLORS[n.scope] || "var(--accent)") + "18" }}
               >
                 {n.scope}
               </span>
@@ -366,10 +410,8 @@ function TabIntelligence() {
 
       <div className="mov2-insight-list">
         {AI_INSIGHTS.map(ins => (
-          <div
-            key={ins.id}
-            className={`mov2-insight-card${activeInsight === ins.id ? " mov2-insight-card--open" : ""}`}
-            onClick={() => setActiveInsight(v => v === ins.id ? null : ins.id)}
+          <div key={ins.id}
+            className={`mov2-insight-card${activeInsight === ins.id ? " mov2-insight-card--open" : ""}`} {...clickableProps(() => setActiveInsight(v => v === ins.id ? null : ins.id))}
           >
             <div className="mov2-insight-top">
               <span
@@ -401,10 +443,10 @@ function TabIntelligence() {
         <h3 className="mov2-section-title">Memory Clusters</h3>
         <div className="mov2-cluster-grid">
           {[
-            { label: "Pricing & Plans",  size: 8,  color: "#7c6fff", entries: ["Starter plan","Growth plan","Trial terms","Billing FAQ"] },
-            { label: "WhatsApp Ops",     size: 12, color: "#52d68a", entries: ["Follow-up sequence","Message templates","QR session","Batch send"] },
-            { label: "Lead Lifecycle",   size: 6,  color: "#4ecdc4", entries: ["Qualification criteria","Stage transitions","Won/Lost rules"] },
-            { label: "Error Patterns",   size: 4,  color: "#f55b5b", entries: ["Timeout events","API failures","Retry logic"] },
+            { label: "Pricing & Plans",  size: 8,  color: "var(--accent)", entries: ["Starter plan","Growth plan","Trial terms","Billing FAQ"] },
+            { label: "WhatsApp Ops",     size: 12, color: "var(--success)", entries: ["Follow-up sequence","Message templates","QR session","Batch send"] },
+            { label: "Lead Lifecycle",   size: 6,  color: "var(--accent2)", entries: ["Qualification criteria","Stage transitions","Won/Lost rules"] },
+            { label: "Error Patterns",   size: 4,  color: "var(--danger)", entries: ["Timeout events","API failures","Retry logic"] },
           ].map(c => (
             <div key={c.label} className="mov2-cluster-card" style={{ borderColor: c.color + "30" }}>
               <div className="mov2-cluster-dot" style={{ background: c.color }} />
@@ -423,6 +465,24 @@ function TabIntelligence() {
 
 // ── Knowledge tab ─────────────────────────────────────────────────────
 
+function _mapKnowledgeEntry(e) {
+  // Real /personal/knowledge entries are {key,category,content,tags,source,
+  // createdAt,updatedAt} — a different shape than the illustrative SEED_DOCS
+  // rows (id,name,type,size,status,chunks,added). Map onto the same display
+  // shape rather than rendering fabricated rows over real data.
+  return {
+    id: e.key,
+    name: e.key,
+    type: "txt",
+    size: e.content ? `${e.content.length} chars` : "—",
+    category: e.category || "personal",
+    status: "indexed",
+    chunks: null,
+    added: e.createdAt,
+    tags: e.tags || [],
+  };
+}
+
 function TabKnowledge({ addToast }) {
   const [docs, setDocs]       = useState(SEED_DOCS);
   const [catF, setCatF]       = useState("all");
@@ -436,7 +496,10 @@ function TabKnowledge({ addToast }) {
     }).catch(() => {});
   }, []);
 
-  const filtered = docs.filter(d => {
+  const isSample = liveData === null;
+  const displayDocs = liveData ? liveData.map(_mapKnowledgeEntry) : docs;
+
+  const filtered = displayDocs.filter(d => {
     const matchCat = catF === "all" || d.category === catF;
     const q = search.toLowerCase();
     const matchQ = !q || d.name.toLowerCase().includes(q) || (d.tags || []).some(t => t.includes(q));
@@ -444,14 +507,18 @@ function TabKnowledge({ addToast }) {
   });
 
   function handleDelete(id) {
-    setDocs(d => d.filter(x => x.id !== id));
+    if (liveData) {
+      setLive(d => d.filter(x => x.key !== id));
+    } else {
+      setDocs(d => d.filter(x => x.id !== id));
+    }
     deleteKnowledge(id).catch(() => {});
     addToast("Document removed", "info");
   }
 
   function handleNotify() {
     setNotified(true);
-    track("knowledge_notify_me");
+    track.event("knowledge_notify_me");
     addToast("We'll notify you when Knowledge Base is available!", "success");
   }
 
@@ -464,6 +531,8 @@ function TabKnowledge({ addToast }) {
           <p className="mov2-coming-sub">Direct document upload and ingestion is under development. Existing documents shown below.</p>
         </div>
       </div>
+
+      {isSample && <SampleDataNotice label="illustrative documents — connect your knowledge base to see real entries" />}
 
       <div className="mov2-know-notify">
         <div className="mov2-know-notify-body">
@@ -556,10 +625,11 @@ function TabKnowledge({ addToast }) {
 
 // ── Search & Retrieval tab ────────────────────────────────────────────
 
-function TabSearch({ allEntries }) {
+function TabSearch() {
   const [query, setQuery]         = useState("");
   const [results, setResults]     = useState(null);
   const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState(null);
   const [recentQs, setRecentQs]   = useState(RECENT_QUERIES);
   const inputRef = useRef(null);
 
@@ -569,25 +639,29 @@ function TabSearch({ allEntries }) {
     if (!q.trim()) return;
     setSearching(true);
     setResults(null);
+    setSearchError(null);
     try {
       const r = await searchMemory(q);
-      const hits = Array.isArray(r) ? r : (r?.results || r?.entries || []);
-      setResults(hits.length > 0 ? hits : _localSearch(q));
-    } catch {
-      setResults(_localSearch(q));
+      // Real /p18/memory/search response shape is {success, nodes, total} —
+      // not .results/.entries (neither exists on this endpoint's real
+      // payload), which silently discarded every real search hit and fell
+      // through to the local fallback on every query.
+      const hits = Array.isArray(r) ? r : (r?.nodes || r?.results || r?.entries || []);
+      setResults(hits);
+    } catch (e) {
+      // OOPLIX V1 MASTER AUDIT (2026-08-16): a real search-API failure
+      // (network error / non-2xx — _fetch always throws a real Error, see
+      // _client.js) previously fell through to searching allEntries — which
+      // is SEED_ENTRIES, fabricated data, whenever the root component's own
+      // refresh() had also failed — with the result presented identically
+      // to a genuine live search, no error shown. Now surfaces the real
+      // failure honestly instead of silently substituting fabricated hits.
+      setResults([]);
+      setSearchError(e.message || "Search failed — memory API not available");
     } finally {
       setSearching(false);
       setRecentQs(prev => [{ q, ts: "just now", results: 0 }, ...prev.slice(0, 4)]);
     }
-  }
-
-  function _localSearch(q) {
-    const lq = q.toLowerCase();
-    return allEntries.filter(e =>
-      (e.title || "").toLowerCase().includes(lq) ||
-      (e.body || "").toLowerCase().includes(lq) ||
-      (e.tags || []).some(t => t.includes(lq))
-    );
   }
 
   function handleKey(e) {
@@ -639,7 +713,7 @@ function TabSearch({ allEntries }) {
                 <div
                   key={i}
                   className="mov2-recent-row"
-                  onClick={() => { setQuery(r.q); doSearch(r.q); }}
+                  {...clickableProps(() => { setQuery(r.q); doSearch(r.q); })}
                 >
                   <span className="mov2-recent-q">🕐 {r.q}</span>
                   <span className="mov2-recent-meta">{r.ts}</span>
@@ -657,7 +731,15 @@ function TabSearch({ allEntries }) {
         </div>
       )}
 
-      {results !== null && !searching && (
+      {searchError && !searching && (
+        <div className="mov2-empty">
+          <span className="mov2-empty-icon">⚠</span>
+          <p className="mov2-empty-title">Search failed</p>
+          <p className="mov2-empty-sub">{searchError}</p>
+        </div>
+      )}
+
+      {results !== null && !searching && !searchError && (
         <div className="mov2-search-results">
           <div className="mov2-sr-header">
             <p className="mov2-sr-count">
@@ -673,12 +755,14 @@ function TabSearch({ allEntries }) {
             </div>
           ) : (
             <div className="mov2-sr-list">
-              {results.map((e, i) => (
-                <div key={e.id || i} className="mov2-sr-row">
+              {results.map((e, i) => {
+                const snippet = _entrySnippet(e);
+                return (
+                <div key={e.id || e.nodeId || i} className="mov2-sr-row">
                   <TypeChip type={e.type || "context"} />
                   <div className="mov2-sr-body">
-                    <p className="mov2-sr-title">{e.title || e.key || "Untitled"}</p>
-                    <p className="mov2-sr-snippet">{(e.body || e.content || "").slice(0, 120)}{(e.body || e.content || "").length > 120 ? "…" : ""}</p>
+                    <p className="mov2-sr-title">{_entryTitle(e)}</p>
+                    <p className="mov2-sr-snippet">{snippet.slice(0, 120)}{snippet.length > 120 ? "…" : ""}</p>
                     {(e.tags?.length > 0) && (
                       <div className="mov2-entry-tags" style={{ marginTop: 4 }}>
                         {e.tags.map(t => <span key={t} className="mov2-tag">{t}</span>)}
@@ -687,7 +771,8 @@ function TabSearch({ allEntries }) {
                   </div>
                   <span className="mov2-sr-ts">{_timeAgo(e.created || e.createdAt)}</span>
                 </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
@@ -704,6 +789,8 @@ export default function MemoryOSV2({ onNavigate }) {
   const [stats, setStats]     = useState(null);
   const [loading, setLoading] = useState(true);
   const [apiDown, setApiDown] = useState(false);
+  const [isLive, setIsLive]   = useState(false);
+  const [deletingId, setDeletingId] = useState(null);
   const [toasts, setToasts]   = useState([]);
 
   const addToast = useCallback((msg, type = "info") => {
@@ -722,17 +809,44 @@ export default function MemoryOSV2({ onNavigate }) {
       ]);
       const nodes = Array.isArray(nodesRes) ? nodesRes
         : (nodesRes?.nodes || nodesRes?.entries || nodesRes?.data || []);
-      if (nodes.length > 0) setEntries(nodes);
+      if (nodes.length > 0) { setEntries(nodes); setIsLive(true); }
       if (statsRes && !statsRes.error) setStats(statsRes);
       setApiDown(false);
     } catch {
-      setApiDown(false); // keep SEED_ENTRIES, don't mark down
+      // OOPLIX V1 MASTER AUDIT (2026-08-16): this previously set apiDown to
+      // false unconditionally on a genuine thrown error from _fetch (real
+      // network failure or non-2xx response — see _client.js's _fetch,
+      // which always throws a real Error on !res.ok), with a comment
+      // literally saying "keep SEED_ENTRIES, don't mark down" — silently
+      // presenting 10 fabricated memory entries (fake lead names, fake
+      // WhatsApp batches, fake payment errors) as a normal, healthy state
+      // with zero error indication, the exact "fake success" class C.2's
+      // C2-01/C2-02 already found and fixed elsewhere this audit programme.
+      // TabIndex already has a correct, honest apiDown===true branch
+      // ("Memory API not available… Contact your administrator") that this
+      // catch block prevented from ever being reachable. A real API failure
+      // must mark apiDown true and stop presenting SEED_ENTRIES as if real.
+      setApiDown(true);
+      setIsLive(false);
     } finally {
       setLoading(false);
     }
   }, []);
 
   useEffect(() => { refresh(); }, [refresh]);
+
+  const handleDeleteEntry = useCallback(async (nodeId) => {
+    setDeletingId(nodeId);
+    try {
+      await archiveMemoryNode(nodeId);
+      setEntries(prev => prev.filter(e => (e.nodeId || e.id) !== nodeId));
+      addToast("Memory archived", "success");
+    } catch (err) {
+      addToast(err.message || "Failed to archive memory", "error");
+    } finally {
+      setDeletingId(null);
+    }
+  }, [addToast]);
 
   const totalEntries = stats?.total || stats?.count || entries.length;
   const lastUpdated  = stats?.lastUpdated || entries[0]?.created;
@@ -781,11 +895,11 @@ export default function MemoryOSV2({ onNavigate }) {
 
       {/* Tab content */}
       <div className="mov2-tab-content">
-        {tab === "index"        && <TabIndex entries={entries} loading={loading} apiDown={apiDown} />}
+        {tab === "index"        && <TabIndex entries={entries} loading={loading} apiDown={apiDown} onDelete={isLive ? handleDeleteEntry : null} deletingId={deletingId} />}
         {tab === "shared"       && <TabShared />}
         {tab === "intelligence" && <TabIntelligence />}
         {tab === "knowledge"    && <TabKnowledge addToast={addToast} />}
-        {tab === "search"       && <TabSearch allEntries={entries} />}
+        {tab === "search"       && <TabSearch />}
       </div>
 
       {/* Toasts */}

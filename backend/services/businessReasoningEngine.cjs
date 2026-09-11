@@ -177,17 +177,25 @@ function _save(d) {
 
 // ── Main analyze ──────────────────────────────────────────────────────────────
 
-async function analyze(context, { revenueData, dealsData, campaignData } = {}) {
+async function analyze(context, { revenueData, dealsData, campaignData, orgId } = {}) {
   context = context || "current_business";
 
   // Pull live data from existing services
+  // Mission 51 (2026-08-26): crmService.getStats(orgId) is the one call here
+  // with real per-org data partitioning — thread the caller's orgId through
+  // when supplied so this dimension doesn't leak cross-tenant lead/revenue
+  // totals. businessOrgState/customerSuccess/revenueOS below have no orgId
+  // concept in their storage (confirmed by trace — single global state, no
+  // per-org filtering possible) — left unscoped, matching their existing,
+  // unchanged behavior; see the Mission 51 report for why that is not
+  // fixable within this mission's "reuse existing patterns" bounds.
   const kpis      = _try(() => _bos()?.getAllKpis?.())               || {};
   const pipeline  = _try(() => _bos()?.getPipelineStats?.())         || {};
   const deals     = dealsData   || _try(() => _bos()?.listDeals?.()) || {};
   const biRaw     = _try(() => _bie()?.getRecommendations?.())       || {};
   const recs      = Array.isArray(biRaw) ? biRaw : (biRaw.recommendations || []);
   const csHealth  = _try(() => _cs()?.getOverview?.())               || {};
-  const crmStats  = _try(() => _crm()?.getStats?.())                 || {};
+  const crmStats  = _try(() => _crm()?.getStats?.(orgId))            || {};
   const campaigns = campaignData || {};
   const analytics = _try(() => _as()?.getMissionTrends?.())          || {};
   const revDash   = revenueData  || _try(() => _rev()?.getRevenueDashboard?.()) || {};

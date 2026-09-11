@@ -1,0 +1,62 @@
+%% OOPLIX V1 — Audit Dependency Graph
+%% Shows which findings gate which downstream audits. Edges are derived from
+%% entry criteria and residual gaps recorded in the executed certifications.
+flowchart TD
+    classDef done    fill:#E8F3EC,stroke:#0F9D58,stroke-width:2px,color:#0B1F33
+    classDef limited fill:#FDF0E6,stroke:#C55A11,stroke-width:2px,color:#0B1F33
+    classDef notcert fill:#FBE9EC,stroke:#B00020,stroke-width:2px,color:#0B1F33
+    classDef gap     fill:#B00020,stroke:#7A0016,stroke-width:2px,color:#FFFFFF
+    classDef planned fill:#F2F4F6,stroke:#8A96A3,stroke-width:2px,stroke-dasharray:5 4,color:#4A5C6D
+
+    B4["B.4 Security Validation<br/>CERTIFIED"]:::done
+    B6["B.6 Database<br/>no migration framework"]:::limited
+    B7["B.7 API · 7.6<br/>envelope 5.0 · SDK 5.5"]:::limited
+    B8["B.8 DevOps · 8.1<br/>heap envelope raised"]:::done
+    B11["B.11 Agent · 8.7<br/>gate 68.6% to 0%"]:::limited
+    B15["B.15 Support<br/>tickets unowned"]:::limited
+    B16["B.16 Customer Ops<br/>engines unscoped"]:::limited
+    B17["B.17 Workforce<br/>no owner transfer"]:::limited
+    B18["B.18 Continuity<br/>no incident record"]:::limited
+    B19["B.19 Accessibility<br/>NOT CERTIFIED"]:::notcert
+
+    G15["G1-B15 CRITICAL<br/>190 tickets cross-tenant"]:::gap
+    G16["G1-B16 CRITICAL<br/>0 of 123 records owned"]:::gap
+    G17["G1-B17 CRITICAL<br/>no ownership transfer"]:::gap
+    G2["G2-B15 HIGH<br/>0 of 39,416 audit entries"]:::gap
+    G18["G1/G3-B18 HIGH<br/>no MTTR · SSE lockout"]:::gap
+
+    B20["B.20 Scalability"]:::planned
+    B21["B.21 Compliance"]:::planned
+    B22["B.22 Integrations"]:::planned
+    B23["B.23 Data Governance"]:::planned
+    B24["B.24 Performance"]:::planned
+    B25["B.25 Readiness Gate"]:::planned
+    C["Phase C · GA Certification"]:::planned
+
+    B8 -->|"heap cap 400 to 1024 MB<br/>exposed stale gate"| B11
+    B4 -->|"F5 object accountId<br/>caused duplicate edges"| B12["B.12 Knowledge"]:::limited
+
+    B15 --> G15
+    B15 --> G2
+    B16 --> G16
+    B17 --> G17
+    B18 --> G18
+
+    G15 --> B21
+    G2  --> B21
+    G16 --> B23
+    G18 --> B24
+
+    B6 -->|"migration framework required"| B20
+    B8 -->|"memory envelope must be stable"| B20
+    B7 -->|"envelope unify · token auth"| B22
+
+    G17 --> B25
+    B19 -->|"AA must be achieved"| B25
+    B20 --> B24
+    B24 --> B25
+
+    B21 --> B25
+    B22 --> B25
+    B23 --> B25
+    B25 -->|"zero residual CRITICAL"| C

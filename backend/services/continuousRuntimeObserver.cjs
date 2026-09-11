@@ -35,7 +35,7 @@
 const fs          = require("fs");
 const path        = require("path");
 const os          = require("os");
-const { execSync, exec } = require("child_process");
+const { exec } = require("child_process");
 const crypto      = require("crypto");
 
 const logger = require("../utils/logger");
@@ -43,6 +43,7 @@ const logger = require("../utils/logger");
 // ── Lazy service loaders — never throw at module load ─────────────────────
 function _getBus()        { try { return require("../../agents/runtime/runtimeEventBus.cjs"); } catch { return null; } }
 function _getObs()        { try { return require("./observabilityEngine.cjs"); } catch { return null; } }
+function _getSafeExec()   { try { return require("../core/safe-exec.js"); } catch { return null; } }
 function _getLoop()       { try { return require("../../agents/autonomousLoop.cjs"); } catch { return null; } }
 function _getMissionRT()  { try { return require("../../agents/runtime/missionRuntime.cjs"); } catch { return null; } }
 function _getAgentReg()   { try { return require("../../agents/runtime/agentRegistry.cjs"); } catch { return null; } }
@@ -51,6 +52,11 @@ function _getExtRT()      { try { return require("./extensionRuntime.cjs"); } ca
 function _getMemLayer()   { try { return require("./memoryPersistenceLayer.cjs"); } catch { return null; } }
 function _getAiSvc()      { try { return require("./aiService.js"); } catch { return null; } }
 function _getExecLog()    { try { return require("../utils/execLog.cjs"); } catch { return null; } }
+function _getExecOrg()    { try { return require("./executiveOrg.cjs"); } catch { return null; } }
+function _getEntOrg()     { try { return require("./enterpriseOrg.cjs"); } catch { return null; } }
+function _getEcoOrg()     { try { return require("./ecosystemOrg.cjs"); } catch { return null; } }
+function _getCivOrg()     { try { return require("./civilizationOrg.cjs"); } catch { return null; } }
+function _getAutoOrg()    { try { return require("./autonomousOrg.cjs"); } catch { return null; } }
 
 // ── Paths ──────────────────────────────────────────────────────────────────
 const DATA_DIR       = path.join(__dirname, "../../data");
@@ -201,10 +207,26 @@ function _sourceErr(name, err) {
 // ── Source: git ────────────────────────────────────────────────────────────
 let _gitPrevStatus = null;
 
+// A.5.2 runtime-stability finding: this source used to call git via
+// execSync — fully synchronous, blocks the entire Node event loop for
+// the command's whole duration, on every 30s tick, forever. Standalone
+// the command itself is fast (~50ms measured live), but any time the
+// event loop was already under load from elsewhere (e.g. the mission
+// store's full-file read/write on every mutation, see missionMemory.cjs),
+// this call — plus every other execSync/synchronous poller — queued up
+// behind it, compounding a stall instead of yielding to it. Switched to
+// the existing SafeExec.run() (spawn-based, non-blocking, already used
+// by engineeringCapabilities.cjs/toolExecutionLayer.cjs for the same
+// purpose) so a slow or contended git call no longer blocks anything else
+// the process needs to do while it waits.
 async function _observeGit() {
     const src = "git";
     try {
-        const statusRaw = execSync("git status --porcelain=v2 --branch", { cwd: REPO_ROOT, timeout: 5000, encoding: "utf8" });
+        const safeExec = _getSafeExec();
+        if (!safeExec) { _sourceOk(src); return null; }
+        const result = await safeExec.run("git", ["status", "--porcelain=v2", "--branch"], { cwd: REPO_ROOT, timeoutMs: 5000 });
+        if (!result.ok) { _sourceErr(src, new Error(result.reason || `git exited ${result.exitCode}`)); return null; }
+        const statusRaw = result.stdout;
         const lines     = statusRaw.trim().split("\n");
         const changed   = lines.filter(l => l.startsWith("1 ") || l.startsWith("2 ") || l.startsWith("? ")).length;
         const branch    = (lines.find(l => l.startsWith("# branch.head"))?.split(" ")[2]) || "unknown";
@@ -309,6 +331,42 @@ async function _observePm2() {
 // ── Source: logs ───────────────────────────────────────────────────────────
 let _logPrevErrCount = 0;
 
+// Reads data/logs/structured.ndjson (LOG_FILE above) — the file
+// observabilityEngine.structuredLog() writes to and backend/server.js's
+// global Express error handler now feeds on every uncaught route
+// exception. Previously LOG_FILE was imported but never read here, so a
+// raw handled-500 route error (no agent task involved) never reached this
+// observer at all — only agentExecutionEngine's own task failures (via
+// execLog) were visible. Combining both keeps the existing execLog signal
+// and adds real HTTP-layer error visibility with zero new architecture.
+//
+// Mission 87: this previously did an unconditional fs.readFileSync() of
+// the ENTIRE file, then .split("\n") over all of it, only to keep the last
+// 500 lines — an unbounded-with-file-size cost paid on every 60s firing.
+// structured.ndjson has no rotation/cap and grows without bound (real,
+// live file already 1.6MB+/11,000+ lines at time of writing) — the same
+// growth-risk shape as the pre-Mission-84 missions.json full-read tick.
+// readTailLines() reads only a bounded byte range from the end of the
+// file via fs.readSync, independent of total file size, and guarantees a
+// truncated leading fragment (if the tail read starts mid-line) is never
+// treated as a real record — see backend/utils/tailRead.cjs.
+function _readStructuredErrors(windowMs) {
+    try {
+        const { lines } = require("../utils/tailRead.cjs").readTailLines(LOG_FILE, 500);
+        const now   = Date.now();
+        let count = 0;
+        for (const line of lines) {
+            try {
+                const e = JSON.parse(line);
+                if (e.level === "ERROR" && e.ts && (now - new Date(e.ts).getTime()) < windowMs) count++;
+            } catch { /* skip malformed line */ }
+        }
+        return count;
+    } catch {
+        return 0;   // file doesn't exist yet — no structured errors recorded
+    }
+}
+
 async function _observeLogs() {
     const src = "logs";
     try {
@@ -316,14 +374,16 @@ async function _observeLogs() {
         const entries = execLog ? execLog.tail(100) : [];
         const now     = Date.now();
         const recent  = entries.filter(e => e.ts && (now - new Date(e.ts).getTime()) < 5 * 60_000);
-        const errors  = recent.filter(e => e.level === "error" || e.success === false).length;
+        const taskErrors = recent.filter(e => e.level === "error" || e.success === false).length;
+        const httpErrors = _readStructuredErrors(5 * 60_000);
+        const errors      = taskErrors + httpErrors;
 
         if (errors !== _logPrevErrCount) {
             _logPrevErrCount = errors;
             const severity = errors > 10 ? "ERROR" : errors > 3 ? "WARN" : "INFO";
             _emit({ source: src, category: "logs", severity,
                 entity: "exec_log", action: "error_rate_change",
-                metadata: { errorsLast5Min: errors, recentSampled: recent.length },
+                metadata: { errorsLast5Min: errors, taskErrors, httpErrors, recentSampled: recent.length },
                 confidence: 0.85 });
         }
         _sourceOk(src);
@@ -595,6 +655,60 @@ async function _observeAI() {
     }
 }
 
+// ── Source: org levels (V6-V10) ─────────────────────────────────────────────
+// V6-V10 Production Realization: executiveOrg/enterpriseOrg/ecosystemOrg/
+// civilizationOrg/autonomousOrg (confirmed real, self-ticking backend
+// infrastructure, registered into agentRuntimeSupervisor at boot) had zero
+// telemetry — no recordMetric/structuredLog calls anywhere in the 5 module
+// trios, and no consumer here despite each internally emitting its own bus
+// events. Added as a real polled source, same pattern as every other
+// source above, rather than trying to retrofit metrics into 5 separate
+// service files.
+let _orgLevelsPrevSig = null;
+
+async function _observeOrgLevels() {
+    const src = "orgLevels";
+    try {
+        const levels = [
+            { key: "eos",  label: "executive",     get: _getExecOrg  },
+            { key: "ent",  label: "enterprise",     get: _getEntOrg   },
+            { key: "eco",  label: "ecosystem",      get: _getEcoOrg   },
+            { key: "civ",  label: "civilization",   get: _getCivOrg   },
+            { key: "auto", label: "autonomous",     get: _getAutoOrg  },
+        ];
+        const summaries = {};
+        for (const lvl of levels) {
+            try {
+                const svc = lvl.get();
+                summaries[lvl.key] = svc?.getOrgSummary ? svc.getOrgSummary() : null;
+            } catch { summaries[lvl.key] = null; }
+        }
+
+        const sig = levels.map(l => {
+            const s = summaries[l.key];
+            if (!s) return `${l.key}:na`;
+            return `${l.key}:${s.total ?? 0}:${s.running ?? 0}`;
+        }).join("|");
+
+        if (sig !== _orgLevelsPrevSig) {
+            _orgLevelsPrevSig = sig;
+            const anyDown = levels.some(l => {
+                const s = summaries[l.key];
+                return s && (s.running ?? s.total) === 0 && (s.total ?? 0) > 0;
+            });
+            _emit({ source: src, category: "orgLevels", severity: anyDown ? "WARN" : "INFO",
+                entity: "org_levels", action: "org_level_state_change",
+                metadata: { summaries },
+                confidence: 1.0 });
+        }
+        _sourceOk(src);
+        return { levels: levels.length };
+    } catch (err) {
+        _sourceErr(src, err);
+        return null;
+    }
+}
+
 // ── Source: system resources ───────────────────────────────────────────────
 let _sysPrevBucket = null;
 
@@ -642,6 +756,7 @@ const SOURCES = [
     { name: "extensions", fn: _observeExtensions,  intervalMs: 120_000 },  // 2 min
     { name: "memory",     fn: _observeMemory,      intervalMs: 120_000 },  // 2 min
     { name: "ai",         fn: _observeAI,          intervalMs: 300_000 },  // 5 min
+    { name: "orgLevels",  fn: _observeOrgLevels,   intervalMs: 60_000  },  // 1 min
     { name: "system",     fn: _observeSystem,      intervalMs: 20_000  },  // 20 s
     // files handled via fs.watch (event-driven), no polling interval
 ];

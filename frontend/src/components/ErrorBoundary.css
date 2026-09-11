@@ -12,7 +12,7 @@
 
 .eb-icon {
   font-size: 22px;
-  color: #ef4444;
+  color: var(--danger);
   line-height: 1;
   flex-shrink: 0;
   margin-top: 1px;
@@ -29,7 +29,7 @@
 .eb-title {
   font-size: 13px;
   font-weight: 700;
-  color: #f87171;
+  color: var(--danger);
   margin: 0;
 }
 
@@ -42,13 +42,17 @@
 
 .eb-subtitle {
   font-size: 12px;
-  color: rgba(248,113,113,0.7);
+  /* B.19.3: rgba(248,113,113,0.85) is a dark-mode red. The ErrorBoundary only
+     renders when a panel actually crashes, so B.19.5's sweep never reached it
+     — measured here at 2.09:1 on the light error surface. --on-danger-tint is
+     the themed role for danger text on its own danger tint. */
+  color: var(--on-danger-tint);
   margin: 0;
 }
 
 .eb-message {
   font-size: 11px;
-  color: rgba(255,255,255,0.45);
+  color: rgba(var(--fg-rgb), 0.62);
   font-family: ui-monospace, monospace;
   margin: 4px 0 0;
   word-break: break-word;
@@ -75,7 +79,9 @@
 .eb-btn--primary {
   background: rgba(239,68,68,0.15);
   border-color: rgba(239,68,68,0.35);
-  color: #f87171;
+  /* B.19.3: --danger on its own danger tint measured 3.93:1 at 11px — under
+     the 4.5 required for normal text. Same on-tint case as .bc-retry-btn. */
+  color: var(--on-danger-tint);
 }
 .eb-btn--primary:hover {
   background: rgba(239,68,68,0.25);
@@ -85,9 +91,9 @@
 .eb-btn--ghost {
   background: transparent;
   border-color: rgba(255,255,255,0.1);
-  color: rgba(255,255,255,0.4);
+  color: rgba(var(--fg-rgb), 0.62);
 }
 .eb-btn--ghost:hover {
   border-color: rgba(255,255,255,0.2);
-  color: rgba(255,255,255,0.6);
+  color: rgba(var(--fg-rgb), 0.62);
 }

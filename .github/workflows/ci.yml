@@ -5,6 +5,11 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  # Mission 60 (2026-08-27): manual one-shot certification gate — lets the
+  # existing `regression` job (full tests/runtime + tests/security corpus,
+  # run sequentially per scripts/run-test-suite.cjs) be dispatched against
+  # any branch/commit without requiring a push to main or an open PR.
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -33,7 +38,7 @@ jobs:
 
   # ── 2. Backend regression ───────────────────────────────────────────────────
   regression:
-    name: Regression Suite (144 checks)
+    name: Regression Suite
     runs-on: ubuntu-latest
     needs: audit
 
@@ -44,6 +49,13 @@ jobs:
       OPERATOR_PASSWORD_HASH: ${{ secrets.CI_OPERATOR_HASH }}
       BASE_URL: http://localhost:5050
       GROQ_API_KEY: ${{ secrets.CI_GROQ_API_KEY }}
+      # Mission 66: the autonomous task loop (agents/autonomousLoop.cjs)
+      # writes real, unattended data into the exact files the regression
+      # and security suites assert against for the server's whole
+      # lifetime — the root cause behind Tests 133/147/148/153/154 and
+      # several security org-creation races (Mission 65). Opt-in only;
+      # every other server boot (including real deployments) is unaffected.
+      DISABLE_AUTONOMOUS_LOOP: "1"
 
     steps:
       - uses: actions/checkout@v4
@@ -56,6 +68,19 @@ jobs:
 
       - name: Install backend dependencies
         run: npm ci
+
+      - name: Install Playwright Chromium
+        # playwright is a real production `dependencies` entry (package.json),
+        # used by browserController.cjs/browserRegistry.cjs/productionWiring.cjs
+        # for real headless browser automation — Chromium only, matching this
+        # codebase's own documented launch hint ("npx playwright install
+        # chromium" — see browserRegistry.cjs and productionWiring.cjs).
+        # `npm ci` installs the playwright npm package but not its browser
+        # binaries; without this step, tests/runtime/odi-x-v1.test.cjs,
+        # post-omega-p5.test.cjs, and post-omega-p9.test.cjs (all of which
+        # exercise real browser.open()/screenshot commands) fail with
+        # "Executable doesn't exist at .../chromium_headless_shell...".
+        run: npx playwright install --with-deps chromium
 
       - name: Create required directories
         run: mkdir -p data logs backups
@@ -72,13 +97,57 @@ jobs:
           curl -sf http://localhost:5050/health || (echo "Server failed to start" && exit 1)
 
       - name: Run regression suite
+        # Discovers and runs every tests/runtime/*.test.cjs file that exists at
+        # checkout time (see package.json's test:runtime script) — the corpus
+        # grows over time, so this step's own pass/fail exit code is the gate,
+        # not a hardcoded expected count that would silently go stale again.
+        #
+        # Mission 63: continue-on-error here is deliberately paired with the
+        # explicit gate check below — GitHub Actions skips every later step
+        # in a job by default once one fails, which was silently skipping
+        # "Run security suite" entirely whenever runtime had ANY failure
+        # (confirmed live: ERA-1 run 33090723011 showed
+        # "Run security suite: skipped"). This does NOT make runtime
+        # failures invisible or non-blocking — id captures this step's
+        # real outcome, and the "Enforce regression/security gate" step
+        # below fails the job (and therefore this run) if EITHER runtime
+        # or security failed. continue-on-error only defers the failure
+        # signal past this one step so security still gets to run; it
+        # never turns a real failure into a passing job.
+        id: run_regression
+        continue-on-error: true
         run: npm run test:runtime
 
-      - name: Verify 144/144 pass
+      - name: Run security suite
+        # Runs unconditionally (even if regression above failed) so a
+        # runtime failure can never hide whether security independently
+        # passes or fails — both results are captured and enforced
+        # separately below.
+        id: run_security
+        if: always()
+        continue-on-error: true
+        run: npm run test:security
+
+      - name: Enforce regression/security gate
+        # The actual pass/fail gate for this job, now that both suites
+        # above always run to completion. Any failure here fails this job,
+        # which fails the ci-pass job (needs: [regression, ...]) exactly as
+        # before — continue-on-error above only postponed the failure
+        # signal to here, it never suppressed it.
+        if: always()
         run: |
-          RESULT=$(npm run test:runtime 2>&1)
-          echo "$RESULT"
-          echo "$RESULT" | grep -E "pass 144" || (echo "::error::Regression suite did not pass 144/144" && exit 1)
+          if [[ "${{ steps.run_regression.outcome }}" != "success" ]]; then
+            echo "::error::Regression suite failed (outcome=${{ steps.run_regression.outcome }})"
+            FAILED=1
+          fi
+          if [[ "${{ steps.run_security.outcome }}" != "success" ]]; then
+            echo "::error::Security suite failed (outcome=${{ steps.run_security.outcome }})"
+            FAILED=1
+          fi
+          if [[ "${FAILED:-0}" == "1" ]]; then
+            exit 1
+          fi
+          echo "Regression and security suites both passed."
 
       - name: Stop server
         if: always()
@@ -121,6 +190,60 @@ jobs:
           path: frontend/build/
           retention-days: 7
 
+  # ── 3b. Mobile build validation ─────────────────────────────────────────────
+  # Mission 57 (2026-08-27): mobile/ had zero CI coverage of any kind before
+  # this — no build, no test run, on any PR or push. Mirrors build-frontend's
+  # exact pattern (a separate CRA app, same install/build/verify shape).
+  # No lint/typecheck script exists in mobile/package.json (same as the rest
+  # of this repo — CLAUDE.md §8), so none is run here; would be added if one
+  # is ever introduced. Release signing is intentionally NOT run here — no
+  # KEYSTORE_* secrets exist in this repo's CI config (confirmed absent),
+  # and this job must not fabricate or attempt one.
+  build-mobile:
+    name: Mobile Build & Test
+    runs-on: ubuntu-latest
+    needs: audit
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: mobile/package-lock.json
+
+      - name: Install mobile dependencies
+        run: npm ci --prefix mobile
+
+      - name: Run mobile tests
+        run: npm test --prefix mobile -- --watchAll=false
+        env:
+          CI: true
+
+      - name: Build mobile web bundle
+        run: npm run build --prefix mobile
+        env:
+          CI: false
+          # Placeholder values — this job only validates that the CRA build
+          # itself succeeds and produces real output, matching build-frontend's
+          # own REACT_APP_API_URL:"" pattern. No real backend URL or Firebase
+          # project is required for a build-only validation.
+          REACT_APP_API_URL: "https://ci-placeholder.invalid"
+          REACT_APP_FIREBASE_API_KEY: "ci-placeholder"
+          REACT_APP_FIREBASE_AUTH_DOMAIN: "ci-placeholder.firebaseapp.com"
+          REACT_APP_FIREBASE_PROJECT_ID: "ci-placeholder"
+          REACT_APP_FIREBASE_STORAGE_BUCKET: "ci-placeholder.appspot.com"
+          REACT_APP_FIREBASE_MESSAGING_SENDER_ID: "000000000000"
+          REACT_APP_FIREBASE_APP_ID: "1:000000000000:web:0000000000000000000000"
+
+      - name: Verify build output
+        run: |
+          test -f mobile/build/index.html || (echo "::error::Mobile build did not produce index.html" && exit 1)
+          test -d mobile/build/static || (echo "::error::Mobile build missing static assets" && exit 1)
+          echo "Build size: $(du -sh mobile/build | cut -f1)"
+
   # ── 4. Deploy script verification ───────────────────────────────────────────
   # rollback.sh/update.sh/etc had zero automated verification — a broken
   # rollback script would only be discovered during an actual incident.
@@ -147,6 +270,21 @@ jobs:
     name: Production Validation
     runs-on: ubuntu-latest
     needs: [regression, build-frontend]
+    # Mission 63: this job's own script (deploy/validate-production.sh) is
+    # already warn-only (`|| true` below — it never fails this job on its
+    # own), and does not read or depend on either regression's test results
+    # or the frontend build output (confirmed: no reference to `frontend`
+    # anywhere in that script) — it only needs the backend server itself
+    # to build and start, which this job's own steps do independently.
+    # The implicit default (only run if every `needs` job succeeded) was
+    # silently skipping this job's real certification evidence exactly
+    # when it is most useful — when regression fails and an operator most
+    # wants to know whether the server is still fundamentally startable
+    # and production-viable. Explicit `always()` here, not an unconditional
+    # dependency removal — build-frontend/regression are still scheduled
+    # before this job (`needs` still orders execution), only the pass/fail
+    # gating changed.
+    if: always()
 
     env:
       NODE_ENV: production
@@ -191,7 +329,7 @@ jobs:
   ci-pass:
     name: CI Pass
     runs-on: ubuntu-latest
-    needs: [regression, build-frontend, deploy-scripts, validate]
+    needs: [regression, build-frontend, build-mobile, deploy-scripts, validate]
     if: always()
     steps:
       - name: Check all jobs passed
@@ -202,6 +340,10 @@ jobs:
           fi
           if [[ "${{ needs.build-frontend.result }}" != "success" ]]; then
             echo "::error::Frontend build failed"
+            exit 1
+          fi
+          if [[ "${{ needs.build-mobile.result }}" != "success" ]]; then
+            echo "::error::Mobile build/test failed"
             exit 1
           fi
           if [[ "${{ needs.deploy-scripts.result }}" != "success" ]]; then

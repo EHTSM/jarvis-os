@@ -76,7 +76,11 @@ function _updateStats(d) {
   const totalMS  = d.automations.filter(a => a.status === "executed")
                     .reduce((s, a) => s + (AUTOMATION_TYPES[a.type]?.minutesSaved || 0), 0);
   const churnI   = d.automations.filter(a => a.type === "retention_workflow" || a.type === "detect_churn").length;
-  d.stats = { total: d.automations.length, executed, pending, failed, minutesSaved: totalMS, churnInterventions: churnI };
+  // Phase B.16: previews (skipExecute) are reported separately — they are
+  // deliberately excluded from `executed` and from `minutesSaved` above, since
+  // no work was actually performed.
+  const skipped  = d.automations.filter(a => a.status === "skipped").length;
+  d.stats = { total: d.automations.length, executed, pending, failed, skipped, minutesSaved: totalMS, churnInterventions: churnI };
 }
 
 // ── Core automation executor ──────────────────────────────────────────────────
@@ -136,8 +140,18 @@ async function trigger(customerId, type, { context = {}, skipExecute = false } =
       auto.error  = e.message;
     }
   } else {
-    auto.status = "executed"; // test mode
-    auto.executedAt = _ts();
+    // Phase B.16: this previously set status="executed" and stamped executedAt
+    // with the comment "test mode". The guard above correctly skips the real
+    // work — no workflow runs, no approval is requested, no outcome is recorded
+    // — but the record then claimed the automation HAD executed. Reproduced
+    // live: skipExecute:true and skipExecute:false returned identical
+    // status="executed" with an executedAt timestamp, so a preview was
+    // indistinguishable from real work. getStats() counts these toward
+    // `executed` and toward `minutesSaved` (12,230 minutes ≈ 204 hours of
+    // claimed labour saved), overstating what the automation engine did.
+    // Report the truth instead: previewed, never executed.
+    auto.status  = "skipped";
+    auto.skipped = true;
   }
 
   auto.updatedAt = _ts();

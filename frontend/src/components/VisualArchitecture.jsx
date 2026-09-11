@@ -59,8 +59,8 @@ function GraphCanvas({ nodes = [], edges = [], onNodeClick, highlighted }) {
   const onMouseUp = () => { dragging.current = false; };
 
   const NODE_COLORS = {
-    service: '#10b981', agent: '#60a5fa', queue: '#fbbf24',
-    database: '#a78bfa', api: '#34d399', module: '#6b7280',
+    service: 'var(--success)', agent: '#60a5fa', queue: '#fbbf24',
+    database: '#a78bfa', api: '#34d399', module: 'var(--text-dim)',
   };
 
   if (!nodes.length) return <div className="va-canvas-empty">No graph data available.</div>;
@@ -94,7 +94,7 @@ function GraphCanvas({ nodes = [], edges = [], onNodeClick, highlighted }) {
         })}
         {/* Nodes */}
         {positioned.map(n => {
-          const color = NODE_COLORS[n.type] || '#6b7280';
+          const color = NODE_COLORS[n.type] || 'var(--text-dim)';
           const isHighlighted = highlighted === n.id;
           return (
             <g key={n.id} onClick={() => onNodeClick?.(n)} style={{ cursor: 'pointer' }}>

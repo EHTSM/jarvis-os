@@ -12,6 +12,7 @@
  *
  * Built-in system monitors (checked on each probe()):
  *   - Heap memory > 450MB
+ *   - Disk space < 15% free (warning) / < 5% free (critical) on the app's own volume
  *   - Process uptime anomaly (< 60s after expected stable)
  *   - Failed tasks count spike
  *   - Secret missing (critical)
@@ -29,6 +30,7 @@
  *   getHistory(opts)                       → { history[] }
  *   getNotificationStatus()                → channel status
  *   setNotificationChannel(channel, config)→ void
+ *   _diskStatus()                          → { available, free_pct, free_gb, total_gb } | { available:false, reason }
  */
 
 const fs     = require("fs");
@@ -37,6 +39,7 @@ const https  = require("https");
 const http   = require("http");
 const logger = require("../utils/logger");
 const execLog  = require("../utils/execLog.cjs");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const ALERT_FILE   = path.join(__dirname, "../../data/ops-alerts.json");
 const HISTORY_FILE = path.join(__dirname, "../../data/ops-alert-history.json");
@@ -122,6 +125,17 @@ async function _notify(alert) {
     if (_channels.webhook.enabled && _channels.webhook.config.url) {
         const webhookUrl = _channels.webhook.config.url;
         try {
+            // SSRF & Outbound HTTP Security Audit (2026-08-22): setNotificationChannel()
+            // is reachable by any ordinary authenticated customer via
+            // PUT /p22/alerts/channels/webhook (requireAuth-only), and fire()
+            // (POST /p22/alerts/fire, also requireAuth-only) immediately dispatches
+            // through here — live-reproduced delivering real alert content to an
+            // arbitrary internal/loopback address with zero validation. Reuses the
+            // same shared choke point already established for the ODI
+            // browser-automation family (backend/utils/urlSafety.cjs) rather than a
+            // new validation mechanism.
+            const safety = await assertSafeNavigationTarget(webhookUrl);
+            if (!safety.safe) throw new Error(`webhook URL rejected: ${safety.reason}`);
             const body = JSON.stringify({ alert, message: msg, ts: new Date().toISOString() });
             const u    = new URL(webhookUrl);
             const mod  = u.protocol === "https:" ? https : http;
@@ -150,19 +164,30 @@ function fire(opts) {
         title, detail = "", severity = "warning",
         source = "manual", category = "general",
         dedupeKey = null,
+        // orgId is optional and additive — omitted entirely, existing
+        // platform-wide alerts (probe()'s system/security/runtime/autonomy
+        // checks) are byte-for-byte unaffected. When present, this alert
+        // belongs to a specific org (Module 7: Enterprise Monitoring's
+        // per-org connector/budget threshold checks) and dedupeKey scoping
+        // below is namespaced by orgId so two orgs breaching the same
+        // threshold don't collide on one alert record.
+        orgId = null,
     } = opts;
     if (!title) throw new Error("title required");
 
+    const scopedDedupeKey = dedupeKey && orgId ? `${orgId}::${dedupeKey}` : dedupeKey;
+
     // Deduplicate: don't re-fire an already-active alert with same dedupeKey
-    if (dedupeKey) {
-        const existing = _alerts.find(a => a.dedupeKey === dedupeKey && a.status === "firing");
+    if (scopedDedupeKey) {
+        const existing = _alerts.find(a => a.dedupeKey === scopedDedupeKey && a.status === "firing");
         if (existing) { existing.lastSeenAt = new Date().toISOString(); existing.count = (existing.count || 1) + 1; _saveAlerts(); return existing; }
     }
 
     const alert = {
         alertId:    _aid(),
         title, detail, severity, source, category,
-        dedupeKey,
+        dedupeKey:  scopedDedupeKey,
+        orgId,
         status:     "firing",
         count:      1,
         firedAt:    new Date().toISOString(),
@@ -218,6 +243,31 @@ function escalate(alertId) {
     return { ...alert };
 }
 
+// ── Disk capacity ─────────────────────────────────────────────────────────
+// fs.statfsSync landed in Node 18.15/19.6 — this repo's engines floor is
+// >=18.0.0, so older 18.x patch releases won't have it. Fails closed to
+// "unknown" rather than throwing, matching this file's existing try/catch
+// style for every other optional monitor below.
+const DISK_WARN_FREE_PCT = 15;   // emit warning flag at/below this
+const DISK_CRIT_FREE_PCT = 5;    // emit critical flag at/below this
+
+function _diskStatus() {
+    try {
+        const stat = fs.statfsSync(path.join(__dirname, "../../"));
+        const totalBytes = stat.blocks * stat.bsize;
+        const freeBytes  = stat.bavail * stat.bsize; // bavail = available to non-root, matches `df`
+        const freePct    = totalBytes > 0 ? (freeBytes / totalBytes) * 100 : null;
+        return {
+            available: freePct !== null,
+            free_pct:  freePct !== null ? +freePct.toFixed(1) : null,
+            free_gb:   +(freeBytes  / 1_073_741_824).toFixed(2),
+            total_gb:  +(totalBytes / 1_073_741_824).toFixed(2),
+        };
+    } catch (e) {
+        return { available: false, reason: e.message };
+    }
+}
+
 // ── System monitors ───────────────────────────────────────────────────────
 async function probe() {
     const fired    = [];
@@ -232,7 +282,20 @@ async function probe() {
         if (existing) { resolve(existing.alertId); resolved.push(existing.alertId); }
     }
 
-    // 2. Critical secrets missing
+    // 2. Disk space (own volume — same filesystem as data/, backups/, logs/)
+    const disk = _diskStatus();
+    if (disk.available) {
+        if (disk.free_pct <= DISK_CRIT_FREE_PCT) {
+            fired.push(fire({ title: "Critical disk space", detail: `${disk.free_pct}% free (${disk.free_gb}GB / ${disk.total_gb}GB) — below ${DISK_CRIT_FREE_PCT}% critical threshold`, severity: "critical", source: "probe", category: "system", dedupeKey: "disk_space" }));
+        } else if (disk.free_pct <= DISK_WARN_FREE_PCT) {
+            fired.push(fire({ title: "Low disk space", detail: `${disk.free_pct}% free (${disk.free_gb}GB / ${disk.total_gb}GB) — below ${DISK_WARN_FREE_PCT}% warning threshold`, severity: "warning", source: "probe", category: "system", dedupeKey: "disk_space" }));
+        } else {
+            const existing = _alerts.find(a => a.dedupeKey === "disk_space" && a.status === "firing");
+            if (existing) { resolve(existing.alertId); resolved.push(existing.alertId); }
+        }
+    }
+
+    // 3. Critical secrets missing
     try {
         const sml  = require("./secretManagementLayer.cjs");
         const miss = sml.detectMissing();
@@ -244,7 +307,7 @@ async function probe() {
         }
     } catch { /* non-critical */ }
 
-    // 3. Task queue failures spike
+    // 4. Task queue failures spike
     try {
         const tq   = require("../../agents/taskQueue.cjs");
         const all  = tq.getAll();
@@ -257,7 +320,7 @@ async function probe() {
         }
     } catch { /* non-critical */ }
 
-    // 4. Autonomous cycle failure rate
+    // 5. Autonomous cycle failure rate
     try {
         const atl  = require("./autonomousTaskLoop.cjs");
         const { stats } = atl.listCycles({ limit: 20 });
@@ -270,7 +333,7 @@ async function probe() {
         }
     } catch { /* non-critical */ }
 
-    // 5. Expired suppressed alerts: re-activate or auto-resolve
+    // 6. Expired suppressed alerts: re-activate or auto-resolve
     const now = Date.now();
     for (const a of _alerts.filter(x => x.status === "suppressed" && x.suppressedUntil && new Date(x.suppressedUntil).getTime() < now)) {
         a.status = "firing";
@@ -278,11 +341,12 @@ async function probe() {
     }
     _saveAlerts();
 
-    // 6. Emit metrics to obs
+    // 7. Emit metrics to obs
     try {
         const obs = require("./observabilityEngine.cjs");
         obs.recordMetric("ops.alerts.firing",    _alerts.filter(a => a.status === "firing").length);
         obs.recordMetric("ops.alerts.critical",  _alerts.filter(a => a.severity === "critical" && a.status === "firing").length);
+        if (disk.available) obs.recordMetric("system.disk_free_pct", disk.free_pct);
     } catch { /* non-critical */ }
 
     return { fired: fired.map(a => a.alertId), resolved, probedAt: new Date().toISOString() };
@@ -292,19 +356,26 @@ function getAlert(alertId) {
     return _alerts.find(a => a.alertId === alertId) || _history.find(a => a.alertId === alertId) || null;
 }
 
-function listAlerts({ status, severity, category, limit = 100, offset = 0 } = {}) {
-    let rows = [..._alerts];
+function listAlerts({ status, severity, category, orgId, limit = 100, offset = 0 } = {}) {
+    // orgId omitted (undefined) = platform-wide view across every org's
+    // alerts plus system-level ones, matching pre-Module-7 behavior exactly.
+    // orgId === null is not the same as omitted: a caller explicitly asking
+    // for null would only match un-scoped system alerts, but no route in
+    // this codebase does that today, so this distinction is currently
+    // theoretical rather than exercised — noted for a future org-only view.
+    const base = orgId !== undefined ? _alerts.filter(a => a.orgId === orgId) : _alerts;
+    let rows = [...base];
     if (status)   rows = rows.filter(a => a.status   === status);
     if (severity) rows = rows.filter(a => a.severity === severity);
     if (category) rows = rows.filter(a => a.category === category);
     rows = rows.sort((a, b) => b.firedAt.localeCompare(a.firedAt));
 
     const stats = {
-        total:    _alerts.length,
-        firing:   _alerts.filter(a => a.status === "firing").length,
-        critical: _alerts.filter(a => a.severity === "critical" && a.status === "firing").length,
-        warning:  _alerts.filter(a => a.severity === "warning"  && a.status === "firing").length,
-        suppressed:_alerts.filter(a => a.status === "suppressed").length,
+        total:    base.length,
+        firing:   base.filter(a => a.status === "firing").length,
+        critical: base.filter(a => a.severity === "critical" && a.status === "firing").length,
+        warning:  base.filter(a => a.severity === "warning"  && a.status === "firing").length,
+        suppressed:base.filter(a => a.status === "suppressed").length,
     };
     return { alerts: rows.slice(offset, offset + limit), total: rows.length, stats };
 }
@@ -318,4 +389,4 @@ function getHistory({ limit = 100, severity } = {}) {
 // Auto-probe every 5 minutes
 setInterval(() => probe().catch(e => logger.warn(`[OpsAlert] Probe error: ${e.message}`)), 5 * 60_000).unref();
 
-module.exports = { fire, resolve, suppress, escalate, probe, getAlert, listAlerts, getHistory, getNotificationStatus, setNotificationChannel };
+module.exports = { fire, resolve, suppress, escalate, probe, getAlert, listAlerts, getHistory, getNotificationStatus, setNotificationChannel, _diskStatus };

@@ -2,42 +2,54 @@ import React, { useState, useRef, useEffect } from "react";
 import { track } from "../analytics";
 import { listCoordSessions, getCoordStats, agentCollaborate, agentHandoff, agentDelegate } from "../phase19Api";
 import "./AgentCollaborationCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Agent roster ─────────────────────────────────────────────────────
 const AGENTS = {
-  seo:       { name: "SEO",       icon: "⌕", color: "#4ecdc4" },
-  marketing: { name: "Marketing", icon: "◉", color: "#f0b429" },
-  content:   { name: "Content",   icon: "◈", color: "#7c6fff" },
-  support:   { name: "Support",   icon: "◎", color: "#52d68a" },
+  seo:       { name: "SEO",       icon: "⌕", color: "var(--accent2)" },
+  marketing: { name: "Marketing", icon: "◉", color: "var(--warning)" },
+  content:   { name: "Content",   icon: "◈", color: "var(--accent)" },
+  support:   { name: "Support",   icon: "◎", color: "var(--success)" },
   sales:     { name: "Sales",     icon: "◇", color: "#da552f" },
-  dev:       { name: "Dev",       icon: "⬡", color: "#e6edf3" },
+  dev:       { name: "Dev",       icon: "⬡", color: "var(--text)" },
   devops:    { name: "DevOps",    icon: "⬟", color: "#fc6d26" },
   research:  { name: "Research",  icon: "⊕", color: "#a78bfa" },
   analytics: { name: "Analytics", icon: "▣", color: "#38bdf8" },
 };
 
-// ── Seed handoffs ─────────────────────────────────────────────────────
-const HANDOFFS = [
-  { id: "h1",  from: "sales",    to: "support",   type: "handoff",    title: "Lead #4821 converted → onboarding",        status: "success",  ts: "14:08", detail: "Deal closed. Handed to Support for product onboarding sequence." },
-  { id: "h2",  from: "support",  to: "sales",     type: "escalation", title: "Upsell signal detected — ticket #1019",    status: "success",  ts: "13:52", detail: "User asked about Growth plan features. Routed to Sales for closing." },
-  { id: "h3",  from: "seo",      to: "content",   type: "handoff",    title: "Keyword brief ready for blog post",         status: "success",  ts: "13:30", detail: "Top 5 keywords + intent analysis passed to Content Agent." },
-  { id: "h4",  from: "research", to: "content",   type: "handoff",    title: "Competitor analysis → blog brief",          status: "success",  ts: "11:14", detail: "10-page competitor landscape delivered. Content Agent drafting post." },
-  { id: "h5",  from: "analytics",to: "marketing", type: "trigger",    title: "CTR drop detected — email open rate -12%",  status: "active",   ts: "10:45", detail: "Analytics Agent flagged anomaly. Marketing Agent reviewing subject lines." },
-  { id: "h6",  from: "devops",   to: "dev",       type: "trigger",    title: "Deploy passed → unblocked PR queue",        status: "success",  ts: "11:55", detail: "Health check green post-deploy. Dev Agent resuming review queue." },
-  { id: "h7",  from: "support",  to: "dev",       type: "escalation", title: "Bug report #112 — reproducible crash",      status: "active",   ts: "09:40", detail: "3 users reporting null crash on Android 12. Routed to Dev." },
-  { id: "h8",  from: "marketing",to: "seo",       type: "dependency", title: "Campaign needs landing page SEO audit",     status: "pending",  ts: "15:00", detail: "Email campaign launches Monday. SEO audit of /pricing required first." },
-  { id: "h9",  from: "content",  to: "marketing", type: "handoff",    title: "Blog post ready → distribution",            status: "pending",  ts: "14:55", detail: "Draft complete. Passed to Marketing for scheduling and promotion." },
-  { id: "h10", from: "sales",    to: "analytics", type: "dependency", title: "Pipeline report needed before team call",   status: "pending",  ts: "16:00", detail: "Sales weekly sync at 16:00. Analytics must complete pipeline summary." },
-];
+// Real /p19/coord/sessions data uses `pattern` (handoff/delegation/collaboration)
+// and an `agents[]` array rather than the from/to/type/title shape this view
+// renders. These mappers translate real session records into that shape
+// honestly — no fabricated fields, just relabeling of real data.
+const PATTERN_TYPE = { handoff: "handoff", delegation: "dependency", collaboration: "trigger" };
 
-// ── Shared tasks ──────────────────────────────────────────────────────
-const SHARED_TASKS = [
-  { id: "st1", title: "Product Hunt launch preparation",    agents: ["marketing","seo","content","dev"],  status: "in_progress", progress: 62, due: "2026-06-10" },
-  { id: "st2", title: "Weekly performance report",          agents: ["analytics","sales","support"],      status: "in_progress", progress: 80, due: "2026-06-07" },
-  { id: "st3", title: "Blog post: WhatsApp automation",     agents: ["research","seo","content","marketing"], status: "in_progress", progress: 45, due: "2026-06-08" },
-  { id: "st4", title: "Enterprise onboarding flow",         agents: ["sales","support","dev"],            status: "pending",     progress: 10, due: "2026-06-12" },
-  { id: "st5", title: "Infra hardening sprint",             agents: ["devops","dev"],                     status: "in_progress", progress: 35, due: "2026-06-09" },
-];
+function sessionToHandoff(s) {
+  const agents = s.agents || [];
+  return {
+    id: s.sessionId,
+    from: agents[0] || "unknown",
+    to: agents[1] || agents[0] || "unknown",
+    type: PATTERN_TYPE[s.pattern] || "handoff",
+    title: (s.input || s.pattern || "Coordination session").slice(0, 80),
+    status: s.status === "completed" ? "success" : s.status === "failed" ? "failed" : s.status === "running" ? "active" : "pending",
+    ts: s.createdAt ? new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—",
+    detail: s.output || s.error || `${s.pattern} across ${agents.length} agent(s)`,
+  };
+}
+
+function sessionToSharedTask(s) {
+  const agents = s.agents || [];
+  const progress = s.status === "completed" ? 100 : s.status === "failed" ? 100 : s.status === "running" ? 50 : 0;
+  return {
+    id: s.sessionId,
+    title: (s.input || s.pattern || "Coordination session").slice(0, 80),
+    agents,
+    status: s.status === "completed" ? "completed" : s.status === "running" ? "in_progress" : s.status === "failed" ? "failed" : "pending",
+    progress,
+    // Real sessions carry no due date — show when it started instead of fabricating a deadline.
+    due: s.createdAt ? new Date(s.createdAt).toLocaleDateString() : "—",
+  };
+}
 
 // ── Canvas collaboration graph ────────────────────────────────────────
 function CollabGraph({ handoffs, selectedEdge, onSelectEdge }) {
@@ -83,7 +95,7 @@ function CollabGraph({ handoffs, selectedEdge, onSelectEdge }) {
         (selectedEdge.from === h.from && selectedEdge.to === h.to) ||
         (selectedEdge.from === h.to && selectedEdge.to === h.from)
       );
-      const col = isSelected ? "#7c6fff" : "rgba(255,255,255,0.12)";
+      const col = isSelected ? "var(--accent)" : "rgba(255,255,255,0.12)";
       const w   = isSelected ? 2.5 : Math.min(cnt * 0.8 + 0.6, 3);
 
       ctx.beginPath();
@@ -190,7 +202,7 @@ export default function AgentCollaborationCenter({ onNavigate }) {
 
   useEffect(() => {
     let cancelled = false;
-    Promise.all([listCoordSessions({ limit: 20 }), getCoordStats()])
+    Promise.all([listCoordSessions({ limit: 50 }), getCoordStats()])
       .then(([sessRes, statsRes]) => {
         if (cancelled) return;
         const liveSessions = sessRes?.sessions;
@@ -200,6 +212,9 @@ export default function AgentCollaborationCenter({ onNavigate }) {
       .catch(err => { if (!cancelled) setApiError(err.message); });
     return () => { cancelled = true; };
   }, []);
+
+  const HANDOFFS = sessions.map(sessionToHandoff);
+  const SHARED_TASKS = sessions.filter(s => (s.agents || []).length > 1).map(sessionToSharedTask);
 
   const filtered = HANDOFFS.filter(h => typeFilter === "all" || h.type === typeFilter);
   const edgeHandoffs = selEdge
@@ -226,9 +241,9 @@ export default function AgentCollaborationCenter({ onNavigate }) {
       <div className="acc-summary-strip">
         {[
           { label: "Total events",  value: HANDOFFS.length,    color: "var(--text)"    },
-          { label: "Handoffs",      value: byType("handoff"),  color: "#4ecdc4"        },
-          { label: "Escalations",   value: byType("escalation"),color:"#f55b5b"        },
-          { label: "Triggers",      value: byType("trigger"),  color: "#f0b429"        },
+          { label: "Handoffs",      value: byType("handoff"),  color: "var(--accent2)"        },
+          { label: "Escalations",   value: byType("escalation"),color:"var(--danger)"        },
+          { label: "Triggers",      value: byType("trigger"),  color: "var(--warning)"        },
           { label: "Dependencies",  value: byType("dependency"),color:"#a78bfa"        },
           { label: "Active now",    value: HANDOFFS.filter(h=>h.status==="active").length, color:"var(--accent2)" },
           { label: "Live sessions", value: sessions.length ?? coordStats?.totalSessions ?? 0, color: "var(--success)" },
@@ -309,6 +324,9 @@ export default function AgentCollaborationCenter({ onNavigate }) {
               ))}
             </div>
             <div className="acc-feed-list">
+              {filtered.length === 0 && (
+                <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>No coordination events yet — start a session above.</div>
+              )}
               {filtered.map(h => (
                 <div key={h.id} className="acc-feed-row">
                   <span className="acc-feed-ts">{h.ts}</span>
@@ -332,11 +350,14 @@ export default function AgentCollaborationCenter({ onNavigate }) {
         {/* Shared tasks */}
         {section === "shared" && (
           <div className="acc-shared-list">
+            {SHARED_TASKS.length === 0 && (
+              <div style={{padding:16,color:"var(--text-faint)",fontSize:13}}>No multi-agent sessions yet — start a session above.</div>
+            )}
             {SHARED_TASKS.map(t => (
               <div key={t.id} className="acc-shared-card">
                 <div className="acc-shared-header">
                   <span className="acc-shared-title">{t.title}</span>
-                  <span className="acc-shared-due">Due {t.due}</span>
+                  <span className="acc-shared-due">Started {t.due}</span>
                   <span className="acc-shared-status" style={{ color: STA_COLORS[t.status], borderColor: STA_COLORS[t.status]+"33" }}>{t.status.replace("_"," ")}</span>
                 </div>
                 <div className="acc-shared-progress-row">
@@ -361,7 +382,7 @@ export default function AgentCollaborationCenter({ onNavigate }) {
 
       {showCoord && (
         <div style={{ position:"fixed", inset:0, background:"rgba(0,0,0,0.6)", zIndex:1000, display:"flex", alignItems:"center", justifyContent:"center" }}
-          onClick={e => e.target === e.currentTarget && setShowCoord(false)}>
+          {...clickableProps(e => e.target === e.currentTarget && setShowCoord(false))}>
           <div style={{ background:"var(--surface-base)", border:"1px solid var(--border)", borderRadius:"var(--radius)", padding:24, width:"min(480px,90vw)", display:"flex", flexDirection:"column", gap:14 }}>
             <h3 style={{ margin:0, fontSize:16, fontWeight:700 }}>Start Coordination Session</h3>
             <div style={{ display:"flex", gap:8 }}>

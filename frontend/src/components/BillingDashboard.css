@@ -10,6 +10,14 @@
   animation: page-enter var(--dur-enter) var(--ease-spring) both;
 }
 
+/* ── Page header ────────────────────────────────────────────────────── */
+/* Byte-identical to the .oac-header/.tw-header/.ws-header rule its three
+   in-scope siblings already share (OrgAdminCenter.css, TeamWorkspace.css,
+   WorkspaceSettings.css, all at their own line 9-11). Not a new pattern. */
+.bd-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.bd-title    { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.3px; margin: 0; }
+.bd-subtitle { font-size: 13.5px; color: var(--text-dim); margin: 4px 0 0; }
+
 /* ── Card shell ─────────────────────────────────────────────────────── */
 .bd-card {
   background: var(--surface-base);

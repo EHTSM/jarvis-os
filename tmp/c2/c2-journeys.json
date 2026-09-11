@@ -1,0 +1,207 @@
+[
+  {
+    "journey": "J1-shell",
+    "step": "chrome",
+    "tabs": [
+      "Dashboard",
+      "Contacts",
+      "Payments",
+      "Pipeline",
+      "AI",
+      "More (82) ▾"
+    ],
+    "hasSkipLink": true,
+    "hasSearch": false,
+    "orgSwitcher": true,
+    "wsSwitcher": false
+  },
+  {
+    "journey": "J1-nav",
+    "step": "Dashboard",
+    "ms": 947,
+    "h1": "Welcome back, UX",
+    "spinners": 0,
+    "emptyStates": 5,
+    "errors": 0,
+    "focusable": 36
+  },
+  {
+    "journey": "J1-nav",
+    "step": "Contacts",
+    "ms": 942,
+    "h1": "Contacts",
+    "spinners": 0,
+    "emptyStates": 0,
+    "errors": 0,
+    "focusable": 52
+  },
+  {
+    "journey": "J1-nav",
+    "step": "Payments",
+    "ms": 933,
+    "h1": "Payments",
+    "spinners": 0,
+    "emptyStates": 4,
+    "errors": 0,
+    "focusable": 49
+  },
+  {
+    "journey": "J1-nav",
+    "step": "Pipeline",
+    "ms": 938,
+    "h1": "Pipeline",
+    "spinners": 33,
+    "emptyStates": 0,
+    "errors": 0,
+    "focusable": 36
+  },
+  {
+    "journey": "J1-nav",
+    "step": "AI",
+    "ms": 957,
+    "h1": "AI",
+    "spinners": 0,
+    "emptyStates": 0,
+    "errors": 0,
+    "focusable": 36
+  },
+  {
+    "journey": "J2-palette",
+    "step": "open",
+    "openMs": 253,
+    "open": true,
+    "focusInside": true,
+    "resultCount": 93
+  },
+  {
+    "journey": "J2-palette",
+    "step": "search:payments",
+    "results": 2,
+    "first": "◻Payments↵",
+    "emptyMsg": null
+  },
+  {
+    "journey": "J2-palette",
+    "step": "search:no-match",
+    "results": 0,
+    "emptyMsg": "◎No commands found for \"zzzznotathing\""
+  },
+  {
+    "journey": "J2-palette",
+    "step": "escape",
+    "closed": true
+  },
+  {
+    "journey": "J3-more",
+    "step": "open",
+    "ms": 955,
+    "openMs": 0,
+    "itemCount": 83,
+    "hasSearch": true,
+    "overflowClipped": false
+  },
+  {
+    "journey": "J3-more",
+    "step": "search:enterprise",
+    "visible": 15
+  },
+  {
+    "journey": "J4-validation",
+    "step": "empty-submit",
+    "ms": 1223,
+    "errText": "Enter a valid amount.",
+    "anyError": [
+      "Enter a valid amount."
+    ],
+    "toasts": 0
+  },
+  {
+    "journey": "J5-responsive",
+    "step": "390px",
+    "hScroll": true,
+    "overflowPx": 204,
+    "offscreenControls": 5,
+    "tabsVisible": 6
+  },
+  {
+    "journey": "J5-responsive",
+    "step": "430px",
+    "hScroll": true,
+    "overflowPx": 164,
+    "offscreenControls": 5,
+    "tabsVisible": 6
+  },
+  {
+    "journey": "J5-responsive",
+    "step": "768px",
+    "hScroll": false,
+    "overflowPx": 0,
+    "offscreenControls": 0,
+    "tabsVisible": 6
+  },
+  {
+    "journey": "J5-responsive",
+    "step": "1024px",
+    "hScroll": false,
+    "overflowPx": 0,
+    "offscreenControls": 0,
+    "tabsVisible": 6
+  },
+  {
+    "journey": "J5-responsive",
+    "step": "1440px",
+    "hScroll": false,
+    "overflowPx": 0,
+    "offscreenControls": 0,
+    "tabsVisible": 6
+  },
+  {
+    "journey": "J6-theme",
+    "step": "dark",
+    "nearInvisible": 6,
+    "samples": [
+      {
+        "t": "⌕Search…⌘K",
+        "ratio": 1,
+        "cls": "palette-trigger"
+      },
+      {
+        "t": "⌕",
+        "ratio": 1,
+        "cls": ""
+      },
+      {
+        "t": "Search…",
+        "ratio": 1,
+        "cls": ""
+      },
+      {
+        "t": "Upgrade now →",
+        "ratio": 1,
+        "cls": "tb-cta tb-cta--default"
+      },
+      {
+        "t": "org owner",
+        "ratio": 1.57,
+        "cls": "cd-org-role"
+      }
+    ]
+  },
+  {
+    "journey": "J6-theme",
+    "step": "light",
+    "nearInvisible": 2,
+    "samples": [
+      {
+        "t": "Upgrade now →",
+        "ratio": 1,
+        "cls": "tb-cta tb-cta--default"
+      },
+      {
+        "t": "org owner",
+        "ratio": 1.01,
+        "cls": "cd-org-role"
+      }
+    ]
+  }
+]

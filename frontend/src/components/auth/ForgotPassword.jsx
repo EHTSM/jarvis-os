@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { firebaseForgotPassword, isFirebaseConfigured } from "../../firebaseService";
+import { requestPasswordReset } from "../../authApi";
 import "./AuthCard.css";
 
 export default function ForgotPassword({ onBack }) {
@@ -20,23 +21,22 @@ export default function ForgotPassword({ onBack }) {
     setBusy(true);
     setErr("");
 
-    if (!isFirebaseConfigured()) {
-      setErr("Password reset requires Firebase to be configured. Contact support@ooplix.com.");
+    // Backend is the source of truth for email/password accounts (Mission 6's
+    // real token-based reset — see betaReadiness.sendPasswordReset). Firebase
+    // reset only applies to accounts that signed up via Firebase; fire both
+    // when Firebase is configured so either kind of account gets an email,
+    // but never block on Firebase being unavailable.
+    const backendRes = await requestPasswordReset(email.trim().toLowerCase());
+    if (isFirebaseConfigured()) {
+      try { await firebaseForgotPassword(email.trim().toLowerCase()); } catch { /* non-fatal */ }
+    }
+
+    if (!backendRes.success) {
+      setErr(backendRes.error || "Could not send reset email. Please try again.");
       setBusy(false);
       return;
     }
-
-    const res = await firebaseForgotPassword(email.trim().toLowerCase());
-    if (!res.success) {
-      // Treat user-not-found as success — prevent email enumeration
-      if (res.code === "user-not-found") {
-        setSent(true);
-      } else {
-        setErr(res.error || "Could not send reset email. Please try again.");
-      }
-    } else {
-      setSent(true);
-    }
+    setSent(true);
     setBusy(false);
   }, [busy, email]);
 

@@ -1,0 +1,61 @@
+%% OOPLIX V1 — Audit Programme Gantt
+%% "done" = executed with committed evidence. "crit"/"active" on planned items denotes
+%% sequencing intent only — those audits have NOT run and carry no evidence.
+gantt
+    title Ooplix V1 Audit Programme — Executed (05-09 Aug) and Planned Sequence
+    dateFormat YYYY-MM-DD
+    axisFormat %d %b
+    todayMarker stroke-width:2px,stroke:#B00020
+
+    section L1 Foundation
+    A.1  Founder Reality Recertification    :done, a1, 2026-08-05, 1d
+    A.4  Navigation and Discoverability     :done, a4, 2026-08-06, 1d
+    A.5  Runtime Load and AI Honesty        :done, a5, 2026-08-06, 1d
+    A.6  Founder Journey Integrity          :done, a6, 2026-08-06, 1d
+
+    section L2 Engineering
+    A.7  Growth and Creative Operations     :done, a7, 2026-08-06, 1d
+    A.8  Operator Console Stability         :done, a8, 2026-08-07, 1d
+    A.9  Tenant Isolation Verification      :done, a9, 2026-08-07, 1d
+    A.10 Action Recovery Sweep              :done, a10, 2026-08-07, 1d
+    A.11 Cross-Product Consistency          :done, a11, 2026-08-08, 1d
+    A.13 Category Vocabulary Recovery       :done, a13, 2026-08-08, 1d
+    B.1  Runtime Performance and Failover   :done, b1, 2026-08-08, 2d
+
+    section L4 Operations Platform
+    B.4  Enterprise Security Validation     :done, b4, 2026-08-09, 1d
+    B.5  Disaster Recovery                  :done, b5, 2026-08-09, 1d
+    B.6  Database and Persistence           :done, b6, 2026-08-09, 1d
+    B.7  API Certification                  :done, b7, 2026-08-09, 1d
+    B.8  DevOps Certification               :done, b8, 2026-08-09, 1d
+
+    section L3 Intelligence
+    B.9  AI Intelligence                    :done, b9, 2026-08-09, 1d
+    B.10 Memory Certification               :done, b10, 2026-08-09, 1d
+    B.11 Agent Certification                :done, b11, 2026-08-09, 1d
+    B.12 Knowledge System                   :done, b12, 2026-08-09, 1d
+
+    section L4 Business Operations
+    B.13 Automation and Workflow OS         :done, b13, 2026-08-09, 1d
+    B.14 Finance Operations                 :done, b14, 2026-08-09, 1d
+    B.15 Support Operations                 :done, b15, 2026-08-09, 1d
+    B.16 Customer Operations                :done, b16, 2026-08-09, 1d
+    B.17 Team and Workforce                 :done, b17, 2026-08-09, 1d
+    B.18 Business Continuity                :done, b18, 2026-08-09, 1d
+    B.19 Accessibility WCAG 2.2 AA          :crit, b19, 2026-08-09, 1d
+
+    section Remediation PLANNED
+    R1 Tenant ownership programme G1 x3     :active, r1, after b19, 10d
+    R2 Accessibility AA remediation         :active, r2, after b19, 14d
+    R3 API envelope and SDK readiness       :active, r3, after r1, 7d
+
+    section L5 Vision PLANNED
+    B.20 Scalability and Multi-Node         :b20, after r3, 5d
+    B.21 Compliance and Audit Trail         :b21, after r1, 5d
+    B.22 Integration and Partner Ecosystem  :b22, after r3, 5d
+    B.23 Data Governance and Privacy        :b23, after r1, 5d
+
+    section L6 Perfection PLANNED
+    B.24 Performance and Capacity           :b24, after b20, 5d
+    B.25 Pre-Certification Readiness Gate   :b25, after b24, 3d
+    C    Production Certification and GA    :milestone, c1, after b25, 0d

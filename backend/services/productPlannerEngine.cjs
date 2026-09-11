@@ -8,6 +8,27 @@
  * continuousLearningEngine, founderWorkRegistry, knowledgeReasoningEngine.
  *
  * Storage: data/product-plans.json
+ *
+ * ECOSYSTEM OS RECOVERY (2026-08-15): this file had zero orgId concept —
+ * the Product OS pass reproduced live that any authenticated user of ANY
+ * organization could list every plan on the platform, read any plan by
+ * direct id, and successfully write to another tenant's plan via the
+ * downstream architecture-design endpoint. Investigated the blast radius
+ * before fixing (per this recovery's own mandate not to accept "architectural
+ * gap" without checking): confirmed via grep that zero other services call
+ * getPlan()/listPlans()/createPlan() — the only real consumers are this
+ * file's own route file (productFactory.js) and its frontend
+ * (ProductOSCenter.jsx). 9 other files reference this module only for a
+ * health-check ping or a static architecture-catalog comment, never an
+ * actual function call. Safe to add real org scoping with zero blast
+ * radius. Follows the exact precedent already proven correct for
+ * Developer OS (developerOS.cjs, C10-003) and coding patch-history
+ * (C9-PATCH): orgId is REQUIRED on every data-access function going
+ * forward; pre-existing unowned records (orgId===undefined, ~146 plans
+ * created before this fix) are NEVER matched by a real orgId query — they
+ * become invisible, not misattributed to whichever org happens to call
+ * first. This is the same "never fall back to all tenants'" contract
+ * growthOS.cjs/developerOS.cjs already use.
  */
 
 const fs   = require("fs");
@@ -27,6 +48,14 @@ const _srev = () => _try(() => require("./selfReviewEngine.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `pp_${Date.now()}_${Math.random().toString(36).slice(2,6)}`; }
+
+// A record "belongs" to orgId only if its own orgId field matches exactly.
+// A record with orgId===undefined (pre-recovery legacy data) is NEVER
+// matched by a real orgId query — see file header comment.
+function _ownedBy(item, orgId) { return item.orgId === orgId; }
+function _requireOrgId(orgId, fnName) {
+  if (!orgId) throw new Error(`${fnName}: orgId is required`);
+}
 
 // ── Plan pipeline steps ───────────────────────────────────────────────────────
 
@@ -148,12 +177,13 @@ function _save(d) {
 
 // ── Core: createPlan ─────────────────────────────────────────────────────────
 
-function createPlan({ objective, context = {}, skipResearch = false } = {}) {
+function createPlan({ objective, orgId, context = {}, skipResearch = false } = {}) {
   if (!objective) return { ok: false, error: "objective required" };
+  _requireOrgId(orgId, "createPlan");
 
   const id   = _id();
   const plan = {
-    id, objective, status: "planning",
+    id, objective, orgId, status: "planning",
     steps:         {},
     requirements:  [],
     complexity:    null,
@@ -248,14 +278,19 @@ function createPlan({ objective, context = {}, skipResearch = false } = {}) {
   return { ok: true, plan };
 }
 
-function getPlan(id)             { return _load().plans.find(p => p.id === id) || null; }
-function listPlans({ limit = 50, status } = {}) {
-  let list = _load().plans;
+function getPlan(orgId, id) {
+  _requireOrgId(orgId, "getPlan");
+  return _load().plans.find(p => p.id === id && _ownedBy(p, orgId)) || null;
+}
+function listPlans(orgId, { limit = 50, status } = {}) {
+  _requireOrgId(orgId, "listPlans");
+  let list = _load().plans.filter(p => _ownedBy(p, orgId));
   if (status) list = list.filter(p => p.status === status);
   return { ok: true, plans: list.slice(-limit).reverse(), total: list.length };
 }
-function updatePlanStatus(id, status) {
-  const d = _load(); const idx = d.plans.findIndex(p => p.id === id);
+function updatePlanStatus(orgId, id, status) {
+  _requireOrgId(orgId, "updatePlanStatus");
+  const d = _load(); const idx = d.plans.findIndex(p => p.id === id && _ownedBy(p, orgId));
   if (idx < 0) return { ok: false, error: "plan not found" };
   d.plans[idx].status    = status;
   d.plans[idx].updatedAt = _ts();

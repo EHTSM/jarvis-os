@@ -148,7 +148,7 @@ curl -X POST http://localhost:5050/webhook/razorpay \
 
 **Firebase config confirmed in `frontend/.env.production`:**
 ```
-REACT_APP_FIREBASE_API_KEY=AIzaSyCIhQBxv0DWHQZim4biE_2cTiM9n6tcx_M
+REACT_APP_FIREBASE_API_KEY=<REDACTED-see-SECURITY.md>
 REACT_APP_FIREBASE_AUTH_DOMAIN=ooplix-jarvis.firebaseapp.com
 REACT_APP_FIREBASE_PROJECT_ID=ooplix-jarvis
 REACT_APP_FIREBASE_STORAGE_BUCKET=ooplix-jarvis.firebasestorage.app

@@ -4,6 +4,8 @@ import { generatePaymentLink } from "../paymentApi";
 import JourneyBanner from "./JourneyBanner";
 import EmptyState from "./EmptyState";
 import "./ContactsV2.css";
+import { overlayProps } from "../hooks/useClickableProps";
+import { useEscapeKey } from "../hooks/useEscapeKey";
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -12,6 +14,20 @@ function _initials(name) {
   return name.trim().split(/\s+/).slice(0, 2).map(w => w[0]).join("").toUpperCase();
 }
 
+/**
+ * Avatar identity palette — DOCUMENTED BRAND EXCEPTION (B19.2.2).
+ *
+ * These are identity colours, not semantic ones: the hue distinguishes one
+ * contact from another and must stay stable across themes (a contact should
+ * not change colour when the operator flips to light mode). They are therefore
+ * deliberately NOT tokens.
+ *
+ * Contrast obligation is met by pairing every entry with a fixed dark
+ * foreground (--avatar-fg, #0a0c14) rather than by theming the fill. Each
+ * value below is verified ≥4.5:1 against that foreground; worst case is
+ * #7c6fff at 5.18:1. Do not darken these without re-running the check in
+ * scripts/a11y-live-scan.cjs.
+ */
 const AVATAR_COLORS = [
   "#7c6fff", "#4ecdc4", "#f0b429", "#52d68a", "#f55b5b",
   "#5dc8f5", "#ff8c69", "#b794f4", "#68d391", "#fc8181",
@@ -42,6 +58,21 @@ function _fmtINR(v) {
   if (n >= 100000) return `₹${(n / 100000).toFixed(1)}L`;
   if (n >= 1000)   return `₹${(n / 1000).toFixed(0)}k`;
   return `₹${n}`;
+}
+
+// A.6 business-owner-journey finding: the detail drawer reused _fmtINR's
+// abbreviated form (e.g. "₹9k" for an exact ₹8,500 deal) — fine for the
+// space-constrained list row, but the detail view is where a founder
+// checks an exact figure before writing a proposal or an invoice, and it
+// showed the same rounded value with no way to see the real number.
+// Exact formatter follows the same Intl.NumberFormat pattern already
+// established in BusinessOS.jsx for currency display — not a new
+// mechanism, just applied where precision actually matters.
+function _fmtINRExact(v) {
+  if (!v) return "";
+  const n = Number(String(v).replace(/[^\d.]/g, ""));
+  if (!n) return "";
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(n);
 }
 
 const STATUS_META = {
@@ -79,7 +110,9 @@ function Toast({ toasts }) {
 
 const EMPTY_FORM = { name: "", phone: "", service: "", dealValue: "", notes: "" };
 
-function AddContactModal({ onClose, onSaved }) {
+export function AddContactModal({ onClose, onSaved }) {
+  // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
+  useEscapeKey(true, onClose);
   const [fields,  setFields]  = useState(EMPTY_FORM);
   const [loading, setLoading] = useState(false);
   const [err,     setErr]     = useState("");
@@ -107,7 +140,7 @@ function AddContactModal({ onClose, onSaved }) {
   };
 
   return (
-    <div className="cv2-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+    <div className="cv2-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && onClose())}>
       <div className="cv2-modal" role="dialog" aria-modal="true" aria-label="New Contact">
         <div className="cv2-modal-header">
           <h2 className="cv2-modal-title">New Contact</h2>
@@ -157,6 +190,8 @@ function AddContactModal({ onClose, onSaved }) {
 // ── Payment Link Modal ─────────────────────────────────────────────────────────
 
 function PaymentLinkModal({ prefill, onClose }) {
+  // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
+  useEscapeKey(true, onClose);
   const [form,    setForm]    = useState({
     name: prefill?.name || "", phone: prefill?.phone || "",
     amount: "", description: "",
@@ -197,7 +232,7 @@ function PaymentLinkModal({ prefill, onClose }) {
     : null;
 
   return (
-    <div className="cv2-modal-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
+    <div className="cv2-modal-overlay" {...overlayProps(e => e.target === e.currentTarget && onClose())}>
       <div className="cv2-modal" role="dialog" aria-modal="true" aria-label="Generate Payment Link">
         <div className="cv2-modal-header">
           <h2 className="cv2-modal-title">Generate Payment Link</h2>
@@ -263,6 +298,8 @@ function PaymentLinkModal({ prefill, onClose }) {
 const STATUS_OPTIONS = ["new", "hot", "qualified", "won", "paid", "onboarded", "lost"];
 
 function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpdate }) {
+  // B19.3: Escape mirrors the backdrop dismissal, using the existing hook.
+  useEscapeKey(true, onClose);
   const [sending,        setSending]        = useState(false);
   const [waMsg,          setWaMsg]          = useState("");
   const [waResult,       setWaResult]       = useState(null);
@@ -314,7 +351,7 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpd
   };
 
   return (
-    <div className="cv2-drawer-overlay" onClick={e => e.target.classList.contains("cv2-drawer-overlay") && onClose()}>
+    <div className="cv2-drawer-overlay" {...overlayProps(e => e.target.classList.contains("cv2-drawer-overlay") && onClose())}>
       <aside className="cv2-drawer" role="complementary" aria-label="Contact details">
         <div className="cv2-drawer-header">
           <button className="cv2-drawer-back" onClick={onClose} aria-label="Close drawer">← Back</button>
@@ -363,7 +400,7 @@ function ContactDrawer({ contact, onClose, onPayLink, onStatusUpdate, onFieldUpd
           ) : (
             <div className="cv2-drawer-detail-grid">
               {contact.service    && <><span className="cv2-detail-key">Service</span>   <span className="cv2-detail-val">{contact.service}</span></>}
-              {contact.dealValue  && <><span className="cv2-detail-key">Deal value</span><span className="cv2-detail-val">{_fmtINR(contact.dealValue)}</span></>}
+              {contact.dealValue  && <><span className="cv2-detail-key">Deal value</span><span className="cv2-detail-val">{_fmtINRExact(contact.dealValue)}</span></>}
               {contact.createdAt  && <><span className="cv2-detail-key">Added</span>     <span className="cv2-detail-val">{_timeAgo(contact.createdAt)}</span></>}
               {contact.notes      && <><span className="cv2-detail-key">Notes</span>     <span className="cv2-detail-val cv2-detail-val--notes">{contact.notes}</span></>}
               {!contact.service && !contact.dealValue && !contact.notes && (
@@ -589,8 +626,14 @@ export default function ContactsV2({ onNavigate }) {
       <div className="cv2-toolbar">
         <div className="cv2-search-wrap">
           <span className="cv2-search-icon" aria-hidden="true">⌕</span>
+          {/* C.1 (G1-B193): placeholder-only, so the control had no accessible
+              name — a placeholder disappears on input and is not a label under
+              WCAG 3.3.2. There is no visible label to associate here (the field
+              is icon-prefixed), so aria-label carries the name, matching the
+              clear button beside it. */}
           <input
             className="cv2-search"
+            aria-label="Search contacts by name, phone or service"
             placeholder="Search by name, phone, service…"
             value={search}
             onChange={e => setSearch(e.target.value)}

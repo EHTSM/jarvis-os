@@ -4,7 +4,7 @@ import { _fetch } from "../_client";
 // ── K5 Automation helpers ─────────────────────────────────────────
 const TRIGGER_TYPES   = ["schedule","event","threshold","manual","webhook","approval"];
 const ACTION_TYPES_K5 = ["queue_task","emit_event","notify","set_policy","escalate"];
-const OUTCOME_COLOR   = { success:"#52d68a", failed:"var(--error)", skipped:"var(--text-faint)", pending_approval:"var(--warning)", dry_run:"var(--accent2)" };
+const OUTCOME_COLOR   = { success:"var(--success)", failed:"var(--error)", skipped:"var(--text-faint)", pending_approval:"var(--warning)", dry_run:"var(--accent2)" };
 
 function _autoFmtTs(ts) {
   if (!ts) return "never";
@@ -16,16 +16,32 @@ function _autoFmtTs(ts) {
   return d.toLocaleDateString();
 }
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function K5ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 // ── K5 — Automation Overview ──────────────────────────────────────
 function AutomationOverviewPanel() {
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/automation/statistics").then(r => setStats(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/automation/statistics").then(r => setStats(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading automation overview…</div>;
+  if (error) return <K5ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!stats)  return <div className="k2-empty">No automation data yet.</div>;
 
   const { rules, history } = stats;
@@ -38,7 +54,7 @@ function AutomationOverviewPanel() {
           <span className="k4-ov-sub">{rules?.total || 0} total</span>
         </div>
         <div className="k4-ov-card">
-          <span className="k4-ov-value" style={{ color: "#52d68a" }}>{history?.last24h || 0}</span>
+          <span className="k4-ov-value" style={{ color: "var(--success)" }}>{history?.last24h || 0}</span>
           <span className="k4-ov-label">Runs (24h)</span>
           <span className="k4-ov-sub">{history?.last7d || 0} this week</span>
         </div>
@@ -93,6 +109,7 @@ function AutomationOverviewPanel() {
 function RuleBuilderPanel() {
   const [rules,    setRules]    = useState([]);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [creating, setCreating] = useState(false);
   const [dryResult,setDryResult]= useState(null);
   const [toast,    setToast]    = useState(null);
@@ -107,8 +124,8 @@ function RuleBuilderPanel() {
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(() => {
-    setLoading(true);
-    _fetch("/automation/rules").then(r => setRules(r.rules || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/automation/rules").then(r => setRules(r.rules || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -144,6 +161,7 @@ function RuleBuilderPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading rules…</div>;
+  if (error) return <K5ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k5-rules-panel">
@@ -271,13 +289,16 @@ function RuleBuilderPanel() {
 function TriggerLibraryPanel() {
   const [templates, setTemplates] = useState([]);
   const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   const [toast,     setToast]     = useState(null);
 
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
-    _fetch("/automation/templates").then(r => setTemplates(r.templates || [])).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/automation/templates").then(r => setTemplates(r.templates || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   async function applyTemplate(tpl) {
     try {
@@ -296,6 +317,7 @@ function TriggerLibraryPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading templates…</div>;
+  if (error) return <K5ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   const categories = [...new Set(templates.map(t => t.category))];
 
   return (
@@ -334,15 +356,19 @@ function TriggerLibraryPanel() {
 function AutoHistoryPanel() {
   const [history,  setHistory]  = useState([]);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   const [filterOut,setFilterOut]= useState("");
 
   useEffect(() => {
-    _fetch("/automation/history?limit=100").then(r => setHistory(r.history || [])).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/automation/history?limit=100").then(r => setHistory(r.history || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   const filtered = filterOut ? history.filter(h => h.outcome !== filterOut) : history;
 
   if (loading) return <div className="k2-loading">Loading history…</div>;
+  if (error) return <K5ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
 
   return (
     <div className="k5-history-panel">
@@ -376,12 +402,16 @@ function AutoHistoryPanel() {
 function AutoStatsPanel() {
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/automation/statistics").then(r => setStats(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/automation/statistics").then(r => setStats(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading statistics…</div>;
+  if (error) return <K5ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!stats)  return <div className="k2-empty">No statistics yet.</div>;
 
   const { rules, history } = stats;

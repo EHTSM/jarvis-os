@@ -11,7 +11,107 @@ process.env.SKIP_PLATFORM_REGISTER = "1";
  */
 
 const assert = require("assert");
+const fs = require("fs");
+const path = require("path");
+const { mock } = require("node:test");
 
+// Mission 76 Micro-Mission 33/34 — determinism fix for "discover finds
+// high_value_lesson". knowledgeDiscoveryEngine.cjs's _discoverHighValueLessons()
+// requires some lesson `type` to occur >10 times among continuousLearningEngine.cjs's
+// live, shared data/lessons.json (Micro-Mission 32 root cause: that store is not
+// git-tracked, starts empty in CI, and is populated live and out of this test's
+// control by whichever other test files/engines happen to run first — its
+// per-type distribution is not guaranteed). continuousLearningEngine.cjs reads
+// LESSONS_FILE into a module-scope array exactly once at require() time and never
+// re-reads it, so intercepting fs.readFileSync before continuousLearningEngine.cjs
+// is first required (which happens lazily, inside each P14 engine's own _cle()
+// closure, not at this file's top-level requires above) gives it a controlled,
+// isolated fixture without touching the real file. Mirrors the exact
+// mock.method(fs, "readFileSync", ...) pattern already used for missionMemory.cjs
+// in tests/runtime/mission-memory-stats-malformed-record.test.cjs (Micro-Mission
+// 16) — no production code changed, assertion untouched.
+//
+// Micro-Mission 33 POST-INCIDENT CORRECTION (Micro-Mission 34): the original fix
+// mocked only fs.readFileSync. continuousLearningEngine.cjs's createLesson()
+// unconditionally calls _saveLessons(), which calls its own _wj() helper —
+// fs.writeFileSync(LESSONS_FILE + ".tmp", ...) followed by
+// fs.renameSync(LESSONS_FILE + ".tmp", LESSONS_FILE) (an atomic temp-then-rename
+// write, see continuousLearningEngine.cjs:55-60) — and this file's own later
+// "End-to-End: Full Knowledge Network Pipeline" section triggers a call path that
+// reaches createLesson(), which used the real, unmocked fs.writeFileSync/
+// renameSync to overwrite the real data/lessons.json with this test's in-memory,
+// fixture-derived _lessons array. This is now fixed by mocking BOTH fs.writeFileSync
+// and fs.renameSync for the exact same LESSONS_FILE/LESSONS_FILE+".tmp" paths,
+// redirecting them to a no-op that never touches the real filesystem — the
+// mocked readFileSync fixture below is deliberately treated as immutable for the
+// life of this process; any write to it is silently absorbed, not persisted, and
+// not reflected back into subsequent readFileSync calls (which continue to return
+// the same fixed 15-entry fixture every time, since continuousLearningEngine.cjs
+// only reads it once at require() time in any case).
+//
+// Micro-Mission 36 MOCK LIFECYCLE CORRECTION: the mocks used to be installed at
+// module top-level and rely on this file's own process.exit(1) (on failure) or
+// natural process exit (on success) to end their effective lifetime — never
+// explicitly restored via .mock.restore(). This mirrors the withMockedFs()
+// try/finally pattern already used in tests/runtime/mission-memory-stats-malformed-
+// record.test.cjs (Micro-Mission 16) instead: all synchronous test() registration
+// AND the async main() run happen inside runP14(), and _withLessonsIsolation()
+// wraps that single call in try/finally, restoring all 3 mocks unconditionally —
+// on success, on a thrown assertion, or on any other exception — before the
+// function returns. process.exit() is no longer used anywhere in this file;
+// pass/fail is now reported via process.exitCode (which, unlike process.exit(),
+// does not terminate immediately — it only sets the code the process will use
+// once the event loop drains naturally, so the finally block and any code after
+// it are guaranteed to run first).
+const _realReadFileSync  = fs.readFileSync.bind(fs);
+const _realWriteFileSync = fs.writeFileSync.bind(fs);
+const _realRenameSync    = fs.renameSync.bind(fs);
+const _lessonsFilePath   = path.join(__dirname, "..", "..", "data", "lessons.json");
+const _lessonsTmpPath    = `${_lessonsFilePath}.tmp`;
+
+// 15 "failure"-type lessons: safely exceeds knowledgeDiscoveryEngine.cjs's
+// unchanged, real `count > 10` threshold (backend/services/knowledgeDiscoveryEngine.cjs:87)
+// with a real, production-valid `type` value (continuousLearningEngine.cjs:163).
+// Defined once and reused for every read — this fixture is fixed/immutable;
+// writes are absorbed (see mocks below), never merged back into it.
+const _lessonsFixtureJson = JSON.stringify(Array.from({ length: 15 }, (_, i) => ({
+  lessonId: `test_fixture_lesson_${i}`,
+  type: "failure",
+  source: "p14_test_fixture",
+  applied: false,
+  createdAt: new Date().toISOString(),
+})));
+
+async function _withLessonsIsolation(fn) {
+  // READ isolation: the test's controlled fixture, never the real file's contents.
+  const readMock = mock.method(fs, "readFileSync", (p, opts) => {
+    if (String(p) === _lessonsFilePath) return _lessonsFixtureJson;
+    return _realReadFileSync(p, opts);
+  });
+  // WRITE isolation: absorb any write aimed at the real lessons file or its
+  // temp-write companion — the real file on disk is never touched by either call.
+  const writeMock = mock.method(fs, "writeFileSync", (p, data, opts) => {
+    if (String(p) === _lessonsTmpPath || String(p) === _lessonsFilePath) return undefined;
+    return _realWriteFileSync(p, data, opts);
+  });
+  const renameMock = mock.method(fs, "renameSync", (oldPath, newPath) => {
+    if (String(oldPath) === _lessonsTmpPath && String(newPath) === _lessonsFilePath) return undefined;
+    return _realRenameSync(oldPath, newPath);
+  });
+  try {
+    // fn() (runP14) synchronously registers all test() calls, then returns
+    // main()'s promise — awaiting it here keeps all 3 mocks installed for the
+    // entire synchronous test-registration phase AND the async main() phase,
+    // restoring only once every awaited test has genuinely finished.
+    return await fn();
+  } finally {
+    readMock.mock.restore();
+    writeMock.mock.restore();
+    renameMock.mock.restore();
+  }
+}
+
+function runP14() {
 const kfe  = require("../../backend/services/knowledgeFederationEngine.cjs");
 const kcor = require("../../backend/services/knowledgeCorrelationEngine.cjs");
 const kde  = require("../../backend/services/knowledgeDiscoveryEngine.cjs");
@@ -793,7 +893,15 @@ async function main() {
   console.log(`  Passed: ${passed}`);
   console.log(`  Failed: ${failed}`);
   console.log(`  Total:  ${passed + failed}`);
-  if (failed > 0) process.exit(1);
+  // Micro-Mission 36: process.exitCode (not process.exit()) — this only sets
+  // the eventual exit code once the event loop drains naturally, so the
+  // awaited call below and _withLessonsIsolation's finally-block mock
+  // restoration are both guaranteed to run first, on this path and on the
+  // catch path below.
+  if (failed > 0) process.exitCode = 1;
 }
 
-main().catch(e => { console.error(e); process.exit(1); });
+return main();
+} // end runP14()
+
+_withLessonsIsolation(runP14).catch(e => { console.error(e); process.exitCode = 1; });

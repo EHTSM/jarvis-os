@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./RevenueOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -52,7 +53,7 @@ function Chip({ children, color }) {
 
 function ScoreBar({ label, value, max = 100, accent }) {
   const pct = Math.min(100, Math.max(0, max > 0 ? (value / max * 100) : 0));
-  const col = accent || (pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#ef4444");
+  const col = accent || (pct >= 80 ? "var(--success)" : pct >= 50 ? "var(--warning)" : "var(--danger)");
   return (
     <div className="ro-score-row">
       <span className="ro-score-label">{label}</span>
@@ -74,18 +75,18 @@ function ExecutivePanel() {
   const d = exec.dashboard;
 
   const cards = [
-    { label: "MRR",            value: fmtK(d.revenue?.mrr),           icon: "◎", color: "#7c6fff",  sub: `ARR ${fmtK(d.revenue?.arr)}` },
-    { label: "Net Revenue",    value: fmtK(d.revenue?.netRevenue),     icon: "◉", color: "#22c55e",  sub: `Gross Margin ${d.revenue?.grossMarginPct}%` },
-    { label: "Expansion MRR",  value: fmtK(d.revenue?.expansionMRR),  icon: "✦", color: "#4ecdc4",  sub: "upgrades" },
-    { label: "30d Forecast",   value: fmtK(d.growth?.["30d_mrr"]),    icon: "⬡", color: "#f59e0b",  sub: "base scenario" },
+    { label: "MRR",            value: fmtK(d.revenue?.mrr),           icon: "◎", color: "var(--accent)",  sub: `ARR ${fmtK(d.revenue?.arr)}` },
+    { label: "Net Revenue",    value: fmtK(d.revenue?.netRevenue),     icon: "◉", color: "var(--success)",  sub: `Gross Margin ${d.revenue?.grossMarginPct}%` },
+    { label: "Expansion MRR",  value: fmtK(d.revenue?.expansionMRR),  icon: "✦", color: "var(--accent2)",  sub: "upgrades" },
+    { label: "30d Forecast",   value: fmtK(d.growth?.["30d_mrr"]),    icon: "⬡", color: "var(--warning)",  sub: "base scenario" },
     { label: "365d Forecast",  value: fmtK(d.growth?.["365d_mrr"]),   icon: "⬢", color: "#a78bfa",  sub: "base scenario" },
-    { label: "Active Subs",    value: d.conversion?.paidCount,         icon: "◈", color: "#22c55e",  sub: `${d.conversion?.trialCount} trials` },
-    { label: "Trial→Paid",     value: pct(d.conversion?.trialConversionRate), icon: "◇", color: "#f59e0b", sub: "conversion rate" },
-    { label: "Churn Rate",     value: pct(d.retention?.churnRate),     icon: "⊞", color: d.retention?.churnRate > 5 ? "#ef4444" : "#22c55e", sub: `${d.retention?.atRiskCount} at-risk` },
-    { label: "LTV",            value: fmtK(d.retention?.ltv),         icon: "✕", color: "#7c6fff",  sub: "avg per paid" },
-    { label: "AI Costs",       value: fmtK(d.aiCosts?.monthly),        icon: "◎", color: "#ef4444",  sub: `${d.aiCosts?.pctOfRevenue}% of MRR` },
-    { label: "Net Profit",     value: fmtK(d.profitability?.netProfit), icon: "◉", color: "#22c55e", sub: `${d.profitability?.netMarginPct}% margin` },
-    { label: "Affiliates",     value: d.affiliates?.total,             icon: "◈", color: "#4ecdc4",  sub: `${d.affiliates?.conversions} conversions` },
+    { label: "Active Subs",    value: d.conversion?.paidCount,         icon: "◈", color: "var(--success)",  sub: `${d.conversion?.trialCount} trials` },
+    { label: "Trial→Paid",     value: pct(d.conversion?.trialConversionRate), icon: "◇", color: "var(--warning)", sub: "conversion rate" },
+    { label: "Churn Rate",     value: pct(d.retention?.churnRate),     icon: "⊞", color: d.retention?.churnRate > 5 ? "var(--danger)" : "var(--success)", sub: `${d.retention?.atRiskCount} at-risk` },
+    { label: "LTV",            value: fmtK(d.retention?.ltv),         icon: "✕", color: "var(--accent)",  sub: "avg per paid" },
+    { label: "AI Costs",       value: fmtK(d.aiCosts?.monthly),        icon: "◎", color: "var(--danger)",  sub: `${d.aiCosts?.pctOfRevenue}% of MRR` },
+    { label: "Net Profit",     value: fmtK(d.profitability?.netProfit), icon: "◉", color: "var(--success)", sub: `${d.profitability?.netMarginPct}% margin` },
+    { label: "Affiliates",     value: d.affiliates?.total,             icon: "◈", color: "var(--accent2)",  sub: `${d.affiliates?.conversions} conversions` },
   ];
 
   return (
@@ -108,16 +109,16 @@ function ExecutivePanel() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10, marginTop: 12 }}>
         <div className="ro-card">
           <div className="ro-card-title">Profitability</div>
-          <ScoreBar label="Gross Margin"  value={d.revenue?.grossMarginPct || 0}   accent="#22c55e" />
-          <ScoreBar label="Net Margin"    value={d.profitability?.netMarginPct || 0} accent="#7c6fff" />
-          <ScoreBar label="Trial Conversion" value={d.conversion?.trialConversionRate || 0} accent="#f59e0b" />
+          <ScoreBar label="Gross Margin"  value={d.revenue?.grossMarginPct || 0}   accent="var(--success)" />
+          <ScoreBar label="Net Margin"    value={d.profitability?.netMarginPct || 0} accent="var(--accent)" />
+          <ScoreBar label="Trial Conversion" value={d.conversion?.trialConversionRate || 0} accent="var(--warning)" />
         </div>
         <div className="ro-card">
           <div className="ro-card-title">Growth Trajectory (base)</div>
           {[["30d", d.growth?.["30d_mrr"]], ["90d", d.growth?.["90d_mrr"]], ["365d", d.growth?.["365d_mrr"]]].map(([label, val]) => (
             <div key={label} className="ro-kv-row">
               <span className="ro-kv-key">{label} MRR</span>
-              <span className="ro-kv-val" style={{ color: "#4ecdc4" }}>{fmtK(val)}</span>
+              <span className="ro-kv-val" style={{ color: "var(--accent2)" }}>{fmtK(val)}</span>
             </div>
           ))}
         </div>
@@ -149,13 +150,13 @@ function RevenueDashboardPanel() {
       </div>
 
       <div className="ro-stats-grid" style={{ marginBottom: 12 }}>
-        <StatCard label="MRR"                 value={fmtK(d.mrr)}                  accent="#7c6fff" />
-        <StatCard label="ARR"                 value={fmtK(d.arr)}                  accent="#22c55e" />
-        <StatCard label="Active Subscriptions" value={d.activeSubscriptions}        accent="#4ecdc4" />
-        <StatCard label="Trial Conversion"    value={pct(d.trialConversionRate)}   accent="#f59e0b" />
+        <StatCard label="MRR"                 value={fmtK(d.mrr)}                  accent="var(--accent)" />
+        <StatCard label="ARR"                 value={fmtK(d.arr)}                  accent="var(--success)" />
+        <StatCard label="Active Subscriptions" value={d.activeSubscriptions}        accent="var(--accent2)" />
+        <StatCard label="Trial Conversion"    value={pct(d.trialConversionRate)}   accent="var(--warning)" />
         <StatCard label="Expansion MRR"       value={fmtK(d.expansionMRR)}         accent="#a78bfa" />
-        <StatCard label="Churn Rate"          value={pct(d.churnRate)}             accent={d.churnRate > 5 ? "#ef4444" : "#22c55e"} />
-        <StatCard label="Avg LTV"             value={fmtK(d.ltv)}                  accent="#7c6fff" />
+        <StatCard label="Churn Rate"          value={pct(d.churnRate)}             accent={d.churnRate > 5 ? "var(--danger)" : "var(--success)"} />
+        <StatCard label="Avg LTV"             value={fmtK(d.ltv)}                  accent="var(--accent)" />
         <StatCard label="Total Accounts"      value={d.totalAccounts} />
       </div>
 
@@ -178,9 +179,9 @@ function RevenueDashboardPanel() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
         <div className="ro-card">
           <div className="ro-card-title">Revenue Health</div>
-          <ScoreBar label="Gross Margin"     value={d.grossMargin || 75} accent="#22c55e" />
-          <ScoreBar label="Trial Conversion" value={d.trialConversionRate || 0} accent="#f59e0b" />
-          <ScoreBar label="Retention"        value={Math.max(0, 100 - (d.churnRate || 0))} accent="#7c6fff" />
+          <ScoreBar label="Gross Margin"     value={d.grossMargin || 75} accent="var(--success)" />
+          <ScoreBar label="Trial Conversion" value={d.trialConversionRate || 0} accent="var(--warning)" />
+          <ScoreBar label="Retention"        value={Math.max(0, 100 - (d.churnRate || 0))} accent="var(--accent)" />
         </div>
         <div className="ro-card">
           <div className="ro-card-title">Plan Mix</div>
@@ -231,7 +232,7 @@ function LifecyclePanel() {
   };
 
   const PLAN_ORDER = ["free","starter","growth","team","enterprise"];
-  const STATUS_COLOR = { active: "#22c55e", trialing: "#f59e0b", cancelled: "#ef4444", paused: "#888" };
+  const STATUS_COLOR = { active: "var(--success)", trialing: "var(--warning)", cancelled: "var(--danger)", paused: "#888" };
 
   return (
     <div>
@@ -264,10 +265,10 @@ function LifecyclePanel() {
             <select className="ro-select" value={form.plan} onChange={e => setForm(f => ({...f, plan: e.target.value}))}>
               {PLAN_ORDER.map(p => <option key={p} value={p}>{p}</option>)}
             </select>
-            <button className="ro-btn-sm" style={{ color: "#22c55e" }} onClick={doUpgrade}>Upgrade/Downgrade</button>
-            <button className="ro-btn-sm" style={{ color: "#f59e0b" }} onClick={doPause}>Pause</button>
-            <button className="ro-btn-sm" style={{ color: "#7c6fff" }} onClick={doReactivate}>Reactivate</button>
-            <button className="ro-btn-sm" style={{ color: "#ef4444" }} onClick={doCancel}>Cancel</button>
+            <button className="ro-btn-sm" style={{ color: "var(--success)" }} onClick={doUpgrade}>Upgrade/Downgrade</button>
+            <button className="ro-btn-sm" style={{ color: "var(--warning)" }} onClick={doPause}>Pause</button>
+            <button className="ro-btn-sm" style={{ color: "var(--accent)" }} onClick={doReactivate}>Reactivate</button>
+            <button className="ro-btn-sm" style={{ color: "var(--danger)" }} onClick={doCancel}>Cancel</button>
           </div>
         </div>
       )}
@@ -319,7 +320,7 @@ function UpgradeIntelligencePanel() {
   const SIGNAL_DEFS = data?.definitions || [];
   const allSignals  = data?.signals || [];
 
-  const URGENCY_COLOR = { high: "#ef4444", medium: "#f59e0b", low: "#22c55e" };
+  const URGENCY_COLOR = { high: "var(--danger)", medium: "var(--warning)", low: "var(--success)" };
 
   return (
     <div>
@@ -338,15 +339,15 @@ function UpgradeIntelligencePanel() {
           {result && (
             <div style={{ marginTop: 10 }}>
               <div className="ro-kv-row"><span className="ro-kv-key">Current Plan</span><span className="ro-kv-val">{result.currentPlan}</span></div>
-              <div className="ro-kv-row"><span className="ro-kv-key">Target Plan</span><span className="ro-kv-val" style={{ color: "#7c6fff" }}>{result.targetPlan}</span></div>
+              <div className="ro-kv-row"><span className="ro-kv-key">Target Plan</span><span className="ro-kv-val" style={{ color: "var(--accent)" }}>{result.targetPlan}</span></div>
               <div className="ro-kv-row"><span className="ro-kv-key">Score</span><span className="ro-kv-val">{result.score}</span></div>
               <div className="ro-kv-row"><span className="ro-kv-key">Credit Usage</span><span className="ro-kv-val">{result.creditUsagePct}%</span></div>
               {result.shouldPrompt && result.prompt && (
                 <div className="ro-prompt-box" style={{ marginTop: 8 }}>
-                  <div style={{ fontWeight: 700, color: "#f59e0b", marginBottom: 4 }}>{result.prompt.headline}</div>
+                  <div style={{ fontWeight: 700, color: "var(--warning)", marginBottom: 4 }}>{result.prompt.headline}</div>
                   <div style={{ fontSize: 12, color: "#ccc", marginBottom: 8 }}>{result.prompt.body}</div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <button className="ro-btn-sm" style={{ color: "#22c55e" }}>{result.prompt.cta}</button>
+                    <button className="ro-btn-sm" style={{ color: "var(--success)" }}>{result.prompt.cta}</button>
                     <Chip color={URGENCY_COLOR[result.prompt.urgency] ? "" : "gray"}>
                       <span style={{ color: URGENCY_COLOR[result.prompt.urgency] }}>{result.prompt.urgency} urgency</span>
                     </Chip>
@@ -383,7 +384,7 @@ function UpgradeIntelligencePanel() {
               <div className="ro-row-meta">Target: {s.plan} · Weight: {s.weight}</div>
             </div>
             <div className="ro-bar-wrap">
-              <div className="ro-bar-fill" style={{ width: `${s.weight}%`, background: "#7c6fff" }} />
+              <div className="ro-bar-fill" style={{ width: `${s.weight}%`, background: "var(--accent)" }} />
             </div>
           </div>
         ))}
@@ -433,7 +434,7 @@ function CustomerSuccessPanel() {
     toast("Renewal reminder sent");
   };
 
-  const GRADE_COLOR = { A: "#22c55e", B: "#f59e0b", C: "#ef4444", D: "#ef4444" };
+  const GRADE_COLOR = { A: "var(--success)", B: "var(--warning)", C: "var(--danger)", D: "var(--danger)" };
 
   return (
     <div>
@@ -461,7 +462,7 @@ function CustomerSuccessPanel() {
               </div>
 
               {Object.entries(health.breakdown || {}).map(([k, v]) => (
-                <ScoreBar key={k} label={k.replace(/_/g, " ")} value={v} accent="#7c6fff" />
+                <ScoreBar key={k} label={k.replace(/_/g, " ")} value={v} accent="var(--accent)" />
               ))}
 
               {health.activePlaybook && (
@@ -512,7 +513,7 @@ function CustomerSuccessPanel() {
             <div className="ro-list" style={{ marginTop: 8 }}>
               {!list && <div className="ro-hint">Click "Load All" to see all customer health scores.</div>}
               {list?.slice(0,8).map(h => (
-                <div key={h.accountId} className="ro-row" onClick={() => { setAccountId(h.accountId); setHealth(h); }} style={{ cursor: "pointer" }}>
+                <div key={h.accountId} className="ro-row" {...clickableProps(() => { setAccountId(h.accountId); setHealth(h); })} style={{ cursor: "pointer" }}>
                   <div style={{ fontSize: 18, fontWeight: 900, color: GRADE_COLOR[h.grade], width: 24, flexShrink: 0 }}>{h.grade}</div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="ro-row-name">{h.accountId}</div>
@@ -561,7 +562,7 @@ function ChurnPanel() {
     setView("surveys");
   };
 
-  const LEVEL_COLOR = { critical: "#ef4444", high: "#ef4444", medium: "#f59e0b", low: "#22c55e" };
+  const LEVEL_COLOR = { critical: "var(--danger)", high: "var(--danger)", medium: "var(--warning)", low: "var(--success)" };
   const riskList   = risks?.risks || [];
   const surveyList = surveys?.surveys || [];
   const templates  = risks?.templates || [];
@@ -588,7 +589,7 @@ function ChurnPanel() {
                   <div className="ro-row-name">{r.accountId}</div>
                   <div className="ro-row-meta">Score: {r.riskScore} · {r.signals?.length || 0} signals detected</div>
                   {r.winbackRecommendation && (
-                    <div className="ro-row-meta" style={{ color: "#f59e0b" }}>Recommended: {r.winbackRecommendation.subject}</div>
+                    <div className="ro-row-meta" style={{ color: "var(--warning)" }}>Recommended: {r.winbackRecommendation.subject}</div>
                   )}
                 </div>
                 <Chip color={r.riskLevel === "critical" || r.riskLevel === "high" ? "red" : r.riskLevel === "medium" ? "yellow" : "green"}>{r.riskLevel}</Chip>
@@ -700,7 +701,7 @@ function ForecastPanel() {
     setRunning(false);
   };
 
-  const SCENARIO_COLOR = { conservative: "#888", base: "#7c6fff", optimistic: "#22c55e" };
+  const SCENARIO_COLOR = { conservative: "#888", base: "var(--accent)", optimistic: "var(--success)" };
   const savedList = saved?.forecasts || [];
 
   return (
@@ -798,7 +799,7 @@ function AffiliatePanel() {
   const tiers     = data?.tiers     || {};
   const list      = data?.affiliates || [];
 
-  const TIER_COLOR = { ambassador: "#888", partner: "#f59e0b", reseller: "#7c6fff", enterprise: "#22c55e" };
+  const TIER_COLOR = { ambassador: "#888", partner: "var(--warning)", reseller: "var(--accent)", enterprise: "var(--success)" };
 
   return (
     <div>
@@ -812,10 +813,10 @@ function AffiliatePanel() {
       </div>
 
       <div className="ro-stats-grid" style={{ margin: "10px 0" }}>
-        <StatCard label="Partners"         value={analytics.totalAffiliates}   accent="#7c6fff" />
-        <StatCard label="Conversions"      value={analytics.totalConversions}  accent="#22c55e" />
-        <StatCard label="Total Commissions" value={fmtK(analytics.totalCommissions)} accent="#f59e0b" />
-        <StatCard label="Pending Payout"   value={fmtK(analytics.totalPendingPayout)} accent="#ef4444" />
+        <StatCard label="Partners"         value={analytics.totalAffiliates}   accent="var(--accent)" />
+        <StatCard label="Conversions"      value={analytics.totalConversions}  accent="var(--success)" />
+        <StatCard label="Total Commissions" value={fmtK(analytics.totalCommissions)} accent="var(--warning)" />
+        <StatCard label="Pending Payout"   value={fmtK(analytics.totalPendingPayout)} accent="var(--danger)" />
         <StatCard label="Total Paid Out"   value={fmtK(analytics.totalPaidOut)} />
       </div>
 
@@ -833,7 +834,7 @@ function AffiliatePanel() {
               </div>
               <Chip color={TIER_COLOR[a.tier] ? "" : "gray"}><span style={{ color: TIER_COLOR[a.tier] }}>{a.tier}</span></Chip>
               {a.pendingPayout >= (tiers[a.tier]?.payoutThreshold || 0) && (
-                <button className="ro-btn-sm" style={{ color: "#22c55e" }} onClick={() => payout(a.id)}>Process Payout</button>
+                <button className="ro-btn-sm" style={{ color: "var(--success)" }} onClick={() => payout(a.id)}>Process Payout</button>
               )}
             </div>
           ))}
@@ -917,9 +918,22 @@ function FinancePanel() {
 
   const issueRefund = async () => {
     if (!refForm.accountId) return;
-    await post("/revenue/finance/refund", { ...refForm, amount: Number(refForm.amount) || 0 });
+    // POST /revenue/finance/refund does NOT issue a credit note — it enqueues an
+    // approval request (202 pending_approval / auto_approved) and only the
+    // separate /refund/:reqId/execute call creates the credit note. This used to
+    // toast "Credit note issued" unconditionally and reload the credit-note list,
+    // so an operator saw a refund-succeeded message and an unchanged list for a
+    // refund that was still sitting unapproved — reporting money moved when none
+    // had. Report the real returned state instead.
+    const res = await post("/revenue/finance/refund", { ...refForm, amount: Number(refForm.amount) || 0 });
     setRefForm({ accountId: "", invoiceId: "", reason: "customer_request", amount: "" });
-    toast("Credit note issued");
+    if (res?.reqId && res.status === "auto_approved") {
+      toast("Refund auto-approved — awaiting execution");
+    } else if (res?.reqId) {
+      toast("Refund requires approval before it is issued");
+    } else {
+      toast(res?.error || "Refund request failed");
+    }
     reloadCN();
     reloadRpt();
   };
@@ -927,7 +941,7 @@ function FinancePanel() {
   const rpt   = report?.report;
   const invList = invoices?.invoices || [];
   const cnList  = cns?.creditNotes  || [];
-  const STATUS_COLOR = { issued: "#f59e0b", paid: "#22c55e", overdue: "#ef4444", cancelled: "#888" };
+  const STATUS_COLOR = { issued: "var(--warning)", paid: "var(--success)", overdue: "var(--danger)", cancelled: "#888" };
 
   return (
     <div>
@@ -952,7 +966,7 @@ function FinancePanel() {
                 </div>
               </div>
               <Chip color={inv.status === "paid" ? "green" : inv.status === "issued" ? "yellow" : "gray"}>{inv.status}</Chip>
-              {inv.status === "issued" && <button className="ro-btn-sm" style={{ color: "#22c55e" }} onClick={() => markPaid(inv.id)}>Mark Paid</button>}
+              {inv.status === "issued" && <button className="ro-btn-sm" style={{ color: "var(--success)" }} onClick={() => markPaid(inv.id)}>Mark Paid</button>}
             </div>
           ))}
         </div>
@@ -1010,20 +1024,20 @@ function FinancePanel() {
       {view === "report" && rpt && (
         <div>
           <div className="ro-stats-grid" style={{ marginBottom: 12 }}>
-            <StatCard label="MRR"          value={fmtK(rpt.mrr)}           accent="#7c6fff" />
-            <StatCard label="Total Invoiced" value={fmtK(rpt.totalInvoiced)} accent="#22c55e" />
-            <StatCard label="Total Paid"   value={fmtK(rpt.totalPaid)}     accent="#22c55e" />
-            <StatCard label="Outstanding"  value={fmtK(rpt.totalOutstanding)} accent="#f59e0b" />
-            <StatCard label="Refunds"      value={fmtK(rpt.totalRefunds)}  accent="#ef4444" />
+            <StatCard label="MRR"          value={fmtK(rpt.mrr)}           accent="var(--accent)" />
+            <StatCard label="Total Invoiced" value={fmtK(rpt.totalInvoiced)} accent="var(--success)" />
+            <StatCard label="Total Paid"   value={fmtK(rpt.totalPaid)}     accent="var(--success)" />
+            <StatCard label="Outstanding"  value={fmtK(rpt.totalOutstanding)} accent="var(--warning)" />
+            <StatCard label="Refunds"      value={fmtK(rpt.totalRefunds)}  accent="var(--danger)" />
             <StatCard label="Tax"          value={fmtK(rpt.totalTax)} />
-            <StatCard label="Net Revenue"  value={fmtK(rpt.netRevenue)}    accent="#22c55e" />
+            <StatCard label="Net Revenue"  value={fmtK(rpt.netRevenue)}    accent="var(--success)" />
             <StatCard label="Gross Profit" value={fmtK(rpt.grossProfit)}   accent="#a78bfa" />
           </div>
           <div className="ro-card">
             <div className="ro-card-title">Revenue Report — {rpt.period}</div>
             <div className="ro-kv-row"><span className="ro-kv-key">Invoices</span><span className="ro-kv-val">{rpt.invoiceCount}</span></div>
             <div className="ro-kv-row"><span className="ro-kv-key">Credit Notes</span><span className="ro-kv-val">{rpt.refundCount}</span></div>
-            <div className="ro-kv-row"><span className="ro-kv-key">Affiliate Costs</span><span className="ro-kv-val" style={{ color: "#ef4444" }}>{fmtK(rpt.affiliateCosts)}</span></div>
+            <div className="ro-kv-row"><span className="ro-kv-key">Affiliate Costs</span><span className="ro-kv-val" style={{ color: "var(--danger)" }}>{fmtK(rpt.affiliateCosts)}</span></div>
             <div className="ro-kv-row"><span className="ro-kv-key">Generated At</span><span className="ro-kv-val">{rpt.generatedAt?.slice(0,19)?.replace("T"," ")}</span></div>
           </div>
         </div>
@@ -1045,7 +1059,7 @@ function BenchmarkPanel() {
     setRunning(false);
   };
 
-  const READINESS_COLOR = { production_ready: "#22c55e", nearly_ready: "#f59e0b", needs_work: "#ef4444" };
+  const READINESS_COLOR = { production_ready: "var(--success)", nearly_ready: "var(--warning)", needs_work: "var(--danger)" };
 
   return (
     <div>
@@ -1059,16 +1073,16 @@ function BenchmarkPanel() {
         <>
           <div className="ro-stats-grid" style={{ marginBottom: 16 }}>
             <StatCard label="Score"      value={`${result.score}%`}           accent={READINESS_COLOR[result.revenueReadiness]} />
-            <StatCard label="Passed"     value={`${result.passing}/${result.total}`} accent="#22c55e" />
+            <StatCard label="Passed"     value={`${result.passing}/${result.total}`} accent="var(--success)" />
             <StatCard label="Readiness"  value={result.revenueReadiness?.replace(/_/g," ")} accent={READINESS_COLOR[result.revenueReadiness]} />
-            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "#22c55e" : "#ef4444"} />
+            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "var(--success)" : "var(--danger)"} />
           </div>
           <div className="ro-list">
             {(result.checks || []).map(c => (
               <div key={c.id} className={`ro-row${c.ok ? "" : " ro-row-fail"}`}>
-                <span style={{ color: c.ok ? "#22c55e" : "#ef4444", fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
+                <span style={{ color: c.ok ? "var(--success)" : "var(--danger)", fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
                 <span className="ro-row-name" style={{ flex: 1 }}>{c.label}</span>
-                {c.error && <span className="ro-row-meta" style={{ color: "#ef4444" }}>{c.error}</span>}
+                {c.error && <span className="ro-row-meta" style={{ color: "var(--danger)" }}>{c.error}</span>}
                 <Chip color={c.ok ? "green" : "red"}>{c.ok ? "pass" : "fail"}</Chip>
               </div>
             ))}

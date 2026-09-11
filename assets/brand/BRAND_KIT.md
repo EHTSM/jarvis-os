@@ -33,25 +33,30 @@ background: linear-gradient(135deg, #7c6fff 0%, #4ecdc4 100%);
 
 ## Logo
 
-| File | Use case |
+The production mark is the **OVERRIDE symbol** — two bars, thick over thin,
+no curves, no letters. It is a code-generated SVG, not a static file, so it
+renders pixel-identically at any size.
+
+| Source | Context |
 |---|---|
-| `assets/brand/logo-full.svg` | README, docs, website header |
-| `assets/brand/logo-mark.svg` | Favicon, app icon, social avatar |
-| `assets/brand/logo-dark.svg` | Light backgrounds (pitch decks, print) |
-| `assets/icons/icon-512.svg` | App store, high-res contexts |
-| `assets/icons/icon-32.svg` | Toolbar, small UI contexts |
-| `assets/og/og-default.svg` | Twitter/OG card (1200×630) |
-| `frontend/public/favicon.svg` | Browser tab favicon |
-| `frontend/public/logo192.svg` | PWA icon (192×192) |
-| `frontend/public/logo512.svg` | PWA icon (512×512) |
+| `frontend/src/design/OoplixMark.jsx` / `OoplixWordmark.jsx` | React contexts — in-app UI (nav, auth screens) |
+| `assets/brand/brandRegistry.cjs` (`renderMarkSVG()`) | Build-time/static contexts — favicons, app icons, OG images |
+| `frontend/public/favicon.svg`, `logo192.svg`, `logo512.svg` | Generated output — browser tab, PWA icons |
+| `electron/assets/icon.png` / `.ico` / `.icns` | Generated output — desktop app icon (all platforms) |
+| `frontend/public/og-image.png`, `apple-touch-icon.png` | Generated output — social preview, iOS home screen |
+
+`assets/brand/logo-*.svg`, `assets/icons/*.svg`, `assets/og/og-default.svg`
+(a separate hexagon-mark design) predate the OVERRIDE mark's rollout into
+the app and were **never wired into any real screen or build target** —
+kept for history, not the source of truth. Do not use them for new work.
 
 ## Logo usage rules
 
-- **Do:** Use the gradient version on dark backgrounds
-- **Do:** Use `logo-dark.svg` on light/white backgrounds
-- **Do:** Maintain minimum clear space equal to the height of the "O" in Ooplix around the mark
-- **Don't:** Recolor, stretch, rotate, or add effects to the logo
-- **Don't:** Place the logo on backgrounds that reduce contrast below 4.5:1
+- **Do:** Use the mark on the dark canvas (`--bg`/`--surface` tokens above) — it is white bars, not itself gradient-colored
+- **Do:** Generate new sizes via `renderMarkSVG(size)` in `brandRegistry.cjs` rather than hand-drawing a new SVG
+- **Do:** Maintain minimum clear space equal to the mark's own padding (12.5% of its bounding box) around it
+- **Don't:** Recolor, stretch, rotate, or add effects to the mark
+- **Don't:** Place the mark on backgrounds that reduce contrast below 4.5:1
 
 ## Voice & Tone
 

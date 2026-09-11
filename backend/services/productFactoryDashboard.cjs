@@ -196,14 +196,15 @@ function getDashboard() {
 
 // ── Per-product view ──────────────────────────────────────────────────────────
 
-function getProductView(planId) {
+function getProductView(orgId, planId) {
+  if (!orgId) return { ok: false, error: "orgId required" };
   if (!planId) return { ok: false, error: "planId required" };
 
-  const plan       = _ppe()?.getPlan?.(planId) || null;
-  const arch       = _pae()?.getArchitectureForPlan?.(planId) || null;
-  const assembly   = _pasm()?.getAssemblyForPlan?.(planId)   || null;
-  const validation = _pve()?.getValidationForPlan?.(planId)  || null;
-  const release    = _pre()?.getReleaseForPlan?.(planId)     || null;
+  const plan       = _ppe()?.getPlan?.(orgId, planId) || null;
+  const arch       = _pae()?.getArchitectureForPlan?.(orgId, planId) || null;
+  const assembly   = _pasm()?.getAssemblyForPlan?.(orgId, planId)   || null;
+  const validation = _pve()?.getValidationForPlan?.(orgId, planId)  || null;
+  const release    = _pre()?.getReleaseForPlan?.(orgId, planId)     || null;
 
   if (!plan) return { ok: false, error: `plan not found: ${planId}` };
 

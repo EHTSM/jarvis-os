@@ -27,6 +27,8 @@ import { aiInlineExtension, setDiagsEffect, makeInlineDiffExtension, setInlineDi
 import FuzzyFinder from './FuzzyFinder';
 import LSPStatus from './LSPStatus';
 import './CodeEditorPane.css';
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -238,6 +240,26 @@ const TabBar = memo(function TabBar({ tabs, activeId, onSelect, onClose, onPin }
           key={tab.id}
           role="tab"
           aria-selected={tab.id === activeId}
+          /* B19.2.3: these tab nodes had no tabIndex and no key handler,
+             so the tab bar was unreachable by keyboard. Roving tabindex per the
+             WAI-ARIA tabs pattern: only the active tab is in the tab order;
+             Arrow keys move between tabs, Home/End jump to the ends. */
+          tabIndex={tab.id === activeId ? 0 : -1}
+          data-tab-id={tab.id}
+          onKeyDown={e => {
+            const i = tabs.findIndex(t => t.id === tab.id);
+            let next = null;
+            if (e.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+            else if (e.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+            else if (e.key === 'Home') next = tabs[0];
+            else if (e.key === 'End') next = tabs[tabs.length - 1];
+            else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(tab.id); return; }
+            if (!next) return;
+            e.preventDefault();
+            onSelect(next.id);
+            const el = e.currentTarget.parentElement?.querySelector(`[data-tab-id="${next.id}"]`);
+            if (el) el.focus();
+          }}
           className={[
             'cep-tab',
             tab.id === activeId ? 'cep-tab--active' : '',
@@ -248,7 +270,7 @@ const TabBar = memo(function TabBar({ tabs, activeId, onSelect, onClose, onPin }
           title={tab.path}
         >
           {tab.pinned && (
-            <span className="cep-tab__pin" title="Unpin" onClick={e => { e.stopPropagation(); onPin(tab.id, false); }}>
+            <span className="cep-tab__pin" title="Unpin" {...clickableProps(e => { e.stopPropagation(); onPin(tab.id, false); })}>
               ◈
             </span>
           )}
@@ -272,7 +294,7 @@ function RenameDialog({ path, onConfirm, onCancel }) {
   const inputRef = useRef(null);
   useEffect(() => { inputRef.current?.select(); }, []);
   return (
-    <div className="cep-rename-overlay" onClick={onCancel}>
+    <div className="cep-rename-overlay" {...overlayProps(onCancel)}>
       <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
         <div className="cep-rename-title">Rename File</div>
         <input
@@ -348,7 +370,7 @@ function AIContextMenu({ x, y, selection, filePath, onAction, onClose, onGoToDef
 
 function ProblemRow({ item, onJump }) {
   return (
-    <div className={`cep-problem cep-problem--${item.severity || 'info'}`} onClick={() => onJump?.(item)}>
+    <div className={`cep-problem cep-problem--${item.severity || 'info'}`} {...clickableProps(() => onJump?.(item))}>
       <span className="cep-problem__icon">
         {item.severity === 'error' ? '✖' : item.severity === 'warning' ? '⚠' : 'ℹ'}
       </span>
@@ -990,7 +1012,7 @@ export default function CodeEditorPane({
     <div className={`cep-shell ${className}`}>
       {/* Delete confirmation modal */}
       {confirmDeleteTab && (
-        <div className="cep-delete-overlay" onClick={() => setDeleteConfirm(null)}>
+        <div className="cep-delete-overlay" {...overlayProps(() => setDeleteConfirm(null))}>
           <div className="cep-delete-modal" onClick={e => e.stopPropagation()}>
             <div className="cep-delete-icon">🗑</div>
             <div className="cep-delete-title">Delete "{confirmDeleteTab.name}"?</div>
@@ -1082,7 +1104,7 @@ export default function CodeEditorPane({
 
       {/* Go-to-line overlay */}
       {gotoLine && (
-        <div className="cep-goto-overlay" onClick={() => setGotoLine(false)}>
+        <div className="cep-goto-overlay" {...overlayProps(() => setGotoLine(false))}>
           <div className="cep-goto-dialog" onClick={e => e.stopPropagation()}>
             <span className="cep-goto-label">Go to line</span>
             <input
@@ -1109,17 +1131,15 @@ export default function CodeEditorPane({
       {/* Breadcrumb — sticky, shows file path + enclosing symbol at cursor */}
       {activeTab && (
         <div className="cep-breadcrumb cep-breadcrumb--sticky">
-          <span
-            className="cep-breadcrumb__file"
-            title={activeTab.path}
-            onClick={() => setFuzzyMode('file')}
+          <span className="cep-breadcrumb__file"
+            title={activeTab.path} {...clickableProps(() => setFuzzyMode('file'))}
           >
             {activeTab.path?.split('/').slice(-2).join('/')}
           </span>
           {(() => { const sym = enclosingSymbol(symbols, activeLine); return sym ? (
             <>
               <span className="cep-breadcrumb__sep">›</span>
-              <span className="cep-breadcrumb__sym" onClick={() => setFuzzyMode('symbol')}>
+              <span className="cep-breadcrumb__sym" {...clickableProps(() => setFuzzyMode('symbol'))}>
                 {sym.name}
               </span>
             </>
@@ -1217,7 +1237,7 @@ export default function CodeEditorPane({
                       <div
                         key={i}
                         className="cep-refs__row"
-                        onClick={() => { openFile(r.filePath); setTimeout(() => jumpToLine(r.line), 200); }}
+                        {...clickableProps(() => { openFile(r.filePath); setTimeout(() => jumpToLine(r.line), 200); })}
                       >
                         <span className="cep-refs__file">{r.file}</span>
                         <span className="cep-refs__line">:{r.line}</span>
@@ -1283,7 +1303,7 @@ export default function CodeEditorPane({
 
       {/* Rename Symbol dialog */}
       {renameSymbol && (
-        <div className="cep-rename-overlay" onClick={() => setRenameSymbol(null)}>
+        <div className="cep-rename-overlay" {...overlayProps(() => setRenameSymbol(null))}>
           <div className="cep-rename-dialog" onClick={e => e.stopPropagation()}>
             <div className="cep-rename-title">Rename Symbol: <strong>{renameSymbol.name}</strong></div>
             <input

@@ -21,6 +21,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const EDIT_DIR = path.join(__dirname, "../../data/odi/editor");
 function _ensureDir() { if (!fs.existsSync(EDIT_DIR)) fs.mkdirSync(EDIT_DIR, { recursive: true }); }
@@ -55,6 +56,8 @@ const _sessions = new Map();
 
 async function startSession({ url } = {}) {
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

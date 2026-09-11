@@ -10,11 +10,18 @@
  *   missionOrchestrator        — mission creation
  *   autonomousExecutionRuntime — capability execution
  *   engineeringCapabilities    — repo_read, patch_generate, patch_apply,
- *                                build_run, test_run, rollback, git_commit
+ *                                build_run, test_run, rollback, git_commit,
+ *                                open_pr, security_scan, self_document,
+ *                                frontend_heal
+ *   selfHealingFrontend        — real Playwright-based frontend error
+ *                                detection + confidence-gated auto-patch
+ *                                (bridged via the frontend_heal capability)
  *   engineeringBenchmark       — I7-7 end-to-end validation (10 real scenarios)
  *   engineeringRuleRegistry    — patch/build/test rule consulting
  *   rootCauseAnalysisEngine    — failure root cause
  *   graphReasoningEngine       — affected component risk
+ *   codeReviewEngine           — real static security analysis (detectSecurity)
+ *   gitHubEngineeringAgent     — real GitHub PR creation (createPR)
  *   runtimeEventBus            — event fan-out
  *   agentRuntimeSupervisor     — agent tick triggers for collaboration handoffs
  *   continuousLearningEngine   — lesson recording
@@ -37,10 +44,22 @@
  *   5  patch_apply       — apply the staged change
  *   6  build_gate        — I7-3: run build, stop on failure, create recovery mission
  *   7  test_gate         — I7-4: run tests, benchmark, stop if red
- *   8  review_gate       — I7-5: review status + confidence check
- *   9  commit_gate       — I7-5: require approval + review + verification
- *   10 observe           — git status + diff post-commit
- *   11 learn             — lesson registration
+ *   8  frontend_heal     — opt-in (opts.healUrl), non-blocking: bridges the
+ *                          real selfHealingFrontend.heal() (Playwright error
+ *                          detection + confidence-gated auto-patch) into the
+ *                          pipeline instead of leaving it as a standalone
+ *                          HTTP-only flow
+ *   9  security_gate     — real static analysis (codeReviewEngine.detectSecurity)
+ *                          on the target file; blocks on any CRITICAL finding
+ *   10 review_gate       — I7-5: review status + confidence check
+ *   11 commit_gate       — I7-5: require approval + review + verification
+ *   12 open_pr           — opt-in (opts.openPR), non-blocking: real GitHub PR
+ *                          via gitHubEngineeringAgent.createPR if the commit's
+ *                          branch is already pushed; never pushes itself
+ *   13 self_document     — non-blocking: real markdown doc generated from the
+ *                          target file's actual exported functions + comments
+ *   14 observe           — git status + diff post-commit
+ *   15 learn             — lesson registration
  *
  * Public API:
  *   runPipeline(goal, opts)          → PipelineRun
@@ -71,6 +90,23 @@ function _bus()   { try { return require("../../agents/runtime/runtimeEventBus.c
 function _sup()   { try { return require("./agentRuntimeSupervisor.cjs");                     } catch { return null; } }
 function _le()    { try { return require("./continuousLearningEngine.cjs");                   } catch { return null; } }
 function _conf()  { try { return require("./engineeringConfidenceEngine.cjs");                } catch { return null; } }
+function _agentReg() { try { return require("../../agents/runtime/agentRegistry.cjs");        } catch { return null; } }
+
+// Maps a PIPELINE_STAGES agentHint (a descriptive role label — see stage
+// defs above) to a real agentRegistry id, ONLY if that id is genuinely
+// registered right now. agentHint values were never real registry ids
+// (confirmed: agentRegistry has no "agent_developer" etc. — bootstrapRuntime
+// registers real ids like "dev", "browser", "terminal"), so a direct
+// pass-through would let learn-stage suggestions reference agents that
+// don't exist. "dev" is the one real registered agent whose capabilities
+// (["dev"]) match what agent_developer/agent_tester/agent_reviewer stages
+// actually do in this pipeline (patch generation/apply, build, test).
+const _AGENT_HINT_MAP = { agent_developer: "dev", agent_tester: "dev", agent_reviewer: "dev" };
+function _resolveRealAgentId(agentHint) {
+    const candidate = _AGENT_HINT_MAP[agentHint] || agentHint;
+    const reg = _agentReg();
+    return reg?.get?.(candidate) ? candidate : null;
+}
 
 // ── Persistence ────────────────────────────────────────────────────────────────
 const DATA_DIR  = path.join(__dirname, "../../data");
@@ -78,6 +114,7 @@ const PIPE_FILE = path.join(DATA_DIR, "engineering-pipelines.json");
 
 let _store   = null;
 let _writing = false;
+let _dirty   = false;
 
 function _load() {
     if (_store) return _store;
@@ -87,17 +124,34 @@ function _load() {
     return _store;
 }
 
+// Real bug found while live-verifying the Software Engineering pipeline
+// (FINAL-JARVIS-DREAM-CERTIFICATION.md P1): _persist() previously dropped
+// any call that arrived while a write was already in flight — no queuing,
+// just `if (_writing) return`. runPipeline() calls _persist() multiple
+// times in quick succession (once per stage, plus once more on the
+// terminal status transition), so the FINAL, most important call — the
+// one recording "completed"/"failed" — could be silently dropped if an
+// earlier per-stage write was still in flight, leaving the persisted file
+// permanently stuck showing the second-to-last state. Confirmed live:
+// data/engineering-pipelines.json showed status:"running" on a pipeline
+// whose in-memory result (and console/log output) had already reached
+// status:"failed" — the write that would have recorded that never landed.
 function _persist() {
+    _dirty = true;
     if (_writing) return;
     _writing = true;
-    setImmediate(() => {
+    const _flush = () => {
+        _dirty = false;
         const tmp = PIPE_FILE + ".tmp";
         fs.writeFile(tmp, JSON.stringify({ ..._store, savedAt: new Date().toISOString() }, null, 2), "utf8", err => {
-            _writing = false;
-            if (!err) fs.rename(tmp, PIPE_FILE, () => {});
-            else logger.warn(`[PipelineCoord] save error: ${err.message}`);
+            if (err) logger.warn(`[PipelineCoord] save error: ${err.message}`);
+            fs.rename(tmp, PIPE_FILE, () => {
+                if (_dirty) { setImmediate(_flush); }  // state changed again mid-write — flush the latest, don't drop it
+                else { _writing = false; }
+            });
         });
-    });
+    };
+    setImmediate(_flush);
 }
 
 // ── ID helpers ─────────────────────────────────────────────────────────────────
@@ -113,7 +167,7 @@ function _emit(type, payload) {
 // ── Statistics ─────────────────────────────────────────────────────────────────
 const _stats = {
     total: 0, completed: 0, failed: 0, cancelled: 0,
-    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0,
+    buildGateBlocked: 0, testGateBlocked: 0, commitGateBlocked: 0, securityGateBlocked: 0,
     rollbacks: 0, recoveryMissionsCreated: 0,
     // i7-s2: expose cancel count for dashboard
     // i7-s10: validationRuns tracks I7-7 benchmark invocations
@@ -132,8 +186,12 @@ const PIPELINE_STAGES = [
     { id: "patch_apply",     label: "Patch Apply",         agentHint: "agent_developer",   capability: "patch_apply",    gate: null },
     { id: "build_gate",      label: "Build Gate",          agentHint: "agent_tester",      capability: "build_run",      gate: "build" },  // I7-3
     { id: "test_gate",       label: "Test Gate",           agentHint: "agent_tester",      capability: "test_run",       gate: "test" },   // I7-4
+    { id: "frontend_heal",   label: "Frontend Self-Heal",  agentHint: "agent_tester",      capability: "frontend_heal",  gate: null },      // opt-in (opts.healUrl), non-blocking — bridges selfHealingFrontend.cjs into the pipeline
+    { id: "security_gate",   label: "Security Gate",       agentHint: "agent_reviewer",    capability: "security_scan",  gate: "security" },
     { id: "review_gate",     label: "Review Gate",         agentHint: "agent_reviewer",    capability: null,             gate: "review" }, // I7-5
     { id: "commit_gate",     label: "Commit Gate",         agentHint: "agent_reviewer",    capability: "git_commit",     gate: "commit" }, // I7-5
+    { id: "open_pr",         label: "Open Pull Request",   agentHint: "agent_reviewer",    capability: "open_pr",        gate: null },      // opt-in, non-blocking — see _executeStage's "open_pr" case
+    { id: "self_document",   label: "Self-Document",       agentHint: "agent_developer",   capability: "self_document",  gate: null },      // non-blocking — real doc from the patched file's actual exports
     { id: "observe",         label: "Post-Commit Observe", agentHint: "agent_verifier",    capability: "git_status",     gate: null },
     { id: "learn",           label: "Learn",               agentHint: "agent_executive",   capability: null,             gate: null },
 ];
@@ -167,9 +225,18 @@ function _buildRun(goal, opts = {}) {
         pipelineId,
         goal:            goal.trim(),
         status:          "pending",
+        // Mission 51 (2026-08-26): optional, defaults to shared — identical
+        // pattern to missionMemory.cjs's own orgId field (see that file's
+        // header comment). null/undefined means a shared/operator-run
+        // pipeline (the vast majority, e.g. the I7-7 validation suite and
+        // any caller with no resolved org), unchanged behavior. When a real
+        // tenant-facing caller supplies one, resourceOwnership.cjs's
+        // assertOwnable() enforces it in pipeline.js's routes below.
+        orgId:           typeof opts.orgId === "string" && opts.orgId ? opts.orgId : null,
         missionId:       null,
         collaborationPlanId: null,
         commitHash:      null,
+        preCommitHash:   null,  // real rollback target — HEAD captured at repo_read, before any patch in this run
         approvalStatus:  opts.requireApproval !== false ? "pending" : "auto_approved",
         requireApproval: opts.requireApproval !== false,
         stages,
@@ -186,6 +253,12 @@ function _buildRun(goal, opts = {}) {
         failedStage:     null,
         stagesCompleted: 0,
         stagesTotal:     stages.length,
+        openPR:          opts.openPR === true,   // opt-in — the open_pr stage no-ops unless explicitly requested
+        prBase:          opts.prBase || "main",
+        prUrl:           null,
+        prNumber:        null,
+        healUrl:         opts.healUrl || null,    // opt-in — the frontend_heal stage no-ops without a live URL to check
+        healAutoApply:   opts.healAutoApply === true,
     };
 }
 
@@ -211,6 +284,22 @@ async function _patchValidateGate(run, stageState, opts) {
         const fs_ = require("fs");
         const ROOT = path.join(__dirname, "../../");
         const absPath = path.join(ROOT, spec.targetFile);
+        // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+        // (2026-08-21): spec.targetFile is fully caller-controlled
+        // (POST /pipeline/run, requireAuth-only) with no containment check
+        // here — path.join resolves "../" segments normally, so a
+        // targetFile like "../../../tmp/x" escapes ROOT entirely. A real
+        // read failure on the resolved path (EACCES/EISDIR — existsSync
+        // itself never throws) then leaked the absolute resolved path via
+        // e.message below, live-reproduced with a safe scratch fixture.
+        // Contained the same way exportFileService.cjs's resolveLocal()
+        // already does — reused pattern, not a new mechanism.
+        if (!absPath.startsWith(ROOT)) {
+            result.checks.push({ name: "target_file_exists", ok: false });
+            result.issues.push("Target file not found");
+            result.ok = false;
+            return result;
+        }
         if (!fs_.existsSync(absPath)) {
             result.checks.push({ name: "target_file_exists", ok: false });
             result.issues.push(`Target file not found: ${spec.targetFile}`);
@@ -219,23 +308,36 @@ async function _patchValidateGate(run, stageState, opts) {
         }
         result.checks.push({ name: "target_file_exists", ok: true });
 
-        // 3. Conflict check — patchTarget must appear exactly once
-        const content = fs_.readFileSync(absPath, "utf8");
-        const occurrences = content.split(spec.patchTarget).length - 1;
-        if (occurrences === 0) {
-            result.checks.push({ name: "patch_target_found", ok: false });
-            result.issues.push("patchTarget not found in file — already applied or file changed");
-            result.ok = false;
-        } else if (occurrences > 1) {
-            result.checks.push({ name: "patch_target_unique", ok: false });
-            result.issues.push(`patchTarget appears ${occurrences} times — ambiguous patch`);
-            result.ok = false;
+        // 3. Conflict check — patchTarget must appear exactly once.
+        // Full-content specs (e.g. from /coding/refactor's apply mode —
+        // see codingAssistant.js's _applyPatchSpecs "unify patch
+        // generation" note) replace the whole file rather than a string
+        // target, so there is no patchTarget to check for uniqueness; the
+        // file-existence check above is this spec type's real validation.
+        if (typeof spec.fullContent === "string") {
+            result.checks.push({ name: "full_content_patch", ok: true });
         } else {
-            result.checks.push({ name: "patch_target_unique", ok: true });
+            const content = fs_.readFileSync(absPath, "utf8");
+            const occurrences = content.split(spec.patchTarget).length - 1;
+            if (occurrences === 0) {
+                result.checks.push({ name: "patch_target_found", ok: false });
+                result.issues.push("patchTarget not found in file — already applied or file changed");
+                result.ok = false;
+            } else if (occurrences > 1) {
+                result.checks.push({ name: "patch_target_unique", ok: false });
+                result.issues.push(`patchTarget appears ${occurrences} times — ambiguous patch`);
+                result.ok = false;
+            } else {
+                result.checks.push({ name: "patch_target_unique", ok: true });
+            }
         }
     } catch (e) {
+        // Full detail logged server-side; the caller-facing issue text
+        // uses the already-safe, caller-relative spec.targetFile instead
+        // of the raw fs error, which always embeds the absolute path.
+        logger.warn(`[PipelineCoordinator] target file read failed: ${e.message}`);
         result.checks.push({ name: "file_read", ok: false });
-        result.issues.push(`File read error: ${e.message}`);
+        result.issues.push(`Could not read target file: ${spec.targetFile}`);
         result.ok = false;
         return result;
     }
@@ -282,14 +384,21 @@ async function _testGate(run, stageState) {
     const passed = result?.ok === true || (result?.fail === 0 && result?.pass > 0);
     if (!passed) {
         _stats.testGateBlocked++;
-        // Auto-rollback via capability
+        // Real rollback via capability. At test_gate, commit_gate has not
+        // run yet (it's a later stage), so nothing is committed — the
+        // correct real rollback target is the specific patched file
+        // (restore from HEAD), not a generic no-op. Falls back to the
+        // legacy unstage-only behavior if no patchSpec.targetFile is known
+        // (free-form goals with no tracked target file).
         try {
             const aer = _aer();
             if (aer) {
-                await aer.executeStage({ stageId: `rollback_${run.pipelineId}`, capability: "rollback", missionId: run.missionId, maxAttempts: 1 });
-                run.rollbackExecuted = true;
-                _stats.rollbacks++;
-                _emit("pipeline:rollback_executed", { pipelineId: run.pipelineId, reason: "test_gate_failed" });
+                const targetFile = run.patchSpec?.targetFile;
+                const rbInput = targetFile ? `rollback:file=${targetFile}` : "";
+                const rbRec = await aer.executeStage({ stageId: `rollback_${run.pipelineId}`, capability: "rollback", input: rbInput, missionId: run.missionId, maxAttempts: 1 });
+                run.rollbackExecuted = rbRec.status === "completed";
+                if (run.rollbackExecuted) _stats.rollbacks++;
+                _emit("pipeline:rollback_executed", { pipelineId: run.pipelineId, reason: "test_gate_failed", verified: run.rollbackExecuted, target: targetFile || "(unstage_only)" });
             }
         } catch {}
         const recoveryMission = _createRecoveryMission(run, "test_gate", `Tests failed: ${result?.fail || "?"} failures`);
@@ -299,6 +408,44 @@ async function _testGate(run, stageState) {
         }
     }
     return { ok: passed, testResult: result };
+}
+
+// Security gate — real static analysis via codeReviewEngine.detectSecurity,
+// blocks on any CRITICAL finding (eval, SQL injection, hardcoded secrets),
+// same real-rollback response as the build/test gates on failure. High/
+// medium/low findings do not block — they're recorded (via the
+// security_scan capability's own remember() call) for human review but
+// don't stop an otherwise-good patch, matching this pipeline's existing
+// design of hard-blocking only on unambiguous failure (build/test) and
+// soft-gating on judgment calls (review_gate's confidence threshold).
+async function _securityGate(run, stageState) {
+    const result = stageState.output ? (() => {
+        try { return JSON.parse(stageState.output); } catch { return null; }
+    })() : null;
+
+    // No target file scanned (free-form goal) is not a failure — nothing
+    // to block on.
+    const passed = !result?.scanned || (result?.critical ?? 0) === 0;
+    if (!passed) {
+        _stats.securityGateBlocked++;
+        try {
+            const aer = _aer();
+            if (aer) {
+                const targetFile = run.patchSpec?.targetFile;
+                const rbInput = targetFile ? `rollback:file=${targetFile}` : "";
+                const rbRec = await aer.executeStage({ stageId: `rollback_${run.pipelineId}`, capability: "rollback", input: rbInput, missionId: run.missionId, maxAttempts: 1 });
+                run.rollbackExecuted = rbRec.status === "completed";
+                if (run.rollbackExecuted) _stats.rollbacks++;
+                _emit("pipeline:rollback_executed", { pipelineId: run.pipelineId, reason: "security_gate_failed", verified: run.rollbackExecuted, target: targetFile || "(unstage_only)" });
+            }
+        } catch {}
+        const recoveryMission = _createRecoveryMission(run, "security_gate", `${result?.critical || "?"} critical security finding(s) in ${result?.file || "target file"}`);
+        if (recoveryMission) {
+            run.recoveryMissionId = recoveryMission.missionId || recoveryMission.id;
+            _stats.recoveryMissionsCreated++;
+        }
+    }
+    return { ok: passed, securityResult: result };
 }
 
 // I7-5: Review gate — confidence + rule registry check
@@ -423,10 +570,72 @@ async function _executeStage(run, stage) {
             }
             break;
         }
+        case "open_pr": {
+            // Opt-in, non-blocking: only attempts a PR if the caller asked
+            // for one (opts.openPR) AND a commit actually happened this
+            // run. A declined/skipped/failed PR attempt never fails the
+            // pipeline — the engineering change is already safely committed
+            // regardless of whether a PR could be opened (e.g. branch not
+            // yet pushed, no GITHUB_TOKEN configured). This mission's "no
+            // push" constraint means this stage will routinely report a
+            // clean, expected skip rather than a real PR in most runs.
+            if (!run.openPR || !run.commitHash) {
+                result = { success: true, output: JSON.stringify({ skipped: true, reason: !run.openPR ? "not requested (opts.openPR not set)" : "no commit was made this run" }) };
+                break;
+            }
+            const aer = _aer();
+            if (!aer) { result = { success: true, output: JSON.stringify({ skipped: true, reason: "autonomousExecutionRuntime unavailable" }) }; break; }
+            const spec = run.patchSpec;
+            const prTitle = spec?.commitMsg || `feat: ${run.goal.slice(0, 80)} [pipeline]`;
+            const rec = await aer.executeStage({
+                stageId:    stage.stageId,
+                capability: "open_pr",
+                input:      `title:"${prTitle}" base:${run.prBase || "main"}`,
+                missionId:  run.missionId,
+                maxAttempts: 1,
+            });
+            const out = rec.output ? (() => { try { return JSON.parse(rec.output); } catch { return null; } })() : null;
+            if (out?.opened) {
+                run.prUrl = out.url;
+                run.prNumber = out.number;
+            }
+            // Never blocks the pipeline — always reports success at the
+            // stage level, with the real outcome (opened vs. declined)
+            // recorded in the output for visibility.
+            result = { success: true, output: rec.output || JSON.stringify({ skipped: true, reason: rec.error || "PR not opened" }) };
+            break;
+        }
         case "learn": {
+            // Autonomous Learning Engine V2 — this stage already recorded a
+            // lesson and (nominally) consulted RCA; it never actually fed
+            // the result back into anything that changes future behavior.
+            // Three additive fixes, all reusing existing systems as-is:
+            //  1. `_rca()?.analyzePattern?.()` was a dead call — that method
+            //     does not exist on rootCauseAnalysisEngine's real export
+            //     surface (verified: module.exports lists runAnalysis,
+            //     getAnalysis, listAnalyses, recordFixSuccess, listPlaybooks,
+            //     getStats, invalidate — no analyzePattern). Silently no-op'd
+            //     via optional chaining, so RCA was never actually invoked on
+            //     pipeline failure. Fixed to call the real runAnalysis({force})
+            //     — RCA's actual designed entry point for a fresh corpus scan.
+            //  2. engineeringRuleRegistry.extractFromMission(missionId) was
+            //     never called from here — the pipeline's own missionId is
+            //     already available (run.missionId), so on success this now
+            //     promotes real rule candidates from this mission's decisions,
+            //     exactly like extractFromMission is used elsewhere.
+            //  3. continuousLearningEngine.applyLearningRecord() existed but
+            //     had zero real callers anywhere in the codebase — a fully
+            //     built, human-approval-gated write-back with no path to
+            //     reach it. It still cannot self-apply (approvedBy is
+            //     required by design — "no self-applied learning"), so this
+            //     does not call it directly. Instead it attaches a structured
+            //     `suggestedAction` to the lesson so a human/operator can
+            //     approve it via the new POST /p19/learn/lessons/:id/apply
+            //     route, closing the loop without weakening the safety gate.
+            let lessonId = null;
             try {
                 const success = run.status !== "failed";
-                _le()?.createLesson?.({
+                const created = _le()?.createLesson?.({
                     type:     success ? "success" : "failure",
                     severity: success ? "info" : "warning",
                     source:   "pipeline_coordinator",
@@ -434,14 +643,43 @@ async function _executeStage(run, stage) {
                     detail:   `${run.stagesCompleted}/${run.stagesTotal} stages, ${run.durationMs}ms${run.commitHash ? `, commit ${run.commitHash}` : ""}${run.rollbackExecuted ? ", rolled back" : ""}`,
                     tags:     ["pipeline", "engineering", success ? "success" : "failure"],
                     missionId: run.missionId,
+                    agentId:  run.agentHint || null,
                 });
-                // RCA consultation for failed pipelines
-                if (!success && run.failedStage) {
-                    _rca()?.analyzePattern?.({ errorType: run.failedStage, context: run.goal });
+                lessonId = created?.lessonId || null;
+
+                // Suggested action: nudge the preferenceWeight of the agent
+                // that actually did the work (patch_apply's agentHint), in
+                // the direction of the real outcome. Small, bounded, and
+                // only ever applied after human approval. PIPELINE_STAGES'
+                // agentHint values (agent_developer, agent_tester, ...) are
+                // descriptive role labels, NOT real agentRegistry ids — a
+                // real registry lookup (via agentRegistry.get, the same
+                // check applyLearningRecord itself performs) confirms
+                // whether one exists before attaching anything, so this
+                // never proposes an action against a non-existent agent.
+                const applyStage = run.stages?.find(s => s.id === "patch_apply");
+                if (lessonId && applyStage?.agentHint) {
+                    const realAgentId = _resolveRealAgentId(applyStage.agentHint);
+                    if (realAgentId) {
+                        _le()?.attachSuggestedAction?.(lessonId, {
+                            agentId: realAgentId,
+                            weightDelta: success ? 0.05 : -0.05,
+                        });
+                    }
                 }
-                result = { success: true, output: JSON.stringify({ lessonRegistered: true }) };
+
+                let ruleExtraction = null;
+                let rcaTriggered = false;
+                if (success && run.missionId) {
+                    ruleExtraction = _rules()?.extractFromMission?.(run.missionId) || null;
+                } else if (!success && run.failedStage) {
+                    _rca()?.runAnalysis?.({ force: true });
+                    rcaTriggered = true;
+                }
+
+                result = { success: true, output: JSON.stringify({ lessonRegistered: true, lessonId, rulesExtracted: ruleExtraction?.extracted || 0, rcaTriggered }) };
             } catch (e) {
-                result = { success: true, output: JSON.stringify({ error: e.message }) };
+                result = { success: true, output: JSON.stringify({ error: e.message, lessonId }) };
             }
             break;
         }
@@ -458,6 +696,12 @@ async function _executeStage(run, stage) {
                 if (stage.id === "patch_generate" && run.patchSpec?.patchTarget) {
                     input = `patch_generate: ${run.goal} — target: ${run.patchSpec.patchTarget.slice(0, 80)}`;
                 }
+                if ((stage.id === "security_gate" || stage.id === "self_document") && run.patchSpec?.targetFile) {
+                    input = `file:${run.patchSpec.targetFile}`;
+                }
+                if (stage.id === "frontend_heal" && run.healUrl) {
+                    input = `url:${run.healUrl}${run.healAutoApply ? " autoApply:true" : ""}`;
+                }
                 const rec = await aer.executeStage({
                     stageId:     stage.stageId,
                     capability:  stage.capability,
@@ -470,6 +714,12 @@ async function _executeStage(run, stage) {
                     output:  rec.output,
                     error:   rec.error,
                 };
+                // Capture the pre-patch HEAD from repo_read — this is the
+                // real rollback target used later if a commit needs
+                // reverting (see _rollback:commit= in engineeringCapabilities.cjs).
+                if (stage.id === "repo_read" && result.success && result.output) {
+                    try { run.preCommitHash = JSON.parse(result.output).headCommit || null; } catch {}
+                }
                 // Build gate check after build_run
                 if (stage.id === "build_gate") {
                     stage.output = rec.output;
@@ -490,6 +740,17 @@ async function _executeStage(run, stage) {
                     if (!gateResult.ok) {
                         result.success = false;
                         result.error   = `Test gate blocked: tests failed`;
+                    }
+                }
+                // Security gate check after security_scan
+                if (stage.id === "security_gate") {
+                    stage.output = rec.output;
+                    stage.error  = rec.error;
+                    const gateResult = await _securityGate(run, stage);
+                    stage.gateResult = gateResult;
+                    if (!gateResult.ok) {
+                        result.success = false;
+                        result.error   = `Security gate blocked: ${gateResult.securityResult?.critical || "?"} critical finding(s)`;
                     }
                 }
             } else {
@@ -548,7 +809,7 @@ async function runPipeline(goal, opts = {}) {
                 })),
                 parallelGroups:     [],
                 approvalStages:     run.requireApproval ? [{ afterAgent: "agent_reviewer", approvalNote: "Human review required before commit" }] : [],
-                completionCriteria: [{ type: "all_stages_done", description: "All 11 pipeline stages completed" }],
+                completionCriteria: [{ type: "all_stages_done", description: `All ${PIPELINE_STAGES.length} pipeline stages completed` }],
             });
             if (plan) run.collaborationPlanId = plan.planId;
         } catch {}

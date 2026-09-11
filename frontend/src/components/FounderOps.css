@@ -1,17 +1,17 @@
 /* CO2 Founder Ops — FounderOps.css */
 :root {
-  --fo-bg:      #0d0d11;
-  --fo-surface: #141418;
-  --fo-border:  #1e1e28;
-  --fo-text:    #e0e0e8;
-  --fo-muted:   #888;
-  --fo-accent:  #7c6fff;
-  --fo-green:   #22c55e;
-  --fo-teal:    #4ecdc4;
-  --fo-yellow:  #f59e0b;
-  --fo-red:     #ef4444;
-  --fo-orange:  #f97316;
-  --fo-blue:    #60a5fa;
+  --fo-bg: var(--bg);
+  --fo-surface: var(--surface);
+  --fo-border: var(--border);
+  --fo-text: var(--text);
+  --fo-muted: var(--text-dim);
+  --fo-accent: var(--accent);
+  --fo-green: var(--success);
+  --fo-teal: var(--accent2);
+  --fo-yellow: var(--warning);
+  --fo-red: var(--danger);
+  --fo-orange: var(--warning);
+  --fo-blue: var(--info);
 }
 
 .fo-root { background: var(--fo-bg); color: var(--fo-text); min-height: 100%; font-family: "Inter", system-ui, sans-serif; font-size: 13px; }
@@ -78,7 +78,7 @@
 .fo-check-item.critical    { border-left: 3px solid rgba(239,68,68,.4); }
 .fo-check-item.done.critical { border-left: 3px solid var(--fo-green) !important; }
 .fo-check-box  { width: 16px; height: 16px; border: 1.5px solid var(--fo-border); border-radius: 3px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; font-size: 10px; }
-.fo-check-box.done { background: var(--fo-green); border-color: var(--fo-green); color: #000; }
+.fo-check-box.done { background: var(--fo-green); border-color: var(--fo-green); color: var(--on-success); }
 .fo-check-lbl  { font-size: 12px; font-weight: 500; color: var(--fo-text); }
 .fo-check-cat  { font-size: 10px; color: var(--fo-muted); text-transform: uppercase; letter-spacing: 0.05em; }
 .fo-check-note { font-size: 10px; color: var(--fo-muted); margin-top: 2px; font-style: italic; }
@@ -108,7 +108,7 @@
 .fo-tag-row { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 
 /* buttons */
-.fo-btn { background: var(--fo-accent); border: none; border-radius: 5px; color: #fff; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
+.fo-btn { background: var(--fo-accent); border: none; border-radius: 5px; color: var(--on-accent); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
 .fo-btn:hover    { opacity: 0.85; }
 .fo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .fo-btn-sm { background: rgba(255,255,255,.06); border: 1px solid var(--fo-border); border-radius: 4px; color: var(--fo-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }

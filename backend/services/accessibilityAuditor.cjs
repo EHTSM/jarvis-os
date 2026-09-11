@@ -17,6 +17,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const A11Y_DIR = path.join(__dirname, "../../data/odi/accessibility");
 
@@ -236,6 +237,8 @@ async function auditPage({ pageId, url } = {}) {
     if (!r.ok) return { ok: false, error: r.error };
     pid = r.pageId; page = r.page; closeAfter = true;
     if (url) {
+      const safety = await assertSafeNavigationTarget(url);
+      if (!safety.safe) { await session.closePage(pid).catch(() => {}); return { ok: false, error: `unsafe navigation target: ${safety.reason}` }; }
       try { await page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 }); }
       catch (e) { await session.closePage(pid).catch(() => {}); return { ok: false, error: e.message }; }
     }

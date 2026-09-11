@@ -70,7 +70,7 @@ const ROLE_LABELS = {
 
 const ROLE_COLORS = {
   user:   "#9a90ff",
-  jarvis: "#4ecdc4",
+  jarvis: "var(--accent2)",
   system: "#9b9fb7",
   error:  "#ff7b7b"
 };
@@ -330,9 +330,15 @@ export default function Chat({
 
       {/* Input row */}
       <div className="chat-input-row">
+        {/* C.1 (G1-B193): this control had only a placeholder, and that
+            placeholder CHANGES with state ("Connecting…", "Ooplix is
+            responding…"). A screen-reader user would hear a different field
+            name depending on connection status. aria-label gives it one stable
+            accessible name; the placeholder keeps carrying the status hint. */}
         <input
           ref={inputRef}
           className="chat-input"
+          aria-label="Message Ooplix"
           value={input}
           onChange={e => onInput(e.target.value)}
           onKeyDown={onKey}

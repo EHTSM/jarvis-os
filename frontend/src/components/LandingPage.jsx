@@ -19,43 +19,43 @@ function _scrollTo(id) {
 }
 
 const TRUST_ITEMS = [
-  "Engineering teams",
-  "Platform leads",
-  "DevOps operators",
+  "Solo founders",
+  "Small teams",
   "Technical founders",
-  "Infrastructure orgs",
+  "Growth operators",
+  "Service businesses",
 ];
 
 const HOW_IT_WORKS = [
   {
     symbol: "◉",
     num: "01",
-    title: "Detect",
-    body: "Ooplix watches your runtime, logs, queues, and metrics in real time.",
+    title: "Describe",
+    body: "Tell Ooplix a goal in plain language — a lead to follow up, a campaign to run, a feature to ship.",
   },
   {
     symbol: "⊕",
     num: "02",
-    title: "Decide",
-    body: "When something breaks or drifts, the AI identifies root cause and generates a fix — before you're paged.",
+    title: "Plan",
+    body: "Ooplix plans the work and routes it across the right agents — CRM, growth, engineering, or all three.",
   },
   {
     symbol: "▶",
     num: "03",
     title: "Execute",
-    body: "Fixes are queued for your approval or run autonomously based on your confidence thresholds.",
+    body: "Work is queued for your approval or runs autonomously based on your confidence thresholds.",
   },
 ];
 
 const CAPABILITIES = [
   {
-    title: "Self-Healing Runtime",
-    desc: "Detects failures, writes patches, deploys fixes.",
+    title: "Business OS",
+    desc: "CRM with WhatsApp + Telegram automation, deal pipeline, and payment links.",
     color: "violet",
   },
   {
-    title: "Execution Feed",
-    desc: "Live stream of every agent action across your stack.",
+    title: "Mission Feed",
+    desc: "Live stream of every agent action across your business.",
     color: "teal",
   },
   {
@@ -69,8 +69,8 @@ const CAPABILITIES = [
     color: "amber",
   },
   {
-    title: "Intelligence Layer",
-    desc: "Trend detection, anomaly alerts, predictive failure.",
+    title: "Growth OS",
+    desc: "Email, SMS, and WhatsApp campaigns with real-time lead intelligence.",
     color: "green",
   },
   {
@@ -81,30 +81,30 @@ const CAPABILITIES = [
 ];
 
 const TERMINAL_ROWS = [
-  { id: "eng-fix-001", status: "RUNNING",  task: "Patching memory leak in api-gateway pod #7",          elapsed: "3s"  },
-  { id: "mon-agent-02", status: "THINKING", task: "Analyzing P99 latency spike on /auth endpoint",       elapsed: "1s"  },
-  { id: "dep-agent-05", status: "DONE",     task: "Rolled back payments-svc to v2.4.1 — blast clear",   elapsed: "12s" },
+  { id: "crm-agent-001", status: "RUNNING",  task: "Following up with lead \"Acme Co\" on WhatsApp",       elapsed: "3s"  },
+  { id: "growth-agent-02", status: "THINKING", task: "Scoring 14 new leads by engagement signal",          elapsed: "1s"  },
+  { id: "pay-agent-05", status: "DONE",     task: "Payment link sent — deal moved to Won",                elapsed: "12s" },
   { id: "guard-003",    status: "RUNNING",  task: "Regression check: 47 tests passing, 0 failures",      elapsed: "6s"  },
-  { id: "intel-01",     status: "DONE",     task: "Anomaly resolved: DB connection pool restored",        elapsed: "28s" },
-  { id: "fix-agent-09", status: "RUNNING",  task: "Drafting hotfix for rate-limiter misconfiguration",   elapsed: "2s"  },
+  { id: "intel-01",     status: "DONE",     task: "Weekly follow-up sequence completed for 8 leads",       elapsed: "28s" },
+  { id: "eng-agent-09", status: "RUNNING",  task: "Drafting a fix for the failing checkout test",         elapsed: "2s"  },
 ];
 
 const BEFORE_ITEMS = [
-  "On-call engineer woken at 3am",
-  "20-minute mean time to detect",
-  "Manual root cause investigation",
-  "Git bisect to find the regression",
-  "Deploy rollback after 40 min of pain",
-  "Post-mortem written 3 days later",
+  "Leads followed up manually, if at all",
+  "Payment links created one at a time",
+  "Marketing campaigns built by hand each time",
+  "Engineering work planned and tracked separately",
+  "Reports assembled the night before a meeting",
+  "No single view of the business",
 ];
 
 const AFTER_ITEMS = [
-  "Ooplix detects and files a fix at 3am",
-  "Sub-60s detection via continuous telemetry",
-  "Root cause identified by the AI in seconds",
-  "Regression caught before it reaches production",
-  "Rollback executed autonomously within threshold",
-  "Scorecard auto-generated on resolution",
+  "Ooplix follows up with leads on WhatsApp automatically",
+  "Payment links generated in one click from a deal",
+  "Campaigns run from reusable templates and triggers",
+  "Engineering missions planned, executed, and tracked in one pipeline",
+  "Reports and the executive dashboard stay current on their own",
+  "One operating system for the whole business",
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ function InView({ children, delay = 0, className, style, y = 20 }) {
 // Nav
 // ─────────────────────────────────────────────────────────────────────────────
 
-function Nav({ onAccess }) {
+function Nav({ onAccess, onPricing, onLogin }) {
   const { scrollY } = useScroll();
   const [scrolled, setScrolled] = useState(false);
 
@@ -147,7 +147,9 @@ function Nav({ onAccess }) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
     >
-      <OoplixWordmark size={26} />
+      {/* The landing nav is a fixed dark surface in both themes
+          (rgba(3,5,10,.82)), so the wordmark opts into light-on-dark. */}
+      <OoplixWordmark size={26} dark />
 
       <ul className="lp-nav-links" role="list">
         {NAV_LINKS.map((l) => (
@@ -155,17 +157,41 @@ function Nav({ onAccess }) {
             <button className="lp-nav-link" onClick={() => _scrollTo(l.id)}>{l.label}</button>
           </li>
         ))}
+        {/* A.4.3 finding: PricingPage.jsx and the onPricing callback already
+            existed end-to-end (wired from App.jsx through LandingPage), but
+            Nav dropped the prop instead of rendering a trigger for it — a
+            founder deciding whether to trial the product had no way to see
+            pricing without signing up first. Recovered, not rebuilt: same
+            nav-link pattern as Features/How it works/Compare above. */}
+        {onPricing && (
+          <li>
+            <button className="lp-nav-link" onClick={onPricing}>Pricing</button>
+          </li>
+        )}
       </ul>
 
-      <motion.button
-        className="lp-btn-primary lp-nav-cta"
-        onClick={onAccess}
-        whileHover={{ scale: 1.03 }}
-        whileTap={{ scale: 0.97 }}
-        transition={spring.snappy}
-      >
-        Request access
-      </motion.button>
+      <div className="lp-nav-actions">
+        {/* A.4.3 finding: a returning founder had NO way to log in from the
+            public site at all — App.jsx already builds and passes down a
+            real, working onLogin (routes to the real login screen, itself
+            already wired to a real ForgotPassword flow), but it was never
+            rendered anywhere in Nav/Hero/CTASection, and even a direct
+            /login URL fell through to onboarding instead. Recovered the
+            existing callback with a visible trigger — no new auth screen,
+            no new routing logic. */}
+        {onLogin && (
+          <button className="lp-nav-link lp-nav-login" onClick={onLogin}>Log in</button>
+        )}
+        <motion.button
+          className="lp-btn-primary lp-nav-cta"
+          onClick={onAccess}
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.97 }}
+          transition={spring.snappy}
+        >
+          Start free trial
+        </motion.button>
+      </div>
     </motion.nav>
   );
 }
@@ -174,8 +200,8 @@ function Nav({ onAccess }) {
 // Hero
 // ─────────────────────────────────────────────────────────────────────────────
 
-const HERO_WORDS_LINE1 = ["Your", "infrastructure"];
-const HERO_WORDS_LINE2 = ["executes", "itself."];
+const HERO_WORDS_LINE1 = ["Your", "business"];
+const HERO_WORDS_LINE2 = ["runs", "itself."];
 
 function HeroWordStagger({ words, className, delay = 0 }) {
   return (
@@ -198,10 +224,10 @@ function HeroWordStagger({ words, className, delay = 0 }) {
 
 // Below-fold mock terminal in hero (scroll teaser)
 const HERO_TERMINAL_ROWS = [
-  { label: "◉ Monitoring 14 services across 3 regions", color: "violet" },
-  { label: "⊕ Anomaly detected: P99 spike on /api/auth", color: "amber" },
-  { label: "▶ Root cause: DB connection pool exhausted", color: "teal" },
-  { label: "✓ Fix generated · awaiting approval", color: "green" },
+  { label: "◉ Tracking 14 leads across 3 campaigns", color: "violet" },
+  { label: "⊕ Hot lead detected: \"Acme Co\" opened pricing page", color: "amber" },
+  { label: "▶ Follow-up: WhatsApp message queued", color: "teal" },
+  { label: "✓ Payment link sent · awaiting approval", color: "green" },
 ];
 
 function HeroTerminal() {
@@ -229,12 +255,12 @@ function HeroTerminal() {
         <span className="lp-term-dot lp-term-dot--red" />
         <span className="lp-term-dot lp-term-dot--amber" />
         <span className="lp-term-dot lp-term-dot--green" />
-        <span className="lp-term-title">ooplix — runtime watch</span>
+        <span className="lp-term-title">ooplix — mission feed</span>
       </div>
       <div className="lp-term-body">
         <div className="lp-term-prompt">
           <span className="lp-term-ps">$</span>
-          <span className="lp-term-cmd">ooplix watch --live</span>
+          <span className="lp-term-cmd">ooplix run --live</span>
           <motion.span
             className="lp-term-cursor"
             animate={{ opacity: [1, 0, 1] }}
@@ -276,7 +302,7 @@ function Hero({ onAccess }) {
             animate={{ scale: [1, 1.45, 1], opacity: [1, 0.55, 1] }}
             transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
           />
-          Autonomous Engineering Runtime
+          AI Operating System
         </motion.div>
 
         {/* H1 */}
@@ -293,8 +319,8 @@ function Hero({ onAccess }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...transition.enter, delay: 0.56 }}
         >
-          Ooplix monitors your stack, detects failures, writes fixes,
-          and deploys them — without waiting for a human to notice.
+          Ooplix runs workflows, follows up with leads on WhatsApp,
+          collects payments, and executes tasks autonomously.
         </motion.p>
 
         {/* CTAs */}
@@ -316,7 +342,7 @@ function Hero({ onAccess }) {
               animate={{ scale: [1, 1.4, 1], opacity: [1, 0.55, 1] }}
               transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
             />
-            Get early access
+            Start free trial
           </motion.button>
           <motion.button
             className="lp-btn-ghost"
@@ -343,7 +369,7 @@ function Hero({ onAccess }) {
 function TrustStrip() {
   return (
     <InView className="lp-trust">
-      <span className="lp-trust-label">Trusted by engineering teams at</span>
+      <span className="lp-trust-label">Built for</span>
       <div className="lp-trust-items">
         {TRUST_ITEMS.map((t) => (
           <span key={t} className="lp-trust-item">{t}</span>
@@ -364,7 +390,7 @@ function HowItWorks() {
         <InView className="lp-section-header">
           <div className="lp-label">How it works</div>
           <h2 className="lp-section-title">
-            Detect. Decide. Execute.
+            Describe. Plan. Execute.
           </h2>
           <p className="lp-section-sub">
             Three phases. No human required unless you want one.
@@ -399,7 +425,7 @@ function CapabilityGrid() {
         <InView className="lp-section-header">
           <div className="lp-label">Capabilities</div>
           <h2 className="lp-section-title">
-            What the runtime does.
+            What the OS does.
           </h2>
           <p className="lp-section-sub">
             Each capability is live. No configuration required to start.
@@ -454,7 +480,7 @@ function TerminalDemo() {
             Watch it work.
           </h2>
           <p className="lp-section-sub">
-            Every action the runtime takes is logged here, in real time.
+            Every action the OS takes is logged here, in real time.
           </p>
         </InView>
 
@@ -575,10 +601,10 @@ function CTASection({ onAccess }) {
       <div className="lp-cta-glow" aria-hidden="true" />
       <InView className="lp-cta-inner">
         <h2 className="lp-cta-title">
-          Ready to let your infrastructure run itself?
+          Ready to let your business run itself?
         </h2>
         <p className="lp-cta-sub">
-          Ooplix connects to your existing stack. No re-architecture.
+          Ooplix is the operating system of your business. No re-architecture.
           No onboarding call. No demo request form.
         </p>
         <div className="lp-cta-actions">
@@ -594,11 +620,11 @@ function CTASection({ onAccess }) {
               animate={{ scale: [1, 1.4, 1], opacity: [1, 0.55, 1] }}
               transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
             />
-            Request early access
+            Start free trial
           </motion.button>
         </div>
         <p className="lp-cta-fine">
-          No credit card. No setup fee. Running in minutes.
+          No credit card. 7-day free trial. Running in minutes.
         </p>
       </InView>
     </section>
@@ -612,7 +638,10 @@ function CTASection({ onAccess }) {
 function Footer({ onLegal }) {
   return (
     <footer className="lp-footer">
-      <OoplixWordmark size={22} style={{ opacity: 0.52 }} />
+      {/* The footer is a hard #03050a in both themes → light-on-dark.
+          B19.2.2: opacity was 0.52, which composited the wordmark to ~2.3:1.
+          Raised to 0.78 (≥4.5:1) — still visibly recessed, now legible. */}
+      <OoplixWordmark size={22} dark style={{ opacity: 0.78 }} />
 
       <nav className="lp-footer-nav" aria-label="Footer navigation">
         <button className="lp-footer-link" onClick={() => onLegal?.("privacy")}>Privacy</button>
@@ -634,7 +663,7 @@ export default function LandingPage({ onLogin, onStart, onLegal, onPricing }) {
 
   return (
     <div className="lp">
-      <Nav onAccess={handleAccess} onPricing={onPricing} />
+      <Nav onAccess={handleAccess} onPricing={onPricing} onLogin={onLogin} />
       <Hero onAccess={handleAccess} />
       <TrustStrip />
       <HowItWorks />

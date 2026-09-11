@@ -12,7 +12,7 @@
 
 .rs-count {
   font-size: 10px;
-  color: rgba(255,255,255,0.25);
+  color: var(--text-faint);
 }
 
 .rs-list {
@@ -37,7 +37,7 @@
 }
 .rs-item:hover {
   background: rgba(255,255,255,0.04);
-  border-color: rgba(255,255,255,0.07);
+  border-color: var(--text-faint);
 }
 .rs-item--current {
   background: rgba(124,111,255,0.06);
@@ -52,7 +52,7 @@
   flex-shrink: 0;
 }
 .rs-item--current .rs-dot {
-  background: #22c55e;
+  background: var(--success);
   box-shadow: 0 0 0 3px rgba(34,197,94,0.2);
   animation: rs-pulse 2s ease-in-out infinite;
 }
@@ -63,13 +63,13 @@
 
 .rs-label {
   font-size: 12px;
-  color: rgba(255,255,255,0.65);
+  color: var(--text-dim);
   flex: 1;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.rs-item--current .rs-label { color: rgba(255,255,255,0.85); font-weight: 600; }
+.rs-item--current .rs-label { color: var(--text); font-weight: 600; }
 
 .rs-meta {
   display: flex;
@@ -81,12 +81,13 @@
 
 .rs-dur {
   font-size: 10px;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-faint);
   font-weight: 600;
 }
-.rs-item--current .rs-dur { color: #22c55e; }
+/* B19.2.2: was #22c55e (dark-mode green) — 2.12:1 on the light panel. */
+.rs-item--current .rs-dur { color: var(--success); }
 
 .rs-ago {
   font-size: 9px;
-  color: rgba(255,255,255,0.2);
+  color: var(--text-faint);
 }

@@ -1,14 +1,28 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { _fetch } from "../_client";
 import { FieldRow } from "./WorkspaceSettingsShared";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 // ── K3 Admin helpers ─────────────────────────────────────────────
-const STATUS_COLOR = { active: "#52d68a", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
+const STATUS_COLOR = { active: "var(--success)", invited: "var(--accent)", suspended: "var(--warning)", archived: "var(--text-faint)" };
 const STATUS_LABEL = { active: "Active", invited: "Invited", suspended: "Suspended", archived: "Archived" };
+
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function K3ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
 
 function QuotaBar({ label, used, limit }) {
   const pct = limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
-  const color = pct >= 90 ? "var(--error)" : pct >= 70 ? "var(--warning)" : "#52d68a";
+  const color = pct >= 90 ? "var(--error)" : pct >= 70 ? "var(--warning)" : "var(--success)";
   return (
     <div className="k3-quota-row">
       <div className="k3-quota-meta">
@@ -27,6 +41,7 @@ function TeamDirectoryPanel() {
   const [team,      setTeam]      = useState([]);
   const [depts,     setDepts]     = useState([]);
   const [loading,   setLoading]   = useState(true);
+  const [error,     setError]     = useState(null);
   const [search,    setSearch]    = useState("");
   const [statusF,   setStatusF]   = useState("");
   const [selected,  setSelected]  = useState([]);
@@ -39,14 +54,22 @@ function TeamDirectoryPanel() {
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(async () => {
-    setLoading(true);
+    setLoading(true); setError(null);
     try {
       const [t, d] = await Promise.all([
         _fetch("/admin/team").then(r => r.team || []),
         _fetch("/admin/departments").then(r => r.departments || []),
       ]);
       setTeam(t); setDepts(d);
-    } catch {}
+    } catch (e) {
+      // This panel's own K3ErrorState (defined above, already used correctly
+      // by every sibling panel in this file — Departments/OrgProfile/
+      // Statistics/Quotas) was never wired up here. A real backend failure
+      // silently rendered "No members match the current filter" — a
+      // fabricated empty roster indistinguishable from a genuinely empty
+      // team, with no error and no way to retry.
+      setError(e.message || "Failed to load team directory");
+    }
     setLoading(false);
   }, []);
   useEffect(() => { load(); }, [load]);
@@ -91,6 +114,7 @@ function TeamDirectoryPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading team…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k3-team-panel">
@@ -146,7 +170,7 @@ function TeamDirectoryPanel() {
             <div className="k3-member-info">
               <span className="k3-member-name">{m.name || m.accountId}</span>
               <span className="k3-member-email">{m.email || ""}</span>
-              {m.title && <span className="k3-member-title">{m.title}</span>}
+              {m.title && <span className="k3-member-title" id="k3-member-title">{m.title}</span>}
             </div>
             <span className="k3-role-chip">{m.role}</span>
             {m.deptId && <span className="k3-dept-chip">{depts.find(d => d.id === m.deptId)?.name || m.deptId}</span>}
@@ -159,8 +183,8 @@ function TeamDirectoryPanel() {
       </div>
 
       {editing && (
-        <div className="ws-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="ws-modal k3-edit-modal" onClick={e => e.stopPropagation()}>
+        <div className="ws-modal-overlay" {...overlayProps(() => setEditing(null))}>
+          <div className="ws-modal k3-edit-modal" role="dialog" aria-modal="true" aria-labelledby="k3-member-title" onClick={e => e.stopPropagation()}>
             <h3 className="k3-modal-title">Edit Member</h3>
             <div className="k3-modal-fields">
               <label className="k3-modal-label">Job Title
@@ -193,6 +217,7 @@ function TeamDirectoryPanel() {
 function DepartmentsPanel() {
   const [depts,   setDepts]   = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [newName, setNewName] = useState("");
   const [newDesc, setNewDesc] = useState("");
   const [creating,setCreating]= useState(false);
@@ -201,7 +226,8 @@ function DepartmentsPanel() {
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   const load = useCallback(() => {
-    _fetch("/admin/departments").then(r => setDepts(r.departments || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/admin/departments").then(r => setDepts(r.departments || [])).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   }, []);
   useEffect(() => { load(); }, [load]);
 
@@ -221,6 +247,7 @@ function DepartmentsPanel() {
   }
 
   if (loading) return <div className="k2-loading">Loading departments…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={load} />;
 
   return (
     <div className="k3-dept-panel">
@@ -263,12 +290,15 @@ function OrgProfilePanel() {
   const [profile, setProfile] = useState(null);
   const [saving,  setSaving]  = useState(false);
   const [toast,   setToast]   = useState(null);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   const doToast = msg => { setToast(msg); setTimeout(() => setToast(null), 2800); };
 
   useEffect(() => {
-    _fetch("/admin/profile").then(r => setProfile(r.profile)).catch(() => {});
-  }, []);
+    setError(null);
+    _fetch("/admin/profile").then(r => setProfile(r.profile)).catch(e => setError(e.message || "Failed to load"));
+  }, [retryToken]);
 
   async function save() {
     setSaving(true);
@@ -279,6 +309,7 @@ function OrgProfilePanel() {
     setSaving(false);
   }
 
+  if (error && !profile) return <K3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!profile) return <div className="k2-loading">Loading profile…</div>;
 
   const fields = [
@@ -314,17 +345,21 @@ function OrgProfilePanel() {
 function StatisticsPanel() {
   const [stats,   setStats]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/admin/statistics").then(r => setStats(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/admin/statistics").then(r => setStats(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading statistics…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!stats)  return <div className="k2-empty">Statistics unavailable.</div>;
 
   const cards = [
     { label: "Total members",     value: stats.members?.total        || 0, color: "var(--accent)" },
-    { label: "Active",            value: stats.members?.active       || 0, color: "#52d68a" },
+    { label: "Active",            value: stats.members?.active       || 0, color: "var(--success)" },
     { label: "Pending invites",   value: stats.members?.pendingInvites || 0, color: "var(--warning)" },
     { label: "Suspended",         value: stats.members?.suspended    || 0, color: "var(--error)" },
     { label: "Departments",       value: stats.departments?.total    || 0, color: "var(--accent2)" },
@@ -349,12 +384,16 @@ function StatisticsPanel() {
 function QuotasPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
 
   useEffect(() => {
-    _fetch("/admin/quotas").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/admin/quotas").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading quotas…</div>;
+  if (error) return <K3ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">Quota data unavailable.</div>;
 
   const { usage } = data;

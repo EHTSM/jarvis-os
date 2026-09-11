@@ -21,10 +21,12 @@ const parser      = require("../utils/parser");
 const metricsStore = require("../utils/metricsStore");
 const toolAgent   = require("../../agents/toolAgent.cjs");
 const ai          = require("../services/aiService");
+const aiOrchestrator = require("../services/aiOrchestrator.cjs");
 const wa          = require("../services/whatsappService");
 const payment     = require("../services/paymentService");
 const crm         = require("../services/crmService");
 const automation  = require("../services/automationService");
+const usageMetering = require("../services/usageMetering.cjs");
 
 // ── Load agents (graceful — system still works if any fail) ──────
 let SalesAgent, InterestDetector, FollowUpSystem, AutoReplyAgent;
@@ -221,7 +223,16 @@ async function _executionPipeline(input, phone = "") {
 // ════════════════════════════════════════════════════════════════
 //  PIPELINE 3 — INTELLIGENCE FLOW
 // ════════════════════════════════════════════════════════════════
-async function _intelligencePipeline(input, history) {
+async function _intelligencePipeline(input, history, ctx = {}) {
+    // AI Workspace OS pass: this legacy gateway short-circuit ignores
+    // ctx.provider/ctx.model entirely (its own signature doesn't accept
+    // them). It's checked first, so on the rare setups where
+    // orchestrator.cjs actually resolves and returns a reply, a user's
+    // explicit model selection would be silently overridden even after the
+    // fix below. Confirmed no live provider ever reaches this branch in this
+    // environment (orchestrator.cjs is legacy/unconfigured here), but the
+    // condition is structural, not environmental, so it's noted rather than
+    // silently left inconsistent with the real fix a few lines down.
     if (_orchestrator?.gateway) {
         try {
             const result = await _orchestrator.gateway("smart", { input });
@@ -241,9 +252,79 @@ async function _intelligencePipeline(input, history) {
             "Be concise and conversational.";
     }
 
-    logger.info(`[AI] callAI (intelligence) — "${input.slice(0, 60)}"`);
-    const reply = await ai.callAI(input, { history, system: systemOverride });
-    return { reply, action: "ai_reply", data: null };
+    // Routed through aiOrchestrator.execute() — the ONLY change here is WHICH
+    // function makes the call; the real HTTP request to whichever provider
+    // gets picked still goes exclusively through aiService.chat(), same as
+    // ai.callAI() always did. This is the actual "AI Chat" tab's traffic
+    // (routes/jarvis.js -> handleJarvis -> here), so wiring it through the
+    // orchestrator means the fallback chain, response cache, budget
+    // enforcement, and prompt history built in this mission's earlier
+    // modules now actually govern real customer usage, not just the
+    // separate /ai-ecosystem/* API surface those modules were verified
+    // against. Falls back to the pre-existing ai.callAI() path if the
+    // orchestrator throws (e.g. no provider available at all), so a bug in
+    // the orchestration layer can't take down the main chat entirely.
+    try {
+        const messages = [...(Array.isArray(history) ? history : []), { role: "user", content: input }];
+        if (systemOverride) messages.unshift({ role: "system", content: systemOverride });
+        // AI Workspace OS pass: the AI Chat tab's model selector
+        // (Chat.jsx's MODELS list) has always sent {provider, model} in the
+        // POST /jarvis body (see frontend/src/api.js's sendMessage()), but
+        // handleJarvis() never read either field from req.body and this call
+        // never forwarded them — so picking "GPT-4o mini" or "Claude Haiku"
+        // in the UI had zero effect on which model actually answered; every
+        // selection silently fell through to the same auto-routed chain.
+        // aiOrchestrator.execute() already supports both (userPref for
+        // provider preference, model to force a specific model on whichever
+        // provider is chosen) — this just threads the real user selection
+        // through instead of dropping it.
+        const result = await aiOrchestrator.execute(messages, {
+            capability: "chat", accountId: ctx.accountId, orgId: ctx.orgId, workspaceId: ctx.workspaceId,
+            userPref: ctx.provider || undefined, model: ctx.model || undefined,
+        });
+        return { reply: result.text, action: "ai_reply", data: { provider: result.provider, model: result.model, cached: !!result.cached } };
+    } catch (err) {
+        logger.warn(`[Intel] aiOrchestrator failed, falling back to direct callAI: ${err.message}`);
+        logger.info(`[AI] callAI (intelligence) — "${input.slice(0, 60)}"`);
+        const t0 = Date.now();
+        const reply = await ai.callAI(input, { history, system: systemOverride });
+
+        // Phase B.9: aiService.callAI() does not throw when every provider
+        // fails — it RESOLVES to the sentinel string "AI backend unavailable...".
+        // This fallback returned that sentinel straight into _ok(), so a total
+        // provider outage was rendered to the caller as
+        //     { "success": true, "reply": "AI backend unavailable..." }
+        // with HTTP 200. Reproduced 3/3 live with real failing providers
+        // (groq 429 → openai 401 → ollama 404 → lmstudio unreachable): the text
+        // was honest but the machine-readable envelope claimed success, so any
+        // client trusting `success` treats a failed request as answered.
+        // It also recorded success:true in usageMetering below, so the outage
+        // was counted as a satisfied request in cost/usage reporting.
+        //
+        // Same sentinel check codingAssistant.js, creativeStudio.js and ai.js
+        // already use (A.7/A.10) — throwing routes this into the caller's
+        // existing catch, which returns an honest error envelope.
+        const failed = typeof reply !== "string" || !reply.trim() ||
+                       reply.startsWith("AI backend unavailable");
+
+        if (ctx.accountId) {
+            // The orchestrator path records usage internally; this fallback
+            // bypasses it entirely, so it must record its own event or the
+            // request silently never counts against the account's quota at all.
+            // Record the REAL outcome — a failed call must not inflate success
+            // metrics or be billed as a completed generation.
+            usageMetering.record({
+                accountId: ctx.accountId, orgId: ctx.orgId, workspaceId: ctx.workspaceId,
+                provider: "jarvis_fallback", requestType: "chat", latencyMs: Date.now() - t0,
+                success: !failed,
+            });
+        }
+
+        if (failed) {
+            throw new Error(reply || "AI generation returned no content. Check provider API keys in your .env file.");
+        }
+        return { reply, action: "ai_reply", data: null };
+    }
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -289,20 +370,64 @@ async function handleJarvis(req, res) {
             else crm.updateLead(phone, { lastMessage: input, lastInteraction: new Date().toISOString() });
         }
 
+        // AI Workspace OS pass: forward the AI Chat tab's model selector —
+        // see _intelligencePipeline's own comment on the fix this enables.
+        const provider = _clean(req.body.provider || "", 100) || undefined;
+        const model    = _clean(req.body.model    || "", 100) || undefined;
+
         let result;
         if      (mode === "sales")     result = await _salesPipeline(input, phone);
         else if (mode === "execution") result = await _executionPipeline(input, phone);
-        else                           result = await _intelligencePipeline(input, history);
+        else                           result = await _intelligencePipeline(input, history, {
+            accountId: req.user?.sub || req.user?.id,
+            orgId: req.org?.id, workspaceId: req.workspace?.id,
+            provider, model,
+        });
 
         const elapsed = Date.now() - startMs;
         metricsStore.recordLatency(mode, elapsed);
         logger.debug(`[Jarvis] ${traceId} done in ${elapsed}ms`);
+
+        // Count this request against the account's monthly AI-action quota —
+        // this is the main chat pipeline every customer actually uses (see
+        // routes/jarvis.js's requireUsageQuota check). "intelligence" mode is
+        // recorded ALREADY, with real provider/cost attribution, inside
+        // _intelligencePipeline's aiOrchestrator.execute() call above — adding
+        // a second generic "provider: jarvis" event here for that same
+        // request would double-count it against checkUsageQuota's per-account
+        // monthly limit (which counts every matching event regardless of
+        // provider), silently halving the customer's real usable quota.
+        // Sales/execution modes don't go through the orchestrator, so they
+        // still need this generic fallback recording.
+        const accountId = req.user?.sub || req.user?.id;
+        if (accountId && mode !== "intelligence") {
+            // AI Workspace OS pass: orgId/workspaceId were never forwarded here,
+            // unlike _intelligencePipeline's own recording a few lines above
+            // (which correctly passes ctx.orgId/ctx.workspaceId) — so every
+            // sales/execution-mode chat request was ledgered with orgId:null
+            // regardless of the caller's real org membership. Reproduced live:
+            // an authenticated account with a real org sent real requests and
+            // every resulting "provider":"jarvis" ledger entry read
+            // orgId:null. attachOrg is already mounted on this route (see
+            // routes/jarvis.js) — req.org?.id was available and simply not
+            // read here. This under-counts org-level AI usage/spend dashboards
+            // for any request that isn't the "intelligence" mode.
+            usageMetering.record({ accountId, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: "jarvis", model: mode, requestType: "chat", latencyMs: elapsed, success: true });
+        }
+
         return _ok(res, { ...result, intent, mode, traceId });
 
     } catch (err) {
         metricsStore.inc("errors");
         errTracker.record("jarvis", err.message, { intent, mode });
         logger.error("[Jarvis] Error:", err.message);
+        const accountId = req.user?.sub || req.user?.id;
+        if (accountId) {
+            // Same fix as above — the total-failure fallback path lost org
+            // attribution too, so a failed request's ledger entry was
+            // invisible to org-level AI usage/failure-rate reporting.
+            usageMetering.record({ accountId, orgId: req.org?.id || null, workspaceId: req.workspace?.id || undefined, provider: "jarvis", latencyMs: Date.now() - startMs, success: false, errorCode: err.message });
+        }
         return res.status(500).json({
             success: false,
             reply:   "Something went wrong. Please try again.",
@@ -321,15 +446,27 @@ async function handleWhatsAppWebhook(req, res) {
     const _waStart = Date.now();
 
     try {
-        // Log every raw POST so we can distinguish: (A) Meta not sending vs (B) parse failure
-        logger.info(`[WA-RAW] POST body: ${JSON.stringify(req.body).slice(0, 500)}`);
+        // req.body is NOT reliable here: backend/middleware/rawBody.js drains
+        // the request stream for this route (for HMAC signature verification
+        // in backend/routes/whatsapp.js), which starves express.json() of any
+        // bytes to parse — req.body ends up {} regardless of what Meta sent.
+        // Parse req.rawBody directly instead, the same way the Razorpay
+        // webhook handler already does (backend/controllers/webhookController.js
+        // handleRazorpayWebhook, which has the identical rawBody-vs-json.body
+        // conflict on its own routes and already works around it this way).
+        let parsedBody = null;
+        try { parsedBody = req.rawBody ? JSON.parse(req.rawBody) : req.body; }
+        catch { parsedBody = req.body; }
 
-        const msg = wa.parseIncomingMessage(req.body);
+        // Log every raw POST so we can distinguish: (A) Meta not sending vs (B) parse failure
+        logger.info(`[WA-RAW] POST body: ${JSON.stringify(parsedBody).slice(0, 500)}`);
+
+        const msg = wa.parseIncomingMessage(parsedBody);
         if (!msg) {
             // Status updates (delivery/read receipts) land here — log them so we know Meta is connected
-            const statuses = req.body?.entry?.[0]?.changes?.[0]?.value?.statuses;
+            const statuses = parsedBody?.entry?.[0]?.changes?.[0]?.value?.statuses;
             if (statuses) logger.info(`[WA-STATUS] ${JSON.stringify(statuses[0]).slice(0, 200)}`);
-            else logger.warn(`[WA-PARSE] No message extracted — body: ${JSON.stringify(req.body).slice(0, 300)}`);
+            else logger.warn(`[WA-PARSE] No message extracted — body: ${JSON.stringify(parsedBody).slice(0, 300)}`);
             return;
         }
         if (!msg.text) {

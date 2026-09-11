@@ -103,7 +103,7 @@
 
 /* Recent group gets a special tint */
 .cp-group:first-child .cp-group-label[data-group="Recent"] {
-  color: rgba(124, 111, 255, 0.7);
+  color: rgba(124,111,255,0.92);
 }
 
 .cp-group-label {
@@ -208,12 +208,12 @@
 .cp-pin-btn--active { opacity: 1 !important; color: var(--accent) !important; }
 
 /* ── Pinned section header ────────────────────────────────────────────── */
-.cp-pin-section .cp-group-label { color: rgba(124,111,255,0.75); }
+.cp-pin-section .cp-group-label { color: rgba(124,111,255,0.92); }
 
 /* ── Recent / Pinned group first-child accent ─────────────────────────── */
 .cp-group:first-child .cp-group-label[data-group="Recent"],
 .cp-group:first-child .cp-group-label[data-group="Pinned"] {
-  color: rgba(124,111,255,0.7);
+  color: rgba(124,111,255,0.92);
 }
 
 /* ── Shortcut kbd badge ───────────────────────────────────────────────── */

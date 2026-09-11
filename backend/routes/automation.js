@@ -13,11 +13,27 @@
  */
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
-const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireWorkspaceMember, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/automationService.cjs");
 
 router.use("/automation", requireAuth);
-router.use(attachWorkspace);
+router.use("/automation", attachWorkspace);
+// Same class of gap already found and fixed in governance.js (Organization OS
+// pass): automationService.getRules()/getHistory()/getStatistics()/updateRule()
+// perform NO membership check of their own — a direct call with any
+// workspaceId string returns that workspace's automation rules unconditionally
+// (confirmed: require("./services/automationService.cjs").getRules(anyId)
+// returns real data with zero verification). This route's real isolation
+// depends entirely on requireWorkspaceMember below.
+//
+// C.9 audit (2026-08-14): this file's own attachWorkspace/requireWorkspaceMember
+// registration was itself missing the "/automation" path prefix (same bug as
+// security.js/admin.js/governance.js) — router-level use(fn) with no path
+// applies to every request reaching the router afterward, so this file was
+// ALSO leaking its gate onto every route mounted later in routes/index.js
+// (including all of /coding/*), on top of relying on security.js's leak for
+// its own isolation. Both calls now scoped to "/automation".
+router.use("/automation", requireWorkspaceMember);
 
 function _wsId(req) {
   return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";
@@ -49,6 +65,35 @@ router.patch("/automation/rules/:id", requireRole("Admin"), (req, res) => {
   try {
     const rule = svc.updateRule(_wsId(req), req.params.id, req.body, req.user.sub);
     res.json({ rule });
+  } catch (e) {
+    const status = e.message.includes("not found") ? 404 : 400;
+    res.status(status).json({ error: e.message });
+  }
+});
+
+// MASTER FINAL GAP CLOSURE (2026-08-15, C10-008): no delete route existed —
+// the rule builder UI could create rules but never remove one. Same
+// workspace-membership gate as every other route in this file.
+router.delete("/automation/rules/:id", requireRole("Admin"), (req, res) => {
+  try {
+    const result = svc.deleteRule(_wsId(req), req.params.id, req.user.sub);
+    res.json(result);
+  } catch (e) {
+    const status = e.message.includes("not found") ? 404 : 400;
+    res.status(status).json({ error: e.message });
+  }
+});
+
+// MASTER FINAL GAP CLOSURE (2026-08-15, C10-008): dedicated manual-trigger
+// route — previously the only way to actually execute a rule (not dry-run)
+// was to wait for the (until now nonexistent) live loop. Goes through the
+// same fireRule() the new event-loop dispatcher uses, so approval gates,
+// condition evaluation, and history recording behave identically either way.
+router.post("/automation/rules/:id/fire", requireRole("Operator"), async (req, res) => {
+  try {
+    const context = req.body?.context || {};
+    const result = await svc.fireRule(_wsId(req), req.params.id, context, req.user.sub, false);
+    res.json({ result });
   } catch (e) {
     const status = e.message.includes("not found") ? 404 : 400;
     res.status(status).json({ error: e.message });

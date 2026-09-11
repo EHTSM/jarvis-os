@@ -4,14 +4,19 @@
  *
  * Schema: { [accountId]: Account }
  * Account: {
- *   id:           string (uuid-v4-style, generated on creation)
- *   email:        string (unique, lowercase)
- *   passwordHash: string (scrypt: salt:hash)
- *   name:         string
- *   role:         "operator" | "user"
- *   createdAt:    ISO string
- *   lastLoginAt:  ISO string | null
- *   active:       boolean
+ *   id:              string (uuid-v4-style, generated on creation)
+ *   email:           string (unique, lowercase)
+ *   passwordHash:    string (scrypt: salt:hash)
+ *   name:            string
+ *   role:            "operator" | "user" | "enterprise_admin" | "portfolio_owner"
+ *   createdAt:       ISO string
+ *   lastLoginAt:     ISO string | null
+ *   active:          boolean
+ *   emailVerified:   boolean (default false; set true via betaReadiness.verifyEmail)
+ *   emailVerifiedAt: ISO string | null
+ *   ssoProvisioned:  boolean (optional — true for accounts created via createSsoAccount)
+ *   ssoProvider:     string | null (optional — "saml" | "oidc" | "google" | "entra")
+ *   ssoOrgId:        string | null (optional — the org whose SSO connection provisioned this account)
  * }
  *
  * Backwards-compatibility: the legacy single-operator password (OPERATOR_PASSWORD_HASH
@@ -39,7 +44,19 @@ function _load() {
 function _save(data) {
   try {
     fs.mkdirSync(path.dirname(ACCOUNTS_FILE), { recursive: true });
-    fs.writeFileSync(ACCOUNTS_FILE, JSON.stringify(data, null, 2));
+    // Persistence Sweep (2026-08-20): this used to write ACCOUNTS_FILE
+    // directly with no tmp+rename at all — the highest-stakes file in the
+    // whole persistence layer (every real signup/login/account mutation)
+    // had zero crash-safety; a SIGKILL/crash mid-writeFileSync could leave
+    // the entire user account store truncated/corrupted. Same fix already
+    // established and reused across this codebase (missionMemory.cjs,
+    // secretVault.cjs, organizationService.cjs, memoryPersistenceLayer.cjs):
+    // a unique per-call tmp name (pid + random) plus renameSync, which is
+    // atomic at the OS level — a reader/subsequent boot never observes a
+    // partially-written file.
+    const tmp = `${ACCOUNTS_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
+    fs.renameSync(tmp, ACCOUNTS_FILE);
   } catch (e) { logger.error("[Account] persist failed:", e.message); }
 }
 
@@ -98,6 +115,8 @@ function createAccount({ email, password, name = "", role = "user" }) {
     createdAt:    new Date().toISOString(),
     lastLoginAt:  null,
     active:       true,
+    emailVerified:   false,
+    emailVerifiedAt: null,
   };
 
   accounts[id] = account;
@@ -117,12 +136,29 @@ function createAccount({ email, password, name = "", role = "user" }) {
  * Find account by email and verify password.
  * Returns { success, account, token_sub } or { success: false, error }.
  */
+// Authentication, Session & Account Security Deep Audit (2026-08-21): a
+// request for a nonexistent email used to return immediately, before
+// verifyPassword() ever ran — scrypt (deliberately CPU-expensive) only ran
+// on the real-account path. Live-measured: ~30-40ms for a real account vs
+// ~0.5-1.4ms for a nonexistent one, a ~60x gap easily distinguishable over a
+// real network — a genuine account-enumeration oracle distinct from the
+// already-certified response-BODY enumeration resistance (identical error
+// message either way; this is a timing side-channel the message-level fix
+// never addressed). Fixed by always running an equivalent-cost hash
+// comparison, even when no account exists, against a fixed dummy hash built
+// with the same hashPassword() every real account uses — no new crypto
+// primitive, reuses the exact functions every real login already calls.
+const _DUMMY_HASH = hashPassword("dummy-constant-time-comparison-value");
+
 function loginByEmail(email, password) {
   const normalEmail = (email || "").toLowerCase().trim();
   const accounts    = _load();
 
   const account = Object.values(accounts).find(a => a.email === normalEmail && a.active);
-  if (!account) return { success: false, error: "Invalid email or password" };
+  if (!account) {
+    verifyPassword(password, _DUMMY_HASH); // constant-cost path — closes the timing oracle above
+    return { success: false, error: "Invalid email or password" };
+  }
 
   if (!verifyPassword(password, account.passwordHash)) {
     return { success: false, error: "Invalid email or password" };
@@ -134,6 +170,52 @@ function loginByEmail(email, password) {
 
   const { passwordHash: _, ...safe } = account;
   return { success: true, account: safe, token_sub: account.id };
+}
+
+/**
+ * Just-in-time provision an account for a federated (SSO) identity that has
+ * no local password — the IdP already authenticated the user, so this is
+ * account-record creation, not a login. Sets a random 32-byte passwordHash
+ * (never handed to the caller, never derivable) so password-based login
+ * stays impossible for this account, and emailVerified: true since the IdP
+ * already vouches for the email. Reuses the same accounts store as
+ * createAccount() — no parallel identity table.
+ */
+function createSsoAccount({ email, name = "", role = "user", ssoProvider, ssoOrgId }) {
+  const normalEmail = (email || "").toLowerCase().trim();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalEmail)) {
+    return { success: false, error: "Invalid email address" };
+  }
+
+  const accounts = _load();
+  const existing = Object.values(accounts).find(a => a.email === normalEmail);
+  if (existing) return { success: false, error: "An account with this email already exists" };
+
+  const id = _generateId();
+  const account = {
+    id,
+    email:        normalEmail,
+    passwordHash: hashPassword(crypto.randomBytes(32).toString("hex")),
+    name:         name.trim().slice(0, 100) || normalEmail.split("@")[0],
+    role,
+    createdAt:    new Date().toISOString(),
+    lastLoginAt:  null,
+    active:       true,
+    emailVerified:   true,
+    emailVerifiedAt: new Date().toISOString(),
+    ssoProvisioned:  true,
+    ssoProvider:     ssoProvider || null,
+    ssoOrgId:        ssoOrgId || null,
+  };
+
+  accounts[id] = account;
+  _save(accounts);
+
+  try { require("./billingService").createTrial(id); } catch { /* non-critical */ }
+
+  logger.info(`[Account] SSO-provisioned: ${normalEmail} (${id}) via ${ssoProvider || "unknown"}`);
+  const { passwordHash: _, ...safe } = account;
+  return { success: true, account: safe };
 }
 
 /**
@@ -170,13 +252,19 @@ function listAccounts() {
 }
 
 /**
- * Update account fields (name, role). Email/password change has separate flows.
+ * Update account fields. Most callers touch name/role/active; passwordHash is
+ * written directly by password-reset flows (already hashed by the caller —
+ * see betaReadiness.resetPassword), and emailVerified/emailVerifiedAt by the
+ * email-verification flow (see betaReadiness.verifyEmail). passwordChangedAt
+ * (Security Token Audit, 2026-08-16) is set alongside passwordHash on a
+ * successful reset and read by authMiddleware.verifyJWT to invalidate any
+ * session token issued before that moment.
  */
 function updateAccount(id, updates) {
   const accounts = _load();
   if (!accounts[id]) return { success: false, error: "Account not found" };
 
-  const allowed = ["name", "role", "active"];
+  const allowed = ["name", "role", "active", "passwordHash", "emailVerified", "emailVerifiedAt", "passwordChangedAt"];
   for (const k of allowed) {
     if (updates[k] !== undefined) accounts[id][k] = updates[k];
   }
@@ -216,6 +304,7 @@ function bootstrapOperatorAccount() {
 
 module.exports = {
   createAccount,
+  createSsoAccount,
   loginByEmail,
   getById,
   getByEmail,

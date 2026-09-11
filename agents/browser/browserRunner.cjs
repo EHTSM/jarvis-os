@@ -350,6 +350,7 @@ async function _dispatchAction(page, step) {
     case "fillForm":          return engine.fillForm(page, selector, text ?? value, opts);
     case "waitForElement":    return engine.waitForElement(page, selector, opts);
     case "screenshot":        return engine.screenshot(page, opts);
+    case "pdf":                return engine.pdf(page, { format: step.format, landscape: step.landscape, printBackground: step.printBackground });
     case "getText":           return engine.getText(page, selector);
     case "getTitle":          return engine.getTitle(page);
     case "getUrl":            return engine.getUrl(page);

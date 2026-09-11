@@ -5,7 +5,26 @@ const wa         = require("../services/whatsappService");
 const crm        = require("../services/crmService");
 const controller = require("../controllers/jarvisController");
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg, requireOrgMember } = require("../middleware/orgMiddleware.cjs");
 const rateLimiter = require("../middleware/rateLimiter");
+const logger      = require("../utils/logger");
+
+// Communication Ecosystem mission: /whatsapp/send and /whatsapp/bulk's own
+// prior comments predicted exactly this gap — "attachOrg isn't mounted on
+// this route" — meaning whatsappService.js's org-scoped credential
+// resolution (already built, see that file's own "Connector Secret
+// Isolation" comment) was structurally unreachable, req.org was always
+// undefined, and every send silently used the founder's global credential
+// regardless of which org's connected WhatsApp account should have been
+// used. Same bug class, same fix, as /payment/link's identical gap (fixed
+// in the Payments Ecosystem mission): attachOrg (non-blocking — resolves
+// req.org from a caller-supplied X-Org-Id/body.orgId with NO membership
+// check on its own) MUST be paired with a membership gate before the
+// resolved org is used for anything beyond a read/auto-resolve fallback.
+function _requireOrgMemberIfOrgContext(req, res, next) {
+    if (!req.org) return next();
+    return requireOrgMember(req, res, next);
+}
 
 // ── WhatsApp HMAC verification ────────────────────────────────────
 // Meta signs every incoming webhook with HMAC-SHA256 using the app secret.
@@ -16,7 +35,7 @@ function _verifyWhatsAppSignature(rawBody, header) {
     if (!secret) {
         // Not configured — reject in production, warn in dev
         if (process.env.NODE_ENV === "production") return false;
-        console.warn("[WA] WHATSAPP_APP_SECRET not set — skipping HMAC verification (dev only)");
+        logger.warn("[WA] WHATSAPP_APP_SECRET not set — skipping HMAC verification (dev only)");
         return true;
     }
     if (!header || !header.startsWith("sha256=")) return false;
@@ -26,6 +45,33 @@ function _verifyWhatsAppSignature(rawBody, header) {
         .digest();
     if (incoming.length !== expected.length) return false;
     return crypto.timingSafeEqual(incoming, expected);
+}
+
+// ── Replay protection ──────────────────────────────────────────────
+// Meta's webhook delivery is at-least-once — the same message.id can
+// legitimately arrive more than once on retry, but a captured-and-replayed
+// request must not be reprocessed (double CRM writes, double AI replies).
+// Reuses the same bounded Map+TTL dedup pattern already used for runtime
+// dispatch idempotency (backend/routes/runtime.js _dedupCache) — no new
+// dedup mechanism, no external store.
+const _seenMessageIds = new Map(); // messageId -> firstSeenTs
+const REPLAY_TTL_MS = 24 * 60 * 60 * 1000; // Meta retries webhooks for up to 24h
+setInterval(() => {
+    const cutoff = Date.now() - REPLAY_TTL_MS;
+    for (const [id, ts] of _seenMessageIds) {
+        if (ts < cutoff) _seenMessageIds.delete(id);
+    }
+}, 60 * 60 * 1000).unref();
+
+function _extractMessageId(body) {
+    return body?.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.id || null;
+}
+
+function _isReplay(messageId) {
+    if (!messageId) return false; // no id to key on (e.g. status callbacks) — can't dedup, let through
+    if (_seenMessageIds.has(messageId)) return true;
+    _seenMessageIds.set(messageId, Date.now());
+    return false;
 }
 
 // Webhook verification (GET) — Meta sends this to confirm the endpoint.
@@ -43,30 +89,51 @@ router.post(
         const sig    = req.headers["x-hub-signature-256"] || "";
         const body   = req.rawBody || "";
         if (!_verifyWhatsAppSignature(body, sig)) {
-            console.warn("[WA] Webhook HMAC mismatch — rejected");
-            return res.sendStatus(403);
+            logger.warn("[WA] Webhook HMAC mismatch — rejected");
+            return res.status(401).json({ error: "Invalid webhook signature" });
+        }
+        // req.body is not reliable here — see handleWhatsAppWebhook's comment
+        // in backend/controllers/jarvisController.js for why (rawBody.js
+        // drains the stream before express.json() can parse it for this
+        // route). Parse req.rawBody the same way.
+        let parsedBody = null;
+        try { parsedBody = req.rawBody ? JSON.parse(req.rawBody) : req.body; }
+        catch { parsedBody = req.body; }
+        const messageId = _extractMessageId(parsedBody);
+        if (_isReplay(messageId)) {
+            logger.warn(`[WA] Replay detected for message ${messageId} — rejected`);
+            return res.status(400).json({ error: "Replay detected" });
         }
         next();
     },
     controller.handleWhatsAppWebhook
 );
 
-router.post("/whatsapp/send", requireAuth, async (req, res) => {
+const _waSendRL = rateLimiter(15, 60_000, "whatsapp-send");
+
+router.post("/whatsapp/send", requireAuth, attachOrg, _requireOrgMemberIfOrgContext, _waSendRL, async (req, res) => {
     const { phone, message } = req.body;
     if (!phone || !message) return res.status(400).json({ error: "phone and message required" });
-    const result = await wa.sendMessage(phone, message);
+    // Connector Secret Isolation: attachOrg + _requireOrgMemberIfOrgContext
+    // above now actually gate this — req.org?.id is real, so an org with
+    // its own connected WhatsApp account sends through its own credential
+    // instead of the founder's global one, and a caller from Org A can no
+    // longer trigger a send using Org B's credentials by supplying Org B's
+    // X-Org-Id/body.orgId.
+    const result = await wa.sendMessage(phone, message, 2, req.org?.id || null);
     res.json(result);
 });
 
-router.post("/whatsapp/bulk", requireAuth, async (req, res) => {
+router.post("/whatsapp/bulk", requireAuth, attachOrg, _requireOrgMemberIfOrgContext, async (req, res) => {
     const { message, statusFilter } = req.body;
     if (!message) return res.status(400).json({ error: "message required" });
+    const orgId = req.org?.id || null;
     const leads = crm.getLeads(statusFilter || "new").filter(l => l.phone);
     const batch = leads.slice(0, 50);   // hard cap — stays under WA Cloud API rate limits
     let sent = 0;
     const _sleep = ms => new Promise(r => setTimeout(r, ms));
     for (let i = 0; i < batch.length; i++) {
-        const r = await wa.sendMessage(batch[i].phone, message);
+        const r = await wa.sendMessage(batch[i].phone, message, 2, orgId);
         if (r.success) sent++;
         if (i < batch.length - 1) await _sleep(1_200);
     }

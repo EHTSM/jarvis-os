@@ -24,10 +24,11 @@
  *      GET    /p20/memory/report                  last intelligence report
  *
  * 20C  ImprovementLoopEngine
- *      POST   /p20/improve/apply                  apply a change trial
- *      POST   /p20/improve/:trialId/measure       measure outcome
- *      POST   /p20/improve/:trialId/keep          keep change permanently
- *      POST   /p20/improve/:trialId/revert        revert change
+ *      POST   /p20/improve/apply                  PROPOSE a change trial (enqueues approval only — does not mutate)
+ *      POST   /p20/improve/:trialId/activate      apply an APPROVED trial (only path that mutates; refuses if not approved)
+ *      POST   /p20/improve/:trialId/measure       measure outcome (active trials only)
+ *      POST   /p20/improve/:trialId/keep          keep change permanently (active trials only)
+ *      POST   /p20/improve/:trialId/revert        revert change / cancel a not-yet-approved proposal
  *      POST   /p20/improve/:trialId/record        add learning note
  *      GET    /p20/improve/:trialId               get trial
  *      GET    /p20/improve                        list trials
@@ -53,6 +54,23 @@ const ile = require("../services/improvementLoopEngine.cjs");
 const oae = require("../services/ooplixAutonomyEngine.cjs");
 
 router.use("/p20", requireAuth);
+
+// M-4 (2026-08-28): see phase18.js's _ownOrgId() comment for why this
+// resolves the caller's own org directly from organizationService rather
+// than trusting attachOrg's client-suppliable X-Org-Id/query/body
+// selector — a first attempt using that selector (gated even on its
+// membership-verified req.orgRole field) still let a caller with a real
+// home org bypass scoping by supplying someone ELSE's org id, because
+// attachOrg's selector branch never falls back to the caller's own org on
+// verification failure.
+function _ownOrgId(req) {
+    const accountId = req.user?.sub;
+    if (!accountId) return undefined;
+    try {
+        const ctx = require("../services/organizationService.cjs").resolveContext(accountId);
+        return ctx?.primaryOrg?.orgId || undefined;
+    } catch { return undefined; }
+}
 
 // ── 20A Agent Factory Automation ──────────────────────────────────────────
 
@@ -120,9 +138,14 @@ router.get("/p20/agents", (req, res) => {
 
 // ── 20B Memory Intelligence Engine ────────────────────────────────────────
 
+// M-4 (2026-08-28): previously returned ranked memory content from the
+// entire cross-tenant store to any authenticated /p20 caller — one of the
+// two routes the tenant-isolation audit reproduced M-4 against (the other,
+// GET /p18/memory*, is fixed alongside this file).
+//
 router.get("/p20/memory/rank", (req, res) => {
     const { type, minScore, limit } = req.query;
-    res.json({ success: true, ...mie.rankMemories({ type, minScore: parseInt(minScore)||0, limit: parseInt(limit)||100 }) });
+    res.json({ success: true, ...mie.rankMemories({ type, minScore: parseInt(minScore)||0, limit: parseInt(limit)||100, orgId: _ownOrgId(req) }) });
 });
 
 router.post("/p20/memory/merge", (req, res) => {
@@ -172,7 +195,23 @@ router.post("/p20/improve/apply", async (req, res) => {
     const { recId, change } = req.body || {};
     if (!change) return res.status(400).json({ error: "change object required" });
     try {
+        // Phase 5 safety fix: this now only PROPOSES the change (enqueues a
+        // real approvalQueue.cjs request) — it does not mutate anything.
+        // See improvementLoopEngine.cjs's own header comment for the full
+        // defect this closes (was: immediate, ungated production mutation
+        // reachable by any requireAuth'd caller).
         const result = await ile.apply(recId, change);
+        res.json({ success: true, ...result });
+    } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+// The ONLY route that can make a proposed change take real effect — refuses
+// unless the trial's approvalQueue request has genuinely resolved to
+// approved/auto_approved (enforced inside activateApprovedTrial() itself,
+// not just here, so there is no code path that skips this check).
+router.post("/p20/improve/:trialId/activate", async (req, res) => {
+    try {
+        const result = await ile.activateApprovedTrial(req.params.trialId);
         res.json({ success: true, ...result });
     } catch (e) { res.status(400).json({ error: e.message }); }
 });

@@ -64,6 +64,7 @@ function _bds()    { try { return require("./businessDataService.cjs");         
 function _bie()    { try { return require("./businessIntelligenceEngine.cjs");               } catch { return null; } }
 function _ce()     { try { return require("./engineeringConfidenceEngine.cjs");              } catch { return null; } }
 function _collab() { try { return require("./missionCollaborationEngine.cjs");               } catch { return null; } }
+function _guard()  { try { return require("./autonomousMissionGuard.cjs");                   } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFIG
@@ -122,10 +123,113 @@ function _mkState(id, role, opts = {}) {
         // Resource counters (approximated, no OS calls)
         cpuMs:           0,   // cumulative tick duration ms (proxy for CPU)
         memKb:           0,   // snapshot at last tick (process.memoryUsage rss)
+        // JARVIS INCIDENT REPAIR (2026-09-03, P1-1 consolidation): this used
+        // to hold a real per-agent Node Timeout object from its own private
+        // setInterval() — ~210 such handles existed simultaneously at real
+        // runtime scale (10 builtin + ~200 org-department agents), each a
+        // genuine entry in process._getActiveHandles(), which is what
+        // DriftMonitor's TIMER_DRIFT_WARN actually samples (confirmed:
+        // .unref() alone, this session's first P1-1 pass, does not remove a
+        // handle from that list — it only exempts it from keeping the
+        // process alive). Repository-wide forensic sweep (this session)
+        // confirmed zero external consumers of this field or of
+        // activeSchedulerCount depend on it being a real timer — see
+        // _bucketFor()/_startAgent() below. Now holds a boolean: true while
+        // this agent is a live member of its interval bucket's dispatch set,
+        // false/null otherwise. Every existing `if (s._intervalHandle)`
+        // truthy-check in this file continues to mean exactly what it meant
+        // before ("is this agent currently being scheduled"), just without
+        // implying a 1:1 agent:timer relationship.
         _intervalHandle: null,
         _recovering:     false,
         _intervalMs:     opts.intervalMs || ROLE_INTERVALS[role] || 120_000,
     };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SHARED INTERVAL BUCKETS (P1-1 timer consolidation)
+// ─────────────────────────────────────────────────────────────────────────────
+// Repository-wide forensic sweep (this session, read-only) enumerated every
+// real intervalMs value in live use across all 10 org-department registries
+// (200 agents) plus the 10 BUILTIN_AGENTS: exactly 11 distinct values
+// (60000, 75000, 90000, 120000, 150000, 180000, 240000, 300000, 360000,
+// 480000, 600000ms) — verified directly from source, not assumed. Bucketing
+// by the EXACT literal value (never snapped, rounded, or normalized — the
+// audit explicitly required this) means the real, current agent population
+// (~210) produces at most 11 live setInterval handles instead of ~210, and
+// this scales with the number of DISTINCT CADENCES in use, not the number of
+// agents — the same 11-or-fewer handle count holds at 500 or 1000 agents,
+// provided they keep reusing existing cadences (a genuinely novel interval
+// value simply gets its own new, additional bucket, which is correct: it is
+// a real, different cadence, not an accident to be silently merged away).
+//
+// A bucket is created lazily (_bucketFor) the first time any agent needs
+// that exact interval, and is never torn down when it becomes momentarily
+// empty (an empty bucket's firing is a cheap no-op scan) — avoiding
+// lifecycle churn for a case with no real cost, consistent with this file's
+// existing preference for simple, always-safe-to-call idempotent lifecycle
+// functions over precise resource reclamation.
+const MAX_DISPATCH_PER_TICK = 10;
+const _buckets = new Map(); // intervalMs (number) → { intervalMs, agentIds: Set<string>, timerHandle }
+
+function _bucketFor(intervalMs) {
+    let b = _buckets.get(intervalMs);
+    if (!b) {
+        b = { intervalMs, agentIds: new Set(), timerHandle: null };
+        _buckets.set(intervalMs, b);
+    }
+    return b;
+}
+
+function _startBucketTimer(b) {
+    if (b.timerHandle) return; // singleton guard, mirrors _startAgent's own pre-existing pattern
+    b.timerHandle = setInterval(() => _bucketTick(b.intervalMs), b.intervalMs);
+    if (b.timerHandle.unref) b.timerHandle.unref();
+}
+
+function _stopBucketTimer(b) {
+    if (b.timerHandle) { clearInterval(b.timerHandle); b.timerHandle = null; }
+}
+
+/**
+ * _bucketTick(intervalMs) — fires once per bucket's own configured cadence.
+ * Dispatches at most MAX_DISPATCH_PER_TICK agents from that bucket per
+ * firing, most-overdue-first, sequentially (never Promise.all), each
+ * wrapped in its own try/catch so one agent's failure can never stop the
+ * bucket's timer or block any other agent's dispatch this firing or any
+ * future one. Agents left over this firing simply remain bucket members and
+ * are re-considered (and re-sorted) on the bucket's next firing — this is
+ * strictly a subset of _tick()'s own existing guards (paused/stopped/
+ * failed/recovering/disabled/in-flight), never a parallel or looser check.
+ */
+async function _bucketTick(intervalMs) {
+    const b = _buckets.get(intervalMs);
+    if (!b || b.agentIds.size === 0) return;
+
+    const due = [];
+    for (const id of b.agentIds) {
+        const s = _agents.get(id);
+        if (!s || !s.enabled) continue;
+        if (s.status === "paused" || s.status === "stopped" || s.status === "failed" || s.status === "recovering") continue;
+        if (_tickInFlight.has(id)) continue;
+        due.push(s);
+    }
+    if (due.length === 0) return;
+
+    // Most-overdue-first: an agent with no nextTickAt yet (never ticked) is
+    // treated as maximally overdue (empty string sorts first ascending),
+    // matching this file's own existing graceful-degradation convention for
+    // a missing timestamp field (see missionMemory.cjs's identical
+    // "missing createdAt sorts as oldest" pattern, reused here rather than
+    // inventing a new convention).
+    due.sort((a, b2) => (a.nextTickAt || "").localeCompare(b2.nextTickAt || ""));
+
+    const batch = due.slice(0, MAX_DISPATCH_PER_TICK);
+    for (const s of batch) {
+        try {
+            await _tick(s.id);
+        } catch { /* _tick() already handles its own errors internally; this is a last-resort backstop so a truly unexpected throw can never reach setInterval's own callback boundary and silently kill the bucket's future firings */ }
+    }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -190,23 +294,104 @@ function _publicState(s) {
 }
 
 // ── Mission dedup guard ───────────────────────────────────────────────────────
+// A.5.2 runtime-stability finding: this guard compared raw objective
+// prefixes, so two auto-created objectives that differ only in an embedded
+// live count ("Verify 169 recently completed missions" vs "Verify 220...")
+// were never recognized as duplicates of the same recurring check —
+// confirmed as one of the two root causes of an unbounded mission/task
+// fan-out (see _testerTick). Digit runs are normalized to "#" before
+// comparing so the same recurring objective shape is caught regardless of
+// its current count. Purely additive to the existing dedup mechanism —
+// no new guard, no architecture change.
+function _normalizeObjective(s) {
+    return (s || "").replace(/\d+/g, "#");
+}
+
 function _missionExists(objectivePrefix) {
     try {
         const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+        const target = _normalizeObjective(objectivePrefix?.slice(0, 50));
+        // Mission 40 (2026-08-23): "pending" is not a valid missionMemory.cjs
+        // status (VALID_STATUSES is planned/active/running/paused/completed/
+        // failed/cancelled — see missionMemory.cjs) and every mission this
+        // function's own caller creates starts as "planned", never
+        // "pending". This dedup check never matched a freshly-created
+        // mission, so it was structurally unable to catch duplicates —
+        // proven live: 1,535 of 2,669 real planned missions are exact-
+        // objective duplicates (Mission 39 audit). Corrected to the real
+        // status string; no other behavior of this function changed.
         return (all.missions || []).some(m =>
-            (m.status === "active" || m.status === "pending") &&
-            m.objective?.slice(0, 50) === objectivePrefix?.slice(0, 50)
+            (m.status === "active" || m.status === "planned") &&
+            _normalizeObjective(m.objective?.slice(0, 50)) === target
         );
     } catch { return false; }
 }
 
+// JARVIS INCIDENT REPAIR (Mission 83 — P0 autonomous feedback-loop fix):
+// _missionExists() above (this file's own digit-normalized dedup, from the
+// earlier A.5.2 runtime-stability fix) only ever compares non-terminal
+// missions with no cooldown window and no org scoping — a signal whose
+// mission had already gone terminal could be immediately re-created on the
+// very next tick, and two different orgs' identical-looking autonomous
+// objectives were never distinguished. autonomousMissionGuard.cjs (shared
+// with engineeringOrg.cjs — see that file's own header for the full
+// root-cause writeup) now runs AFTER _missionExists() has already had its
+// chance to reject an exact-shape duplicate, adding a cooldown window for
+// terminal missions and a bounded admission cap on total in-flight
+// autonomous missions. _missionExists()/_normalizeObjective() above are
+// left completely unchanged as an additional, narrower safety net (P0-2
+// -style defense in depth) — not replaced, not weakened.
 function _createMission(agentId, spec) {
     if (!spec.objective?.trim()) return null;
     if (_missionExists(spec.objective)) return null;
+
+    const guard = _guard();
+    const orgId = (typeof spec.orgId === "string" && spec.orgId) || (typeof spec.metadata?.orgId === "string" && spec.metadata.orgId) || null;
+
+    // Mission 88: admission decision and mission creation now run as ONE
+    // atomic unit under missionMemory's own cross-process lock (via the
+    // guard's admitAndCreateAutonomousMission()) — closing the TOCTOU race
+    // where two concurrent calls could each observe "allowed" against the
+    // same pre-write snapshot before either created a mission. See
+    // autonomousMissionGuard.cjs's own comment for the full invariant.
+    // createFn receives the winning decision so signalType/signalKey are
+    // still sourced from the SAME decision that admitted this call.
+    const createFn = (decision) => _orch()?.createManual({
+        ...spec,
+        goal: spec.objective,
+        metadata: {
+            ...(spec.metadata || {}),
+            autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
+            autonomous: true,
+            signalType: decision.signalType,
+            signalKey:  decision.signalKey,
+        },
+    });
+
+    const outcome = guard
+        ? guard.admitAndCreateAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId, createFn })
+        : { allowed: true, signalType: null, signalKey: null, mission: createFn({ signalType: null, signalKey: null }) };
+
+    if (!outcome.allowed) {
+        const s = _agents.get(agentId);
+        if (s) {
+            _setState(agentId, {
+                lastDecisionAt: new Date().toISOString(),
+                lastDecision:   `Deferred (${outcome.reason || "guard"}): ${spec.objective?.slice(0, 60)}`,
+            });
+        }
+        try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: outcome.reason, signalType: outcome.signalType }); } catch {}
+        return null;
+    }
+
     try {
         const s = _agents.get(agentId);
-        const mission = _orch()?.createManual({ ...spec, goal: spec.objective });
-        if (mission && s) {
+        const mission = outcome.mission;
+        // P0-2: missionMemory's storage-level dedup can still return an
+        // existing mission here even when _missionExists() above missed it
+        // (e.g. a different orgId bucket) — don't count that as a new
+        // creation or re-announce it as one.
+        if (mission && !mission.deduped && s) {
             s.missionsCreated++;
             _setState(agentId, {
                 currentMissionId: mission.missionId || mission.id,
@@ -237,11 +422,21 @@ function _scheduleRecovery(id) {
     const delay = RECOVERY_BASE_MS * Math.pow(2, s.recoveryCount);
     s.recoveryCount++;
     logger.warn(`[AgentSupervisor:${id}] Recovering in ${delay}ms (attempt ${s.recoveryCount})`);
-    setTimeout(() => {
+    const recoveryTimer = setTimeout(() => {
         s._recovering = false;
-        if (s._intervalHandle) { clearInterval(s._intervalHandle); s._intervalHandle = null; }
+        // P1-1 consolidation: _startAgent()'s own singleton guard
+        // (`if (s._intervalHandle) return`) means this removal is defensive,
+        // not load-bearing — but doing it explicitly here keeps the
+        // invariant "an agent is a member of at most one bucket, always"
+        // true even under a future change to _startAgent(), rather than
+        // relying solely on that guard. Removing from the OLD bucket
+        // (s._intervalMs may have been changed by a re-registration while
+        // this agent was recovering) before _startAgent() re-adds it to
+        // whatever its current bucket should be.
+        if (s._intervalHandle) { _buckets.get(s._intervalMs)?.agentIds.delete(id); s._intervalHandle = null; }
         _startAgent(id);
     }, delay);
+    if (recoveryTimer.unref) recoveryTimer.unref();
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -480,8 +675,31 @@ async function _testerTick(s) {
     } catch {}
 
     // 2. Missions completed but never verified
+    //
+    // A.5.2 runtime-stability finding: nothing anywhere in the codebase ever
+    // set metadata.verified on a mission, so this check was permanently
+    // true — every 90s tester tick re-found the same (growing) unverified
+    // set and created ANOTHER "Verify N recently completed missions"
+    // mission via _createMission(). The existing dedup guard
+    // (_missionExists, above) never caught the duplicates because N changes
+    // every tick and the guard only compares the first 50 chars of the
+    // objective string — which for this short objective IS the whole
+    // string including the count. Confirmed live: 151 near-identical
+    // "Verify N..." missions (plus their Plan/Execute/Validate/Docs/
+    // Incident-generator fan-out) had accumulated in the task queue,
+    // driving CPU to 180%+ and making the server unresponsive to real
+    // requests within minutes of every restart.
+    //
+    // Fix reuses the exact snapshot this tick already computed (`unverified`)
+    // and the existing general-purpose missionMemory.updateMission() API to
+    // close the loop deterministically right here, rather than depending on
+    // the created mission's own (non-deterministic, AI-driven) subtask
+    // execution to eventually mark them — which is what silently never
+    // happened. Metadata is merged, not overwritten, to preserve whatever
+    // else is already stored per mission.
     try {
-        const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+        const mm = _mm();
+        const all = mm?.listMissions({ limit: 300 }) || { missions: [] };
         const unverified = (all.missions || []).filter(m =>
             m.status === "completed" &&
             !m.metadata?.verified &&
@@ -494,7 +712,16 @@ async function _testerTick(s) {
                 subtasks: [{ description: "Review outcomes against objectives" }, { description: "Mark verified and capture any anomalies" }],
                 metadata: { autoCreatedBy: "tester_agent", unverifiedCount: unverified.length, domain: "quality" },
             });
-            if (m) created++;
+            if (m) {
+                created++;
+                for (const um of unverified) {
+                    try {
+                        mm.updateMission(um.id, {
+                            metadata: { ...(um.metadata || {}), verified: true, verifiedAt: new Date().toISOString(), verifiedBy: "tester_agent" },
+                        });
+                    } catch { /* one mission failing to update must not block the rest */ }
+                }
+            }
         }
     } catch {}
 
@@ -659,9 +886,17 @@ async function _crmTick(s) {
     let created = 0;
 
     // 1. Stale leads (created > 7 days ago, still "new")
+    //
+    // OS-AGENT verification finding: businessDataService.listLeads() returns
+    // { items, total } (confirmed by reading _list()'s real return shape),
+    // never { leads }. This tick read leads.leads — always undefined, always
+    // falling back to [] — so this check has never fired since I5 shipped it,
+    // for any org, regardless of how stale the real data was. Fixed to read
+    // the real field. Purely a read-side correction; listLeads()'s own
+    // contract is unchanged.
     try {
-        const leads = _bds()?.listLeads?.({ status: "new", limit: 50 }) || { leads: [] };
-        const stale = (leads.leads || []).filter(l =>
+        const leads = _bds()?.listLeads?.({ status: "new", limit: 50 }) || { items: [] };
+        const stale = (leads.items || []).filter(l =>
             l.createdAt && (Date.now() - new Date(l.createdAt).getTime()) > 7 * 24 * 3600 * 1000
         );
         if (stale.length > 0) {
@@ -691,9 +926,15 @@ async function _crmTick(s) {
     } catch {}
 
     // 3. Revenue health check
+    //
+    // OS-AGENT verification finding: getRevenueStats() returns { total, ... }
+    // (confirmed by reading its real return shape), never { totalRevenue }.
+    // revStats.totalRevenue was always undefined, so `undefined === 0` was
+    // always false — this check could never fire, including on a genuinely
+    // empty pipeline. Fixed to read the real field.
     try {
         const revStats = _bds()?.getRevenueStats?.();
-        if (revStats && revStats.totalRevenue === 0 && revStats.count === 0) {
+        if (revStats && revStats.total === 0 && revStats.count === 0) {
             const m = _createMission(id, {
                 objective: "Revenue pipeline empty — initiate outbound",
                 priority:  "high",
@@ -875,10 +1116,29 @@ async function _executiveTick(s) {
 // UNIFIED _tick DISPATCHER
 // ─────────────────────────────────────────────────────────────────────────────
 
+// Scheduler Reliability & Recovery Audit (2026-08-16): _startAgent's
+// `if (s._intervalHandle) return` guard only prevents a second setInterval
+// from being registered for the same agent — it does not prevent the
+// interval's own callback from invoking _tick(id) again while a prior
+// invocation is still awaiting its role-specific handler. Real, reachable
+// window: planner's interval is 60s (the tightest of ROLE_INTERVALS), and
+// with 200+ agents registered in this one process (11 org registries x
+// ~20 depts each), a tick handler doing real async I/O (mission creation,
+// cross-domain correlation reads) can genuinely exceed its own interval
+// under load/contention — at which point setInterval fires the next tick
+// regardless of whether the previous one resolved, producing two
+// concurrent _tick(id) calls racing writes to the same `s` state object
+// and potentially double-creating missions/decisions inside the handler.
+// Minimal in-flight guard, same pattern as browserScheduler.cjs's
+// _inFlight Set and contentScheduler.cjs's _processingIds Set.
+const _tickInFlight = new Set();
+
 async function _tick(id) {
     const s = _agents.get(id);
     if (!s || !s.enabled) return;
     if (s.status === "paused" || s.status === "stopped" || s.status === "failed" || s.status === "recovering") return;
+    if (_tickInFlight.has(id)) return; // previous tick for this agent hasn't finished yet — skip, don't overlap
+    _tickInFlight.add(id);
 
     const t0 = Date.now();
     try {
@@ -906,12 +1166,18 @@ async function _tick(id) {
         _logError(id, e);
         const recent = s.errors.filter(er => Date.now() - new Date(er.ts).getTime() < 30_000);
         if (recent.length >= 3) {
-            clearInterval(s._intervalHandle);
+            // P1-1 consolidation: this agent no longer owns its own timer to
+            // clear — remove it from its shared bucket's dispatch set
+            // instead (same intent as the old clearInterval: "stop ticking
+            // this agent until recovery re-adds it"), then flip the marker
+            // false, matching _mkState's own documented boolean meaning.
+            _buckets.get(s._intervalMs)?.agentIds.delete(id);
             s._intervalHandle = null;
             _scheduleRecovery(id);
         }
     } finally {
         s.tickCount++;
+        _tickInFlight.delete(id);
     }
 }
 
@@ -934,7 +1200,7 @@ const _STARTUP_TICK_STAGGER_MS = 1500;
 function _startAgent(id) {
     const s = _agents.get(id);
     if (!s || !s.enabled) return;
-    if (s._intervalHandle) return; // singleton guard
+    if (s._intervalHandle) return; // singleton guard — same meaning as before: "already scheduled"
 
     _setState(id, { status: "starting", startedAt: new Date().toISOString(), health: 100 });
     logger.info(`[AgentSupervisor] Starting: ${id} (${s.role}) @ ${s._intervalMs}ms`);
@@ -945,7 +1211,18 @@ function _startAgent(id) {
         _tick(id).then(() => _setState(id, { status: "running" })).catch(() => {});
     }, staggerMs);
     if (t.unref) t.unref();
-    s._intervalHandle = setInterval(() => _tick(id), s._intervalMs);
+    // JARVIS INCIDENT REPAIR (2026-09-03, P1-1 consolidation): previously
+    // created a dedicated setInterval here — one per agent, ~210 live at
+    // real runtime scale. Now joins the shared bucket for this agent's exact
+    // _intervalMs (created lazily, reused by every other agent with the
+    // same cadence — repository-wide sweep found exactly 11 distinct
+    // cadences across all 210 real agents, so this reduces steady-state
+    // timer handles from ~210 to at most 11, without changing the
+    // configured cadence of any single agent by even one millisecond).
+    const bucket = _bucketFor(s._intervalMs);
+    bucket.agentIds.add(id);
+    _startBucketTimer(bucket);
+    s._intervalHandle = true; // boolean marker — see _mkState's own comment on this field's new meaning
     _setState(id, { status: "running", nextTickAt: new Date(Date.now() + s._intervalMs).toISOString() });
     try { _bus()?.emit("agent:supervisor:started", { agentId: id, role: s.role }); } catch {}
 }
@@ -953,7 +1230,17 @@ function _startAgent(id) {
 function _stopAgent(id) {
     const s = _agents.get(id);
     if (!s) return;
-    if (s._intervalHandle) { clearInterval(s._intervalHandle); s._intervalHandle = null; }
+    if (s._intervalHandle) {
+        // P1-1 consolidation: remove this agent from its bucket's dispatch
+        // set rather than clearing a per-agent timer that no longer exists.
+        // The bucket's own setInterval is deliberately left running even if
+        // this was its last member — an empty bucket firing is a cheap
+        // no-op scan, and tearing down/recreating bucket timers on every
+        // agent stop/start would reintroduce exactly the kind of lifecycle
+        // churn this consolidation is meant to avoid, for no benefit.
+        _buckets.get(s._intervalMs)?.agentIds.delete(id);
+        s._intervalHandle = null;
+    }
     _setState(id, { status: "stopped", currentObjective: null });
     logger.info(`[AgentSupervisor] Stopped: ${id}`);
     try { _bus()?.emit("agent:supervisor:stopped", { agentId: id }); } catch {}
@@ -980,7 +1267,25 @@ function registerAgent(spec = {}) {
         const s = _agents.get(id);
         if (label)       s.label       = label;
         if (description) s.description = description;
-        if (intervalMs)  s._intervalMs = intervalMs;
+        if (intervalMs && intervalMs !== s._intervalMs) {
+            // P1-1 consolidation: this agent may already be a live member of
+            // its OLD bucket — move it to the new one so its dispatch
+            // cadence actually matches the value being set here. (Pre-
+            // existing behavior before this consolidation had the same
+            // latent gap in spirit: changing s._intervalMs on an already-
+            // running agent never recreated its private setInterval either,
+            // so the agent's real cadence silently stayed at whatever value
+            // was baked into its already-running timer. Fixing it properly
+            // here rather than carrying the staleness forward into the
+            // shared-bucket model.)
+            if (s._intervalHandle) _buckets.get(s._intervalMs)?.agentIds.delete(id);
+            s._intervalMs = intervalMs;
+            if (s._intervalHandle) {
+                const bucket = _bucketFor(s._intervalMs);
+                bucket.agentIds.add(id);
+                _startBucketTimer(bucket);
+            }
+        }
         if (tickFn)      s._customTick = tickFn;
         logger.info(`[AgentSupervisor] Re-registered: ${id}`);
         return { ok: true, id, action: "updated" };
@@ -1090,6 +1395,28 @@ function start() {
         _startAgent(spec.id);
     }
 
+    // Phase B.11: start() used to restart ONLY the BUILTIN_AGENTS list while
+    // stop() stops every entry in _agents. At runtime there are 210 agents —
+    // 10 builtin plus 200 added through registerAgent() by the various org
+    // modules — so a stop→start cycle left 200 of them permanently stopped
+    // while getSupervisorStatus() still reported started:true.
+    //
+    // Reproduced live via the operator controls: POST supervisor/stop then
+    // supervisor/start gave runningCount 10/210, and sampling every 6s for 30s
+    // showed it stuck there (status: 200 stopped / 10 running, all enabled:true)
+    // — not a ramp-up. Emergency-stop is a human-oversight control, so a
+    // partial restore is worse than none: the operator is told the runtime is
+    // up while 95% of the fleet is idle.
+    //
+    // Restart every already-registered, enabled agent too, so start() is the
+    // true inverse of stop(). Builtins are handled above and skipped here;
+    // disabled agents stay stopped, which is their intended state.
+    for (const [id, state] of _agents) {
+        if (BUILTIN_AGENTS.some(s => s.id === id)) continue;   // already started
+        if (state && state.enabled === false) continue;        // deliberately off
+        _startAgent(id);
+    }
+
     try { _bus()?.emit("agent:supervisor:runtime_started", { agentCount: _agents.size }); } catch {}
     return getSupervisorStatus();
 }
@@ -1097,6 +1424,15 @@ function start() {
 function stop() {
     logger.info("[AgentSupervisor] Stopping all agents");
     for (const id of _agents.keys()) _stopAgent(id);
+    // P1-1 consolidation: _stopAgent() above already empties every bucket's
+    // agentIds (each agent removes itself), but the bucket setInterval
+    // handles themselves are otherwise left running indefinitely, firing on
+    // empty sets forever — harmless per-firing (a no-op scan) but not a real
+    // "stop", and would leave up to 11 handles alive across a stop() the
+    // operator explicitly asked to halt everything. Clear every bucket timer
+    // explicitly here; _startBucketTimer()'s own singleton guard means
+    // start() recreating them afterward can never double-arm a bucket.
+    for (const b of _buckets.values()) _stopBucketTimer(b);
     _supervisorStarted = false;
     try { _bus()?.emit("agent:supervisor:runtime_stopped", {}); } catch {}
 }
@@ -1126,6 +1462,30 @@ function listAgents() {
     return [..._agents.values()].map(_publicState);
 }
 
+// JARVIS INCIDENT REPAIR (2026-09-03, P1-1 consolidation): activeSchedulerCount
+// previously meant "how many agents have their own live setInterval" (≈210
+// at real runtime scale) — a repository-wide forensic sweep (this session)
+// confirmed zero external consumers of this field exist anywhere (no route,
+// no test, no frontend component), so redefining it is safe with no
+// compatibility shim needed. It now means what its name actually says: the
+// number of LIVE TIMER HANDLES (bucket setIntervals), which is what
+// DriftMonitor-style active-handle accounting genuinely cares about — at
+// most 11 today, regardless of agent count. scheduledAgentCount is the new,
+// separately-named field for the OLD concept ("how many agents are
+// currently scheduled to tick"), since that remains a real, useful, and
+// different number under the bucket model.
+function _activeSchedulerCount() {
+    let n = 0;
+    for (const b of _buckets.values()) if (b.timerHandle) n++;
+    return n;
+}
+
+function _scheduledAgentCount() {
+    let n = 0;
+    for (const s of _agents.values()) if (s._intervalHandle) n++;
+    return n;
+}
+
 function getSupervisorStatus() {
     const agents       = listAgents();
     const running      = agents.filter(a => a.status === "running").length;
@@ -1138,6 +1498,8 @@ function getSupervisorStatus() {
         supervisorUptime,
         agentCount:       agents.length,
         runningCount:     running,
+        activeSchedulerCount: _activeSchedulerCount(),
+        scheduledAgentCount: _scheduledAgentCount(),
         registeredRoles:  [...new Set(agents.map(a => a.role))],
         agents,
         config: {

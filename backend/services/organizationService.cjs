@@ -64,19 +64,69 @@
 
 const fs   = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 const logger = require("../utils/logger");
+const auditLog = require("../utils/auditLog.cjs");
 
 // ── Storage ───────────────────────────────────────────────────────────────────
 const DATA_DIR  = path.join(__dirname, "../../data");
 const ORG_FILE  = path.join(DATA_DIR, "organizations.json");
+// Per-account "which org am I currently working in" preference. Deliberately a
+// separate small store, not a field on the org record or the account record —
+// it's neither org data (many accounts, one org) nor identity data (one account,
+// many orgs); it's the N:M join's per-account cursor. Keyed by accountId so two
+// concurrent users never see or affect each other's selection (see CONTEXT_FILE
+// below for the same fix applied to the pre-existing global-pointer bug).
+const CONTEXT_FILE = path.join(DATA_DIR, "org-context.json");
+// Explicit cross-org access grants (Module 6). A grant lets one account act
+// within an org it is NOT a member of, without joining the org's member list
+// or department/team hierarchy — e.g. an agency account viewing a client org's
+// missions. Distinct from org membership on purpose: grants are narrower
+// (a fixed permission list, optionally time-boxed) and don't show up in
+// listMembers/org headcount.
+const GRANTS_FILE = path.join(DATA_DIR, "org-grants.json");
 
 function _read() {
     try { return JSON.parse(fs.readFileSync(ORG_FILE, "utf8")); }
     catch { return { orgs: [] }; }
 }
+// Vault Security Hardening: a direct writeFileSync(ORG_FILE, ...) here was a
+// genuine read-modify-write race — two concurrent createOrg()/addMember()
+// calls each read the same pre-write snapshot, then the second writer's
+// write silently clobbers the first's, losing an org or membership record
+// entirely (confirmed via a real test failure this session: a freshly
+// created org's owner got a 403 from secretVault.cjs's org-check because a
+// concurrent second createOrg() call had overwritten the file before the
+// first org was ever durably persisted). Atomic tmp-write + rename with a
+// unique-per-call tmp name (same pattern applied to secretVault.cjs's
+// _save() this session) doesn't eliminate the underlying lost-update race
+// for two writes based on the same stale read, but DOES eliminate file
+// corruption/truncation and the ENOENT crash class — genuinely fixing
+// this properly (a real lock or a single-writer queue) is a larger
+// architectural change out of this mission's scope.
 function _write(store) {
     if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-    fs.writeFileSync(ORG_FILE, JSON.stringify(store, null, 2));
+    const tmp = `${ORG_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(store, null, 2));
+    fs.renameSync(tmp, ORG_FILE);
+}
+
+function _readContext() {
+    try { return JSON.parse(fs.readFileSync(CONTEXT_FILE, "utf8")); }
+    catch { return {}; }
+}
+function _writeContext(map) {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(CONTEXT_FILE, JSON.stringify(map, null, 2));
+}
+
+function _readGrants() {
+    try { return JSON.parse(fs.readFileSync(GRANTS_FILE, "utf8")); }
+    catch { return { grants: [] }; }
+}
+function _writeGrants(store) {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+    fs.writeFileSync(GRANTS_FILE, JSON.stringify(store, null, 2));
 }
 
 // ── ID helpers ────────────────────────────────────────────────────────────────
@@ -84,9 +134,11 @@ let _seq = 0;
 function _id(prefix) { return `${prefix}_${Date.now()}_${(++_seq).toString(36)}`; }
 
 // ── Lazy loaders ──────────────────────────────────────────────────────────────
-function _mm()    { try { return require("./missionMemory.cjs");           } catch { return null; } }
-function _le()    { try { return require("./continuousLearningEngine.cjs"); } catch { return null; } }
-function _alert() { try { return require("./operationsAlertingLayer.cjs");  } catch { return null; } }
+function _mm()      { try { return require("./missionMemory.cjs");           } catch { return null; } }
+function _le()      { try { return require("./continuousLearningEngine.cjs"); } catch { return null; } }
+function _alert()   { try { return require("./operationsAlertingLayer.cjs");  } catch { return null; } }
+function _billing() { try { return require("./billingService.js");           } catch { return null; } }
+function _accounts() { try { return require("./accountService.js");          } catch { return null; } }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // RBAC MODEL
@@ -125,14 +177,127 @@ const ACTIONS = {
     // Billing / settings
     manage_billing:      ["org_owner"],
     view_analytics:      ["org_owner", "org_admin", "dept_lead"],
+    // Connector credentials (WhatsApp/Razorpay/Stripe/etc, myConnectors.js) —
+    // sensitive third-party secrets scoped to this org, same bar as
+    // update_org/manage_members rather than the stricter owner-only
+    // manage_billing (deliberately not reused here — connectors aren't a
+    // billing action, and reusing it would silently gate connector setup
+    // behind whatever future changes are made to billing permissions).
+    manage_connectors:   ["org_owner", "org_admin"],
+    // Enterprise — SSO/SCIM/policy control who can even reach this org, so
+    // these are org_owner-only, same bar as delete_org/manage_billing.
+    manage_sso:          ["org_owner"],
+    manage_scim:         ["org_owner"],
+    manage_policy:       ["org_owner"],
+    view_audit_log:      ["org_owner", "org_admin"],
+    // V5 Global AI Organization Platform — using the org's AI is a normal
+    // member capability (same bar as create_mission), not admin-only.
+    use_ai:              ["org_owner", "org_admin", "dept_lead", "team_lead", "member"],
 };
 
+// ── Global (platform-level) roles — Module 6 ───────────────────────────────────
+// Distinct from ORG_ROLES: these are account-level, not org-membership-level,
+// and stored on the account record itself (accountService's free-form `role`
+// field), not inside any org. Recognized values beyond the pre-existing
+// "operator"/"user":
+//   enterprise_admin — full implicit access to every org and every action, for
+//                      platform operations. Never needs a grant.
+//   portfolio_owner  — no implicit access by itself; it's the conventional
+//                      label for accounts that hold cross-org grants (below).
+//                      Kept as an account role (rather than just "anyone with
+//                      a grant") so the UI/reporting can identify these users.
+const GLOBAL_ROLES = ["enterprise_admin", "portfolio_owner"];
+
+function _globalRole(accountId) {
+    if (!accountId) return null;
+    try {
+        const acc = _accounts()?.getById(accountId);
+        return (acc && GLOBAL_ROLES.includes(acc.role)) ? acc.role : null;
+    } catch { return null; }
+}
+
+function isEnterpriseAdmin(accountId) {
+    return _globalRole(accountId) === "enterprise_admin";
+}
+
+// ── Cross-org grants — Module 6 ─────────────────────────────────────────────────
+// A grant gives one account a fixed set of ACTIONS-keys within one org, without
+// making them a member (they won't appear in listMembers, headcount, or team
+// rosters). Used for cross-org access like a portfolio owner or agency account
+// viewing/managing a client org they don't belong to.
+function grantOrgAccess(orgId, granteeAccountId, permissions, requestingAccountId) {
+    if (!orgId) throw new Error("orgId required");
+    if (!granteeAccountId) throw new Error("granteeAccountId required");
+    if (!Array.isArray(permissions) || !permissions.length) throw new Error("permissions must be a non-empty array");
+    const unknown = permissions.filter(p => !ACTIONS[p]);
+    if (unknown.length) throw new Error(`Unknown permission(s): ${unknown.join(", ")}`);
+
+    // Only an org_owner of the target org, or a global enterprise_admin, may grant access to it.
+    if (!isEnterpriseAdmin(requestingAccountId)) {
+        _assertPermission(orgId, requestingAccountId, "delete_org"); // org_owner-only action, reused as the "owns this org" check
+    }
+    const store = _read();
+    if (!_findOrg(store, orgId)) throw Object.assign(new Error("Organization not found"), { status: 404 });
+
+    const grants = _readGrants();
+    const existing = grants.grants.find(g => g.orgId === orgId && g.granteeAccountId === granteeAccountId);
+    const record = existing || {
+        id:        _id("grant"),
+        orgId,
+        granteeAccountId,
+        grantedBy: requestingAccountId,
+        grantedAt: new Date().toISOString(),
+    };
+    record.permissions = permissions;
+    record.updatedAt   = new Date().toISOString();
+    if (!existing) grants.grants.push(record);
+    _writeGrants(grants);
+
+    logger.info(`[OrgService] Granted ${granteeAccountId} [${permissions.join(",")}] on org ${orgId} by ${requestingAccountId}`);
+    auditLog.append({ type: "permission.grant_created", orgId, actorId: requestingAccountId, targetAccountId: granteeAccountId, permissions });
+    return record;
+}
+
+function revokeOrgAccess(orgId, granteeAccountId, requestingAccountId) {
+    if (!isEnterpriseAdmin(requestingAccountId)) {
+        _assertPermission(orgId, requestingAccountId, "delete_org");
+    }
+    const grants = _readGrants();
+    const before  = grants.grants.length;
+    grants.grants = grants.grants.filter(g => !(g.orgId === orgId && g.granteeAccountId === granteeAccountId));
+    _writeGrants(grants);
+    logger.info(`[OrgService] Revoked grant for ${granteeAccountId} on org ${orgId} by ${requestingAccountId}`);
+    auditLog.append({ type: "permission.grant_revoked", orgId, actorId: requestingAccountId, targetAccountId: granteeAccountId });
+    return { revoked: before !== grants.grants.length, orgId, granteeAccountId };
+}
+
+function listOrgGrants(orgId) {
+    const grants = _readGrants();
+    return grants.grants.filter(g => g.orgId === orgId);
+}
+
+function listGrantsForAccount(accountId) {
+    const grants = _readGrants();
+    return grants.grants.filter(g => g.granteeAccountId === accountId);
+}
+
+function _grantedPermissions(orgId, accountId) {
+    if (!orgId || !accountId) return [];
+    const grants = _readGrants();
+    const g = grants.grants.find(x => x.orgId === orgId && x.granteeAccountId === accountId);
+    if (!g) return [];
+    if (g.expiresAt && new Date(g.expiresAt).getTime() < Date.now()) return [];
+    return g.permissions || [];
+}
+
 function hasPermission(orgId, accountId, action) {
+    if (isEnterpriseAdmin(accountId)) return true;
     const role = getMemberRole(orgId, accountId);
-    if (!role) return false;
-    const allowed = ACTIONS[action];
-    if (!allowed) return false;
-    return allowed.includes(role);
+    if (role) {
+        const allowed = ACTIONS[action];
+        if (allowed && allowed.includes(role)) return true;
+    }
+    return _grantedPermissions(orgId, accountId).includes(action);
 }
 
 function _assertPermission(orgId, accountId, action) {
@@ -158,6 +323,8 @@ function _sanitize(org) {
         description:  org.description || "",
         slug:         org.slug,
         plan:         org.plan || "free",
+        status:       org.status || "active",
+        archivedAt:   org.archivedAt || null,
         createdAt:    org.createdAt,
         updatedAt:    org.updatedAt,
         memberCount:  (org.members || []).length,
@@ -193,6 +360,7 @@ function createOrg({ name, description = "", plan = "free" }, creatorAccountId) 
         description,
         slug,
         plan,
+        status:      "active",
         createdAt:   new Date().toISOString(),
         updatedAt:   new Date().toISOString(),
         members:     [{ accountId: creatorAccountId, orgRole: "org_owner", joinedAt: new Date().toISOString() }],
@@ -204,6 +372,7 @@ function createOrg({ name, description = "", plan = "free" }, creatorAccountId) 
 
     try { _le()?.createLesson({ type: "org_created", title: `Org created: ${name}`, source: "organizationService" }); } catch {}
     logger.info(`[OrgService] Created org ${org.id}: ${name} (owner: ${creatorAccountId})`);
+    auditLog.append({ type: "permission.org_created", orgId: org.id, actorId: creatorAccountId, orgRole: "org_owner" });
     return { ..._sanitize(org), members: org.members };
 }
 
@@ -215,11 +384,18 @@ function getOrg(orgId) {
     return { ..._sanitize(org), departments: org.departments, members: org.members };
 }
 
-function listOrgs(accountId) {
+function listOrgs(accountId, { includeArchived = false } = {}) {
     const store = _read();
-    const orgs  = accountId
-        ? store.orgs.filter(o => o.members?.some(m => m.accountId === accountId))
-        : store.orgs;
+    let orgs;
+    if (!accountId) {
+        orgs = store.orgs;
+    } else if (isEnterpriseAdmin(accountId)) {
+        orgs = store.orgs; // platform-wide visibility
+    } else {
+        const grantedOrgIds = new Set(listGrantsForAccount(accountId).map(g => g.orgId));
+        orgs = store.orgs.filter(o => o.members?.some(m => m.accountId === accountId) || grantedOrgIds.has(o.id));
+    }
+    if (!includeArchived) orgs = orgs.filter(o => (o.status || "active") !== "archived");
     return { orgs: orgs.map(_sanitize), total: orgs.length };
 }
 
@@ -237,15 +413,103 @@ function updateOrg(orgId, patch, requestingAccountId) {
     return _sanitize(org);
 }
 
-function deleteOrg(orgId, requestingAccountId) {
+// Best-effort count of records elsewhere tagged with this orgId, so callers see
+// the blast radius before archiving/purging. Never throws — missing services
+// or unreadable stores just yield a 0 for that category.
+function _cascadeCounts(orgId) {
+    const counts = { missions: 0, crmRecords: 0 };
+    try {
+        const mm = _mm();
+        if (mm?.listMissions) {
+            const { missions } = mm.listMissions({ limit: Number.MAX_SAFE_INTEGER });
+            counts.missions = (missions || []).filter(m => m?.metadata?.orgId === orgId).length;
+        }
+    } catch {}
+    try {
+        const bds = require("./businessDataService.cjs");
+        const totals = [
+            bds.listLeads?.({ orgId, limit: 1 })?.total,
+            bds.listContacts?.({ orgId, limit: 1 })?.total,
+            bds.listOpportunities?.({ orgId, limit: 1 })?.total,
+            bds.listCampaigns?.({ orgId, limit: 1 })?.total,
+        ];
+        counts.crmRecords = totals.reduce((sum, n) => sum + (n || 0), 0);
+    } catch {}
+    return counts;
+}
+
+// Soft-delete (default, safe path): flips status to "archived". The org and all
+// its data (CRM records, missions, vault secrets, billing links) remain intact
+// and can be restored. Archived orgs are hidden from listOrgs/resolveContext.
+function archiveOrg(orgId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "delete_org");
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (org.status === "archived") return { archived: true, orgId, alreadyArchived: true };
+
+    const cascade = _cascadeCounts(orgId);
+    org.status     = "archived";
+    org.archivedAt = new Date().toISOString();
+    org.archivedBy = requestingAccountId;
+    org.updatedAt  = new Date().toISOString();
+    _write(store);
+
+    try { _le()?.createLesson({ type: "org_archived", title: `Org archived: ${org.name}`, source: "organizationService" }); } catch {}
+    logger.info(`[OrgService] Archived org ${orgId} by ${requestingAccountId} (cascade: ${JSON.stringify(cascade)})`);
+    auditLog.append({ type: "permission.org_archived", orgId, actorId: requestingAccountId, cascade });
+    return { archived: true, orgId, cascade };
+}
+
+function restoreOrg(orgId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "delete_org");
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if ((org.status || "active") !== "archived") {
+        throw Object.assign(new Error("Organization is not archived"), { status: 400 });
+    }
+    org.status     = "active";
+    org.restoredAt = new Date().toISOString();
+    org.updatedAt  = new Date().toISOString();
+    _write(store);
+    logger.info(`[OrgService] Restored org ${orgId} by ${requestingAccountId}`);
+    auditLog.append({ type: "permission.org_restored", orgId, actorId: requestingAccountId });
+    return { restored: true, orgId };
+}
+
+// Hard delete (irreversible). Only permitted on an org that is already archived,
+// and only when the caller supplies a confirmation token equal to the org's slug
+// — a deliberate extra step so this can't be triggered by the same one-click flow
+// as archive. Underlying CRM/mission/vault records are NOT cascade-deleted; they
+// remain orphaned under the (now-freed) orgId, matching this mission's scope of
+// not touching those services' delete paths.
+function purgeOrg(orgId, requestingAccountId, confirmToken) {
     _assertPermission(orgId, requestingAccountId, "delete_org");
     const store = _read();
     const idx   = store.orgs.findIndex(o => o.id === orgId);
     if (idx < 0) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    const org = store.orgs[idx];
+
+    if ((org.status || "active") !== "archived") {
+        throw Object.assign(new Error("Organization must be archived before it can be permanently deleted"), { status: 409 });
+    }
+    if (!confirmToken || confirmToken !== org.slug) {
+        throw Object.assign(new Error("Confirmation token mismatch — pass the organization's slug to confirm permanent deletion"), { status: 400 });
+    }
+
+    const cascade = _cascadeCounts(orgId);
     store.orgs.splice(idx, 1);
     _write(store);
-    logger.info(`[OrgService] Deleted org ${orgId} by ${requestingAccountId}`);
-    return { deleted: true, orgId };
+    logger.info(`[OrgService] Permanently deleted org ${orgId} by ${requestingAccountId} (orphaned records: ${JSON.stringify(cascade)})`);
+    auditLog.append({ type: "permission.org_purged", orgId, actorId: requestingAccountId, orphaned: cascade });
+    return { deleted: true, orgId, orphaned: cascade };
+}
+
+// Back-compat alias: existing callers of deleteOrg now get the safe (soft-delete)
+// behavior instead of the previous unprotected hard delete.
+function deleteOrg(orgId, requestingAccountId) {
+    return archiveOrg(orgId, requestingAccountId);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -275,6 +539,19 @@ function listMembers(orgId, { deptId, teamId } = {}) {
 
 function addMember(orgId, { accountId, orgRole = "member", deptId, teamId }, requestingAccountId) {
     _assertPermission(orgId, requestingAccountId, "manage_members");
+    const result = _addMemberRecord(orgId, { accountId, orgRole, deptId, teamId });
+    auditLog.append({ type: "permission.member_added", orgId, actorId: requestingAccountId, targetAccountId: accountId, orgRole, source: "invite" });
+    return result;
+}
+
+// Internal, not permission-gated by design: the caller (e.g. a JIT SSO login)
+// is itself the authorization — the org's own manage_sso-gated SSO
+// configuration is what decided this identity should become a member, not
+// the new member's own permissions (which don't exist yet). Never expose
+// this directly on a route; only addMember() (user-driven, gated) and
+// ssoService.cjs's JIT-provisioning path (system-driven, pre-authorized by
+// the org's SSO config) call into org membership mutation.
+function _addMemberRecord(orgId, { accountId, orgRole = "member", deptId, teamId }) {
     if (!ORG_ROLES.includes(orgRole)) throw new Error(`Invalid orgRole: ${orgRole}`);
     if (orgRole === "org_owner") throw new Error("Cannot assign org_owner via addMember — transfer ownership instead");
 
@@ -291,6 +568,23 @@ function addMember(orgId, { accountId, orgRole = "member", deptId, teamId }, req
     return { added: true, accountId, orgRole };
 }
 
+/**
+ * Add a member as a direct, pre-authorized consequence of a successful SSO
+ * login — the org already opted into this via its own manage_sso-gated
+ * config (jitProvisioning: true), so no separate manage_members check
+ * applies here. Idempotent: returns { added: false } instead of throwing if
+ * the account is already a member (a returning SSO user on every login).
+ */
+function addMemberViaSso(orgId, accountId, orgRole = "member") {
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (org.members.find(m => m.accountId === accountId)) return { added: false, accountId, alreadyMember: true };
+    const result = _addMemberRecord(orgId, { accountId, orgRole });
+    auditLog.append({ type: "permission.member_added", orgId, actorId: "system", targetAccountId: accountId, orgRole, source: "sso_jit" });
+    return result;
+}
+
 function removeMember(orgId, accountId, requestingAccountId) {
     _assertPermission(orgId, requestingAccountId, "manage_members");
     const store = _read();
@@ -302,6 +596,7 @@ function removeMember(orgId, accountId, requestingAccountId) {
     org.members = org.members.filter(m => m.accountId !== accountId);
     org.updatedAt = new Date().toISOString();
     _write(store);
+    auditLog.append({ type: "permission.member_removed", orgId, actorId: requestingAccountId, targetAccountId: accountId, previousRole: target.orgRole });
     return { removed: true, accountId };
 }
 
@@ -314,23 +609,103 @@ function updateMemberRole(orgId, accountId, newRole, requestingAccountId) {
     if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
     const m = org.members.find(m => m.accountId === accountId);
     if (!m) throw Object.assign(new Error("Member not found"), { status: 404 });
+
+    // Phase B.17: removeMember (above) refuses to delete the org owner —
+    // "transfer ownership first" — but this function had no equivalent guard, so
+    // the SAME protection was bypassable by demotion instead of removal.
+    // Reproduced live on a real 4-member org: the sole org_owner PATCHed itself
+    // to "viewer" with HTTP 200 and the organization became permanently
+    // ownerless and unmanageable —
+    //   ex-owner delete_org            → 403 (no longer owner)
+    //   ex-owner re-promote self       → 403
+    //   ex-owner update_org            → 403
+    //   org_admin promote a new owner  → 400 "Use transferOwnership to assign org_owner"
+    //   org_admin delete_org           → 403 (owner-only action)
+    // and there is no transferOwnership function or route anywhere in the
+    // product (39 exported functions, none named that — only this error
+    // string), so the instruction both guards give is impossible to follow.
+    // Nothing can recover the org.
+    //
+    // Refuse to demote the last owner, matching removeMember's wording. An org
+    // with a second owner is unaffected, so a genuine hand-over (promote the
+    // successor, then step down) still works the moment transferOwnership
+    // exists — and demoting any non-last owner keeps working today.
+    if (m.orgRole === "org_owner" && newRole !== "org_owner") {
+        const owners = org.members.filter(x => x.orgRole === "org_owner");
+        if (owners.length <= 1) {
+            throw new Error("Cannot demote the last org owner — transfer ownership first");
+        }
+    }
+
+    const previousRole = m.orgRole;
     m.orgRole   = newRole;
     org.updatedAt = new Date().toISOString();
     _write(store);
+    auditLog.append({ type: "permission.role_changed", orgId, actorId: requestingAccountId, targetAccountId: accountId, previousRole, newRole });
     return { updated: true, accountId, orgRole: newRole };
+}
+
+/**
+ * Set (or clear, with deptId: null) a member's department assignment.
+ * Mirrors updateMemberRole's shape exactly. Added for SCIM group-sync
+ * (Module 2): an IdP-driven group membership push maps onto this same
+ * deptId field addMember already writes at invite time — no new
+ * membership/grouping model.
+ */
+function updateMemberDepartment(orgId, accountId, deptId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "manage_members");
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (deptId && !_findDept(org, deptId)) throw Object.assign(new Error("Department not found"), { status: 404 });
+    const m = org.members.find(m => m.accountId === accountId);
+    if (!m) throw Object.assign(new Error("Member not found"), { status: 404 });
+    m.deptId = deptId || null;
+    org.updatedAt = new Date().toISOString();
+    _write(store);
+    return { updated: true, accountId, deptId: m.deptId };
+}
+
+// Internal, not permission-gated — same rationale as _addMemberRecord/
+// addMemberViaSso: a SCIM group-membership PATCH from the org's own
+// manage_scim-gated directory connection is itself the authorization.
+function updateMemberDepartmentViaScim(orgId, accountId, deptId) {
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+    if (deptId && !_findDept(org, deptId)) throw Object.assign(new Error("Department not found"), { status: 404 });
+    const m = org.members.find(m => m.accountId === accountId);
+    if (!m) return { updated: false, accountId, reason: "not_a_member" };
+    m.deptId = deptId || null;
+    org.updatedAt = new Date().toISOString();
+    _write(store);
+    return { updated: true, accountId, deptId: m.deptId };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
 // DEPARTMENTS
 // ─────────────────────────────────────────────────────────────────────────────
 
-function createDepartment(orgId, { name, description = "", leadAccountId }, requestingAccountId) {
+function createDepartment(orgId, { name, description = "", leadAccountId, composition = null }, requestingAccountId) {
     _assertPermission(orgId, requestingAccountId, "manage_departments");
     if (!name?.trim()) throw new Error("Department name is required");
 
     const store = _read();
     const org   = _findOrg(store, orgId);
     if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+
+    // A.6 business-owner-journey finding: createDepartment() had no
+    // name-collision check at all — confirmed live, two "Engineering"
+    // departments were created as distinct records with no warning,
+    // discovered via two real POST /orgs/:orgId/departments calls a
+    // minute apart. Mirrors the exact pattern createOrg() (above) already
+    // uses for its own name/slug collision — same Object.assign(Error,
+    // {status:409}) shape, no new mechanism. Case-insensitive since a
+    // founder thinks of "Engineering" and "engineering" as the same name.
+    const normalizedName = name.trim().toLowerCase();
+    if ((org.departments || []).some(d => d.name.trim().toLowerCase() === normalizedName)) {
+        throw Object.assign(new Error(`A department named "${name.trim()}" already exists in this organization`), { status: 409 });
+    }
 
     const dept = {
         id:            _id("dept"),
@@ -340,6 +715,13 @@ function createDepartment(orgId, { name, description = "", leadAccountId }, requ
         createdAt:     new Date().toISOString(),
         updatedAt:     new Date().toISOString(),
         teams:         [],
+        // Additive, optional — Universal Composition Engine Phase 3. The
+        // real skills/connectors/permissions/approvalPolicies/kpis a
+        // department was composed from (departmentTemplateRegistry.cjs),
+        // persisted so it's queryable later instead of discarded after
+        // creation. Null when a department is created without a template
+        // (e.g. manually via the UI) — existing callers are unaffected.
+        composition:   composition || null,
     };
     if (!org.departments) org.departments = [];
     org.departments.push(dept);
@@ -557,6 +939,57 @@ function assertMissionOwnership(missionId, accountId, orgId) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
+// BILLING OVERVIEW — read-only aggregation across an org's members.
+//
+// billingService.js has no org concept and is NOT modified by this function —
+// every member's subscription (trial/paid/cancelled, Razorpay sub id, quota
+// usage) remains fully independent; who gets charged and how access is gated
+// (checkAccess()) is completely unchanged. This is purely a reporting lens
+// for an org_owner/org_admin to see their team's billing state in one place,
+// the same way listOrgMissions() is a lens over missionMemory.cjs without
+// duplicating mission storage. No new billing state is created or written.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function getOrgBillingOverview(orgId, requestingAccountId) {
+    _assertPermission(orgId, requestingAccountId, "manage_billing");
+    const billing = _billing();
+    if (!billing) throw new Error("billingService unavailable");
+
+    const store = _read();
+    const org   = _findOrg(store, orgId);
+    if (!org) throw Object.assign(new Error("Organization not found"), { status: 404 });
+
+    const members = (org.members || []).map(m => {
+        const record = billing.getRecord(m.accountId);
+        const quota  = billing.checkUsageQuota(m.accountId);
+        return {
+            accountId: m.accountId,
+            orgRole:   m.orgRole,
+            plan:      record.plan,
+            status:    record.status,
+            trialEnd:  record.trialEnd,
+            usage:     { used: quota.used, limit: quota.limit, remaining: quota.remaining },
+        };
+    });
+
+    const byPlan   = {};
+    const byStatus = {};
+    for (const m of members) {
+        byPlan[m.plan]     = (byPlan[m.plan]     || 0) + 1;
+        byStatus[m.status] = (byStatus[m.status] || 0) + 1;
+    }
+
+    return {
+        orgId,
+        orgName:     org.name,
+        memberCount: members.length,
+        byPlan,
+        byStatus,
+        members,
+    };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 // CONTEXT RESOLVER — given accountId, resolve all orgs/depts/teams they're in
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -566,6 +999,7 @@ function resolveContext(accountId) {
     const result = [];
 
     for (const org of store.orgs) {
+        if ((org.status || "active") === "archived") continue;
         const m = (org.members || []).find(m => m.accountId === accountId);
         if (!m) continue;
 
@@ -590,7 +1024,36 @@ function resolveContext(accountId) {
         });
     }
 
-    return { orgs: result, primaryOrg: result[0] || null };
+    // Prefer the account's persisted "current org" selection over array order,
+    // so which org a request auto-resolves to is a deliberate choice the user
+    // made (via setCurrentOrg / POST /orgs/switch), not an accident of which
+    // org they happened to join first.
+    const preferredOrgId = getCurrentOrg(accountId);
+    const preferred = preferredOrgId ? result.find(r => r.orgId === preferredOrgId) : null;
+
+    return { orgs: result, primaryOrg: preferred || result[0] || null };
+}
+
+// ── Current-org preference (per account, not global — see CONTEXT_FILE) ──────
+
+function getCurrentOrg(accountId) {
+    if (!accountId) return null;
+    const map = _readContext();
+    return map[accountId] || null;
+}
+
+function setCurrentOrg(accountId, orgId) {
+    if (!accountId) throw new Error("accountId required");
+    if (!orgId) throw new Error("orgId required");
+    // Must actually be a member — otherwise this becomes a way to force
+    // resolveContext() to leak org existence/membership status to a non-member.
+    const role = getMemberRole(orgId, accountId);
+    if (!role) throw Object.assign(new Error("Not a member of this organization"), { status: 403 });
+    const map = _readContext();
+    map[accountId] = orgId;
+    _writeContext(map);
+    logger.info(`[OrgService] ${accountId} switched current org to ${orgId}`);
+    return { switched: true, orgId };
 }
 
 module.exports = {
@@ -600,14 +1063,22 @@ module.exports = {
     listOrgs,
     updateOrg,
     deleteOrg,
+    archiveOrg,
+    restoreOrg,
+    purgeOrg,
     // Members
     addMember,
+    addMemberViaSso,
     removeMember,
     updateMemberRole,
+    updateMemberDepartment,
+    updateMemberDepartmentViaScim,
     listMembers,
     getMemberRole,
     hasPermission,
     resolveContext,
+    getCurrentOrg,
+    setCurrentOrg,
     // Departments
     createDepartment,
     updateDepartment,
@@ -624,8 +1095,17 @@ module.exports = {
     createMissionForOrg,
     listOrgMissions,
     assertMissionOwnership,
+    // Billing (read-only overview — see comment above getOrgBillingOverview)
+    getOrgBillingOverview,
+    // Cross-org grants + global roles (Module 6)
+    isEnterpriseAdmin,
+    grantOrgAccess,
+    revokeOrgAccess,
+    listOrgGrants,
+    listGrantsForAccount,
     // RBAC constants
     ORG_ROLES,
     ROLE_HIERARCHY,
     ACTIONS,
+    GLOBAL_ROLES,
 };

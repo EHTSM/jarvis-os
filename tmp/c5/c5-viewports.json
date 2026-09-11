@@ -1,0 +1,146 @@
+[
+  {
+    "viewport": "390x844",
+    "w": 390,
+    "h": 844,
+    "authVerified": true,
+    "overflow": {
+      "dims": {
+        "docScrollWidth": 594,
+        "docClientWidth": 390,
+        "bodyScrollWidth": 594,
+        "bodyClientWidth": 390
+      },
+      "hOverflow": true,
+      "overflowPx": 204,
+      "culprit": {
+        "tag": "button",
+        "cls": "topbar-status",
+        "rectRight": 594,
+        "width": 41,
+        "computedWidth": "41.1406px",
+        "minWidth": "auto",
+        "position": "static",
+        "display": "flex",
+        "whiteSpace": "normal",
+        "parentTag": "div",
+        "parentCls": "topbar-actions"
+      }
+    },
+    "surface": {
+      "tabsVisible": 6,
+      "tabsClipped": 1,
+      "hasMoreButton": true,
+      "focusableCount": 36,
+      "bodyTextLen": 753
+    }
+  },
+  {
+    "viewport": "430x932",
+    "w": 430,
+    "h": 932,
+    "authVerified": true,
+    "overflow": {
+      "dims": {
+        "docScrollWidth": 594,
+        "docClientWidth": 430,
+        "bodyScrollWidth": 594,
+        "bodyClientWidth": 430
+      },
+      "hOverflow": true,
+      "overflowPx": 164,
+      "culprit": {
+        "tag": "button",
+        "cls": "topbar-status",
+        "rectRight": 594,
+        "width": 41,
+        "computedWidth": "41.1406px",
+        "minWidth": "auto",
+        "position": "static",
+        "display": "flex",
+        "whiteSpace": "normal",
+        "parentTag": "div",
+        "parentCls": "topbar-actions"
+      }
+    },
+    "surface": {
+      "tabsVisible": 6,
+      "tabsClipped": 1,
+      "hasMoreButton": true,
+      "focusableCount": 36,
+      "bodyTextLen": 753
+    }
+  },
+  {
+    "viewport": "768x1024",
+    "w": 768,
+    "h": 1024,
+    "authVerified": true,
+    "overflow": {
+      "dims": {
+        "docScrollWidth": 768,
+        "docClientWidth": 768,
+        "bodyScrollWidth": 768,
+        "bodyClientWidth": 768
+      },
+      "hOverflow": false,
+      "overflowPx": 0,
+      "culprit": null
+    },
+    "surface": {
+      "tabsVisible": 6,
+      "tabsClipped": 0,
+      "hasMoreButton": true,
+      "focusableCount": 36,
+      "bodyTextLen": 828
+    }
+  },
+  {
+    "viewport": "1024x1366",
+    "w": 1024,
+    "h": 1366,
+    "authVerified": true,
+    "overflow": {
+      "dims": {
+        "docScrollWidth": 1024,
+        "docClientWidth": 1024,
+        "bodyScrollWidth": 1024,
+        "bodyClientWidth": 1024
+      },
+      "hOverflow": false,
+      "overflowPx": 0,
+      "culprit": null
+    },
+    "surface": {
+      "tabsVisible": 6,
+      "tabsClipped": 0,
+      "hasMoreButton": true,
+      "focusableCount": 36,
+      "bodyTextLen": 828
+    }
+  },
+  {
+    "viewport": "1440x900",
+    "w": 1440,
+    "h": 900,
+    "authVerified": true,
+    "overflow": {
+      "dims": {
+        "docScrollWidth": 1440,
+        "docClientWidth": 1440,
+        "bodyScrollWidth": 1440,
+        "bodyClientWidth": 1440
+      },
+      "hOverflow": false,
+      "overflowPx": 0,
+      "culprit": null
+    },
+    "surface": {
+      "tabsVisible": 6,
+      "tabsClipped": 0,
+      "hasMoreButton": true,
+      "focusableCount": 36,
+      "bodyTextLen": 828
+    }
+  }
+]

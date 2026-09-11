@@ -13,14 +13,17 @@
  * via the periodic drain interval started inside this module.
  */
 
-const fs       = require("fs");
-const path     = require("path");
-const logger   = require("../../backend/utils/logger");
+const fs = require("fs");
+const path = require("path");
+const logger = require("../../backend/utils/logger");
 const registry = require("./agentRegistry.cjs");
-const pq       = require("./priorityQueue.cjs");
-const engine   = require("./executionEngine.cjs");
-const history  = require("./executionHistory.cjs");
-const memory   = require("./memoryContext.cjs");
+const pq = require("./priorityQueue.cjs");
+const engine = require("./executionEngine.cjs");
+const history = require("./executionHistory.cjs");
+const memory = require("./memoryContext.cjs");
+const prereqGate = require("./prerequisiteGate.cjs");
+const aiService = require("../../backend/services/aiService.js");
+const { execFile } = require("child_process");
 
 // ── Crash snapshot — write per-dispatch, delete on clean completion ────
 const SNAPSHOT_DIR = path.join(__dirname, "../../data/snapshots");
@@ -62,14 +65,41 @@ function _getPlanner() {
     return _planner;
 }
 
+// ── Memory pressure limit (Phase B.11) ───────────────────────────
+// Derived from the process's real V8 heap budget rather than hardcoded, so it
+// tracks --max-old-space-size instead of drifting below the operating range
+// (see the gate in _governor.acquire() for the measured failure this caused).
+//   RUNTIME_MEMORY_PRESSURE_MB — explicit operator override, wins if set
+//   otherwise                  — 85% of the V8 heap size limit
+//   fallback                   — 450 (the previous constant) if unreadable
+const _MEM_PRESSURE_FRACTION = 0.85;
+let _memPressureCache = null;
+
+function _memoryPressureLimitMb() {
+    const override = parseInt(process.env.RUNTIME_MEMORY_PRESSURE_MB || "", 10);
+    if (Number.isFinite(override) && override > 0) return override;
+    if (_memPressureCache !== null) return _memPressureCache;
+    let limit = 450;                                   // previous behaviour
+    try {
+        // heap_size_limit reflects --max-old-space-size for this process.
+        const { heap_size_limit } = require("v8").getHeapStatistics();
+        const budgetMb = heap_size_limit / 1_048_576;
+        if (Number.isFinite(budgetMb) && budgetMb > 0) {
+            limit = Math.round(budgetMb * _MEM_PRESSURE_FRACTION);
+        }
+    } catch { /* keep the fallback */ }
+    _memPressureCache = limit;
+    return limit;
+}
+
 // ── Execution resource governor ──────────────────────────────────
 // Hard caps on concurrent dispatches and per-minute quota.
 // Separate from throttle (which is queue-pressure-based) — this is absolute.
 const _governor = {
     MAX_CONCURRENT: 10,      // absolute max in-flight dispatches
     MAX_PER_MINUTE: 120,     // absolute max dispatches per minute (2/s burst ceiling)
-    _active:        0,
-    _minuteTicks:   [],
+    _active: 0,
+    _minuteTicks: [],
 
     acquire() {
         const now = Date.now();
@@ -78,9 +108,28 @@ const _governor = {
             return { ok: false, reason: "max_concurrent_reached", active: this._active };
         if (this._minuteTicks.length >= this.MAX_PER_MINUTE)
             return { ok: false, reason: "per_minute_quota_exceeded", rate: this._minuteTicks.length };
-        // Memory pressure gate — reject new work when heap is critically high
+        // Memory pressure gate — reject new work when heap is critically high.
+        //
+        // Phase B.11: this threshold was a hardcoded 450 MB, chosen against the
+        // OLD --max-old-space-size=400 envelope. Phase B.8 measured the app's
+        // real steady state at 390-882 MB RSS and raised the V8 cap to 1024 MB
+        // (PM2 ceiling 1536 MB), but this gate was not updated — leaving it at
+        // 44% of the heap budget, i.e. inside the normal operating range.
+        //
+        // Consequence, measured on live data: agent-runs.json held 1371 failed
+        // runs out of 2000 (68.6%) all with error "memory_pressure", spanning
+        // 19:43-22:52 the same day, plus 643 retries that failed the same way.
+        // Sampling /runtime/health/deep gave heapMb of 501, 458.6, 425.4, 270.9,
+        // 482.6 — oscillating straight across 450, so agent work was admitted or
+        // rejected according to where GC happened to be, not real pressure.
+        //
+        // Derive the gate from the actual V8 heap budget instead of hardcoding
+        // it, so it tracks --max-old-space-size and can never again drift below
+        // the operating range. 85% leaves genuine headroom for a real runaway
+        // while admitting normal work. Env-overridable for operators, and it
+        // falls back to the previous constant if the heap limit is unreadable.
         const heapMb = process.memoryUsage().heapUsed / 1_048_576;
-        if (heapMb > 450)
+        if (heapMb > _memoryPressureLimitMb())
             return { ok: false, reason: "memory_pressure", heapMb: Math.round(heapMb) };
         // Browser backpressure — reduce concurrency if browser adapter is degraded
         try {
@@ -88,7 +137,7 @@ const _governor = {
             const bm = ba.getAdapterMetrics?.();
             if (bm && !bm.driverHealthy && this._active >= Math.floor(this.MAX_CONCURRENT / 2))
                 return { ok: false, reason: "browser_backpressure", consecutiveErrors: bm.consecutiveErrors };
-        } catch {}
+        } catch { }
         this._active++;
         this._minuteTicks.push(now);
         return { ok: true };
@@ -99,8 +148,10 @@ const _governor = {
     },
 
     stats() {
-        return { active: this._active, ratePerMin: this._minuteTicks.length,
-                 maxConcurrent: this.MAX_CONCURRENT, maxPerMin: this.MAX_PER_MINUTE };
+        return {
+            active: this._active, ratePerMin: this._minuteTicks.length,
+            maxConcurrent: this.MAX_CONCURRENT, maxPerMin: this.MAX_PER_MINUTE
+        };
     },
 };
 
@@ -109,13 +160,13 @@ const _governor = {
 // new dispatches are rejected until the queue drains below threshold.
 // Escalation: NORMAL → WARN → THROTTLE → BLOCK
 const _throttle = {
-    windowMs:       60_000,    // 1-minute sliding window
-    maxPerWindow:   60,        // max dispatches before rate-capping
-    _ticks:         [],        // timestamps of recent dispatches
+    windowMs: 60_000,    // 1-minute sliding window
+    maxPerWindow: 60,        // max dispatches before rate-capping
+    _ticks: [],        // timestamps of recent dispatches
 
-    QUEUE_WARN:     10,        // queue depth → warn level
+    QUEUE_WARN: 10,        // queue depth → warn level
     QUEUE_THROTTLE: 25,        // queue depth → throttle drain to 10s interval
-    QUEUE_BLOCK:    50,        // queue depth → block new sync dispatches
+    QUEUE_BLOCK: 50,        // queue depth → block new sync dispatches
 
     level: "normal",           // "normal" | "warn" | "throttle" | "block"
 
@@ -127,8 +178,8 @@ const _throttle = {
     },
 
     _updateLevel() {
-        const qSize     = pq.size();
-        const rateOver  = this._ticks.length >= this.maxPerWindow;
+        const qSize = pq.size();
+        const rateOver = this._ticks.length >= this.maxPerWindow;
         if (qSize >= this.QUEUE_BLOCK || (rateOver && qSize >= this.QUEUE_THROTTLE)) {
             this.level = "block";
         } else if (qSize >= this.QUEUE_THROTTLE || rateOver) {
@@ -150,8 +201,8 @@ const _throttle = {
 
 // ── Drain interval ────────────────────────────────────────────────
 // Process queued background tasks every 5s normally, 10s when throttled.
-let _drainRef    = null;
-let _drainFast   = true;
+let _drainRef = null;
+let _drainFast = true;
 function _ensureDrainLoop() {
     if (_drainRef) return;
     _drainRef = setInterval(async () => {
@@ -187,6 +238,17 @@ function _plan(input) {
     return [{ type: "ai", label: input, payload: { query: input }, input }];
 }
 
+async function _gitHealthProbe() {
+    return await new Promise(resolve => {
+        execFile("git", ["rev-parse", "--is-inside-work-tree"], { cwd: path.resolve(__dirname, "../.."), timeout: 3_000 }, (err) => resolve(!err));
+    });
+}
+
+async function _checkRuntimeReadiness(options = {}) {
+    if (options._skipPrereqGate) return { ok: true, blocked: false, reasons: [] };
+    return prereqGate.checkPrerequisites({ aiService, gitRunner: _gitHealthProbe });
+}
+
 /**
  * Dispatch: plan the input, execute all sub-tasks, return aggregated result.
  * Blocks until all tasks complete (or fail with retries exhausted).
@@ -202,7 +264,13 @@ async function dispatch(input, options = {}) {
         if (gov.isQuarantineActive?.() && !options._internal) {
             return { success: false, error: "quarantine_active", reason: "runtime in quarantine — new dispatches blocked" };
         }
-    } catch {}
+    } catch { }
+
+    const prereq = await _checkRuntimeReadiness(options);
+    if (!prereq.ok) {
+        logger.warn(`[Runtime] dispatch blocked by prerequisite gate — ${prereq.reasons.join("; ")}`);
+        return { success: false, error: "prerequisites_unavailable", reasons: prereq.reasons, blocked: true };
+    }
 
     // Resource governor — hard cap before throttle check
     const govCheck = _governor.acquire();
@@ -219,16 +287,16 @@ async function dispatch(input, options = {}) {
         return { success: false, error: "runtime_overloaded", throttleLevel, queueSize: pq.size() };
     }
     _throttle.tick();
-    try { require("./driftMonitor.cjs").recordExecStarted(); } catch {}
+    try { require("./driftMonitor.cjs").recordExecStarted(); } catch { }
 
-    const t0     = Date.now();
+    const t0 = Date.now();
     const taskId = options.taskId || `disp_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-    let settled  = [];
-    let tasks    = [];
+    let settled = [];
+    let tasks = [];
 
     try {
-        tasks       = _plan(input);
-        const ctx   = memory.getContextForTask(input, tasks[0]?.type || "ai");
+        tasks = _plan(input);
+        const ctx = memory.getContextForTask(input, tasks[0]?.type || "ai");
 
         logger.info(`[Runtime] dispatch — ${tasks.length} task(s) from input "${input.slice(0, 60)}"`);
         _snapshotWrite(taskId, input);
@@ -248,17 +316,17 @@ async function dispatch(input, options = {}) {
     } finally {
         _snapshotDelete(taskId);
         _governor.release();
-        try { require("./driftMonitor.cjs").recordExecFinished(); } catch {}
+        try { require("./driftMonitor.cjs").recordExecFinished(); } catch { }
     }
 
-    const allOk  = settled.every(r => r.success);
-    const reply  = settled.map(r => r.result?.message || r.result?.result || r.error || "").filter(Boolean).join("\n").trim();
+    const allOk = settled.every(r => r.success);
+    const reply = settled.map(r => r.result?.message || r.result?.result || r.error || "").filter(Boolean).join("\n").trim();
     const durationMs = Date.now() - t0;
 
     memory.recordExecution(input, tasks, settled, {
-        agentId:     settled[0]?.agentId || "runtime",
+        agentId: settled[0]?.agentId || "runtime",
         durationMs,
-        success:     allOk,
+        success: allOk,
     });
 
     logger.info(`[Runtime] dispatch done in ${durationMs}ms — success=${allOk}`);
@@ -289,7 +357,24 @@ async function drainQueue() {
     try {
         return await dispatch(entry.task.input);
     } catch (err) {
+        // Queue Layer Reliability & Safety Audit (2026-08-16): dispatch()
+        // already catches and reports per-task execution failures via its
+        // own `settled` results (memory.recordExecution() logs those), so
+        // this catch is the rare path — a genuinely unexpected throw before
+        // dispatch() reaches that point (e.g. _plan() itself throwing).
+        // Previously that just logged and returned null: the priorityQueue
+        // entry was already dequeued, so the task vanished with only a log
+        // line — no retry, no record. Pushed to the same deadLetterQueue
+        // executionEngine.cjs already uses for its own exhausted-retry
+        // failures, so this rare path is no longer silently lost.
         logger.error(`[Runtime] drain error for id=${entry.id}: ${err.message}`);
+        try {
+            require("./deadLetterQueue.cjs").push({
+                taskId: `pq-${entry.id}`, taskType: "priorityQueue-drain",
+                input: entry.task?.input || "", error: err.message,
+                attempts: 1, agentId: null,
+            });
+        } catch { /* non-critical */ }
         return null;
     }
 }
@@ -309,24 +394,24 @@ function registerAgent(config) {
 function status() {
     const memUsage = process.memoryUsage();
     const histStats = history.stats();
-    
+
     // Runaway detection: 5+ failures of same input in last 50 tasks
     const recent50 = history.recent(50);
-    const failed   = recent50.filter(e => !e.success);
-    const counts   = {};
+    const failed = recent50.filter(e => !e.success);
+    const counts = {};
     failed.forEach(e => { counts[e.input] = (counts[e.input] || 0) + 1; });
-    const runaway  = Object.values(counts).some(v => v >= 5);
+    const runaway = Object.values(counts).some(v => v >= 5);
 
     return {
-        queue:   { size: pq.size(), items: pq.snapshot() },
-        agents:  registry.listAll(),
+        queue: { size: pq.size(), items: pq.snapshot() },
+        agents: registry.listAll(),
         history: histStats,
-        uptime:  process.uptime(),
+        uptime: process.uptime(),
         runaway,
         throttle: {
-            level:     _throttle.level,
+            level: _throttle.level,
             ratePerMin: _throttle.rate(),
-            queueSize:  pq.size(),
+            queueSize: pq.size(),
         },
         governor: _governor.stats(),
         vitals: {
@@ -353,7 +438,7 @@ function _selfHeal() {
                 stale.forEach(t => tq.fail ? tq.fail(t.id, "stale_running_recovered") : null);
                 actions.push(`reconciled ${stale.length} stale running task(s)`);
             }
-        } catch {}
+        } catch { }
 
         // 2. Check drift monitor exec active count vs actual queue size
         try {
@@ -362,7 +447,7 @@ function _selfHeal() {
             if (rpt.execDrift > 20) {
                 actions.push(`exec drift=${rpt.execDrift} — counters may be skewed`);
             }
-        } catch {}
+        } catch { }
 
         // 3. Reduce throttle if queue has drained and level is still high
         const currentLevel = _throttle.check();
@@ -383,27 +468,27 @@ function _selfHeal() {
             const plc = require("./adapters/processLifecycleAdapter.cjs");
             const killed = plc.forceKillOverdue();
             if (killed.length > 0) actions.push(`force-killed ${killed.length} orphan process(es)`);
-        } catch {}
+        } catch { }
 
         // 6. Orphan queue detection — queue items with no corresponding history entry
         //    for > 5 minutes are likely stuck. Log them; don't auto-fail (operator decision).
         try {
-            const tq  = require("../../agents/taskQueue.cjs");
+            const tq = require("../../agents/taskQueue.cjs");
             const pqs = pq.snapshot();
             const now = Date.now();
             const stuckQueue = pqs.filter(e => e.enqueuedAt && now - e.enqueuedAt > 5 * 60_000);
             if (stuckQueue.length > 0)
                 actions.push(`${stuckQueue.length} queue item(s) waiting >5min`);
-        } catch {}
+        } catch { }
 
         // 7. Duplicate execution detection — governor active count vs drift monitor active count
         try {
-            const dm  = require("./driftMonitor.cjs");
+            const dm = require("./driftMonitor.cjs");
             const rpt = dm.getDriftReport();
             const govActive = _governor._active;
             if (Math.abs(rpt.execActive - govActive) > 5)
                 actions.push(`exec count mismatch: governor=${govActive} drift=${rpt.execActive}`);
-        } catch {}
+        } catch { }
 
         // 8. Governor active count can't exceed MAX_CONCURRENT — reset if corrupted
         if (_governor._active > _governor.MAX_CONCURRENT * 2) {
@@ -435,21 +520,21 @@ setInterval(() => {
             const cutoff = Date.now() - 60 * 60_000;
             for (const f of fs.readdirSync(SNAPSHOT_DIR)) {
                 try {
-                    const fp   = path.join(SNAPSHOT_DIR, f);
+                    const fp = path.join(SNAPSHOT_DIR, f);
                     const stat = fs.statSync(fp);
                     if (stat.mtimeMs < cutoff) fs.unlinkSync(fp);
-                } catch {}
+                } catch { }
             }
         }
 
         // 2. Trim execution history to prevent unbounded growth
-        try { history.prune?.(); } catch {}
+        try { history.prune?.(); } catch { }
 
         // 3. Soft-reset drift counters (keep totals but compact time-windowed arrays)
-        try { require("./driftMonitor.cjs").reset?.(); } catch {}
+        try { require("./driftMonitor.cjs").reset?.(); } catch { }
 
         // 4. Request GC hint if available
-        try { if (typeof global.gc === "function") global.gc(); } catch {}
+        try { if (typeof global.gc === "function") global.gc(); } catch { }
 
         logger.info("[Runtime] 12h long-session cleanup complete");
     } catch (err) {

@@ -22,7 +22,15 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "../../data/civilization");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/civilization/). When set,
+// redirects to an isolated per-process subdirectory so tests/runtime/civ-v9.test.cjs stops
+// writing real records into production data/civilization/ (Mission 97/98 defect class — this is
+// the exact file whose live pollution, "Article 100"/2026-06-27, was found and traced this run).
+const DATA_DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `civilization.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/civilization");
 const FILES = {
   registry:     path.join(DATA_DIR, "registry.json"),     // member organizations
   council:      path.join(DATA_DIR, "council.json"),      // council members + proposals + votes
@@ -188,6 +196,14 @@ function listAlliances({ type, status = "active" } = {}) {
 
 function addCouncilMember({ memberId, role = "representative", votingWeight = 1, mandate = "permanent" } = {}) {
   if (!memberId) return { ok: false, error: "memberId required" };
+  // Mission 107 fix: this previously accepted any memberId with no check
+  // against the registry, which is how Mission 106's 10 permanently-
+  // dangling council.json records were created (proven: none of their
+  // memberIds ever resolved against any registry snapshot). Reuses the
+  // existing getMember() lookup already used elsewhere in this file —
+  // no new validation mechanism, no registry mutation, no side effect on
+  // existing council records (this only gates NEW writes).
+  if (!getMember(memberId)) return { ok: false, error: "memberId not found in registry" };
   const cou = _cou();
   if (cou.members.find(m => m.memberId === memberId && m.status === "active"))
     return { ok: false, error: "Already a council member" };
@@ -526,6 +542,14 @@ function listCollaborations({ status, domain, memberId, limit = 50 } = {}) {
 
 function recordReputationEvent({ memberId, eventType, score, fromMemberId, detail = "", domain = "general" } = {}) {
   if (!memberId || !eventType) return { ok: false, error: "memberId and eventType required" };
+  // Mission 113 fix: this previously accepted any memberId with no check
+  // against the registry, which is how Mission 112's 216 permanently-
+  // dangling reputation.json reference instances were created (proven: all
+  // 216 trace to registry members that no longer exist). Reuses the
+  // existing getMember() lookup already used by Mission 107's
+  // addCouncilMember() fix — no new validation mechanism, no side effect
+  // on existing reputation records (this only gates NEW writes).
+  if (!getMember(memberId)) return { ok: false, error: "memberId not found in registry" };
   const rep = _rep();
   if (!rep.scores[memberId]) rep.scores[memberId] = { score: 70, events: [], badges: [] };
   const evt = { id: _id("crevt"), eventType, score: score || 0, fromMemberId, detail, domain, at: new Date().toISOString() };
@@ -546,6 +570,11 @@ function getReputation(memberId) {
 
 function endorseMember({ fromMemberId, toMemberId, domain, message = "" } = {}) {
   if (!fromMemberId || !toMemberId) return { ok: false, error: "fromMemberId and toMemberId required" };
+  // Mission 113 fix: same referential-integrity gap as recordReputationEvent
+  // above — both sides of an endorsement must resolve to a real registry
+  // member, closing the same 216-instance dangling-reference class.
+  if (!getMember(fromMemberId)) return { ok: false, error: "fromMemberId not found in registry" };
+  if (!getMember(toMemberId)) return { ok: false, error: "toMemberId not found in registry" };
   const endorse = { id: _id("cend"), fromMemberId, toMemberId, domain, message, at: new Date().toISOString() };
   _rep().endorsements.push(endorse);
   _save("reputation");
@@ -562,6 +591,12 @@ function listReputations({ minScore, maxScore } = {}) {
 
 function awardBadge({ memberId, badge, reason, fromMemberId = "civilization" } = {}) {
   if (!memberId || !badge) return { ok: false, error: "memberId and badge required" };
+  // Mission 113 fix: same referential-integrity gap as recordReputationEvent
+  // above — closes the badge-writer share of the same 216-instance dangling-
+  // reference class. platformState.certifyOrg()'s own indirect call already
+  // resolves a real member before calling this (platformState.cjs:730-732),
+  // so this guard is a no-op for that existing, already-correct caller.
+  if (!getMember(memberId)) return { ok: false, error: "memberId not found in registry" };
   const b = { id: _id("cbadge"), memberId, badge, reason, fromMemberId, awardedAt: new Date().toISOString() };
   _rep().badges.push(b);
   if (_rep().scores[memberId]) _rep().scores[memberId].badges.push(badge);
@@ -834,10 +869,19 @@ function getCivilizationHealth() {
   const layerScores = Object.values(health.layers).map(l => l.score || 50);
   health.score = Math.min(100, Math.max(0, Math.round(layerScores.reduce((a,b)=>a+b,0)/layerScores.length)));
 
-  // Update context
+  // Update context — Mission 115 fix: only persist when a tracked value
+  // actually changed. Previously this wrote context.json unconditionally
+  // on every call (Mission 114's finding), turning a read-shaped function
+  // (and the GET routes/autonomous scheduler ticks that call it) into a
+  // guaranteed disk write even when nothing changed. Reuses the existing
+  // updateCivContext() write path rather than a new mechanism; the plain
+  // in-memory read (getCivContext()/dashboard's embedded context field)
+  // is unaffected, since _cx() is unconditionally re-read either way —
+  // only the persist-to-disk step is now gated.
   const cx = _cx();
-  cx.membersCount = members; cx.healthScore = health.score; cx.lastSync = new Date().toISOString();
-  _save("context");
+  if (cx.membersCount !== members || cx.healthScore !== health.score) {
+    updateCivContext({ membersCount: members, healthScore: health.score });
+  }
 
   return health;
 }

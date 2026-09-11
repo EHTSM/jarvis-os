@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import { useConfirm } from './ConfirmDialog';
 import './ComposerPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function api(method, path, body) {
     return _fetch(path, { method, ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -9,29 +10,29 @@ async function api(method, path, body) {
 
 // ── Status meta ───────────────────────────────────────────────────────────────
 const STATUS_META = {
-    composing:        { color: '#f59e0b', label: 'Composing'        },
+    composing:        { color: 'var(--warning)', label: 'Composing'        },
     pending_approval: { color: '#60a5fa', label: 'Pending Approval' },
     auto_approved:    { color: '#34d399', label: 'Auto-Approved'    },
-    approved:         { color: '#10b981', label: 'Approved'         },
+    approved:         { color: 'var(--success)', label: 'Approved'         },
     rejected:         { color: '#f87171', label: 'Rejected'         },
     executing:        { color: '#a78bfa', label: 'Executing'        },
-    failed:           { color: '#ef4444', label: 'Failed'           },
-    cancelled:        { color: '#6b7280', label: 'Cancelled'        },
+    failed:           { color: 'var(--danger)', label: 'Failed'           },
+    cancelled:        { color: 'var(--text-dim)', label: 'Cancelled'        },
 };
 
 const RISK_META = {
-    low:    { color: '#10b981' },
-    medium: { color: '#f59e0b' },
-    high:   { color: '#ef4444' },
+    low:    { color: 'var(--success)' },
+    medium: { color: 'var(--warning)' },
+    high:   { color: 'var(--danger)' },
 };
 
 function StatusBadge({ status }) {
-    const m = STATUS_META[status] || { color: '#6b7280', label: status || '?' };
+    const m = STATUS_META[status] || { color: 'var(--text-dim)', label: status || '?' };
     return <span className="cp-badge" style={{ color: m.color, borderColor: m.color }}>{m.label}</span>;
 }
 
 function ConfBar({ score }) {
-    const color = score >= 80 ? '#10b981' : score >= 60 ? '#f59e0b' : '#ef4444';
+    const color = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--warning)' : 'var(--danger)';
     return (
         <div className="cp-confbar">
             <div className="cp-confbar__fill" style={{ width: `${score}%`, background: color }} />
@@ -93,7 +94,7 @@ function PipelineTracker({ pipelineId }) {
         return () => { active = false; };
     }, [pipelineId]);
     if (!run) return null;
-    const color = run.status === 'completed' ? '#10b981' : run.status === 'failed' ? '#ef4444' : '#f59e0b';
+    const color = run.status === 'completed' ? 'var(--success)' : run.status === 'failed' ? 'var(--danger)' : 'var(--warning)';
     return (
         <div className="cp-pipeline" style={{ borderColor: color }}>
             <span className="cp-pipeline__label">I7 Pipeline</span>
@@ -106,7 +107,7 @@ function PipelineTracker({ pipelineId }) {
 // ── Bundle files list ─────────────────────────────────────────────────────────
 function BundleFiles({ files }) {
     if (!files?.length) return null;
-    const ROLE_COLOR = { primary: '#f59e0b', affected: '#60a5fa', test: '#10b981', docs: '#a78bfa', changelog: '#6b7280' };
+    const ROLE_COLOR = { primary: 'var(--warning)', affected: '#60a5fa', test: 'var(--success)', docs: '#a78bfa', changelog: 'var(--text-dim)' };
     return (
         <div className="cp-bundle-files">
             {files.map((f, i) => (
@@ -323,7 +324,7 @@ function PlanDetail({ plan, onApprove, onReject, onExecute, onCancel, onBack, bu
 // ── Plan list item ────────────────────────────────────────────────────────────
 function PlanItem({ plan, active, onSelect }) {
     return (
-        <div className={`cp-item ${active ? 'cp-item--active' : ''}`} onClick={() => onSelect(plan.planId)}>
+        <div className={`cp-item ${active ? 'cp-item--active' : ''}`} {...clickableProps(() => onSelect(plan.planId))}>
             <div className="cp-item__head">
                 <StatusBadge status={plan.status} />
                 <span className="cp-item__goal">{plan.goal?.slice(0, 60)}</span>
@@ -350,12 +351,12 @@ function BenchmarkReport({ report, onClose }) {
             </div>
             <div className="cp-bench__kpis">
                 {[
-                    { l: 'Passed',        v: `${report.passed}/${report.total}`, c: '#10b981' },
-                    { l: 'Pass Rate',     v: `${report.passRate}%`,              c: '#10b981' },
-                    { l: 'Avg Conf',      v: `${report.avgConfidence}%`,         c: '#f59e0b' },
+                    { l: 'Passed',        v: `${report.passed}/${report.total}`, c: 'var(--success)' },
+                    { l: 'Pass Rate',     v: `${report.passRate}%`,              c: 'var(--success)' },
+                    { l: 'Avg Conf',      v: `${report.avgConfidence}%`,         c: 'var(--warning)' },
                     { l: 'Avg Latency',   v: `${report.avgElapsedMs}ms`,         c: '#60a5fa' },
-                    { l: 'Replace Cursor',v: `${report.replaceCursorScore}/100`, c: '#f59e0b' },
-                    { l: 'Build Ooplix', v: `${report.buildOoplixScore}/100`,    c: '#10b981' },
+                    { l: 'Replace Cursor',v: `${report.replaceCursorScore}/100`, c: 'var(--warning)' },
+                    { l: 'Build Ooplix', v: `${report.buildOoplixScore}/100`,    c: 'var(--success)' },
                 ].map(({ l, v, c }) => (
                     <div key={l} className="cp-bench__kpi">
                         <div className="cp-bench__kpi-val" style={{ color: c }}>{v}</div>
@@ -387,13 +388,13 @@ function StatsPanel({ stats }) {
         <div className="cp-stats-grid">
             {[
                 { l: 'Total Plans',      v: stats.total,               c: '#d1d5db' },
-                { l: 'Executed',         v: stats.executed || 0,       c: '#10b981' },
-                { l: 'Success Rate',     v: `${stats.successRate || 0}%`, c: '#10b981' },
-                { l: 'Avg Confidence',   v: `${stats.avgConfidence || 0}%`, c: '#f59e0b' },
+                { l: 'Executed',         v: stats.executed || 0,       c: 'var(--success)' },
+                { l: 'Success Rate',     v: `${stats.successRate || 0}%`, c: 'var(--success)' },
+                { l: 'Avg Confidence',   v: `${stats.avgConfidence || 0}%`, c: 'var(--warning)' },
                 { l: 'Avg Files/Plan',   v: stats.avgFilesPerPlan || 0, c: '#60a5fa' },
-                { l: 'Cancelled',        v: stats.cancelled || 0,      c: '#6b7280' },
-                { l: 'Replace Cursor',   v: `${stats.replaceCursorScore || 0}/100`, c: '#f59e0b' },
-                { l: 'Build Ooplix',     v: `${stats.buildOoplixScore || 0}/100`,   c: '#10b981' },
+                { l: 'Cancelled',        v: stats.cancelled || 0,      c: 'var(--text-dim)' },
+                { l: 'Replace Cursor',   v: `${stats.replaceCursorScore || 0}/100`, c: 'var(--warning)' },
+                { l: 'Build Ooplix',     v: `${stats.buildOoplixScore || 0}/100`,   c: 'var(--success)' },
             ].map(({ l, v, c }) => (
                 <div key={l} className="cp-stats-tile">
                     <div className="cp-stats-tile__val" style={{ color: c }}>{v}</div>
@@ -474,7 +475,7 @@ export default function ComposerPanel({ cwd }) {
         try {
             const r = await api('POST', `/composer/${selected.planId}/reject`, { reason });
             if (r?.ok) { setSelected(r.plan); loadPlans(); }
-        } catch {}
+        } catch (e) { setError(e?.message || 'Could not reject the plan.'); }
     }, [selected, loadPlans]);
 
     const doExecute = useCallback(async () => {
@@ -497,7 +498,7 @@ export default function ComposerPanel({ cwd }) {
         try {
             const r = await api('POST', `/composer/${selected.planId}/cancel`);
             if (r?.ok) { setSelected(r.plan); loadPlans(); }
-        } catch {}
+        } catch (e) { setError(e?.message || 'Could not cancel the plan.'); }
     }, [selected, loadPlans]);
 
     const runBenchmark = useCallback(async () => {

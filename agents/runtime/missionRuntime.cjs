@@ -105,6 +105,119 @@ function _transition(missionId, nextStatus, patch = {}) {
 // ── Public API ────────────────────────────────────────────────────────────────
 
 /**
+ * Reset any mission stuck in "running" back to "planned" on process startup.
+ * A mission can only be "running" because a prior process instance called
+ * startMission() — if this process is only now booting, that prior instance
+ * crashed (or was killed) before the mission reached a terminal state, so
+ * the "running" status is stale and would otherwise never resolve, since
+ * nothing else transitions a mission out of "running" except completeMission/
+ * failMission/cancelMission, none of which anything calls automatically.
+ * Mirrors taskQueue.recoverStale()'s identical role for the task queue —
+ * same failure mode (process dies mid-execution), same fix shape (reset to
+ * a re-driveable state on the next boot). "planned" (not "failed") because
+ * failed → running is already a valid retry transition, and a genuine
+ * crash isn't necessarily the mission's fault the way an execution failure
+ * is — resetting to "planned" lets whatever normally starts missions decide
+ * to retry it same as any other planned mission, without misrepresenting
+ * an infrastructure crash as an execution failure in the mission's own
+ * history.
+ *
+ * OOPLIX V1 MASTER AUDIT (2026-08-16): also recovers "active" — a second,
+ * legacy status value missionMemory.cjs's own VALID_STATUSES comment
+ * documents as having "scattered lower-confidence external readers"
+ * distinct from this file's real running/planned state machine.
+ * missionOrchestrator.createManual()/_queue() track in-progress execution
+ * in an in-memory `_live` Map with NO persistence or startup-recovery of
+ * its own — a mission created there and left at "active" is silently
+ * orphaned the moment the process restarts, since _live is empty on the
+ * next boot and nothing else ever transitions "active" onward. Confirmed
+ * live in this session's own data/missions.json: 658 missions stuck at
+ * "active", median age 248 hours (~10 days), oldest ~399 hours (~16.6
+ * days) — this server has restarted 15+ times across this session's own
+ * mission arc, each restart silently orphaning whatever the orchestrator
+ * had in flight. Same failure mode as "running" (a prior process instance
+ * died before reaching a terminal state), same fix shape, reusing this
+ * exact existing function — no new recovery mechanism.
+ *
+ * Core Runtime Engines audit (2026-08-20): the mission-level recovery above
+ * has no subtask-level equivalent. _dispatchSubtask() marks a subtask
+ * "running" (line ~406 below) before awaiting orchestrator.dispatch() — if
+ * the process dies mid-dispatch, that subtask is left at "running" forever:
+ * nothing else ever transitions a subtask out of "running" automatically,
+ * _getReadySubtasks() only ever picks up "pending" subtasks (never
+ * re-touches "running" ones), and any subtask depending on the stuck one
+ * can never become ready either since its dependency never reaches
+ * "completed". Confirmed live in this environment's own missions.json: 292
+ * subtasks stuck at "running" across 277 missions, oldest ~337 hours
+ * (~14 days) — and critically, most of those 277 missions (236) were
+ * ALREADY recovered to "planned" by the mission-level logic above on some
+ * prior restart, yet the stuck subtask inside them was never touched,
+ * silently blocking that mission from ever completing even after a human
+ * or automation re-triggers startMission() on it. Same failure mode as the
+ * mission-level case (a prior process instance died mid-execution before
+ * reaching a terminal state), same fix shape (reset to a re-driveable
+ * state), scanning across ALL missions regardless of the mission's OWN
+ * status — not just the "running"/"active" ones above — since a mission
+ * can carry a stale "running" subtask independent of its own current
+ * status, as the live data confirms.
+ *
+ * @returns {{ recovered: number, missionIds: string[], subtasksRecovered: number }}
+ */
+function recoverStaleMissions() {
+    const STALE_STATUSES = ["running", "active"];
+    const missionIds = [];
+    for (const status of STALE_STATUSES) {
+        const { missions: stale } = memory.listMissions({ status, limit: 1000 });
+        for (const m of stale) {
+            memory.updateMission(m.id, { status: "planned" });
+            memory.recordDecision(m.id, {
+                type: "system",
+                description: `Recovered from stale "${status}" state on process restart`,
+                rationale: "Mission was left in-progress by a prior process instance that did not reach a terminal state (crash or forced restart)",
+                outcome: "reset_to_planned",
+            });
+            missionIds.push(m.id);
+        }
+    }
+    if (missionIds.length > 0) {
+        logger.info(`[MissionRuntime] Recovered ${missionIds.length} stale running/active mission(s) → planned`);
+    }
+
+    let subtasksRecovered = 0;
+    const { missions: all } = memory.listMissions({ limit: 5000 });
+    for (const m of all) {
+        const stuck = (m.subtasks || []).filter(s => s.status === "running");
+        for (const st of stuck) {
+            // Mission 60A: this scan's `all` snapshot can go stale between
+            // being read and this specific updateSubtask() call — a mission
+            // genuinely completing/being deleted by concurrent autonomous
+            // activity in the window between the two throws "Mission not
+            // found" from missionMemory.cjs's _assertMission, which
+            // previously propagated uncaught and aborted the ENTIRE
+            // recovery pass, silently skipping every remaining mission's
+            // own stuck subtasks too. One mission vanishing mid-scan is not
+            // a reason to fail the whole sweep — skip just that subtask and
+            // continue, matching this file's own stale-mission recovery,
+            // which is itself a "best effort over whatever is scannable
+            // right now" operation, not a transaction.
+            try {
+                memory.updateSubtask(m.id, st.id, { status: "pending" });
+                subtasksRecovered++;
+            } catch (err) {
+                logger.warn(`[MissionRuntime] recoverStaleMissions: skipped subtask ${st.id} on mission ${m.id} (${err.message})`);
+                continue;
+            }
+        }
+        if (stuck.length > 0 && !missionIds.includes(m.id)) missionIds.push(m.id);
+    }
+    if (subtasksRecovered > 0) {
+        logger.info(`[MissionRuntime] Recovered ${subtasksRecovered} stale "running" subtask(s) → pending, across ${missionIds.length} mission(s)`);
+    }
+
+    return { recovered: missionIds.length, missionIds, subtasksRecovered };
+}
+
+/**
  * Transition mission from planned → running and emit live event.
  */
 function startMission(missionId) {
@@ -173,18 +286,31 @@ function updateSubtaskStatus(missionId, subtaskId, status, output = null) {
     if (!st) throw new Error(`Subtask not found: ${subtaskId} in mission ${missionId}`);
 
     const now = new Date().toISOString();
-    const patchedSubtasks = mission.subtasks.map(s => {
-        if (s.id !== subtaskId) return s;
-        const next = { ...s, status };
-        if (status === "running"   && !s.startedAt)   next.startedAt   = now;
-        if (status === "completed" || status === "failed") {
-            next.completedAt = now;
-            if (output !== null) next.output = output;
-        }
-        return next;
-    });
+    const patch = { status };
+    if (status === "running"   && !st.startedAt)   patch.startedAt   = now;
+    if (status === "completed" || status === "failed") {
+        patch.completedAt = now;
+        if (output !== null) patch.output = output;
+    }
 
-    const updated = memory.updateMission(missionId, { subtasks: patchedSubtasks });
+    // A.5.2 runtime-stability finding: this used to call
+    // memory.updateMission(missionId, { subtasks: patchedSubtasks }) —
+    // but missionMemory.cjs's updateMission() treats "subtasks" as an
+    // IMMUTABLE patch key (silently skipped in its patch loop), so this
+    // call could never actually persist the subtask change it computed.
+    // Every subtask on every mission was permanently stuck at its initial
+    // status, silently. That had a real downstream effect beyond
+    // correctness: graphReasoningEngine.cjs's findBlockedMissions() flags
+    // any active mission whose subtasks are ALL still "pending" as
+    // blocked, which — since subtask status could never persist — was
+    // true of virtually every active mission, including the very
+    // "Resolve blockers for mission: X" missions created to address it.
+    // That produced confirmed-live unbounded self-referential mission
+    // creation ("Resolve blockers for mission: Resolve blockers for
+    // mission: ..." nesting deeper each cycle). Fixed at the actual
+    // source: missionMemory.cjs now has a real updateSubtask() (mirrors
+    // addSubtask's existing shape, no new persistence mechanism).
+    const updated = memory.updateSubtask(missionId, subtaskId, patch);
 
     _emit("mission:subtask:updated", missionId, {
         subtaskId,
@@ -383,4 +509,5 @@ module.exports = {
     getExecutionTimeline,
     runtimeStatus,
     getActiveMission,
+    recoverStaleMissions,
 };

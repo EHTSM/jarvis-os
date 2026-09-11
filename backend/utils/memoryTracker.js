@@ -11,8 +11,17 @@
 
 const INTERVAL_MS  = 60_000;
 const MAX_SAMPLES  = 60;        // 1 hour at 60s cadence
-const WARN_HEAP_MB = 350;       // emit warning flag above this
-const CRIT_HEAP_MB = 450;       // emit critical flag above this
+// Phase B.8: these were 350/450 MB, chosen against an old
+// --max-old-space-size=400 that the app in fact exceeded within seconds of
+// boot (measured 459 MB RSS at t+2s, 390-880 MB across a 198 s steady-state
+// observation). At those thresholds the warn flag was raised during entirely
+// normal operation, so it carried no signal — and the genuine problem it
+// should have surfaced (223 "Reached heap limit" aborts since 2026-06-06)
+// went unreported anyway because nothing consumed the flag.
+// Re-based on the measured envelope and the raised 1024 MB heap cap: warn
+// approaching the cap, critical just under it, so both flags mean something.
+const WARN_HEAP_MB = 900;       // emit warning flag above this
+const CRIT_HEAP_MB = 990;       // emit critical flag above this
 
 const _samples = [];            // { ts, rss, heap, heapTotal }
 let   _timer   = null;

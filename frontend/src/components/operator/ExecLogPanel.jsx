@@ -6,6 +6,7 @@ import { useDebugSession } from "../../hooks/useDebugSession";
 import { useEngineeringAssistant } from "../../hooks/useEngineeringAssistant";
 import { useOperatorIntelligence } from "../../hooks/useOperatorIntelligence";
 import { useCollaborativeWorkflows } from "../../hooks/useCollaborativeWorkflows";
+import { clickableProps } from "../../hooks/useClickableProps";
 
 const WORKFLOW_HIST_KEY = "jarvis_workflow_execution_hist";
 const PINNED_CMDS_KEY   = "jarvis_pinned_cmds";
@@ -171,7 +172,7 @@ function EntryRow({ entry, onPopulateInput, onRetry, onCancel, onTogglePin, isPi
       )}
       <div
         className={`op-exec-entry${entry._new || isNew ? " new-entry" : ""}${justDone ? " entry-flash-ok" : ""}${justFailed ? " entry-flash-fail" : ""}`}
-        onClick={() => isLong && setExpanded(!expanded)}
+        {...clickableProps(() => isLong && setExpanded(!expanded))}
         style={{
           cursor: isLong ? "pointer" : "default",
           borderLeft: failed ? "2px solid var(--op-red)" : running ? "2px solid var(--op-blue)" : isBookmarked ? "2px solid var(--op-amber)" : ok && justDone ? "2px solid var(--op-green)" : undefined,
@@ -401,7 +402,22 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
     });
   }, []);
 
+  const logRef  = useRef(null);
+  const prevLen = useRef(0);
+  const [filter, _setFilter] = useState(initialFilter);
+  const [search, _setSearch] = useState(initialSearch);
+
+  const setFilter = React.useCallback((v) => { _setFilter(v); onFilterChange?.(v); }, [onFilterChange]);
+  const setSearch = React.useCallback((v) => { _setSearch(v); onSearchChange?.(v); }, [onSearchChange]);
+
   // Phase 133: saved filters + timeline collapse
+  // A.8 fix: this block previously sat above the filter/search useState
+  // declarations, but saveCurrentFilter's body and dependency array both
+  // reference filter/search — the dependency array is evaluated during
+  // render itself (not deferred like the callback body), so it read
+  // filter/search before their `const` declarations had run, throwing
+  // "Cannot access 'filter' before initialization" on every mount. Moved
+  // below the referenced declarations; logic is unchanged.
   const [savedFilters, setSavedFilters] = useState(_loadSavedFilters);
   const [collapsed,    setCollapsed]    = useState(false); // timeline collapse
   const saveCurrentFilter = React.useCallback(() => {
@@ -422,14 +438,6 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
       return next;
     });
   }, []);
-
-  const logRef  = useRef(null);
-  const prevLen = useRef(0);
-  const [filter, _setFilter] = useState(initialFilter);
-  const [search, _setSearch] = useState(initialSearch);
-
-  const setFilter = React.useCallback((v) => { _setFilter(v); onFilterChange?.(v); }, [onFilterChange]);
-  const setSearch = React.useCallback((v) => { _setSearch(v); onSearchChange?.(v); }, [onSearchChange]);
   const [workflowChains, setWorkflowChains] = useState({});
   const [activeChain, setActiveChain] = useState(null);
 
@@ -932,7 +940,7 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
         <div style={{ borderBottom: "1px solid var(--op-border)", flexShrink: 0 }}>
           {/* Collapsed header — always visible when there's something to show */}
           <div
-            onClick={() => setAssistantOpen(o => !o)}
+            {...clickableProps(() => setAssistantOpen(o => !o))}
             style={{
               display: "flex", alignItems: "center", gap: 8,
               padding: "4px 10px", cursor: "pointer",
@@ -980,7 +988,10 @@ export default function ExecLogPanel({ history, rtStatus, ops, onPopulateInput, 
                 <span
                   style={{ fontSize: 7, color: "var(--op-amber)", opacity: 0.8, cursor: "pointer" }}
                   title="Analysis is >6h old — click to re-analyze"
-                  onClick={e => { e.stopPropagation(); analyze?.(); }}
+                  {...clickableProps(
+                    e => { e.stopPropagation(); analyze?.(); },
+                    { label: "Re-analyze — analysis is over 6 hours old" },
+                  )}
                 >⟳ stale</span>
               )}
             </div>

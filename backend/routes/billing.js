@@ -7,6 +7,20 @@ const router  = require("express").Router();
 const billing = require("../services/billingService");
 const auditLog = require("../utils/auditLog.cjs");
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
+
+// External Actions, Payments, Webhooks & Side-Effect Security Audit
+// (2026-08-21): /billing/upgrade had no rate limit despite making a real
+// external Razorpay API call per request (subscriptions.create(), plus a
+// subscriptions.cancel() call when a prior active subscription exists) —
+// the same "unbounded external-API-cost mutation route" shape already
+// fixed for commercial.js/composer.js/legal.js/etc. in the prior Endpoint
+// Authorization Sweep. Live-reproduced: 10 rapid authenticated calls all
+// reached the real Razorpay client construction and network call with zero
+// throttling. Fixed with the exact same established rateLimiter factory and
+// magnitude convention already used for composer.js's/legal.js's equivalent
+// single-shot external-API mutation routes (15/min) — no new framework.
+const _billingUpgradeRL = rateLimiter(15, 60_000, "billing-upgrade");
 
 // ── GET /billing/status ───────────────────────────────────────────
 // Returns current trial/subscription state for the authenticated account
@@ -14,6 +28,7 @@ router.get("/billing/status", requireAuth, (req, res) => {
   const accountId = req.user.sub || req.user.id || "operator";
   const record    = billing.getRecord(accountId);
   const access    = billing.checkAccess(accountId);
+  const quota     = billing.checkUsageQuota(accountId);
 
   res.json({
     success:     true,
@@ -23,15 +38,23 @@ router.get("/billing/status", requireAuth, (req, res) => {
     allowed:     access.allowed,
     daysLeft:    access.daysLeft,
     graceActive: access.graceActive,
+    // A.6 business-owner-journey finding: trialStart was set on the real
+    // billing record at creation (createTrial(), below) but never included
+    // in this response — the Billing page's "Trial started" row always
+    // showed "—" for every account, confirmed live on a real signup made
+    // seconds earlier. Additive: the field already exists on `record`,
+    // this just stops dropping it before it reaches the frontend.
+    trialStart:  record.trialStart,
     trialEnd:    record.trialEnd,
     activatedAt: record.activatedAt,
     prices:      billing.PLAN_PRICES,
+    usage:       { used: quota.used, limit: quota.limit, remaining: quota.remaining },
   });
 });
 
 // ── POST /billing/upgrade ─────────────────────────────────────────
 // Initiates a plan upgrade — creates Razorpay subscription or returns payment link
-router.post("/billing/upgrade", requireAuth, async (req, res) => {
+router.post("/billing/upgrade", requireAuth, _billingUpgradeRL, async (req, res) => {
   const { plan } = req.body || {};
   if (!["starter", "growth", "scale"].includes(plan)) {
     return res.status(400).json({ error: "Invalid plan. Choose: starter, growth, scale" });

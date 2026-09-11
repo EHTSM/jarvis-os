@@ -5,7 +5,7 @@
  *   Block 1 — Execution Planner (12 tests)
  *   Block 2 — Execution Validator (10 tests)
  *   Block 3 — Execution Evidence (8 tests)
- *   Block 4 — Execution Recovery (8 tests)
+ *   Block 4 — Execution Recovery (11 tests)
  *   Block 5 — Execution Metrics (6 tests)
  *   Block 6 — Autonomous Execution Engine — unit (10 tests)
  *   Block 7 — Real workflow executions: git + audit + review (10 tests)
@@ -345,6 +345,36 @@ test("selectStrategy: prereq failure → ESCALATE", () => {
 test("selectStrategy: max retries exceeded → FULL_ROLLBACK", () => {
   const s = recovery.selectStrategy({ stepType: "execution", error: "unknown", attemptCount: 3, domain: "deployment", stepIndex: 1, totalSteps: 5 });
   assert(s === "FULL_ROLLBACK", `expected FULL_ROLLBACK got ${s}`);
+});
+
+// JARVIS INCIDENT REPAIR (2026-09-03, P1-3): ENOENT is a missing file/path —
+// deterministic, not transient — and retrying it changes nothing about the
+// filesystem. Previously grouped with timeout/ECONNRESET/spawn under
+// RETRY_IMMEDIATE, guaranteeing 1-2 wasted retries per real occurrence
+// before eventual escalation. Now routed straight to ESCALATE, matching how
+// engineeringCapabilities.cjs (nonRetriable: true) and
+// rootCauseAnalysisEngine.cjs (DETERMINISTIC error class) already classify
+// it elsewhere in this codebase.
+test("selectStrategy: ENOENT → ESCALATE (deterministic, not transient)", () => {
+  const s = recovery.selectStrategy({ stepType: "execution", error: "ENOENT: no such file or directory, rename '/tmp/x' -> '/tmp/y'", attemptCount: 0, domain: "deployment", stepIndex: 1, totalSteps: 5 });
+  assert(s === "ESCALATE", `expected ESCALATE got ${s}`);
+});
+
+test("selectStrategy: ENOENT still escalates even on the very first attempt (attemptCount 0)", () => {
+  const s = recovery.selectStrategy({ stepType: "execution", error: "ENOENT", attemptCount: 0, domain: "engineering", stepIndex: 0, totalSteps: 3 });
+  assert(s === "ESCALATE", `expected ESCALATE got ${s}`);
+});
+
+test("selectStrategy: other transient errors (ETIMEDOUT/ECONNRESET/spawn) are unaffected by the ENOENT fix", () => {
+  const a = recovery.selectStrategy({ stepType: "execution", error: "ECONNRESET", attemptCount: 0, domain: "deployment", stepIndex: 1, totalSteps: 5 });
+  assert(a === "RETRY_IMMEDIATE", `expected RETRY_IMMEDIATE for ECONNRESET, got ${a}`);
+  const b = recovery.selectStrategy({ stepType: "execution", error: "spawn ENOENT git", attemptCount: 0, domain: "deployment", stepIndex: 1, totalSteps: 5 });
+  // Deliberately ambiguous real-world case: a spawn failure whose message
+  // ALSO contains the literal text "ENOENT" (Node's own spawn error shape,
+  // e.g. "spawn git ENOENT" when the binary itself is missing) — that IS a
+  // genuinely deterministic, permanent condition (the binary does not
+  // exist), so ESCALATE is the correct outcome here too, not a regression.
+  assert(b === "ESCALATE", `expected ESCALATE for a spawn error whose message contains ENOENT, got ${b}`);
 });
 
 atest("recover RETRY_IMMEDIATE returns retry_queued outcome", async () => {

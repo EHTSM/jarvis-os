@@ -1,15 +1,35 @@
 import React, { useState, useEffect, useRef } from "react";
+import { _fetch } from "../_client";
 import "./AutonomousPlatformPanel.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Fixed by delegating to the
+// canonical _client.js _fetch, which already throws on !res.ok and preserves
+// the backend's own message + status — so callers can surface the real
+// reason. Do not re-add a local `if (!r.ok)` check here: _fetch() never
+// returns a non-ok response, it throws before returning, so that check would
+// be unreachable dead code, not a real guard.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16, known-defect-family recovery): same
+// defect already found and fixed in the sibling components
+// EngineeringMemoryPanel.jsx and RepositoryMapPanel.jsx — this helper called
+// a bare fetch() against `/api${path}` (e.g. /api/platform/runs), but the
+// real backend mounts these routes at /platform/* with NO /api prefix.
+// Live-confirmed: GET /api/platform/runs -> 404; GET /platform/runs (real
+// route) -> 200, real run history. All 3 of this panel's calls (run
+// history, submit goal, benchmark) were equally broken. Replaced with the
+// canonical _fetch (_client.js), preserving this file's existing
+// API(method, path, body) call-site signature and Error{message,status}
+// contract so no other line in this file needed to change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
+    return _fetch(path, {
         method,
-        headers: { "Content-Type": "application/json" },
         ...(body ? { body: JSON.stringify(body) } : {}),
     });
-    return r.json();
 };
 
 function formatMs(ms) {
@@ -27,12 +47,12 @@ function timeAgo(iso) {
     return `${Math.floor(s / 86400)}d ago`;
 }
 
-const RISK_COLOR = { low: "#10b981", medium: "#f59e0b", high: "#ef4444", unknown: "#6b7280" };
+const RISK_COLOR = { low: "var(--success)", medium: "var(--warning)", high: "var(--danger)", unknown: "var(--text-dim)" };
 const STATUS_COLOR = {
-    completed: "#10b981", failed: "#ef4444", running: "#60a5fa",
-    partial: "#f59e0b", SUCCESS: "#10b981", FAILED: "#ef4444",
+    completed: "var(--success)", failed: "var(--danger)", running: "#60a5fa",
+    partial: "var(--warning)", SUCCESS: "var(--success)", FAILED: "var(--danger)",
 };
-const STAGE_COLOR = { ok: "#10b981", failed: "#ef4444", running: "#60a5fa", pending: "#374151" };
+const STAGE_COLOR = { ok: "var(--success)", failed: "var(--danger)", running: "#60a5fa", pending: "#374151" };
 const CAT_ICON = {
     bugfix: "🐛", refactor: "♻", feature: "✦", quality: "✎", deployment: "⚡",
     testing: "⚗", performance: "⚡", security: "⛨", docs: "📄", general: "●",
@@ -89,7 +109,7 @@ function GoalInput({ onSubmit, running }) {
 function ExecutionPanel({ run }) {
     if (!run) return null;
 
-    const statusColor = STATUS_COLOR[run.status] || "#6b7280";
+    const statusColor = STATUS_COLOR[run.status] || "var(--text-dim)";
 
     return (
         <div className="app-exec-panel">
@@ -118,7 +138,7 @@ function ExecutionPanel({ run }) {
                         <div className="app-tl-line" style={{ background: i < run.timeline.length - 1 ? "#1f2937" : "transparent" }} />
                         <div className="app-tl-body">
                             <span className="app-tl-stage">{t.stage}</span>
-                            <span className="app-tl-status" style={{ color: STAGE_COLOR[t.status] || "#6b7280" }}>{t.status}</span>
+                            <span className="app-tl-status" style={{ color: STAGE_COLOR[t.status] || "var(--text-dim)" }}>{t.status}</span>
                             {t.detail && <span className="app-tl-detail">{t.detail}</span>}
                             {t.error  && <span className="app-tl-err">{t.error}</span>}
                         </div>
@@ -134,7 +154,7 @@ function ExecutionPanel({ run }) {
 function ExecReport({ report }) {
     if (!report) return null;
 
-    const statusColor = STATUS_COLOR[report.status] || "#6b7280";
+    const statusColor = STATUS_COLOR[report.status] || "var(--text-dim)";
 
     return (
         <div className="app-report">
@@ -164,10 +184,10 @@ function ExecReport({ report }) {
                 <div className="app-report-section">
                     <div className="app-section-label">Confidence</div>
                     <div className="app-kv-row"><span>Initial</span><span>{report.confidence?.initial}%</span></div>
-                    <div className="app-kv-row"><span>Final</span><span style={{ color: "#10b981" }}>{report.confidence?.final}%</span></div>
+                    <div className="app-kv-row"><span>Final</span><span style={{ color: "var(--success)" }}>{report.confidence?.final}%</span></div>
                     <div className="app-kv-row">
                         <span>Delta</span>
-                        <span style={{ color: (report.confidence?.delta || 0) >= 0 ? "#10b981" : "#ef4444" }}>
+                        <span style={{ color: (report.confidence?.delta || 0) >= 0 ? "var(--success)" : "var(--danger)" }}>
                             {(report.confidence?.delta || 0) >= 0 ? "+" : ""}{report.confidence?.delta}%
                         </span>
                     </div>
@@ -195,7 +215,7 @@ function ExecReport({ report }) {
                 {/* Learning */}
                 <div className="app-report-section">
                     <div className="app-section-label">Learning</div>
-                    <div className="app-kv-row"><span>Lessons created</span><span style={{ color: "#10b981" }}>{report.learning?.lessonsCreated}</span></div>
+                    <div className="app-kv-row"><span>Lessons created</span><span style={{ color: "var(--success)" }}>{report.learning?.lessonsCreated}</span></div>
                     <div className="app-kv-row"><span>Rules extracted</span><span>{report.learning?.rulesExtracted}</span></div>
                     <div className="app-kv-row"><span>KG indexed</span><span>{report.learning?.kgIndexed ? "✓" : "—"}</span></div>
                     <div className="app-kv-row"><span>Total knowledge</span><span>{report.learning?.totalKnowledge}</span></div>
@@ -219,7 +239,7 @@ function ExecReport({ report }) {
                             <div key={i} className="app-pipe-stage">
                                 <span className="app-pipe-dot" style={{ background: STAGE_COLOR[s.status] || "#374151" }} />
                                 <span className="app-pipe-name">{s.id}</span>
-                                <span className="app-pipe-status" style={{ color: STAGE_COLOR[s.status] || "#6b7280" }}>{s.status}</span>
+                                <span className="app-pipe-status" style={{ color: STAGE_COLOR[s.status] || "var(--text-dim)" }}>{s.status}</span>
                                 {s.durationMs && <span className="app-pipe-ms">{formatMs(s.durationMs)}</span>}
                             </div>
                         ))}
@@ -256,9 +276,9 @@ function RunHistory({ runs, stats, onSelect, selectedRunId }) {
             <div className="app-history-stats">
                 {[
                     { k: "Total", v: stats?.total || 0 },
-                    { k: "Succeeded", v: stats?.succeeded || 0, c: "#10b981" },
-                    { k: "Failed", v: stats?.failed || 0, c: "#ef4444" },
-                    { k: "Repaired", v: stats?.repaired || 0, c: "#f59e0b" },
+                    { k: "Succeeded", v: stats?.succeeded || 0, c: "var(--success)" },
+                    { k: "Failed", v: stats?.failed || 0, c: "var(--danger)" },
+                    { k: "Repaired", v: stats?.repaired || 0, c: "var(--warning)" },
                     { k: "Avg Conf", v: `${stats?.avgConfidence || 0}%`, c: "#60a5fa" },
                     { k: "Total Repairs", v: stats?.totalRepairs || 0, c: "#a78bfa" },
                 ].map(s => (
@@ -271,15 +291,13 @@ function RunHistory({ runs, stats, onSelect, selectedRunId }) {
 
             <div className="app-run-list">
                 {runs.map(r => (
-                    <div
-                        key={r.runId}
-                        className={`app-run-row ${selectedRunId === r.runId ? "app-run-row--selected" : ""}`}
-                        onClick={() => onSelect(r)}
+                    <div key={r.runId}
+                        className={`app-run-row ${selectedRunId === r.runId ? "app-run-row--selected" : ""}`} {...clickableProps(() => onSelect(r))}
                     >
-                        <span className="app-run-dot" style={{ background: STATUS_COLOR[r.status] || "#6b7280" }} />
+                        <span className="app-run-dot" style={{ background: STATUS_COLOR[r.status] || "var(--text-dim)" }} />
                         <span className="app-run-cat">{CAT_ICON[r.classification?.category] || "●"}</span>
                         <span className="app-run-goal">{r.goal?.slice(0, 60)}</span>
-                        <span className="app-run-status" style={{ color: STATUS_COLOR[r.status] || "#6b7280" }}>{r.status}</span>
+                        <span className="app-run-status" style={{ color: STATUS_COLOR[r.status] || "var(--text-dim)" }}>{r.status}</span>
                         <span className="app-run-conf">{r.finalConfidence || 0}%</span>
                         {(r.repairs || 0) > 0 && <span className="app-run-repairs">⟲{r.repairs}</span>}
                         <span className="app-run-dur">{formatMs(r.durationMs)}</span>
@@ -299,8 +317,9 @@ function BenchmarkView() {
 
     const run = async () => {
         setRunning(true);
+        // A.11.2: benchmark failure was invisible.
         try { const r = await API("POST", "/platform/benchmark", {}); setResult(r.benchmark); }
-        catch {}
+        catch (e) { setResult({ error: e?.message || "Benchmark failed" }); }
         setRunning(false);
     };
 
@@ -319,8 +338,8 @@ function BenchmarkView() {
                 <>
                     <div className="app-bench-kpis">
                         {[
-                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
-                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
+                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
+                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
                             { k: "Duration",   v: formatMs(result.totalMs),           c: "#60a5fa" },
                             { k: "Audit",      v: `${result.audit?.passRate}%`,       c: "#a78bfa" },
                         ].map(kpi => (
@@ -335,7 +354,7 @@ function BenchmarkView() {
                         {(result.scenarios || []).map((s, i) => (
                             <div key={i} className={`app-bench-row ${s.ok ? "" : "app-bench-row--fail"}`}>
                                 <span className="app-bench-num">{i + 1}.</span>
-                                <span className="app-bench-dot" style={{ background: s.ok ? "#10b981" : "#ef4444" }} />
+                                <span className="app-bench-dot" style={{ background: s.ok ? "var(--success)" : "var(--danger)" }} />
                                 <span className="app-bench-goal">{s.goal}</span>
                                 {s.ok && (
                                     <span className="app-bench-meta">
@@ -356,7 +375,7 @@ function BenchmarkView() {
                         <div className="app-audit-grid">
                             {(result.audit?.checks || []).map((c, i) => (
                                 <div key={i} className={`app-audit-row ${c.pass ? "" : "app-audit-row--fail"}`}>
-                                    <span className="app-audit-dot" style={{ background: c.pass ? "#10b981" : "#ef4444" }} />
+                                    <span className="app-audit-dot" style={{ background: c.pass ? "var(--success)" : "var(--danger)" }} />
                                     <span className="app-audit-name">{c.name}</span>
                                 </div>
                             ))}

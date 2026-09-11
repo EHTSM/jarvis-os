@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { checkHealth, getStats, getOpsData, emergencyStop, emergencyResume } from "../api";
 import { getRuntimeStatus, getRuntimeHistory } from "../runtimeApi";
 import { listAgents, memoryStats, cycleStats } from "../phase18Api";
 import { getAutonomyScore } from "../phase20Api";
 import { getBillingStatus } from "../billingApi";
 import { _fetch } from "../_client";
+import MissionOrchestratorPanel from "./MissionOrchestratorPanel.jsx";
 import "./MissionControlV1.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const REFRESH_INTERVAL = 30_000;
 
@@ -16,7 +21,7 @@ function StatusDot({ ok, warn }) {
 
 function MetricCard({ icon, label, value, sub, status, onClick, children }) {
   return (
-    <div className={`mc-card${onClick ? " mc-card--link" : ""}`} onClick={onClick}>
+    <div className={`mc-card${onClick ? " mc-card--link" : ""}`} {...clickableProps(onClick)}>
       <div className="mc-card-head">
         <span className="mc-card-icon">{icon}</span>
         <span className="mc-card-label">{label}</span>
@@ -58,6 +63,143 @@ const LC_STAGE_COLOR = {
   test: '#34d399', secure: '#f87171', deploy: '#fb923c', verify: '#fb923c',
   heal: '#94a3b8', learn: '#94a3b8',
 };
+
+// ── Approval Queue Panel ───────────────────────────────────────────────────
+// Surfaces backend/routes/approvalRoutes.js (/approval/*) — had no frontend
+// anywhere before this. Founder-facing human-in-the-loop approve/reject for
+// autonomous execution requests above the auto-approve confidence threshold.
+const APPROVAL_RISK_COLOR = { low: '#34d399', medium: '#fbbf24', high: '#f87171', critical: '#dc2626' };
+
+function ApprovalQueuePanel() {
+  const [items,    setItems]    = useState([]);
+  const [stats,    setStats]    = useState(null);
+  const [loading,  setLoading]  = useState(true);
+  const [err,      setErr]      = useState(null);
+  const [busyId,   setBusyId]   = useState(null);
+  const [expanded, setExpanded] = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const [q, s] = await Promise.all([
+        _fetch('/approval/queue'),
+        _fetch('/approval/queue/stats'),
+      ]);
+      setItems(q.items || []);
+      setStats(s.stats || null);
+      setErr(null);
+    } catch (e) {
+      // 401/403 for non-operator roles — degrade quietly, this is a founder-only queue
+      if (e.status === 401 || e.status === 403) { setItems([]); setStats(null); }
+      else setErr(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 15000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  const decide = useCallback(async (reqId, verdict) => {
+    setBusyId(reqId);
+    try {
+      const path = verdict === 'approve' ? `/approval/approve/${reqId}` : `/approval/reject/${reqId}`;
+      const body = verdict === 'approve'
+        ? { approvedBy: 'founder' }
+        : { rejectedBy: 'founder', reason: 'founder_rejected' };
+      await _fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+      await load();
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusyId(null);
+    }
+  }, [load]);
+
+  if (!loading && !err && items.length === 0 && !stats) return null; // no access — hide, don't error
+
+  return (
+    <section className="mc-section mc-approvals">
+      <div className="mc-section-head">
+        <h2>Approvals{items.length > 0 && <span className="mc-approvals-badge">{items.length}</span>}</h2>
+        {stats && (
+          <span className="mc-approvals-stats">
+            {stats.approved ?? 0} approved · {stats.rejected ?? 0} rejected · {stats.autoApproved ?? 0} auto
+            {stats.avgResponseMinutes > 0 && ` · ~${stats.avgResponseMinutes}m avg response`}
+          </span>
+        )}
+      </div>
+
+      {err && <p className="mc-empty" style={{ color: '#f87171' }}>{err}</p>}
+
+      {loading ? (
+        <p className="mc-empty">Loading approvals…</p>
+      ) : items.length === 0 ? (
+        <p className="mc-empty">✓ Queue clear — no pending approvals</p>
+      ) : (
+        <div className="mc-approvals-list">
+          {items.map(item => {
+            const isExpanded = expanded === item.id;
+            const riskColor  = APPROVAL_RISK_COLOR[item.risk] || 'var(--text-dim)';
+            const isBusy     = busyId === item.id;
+            return (
+              <div key={item.id} className="mc-approval-item">
+                <div
+                  className="mc-approval-row"
+                  role="button"
+                  tabIndex={0}
+                  aria-expanded={isExpanded}
+                  onClick={() => setExpanded(isExpanded ? null : item.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setExpanded(isExpanded ? null : item.id);
+                    }
+                  }}
+                >
+                  <span className="mc-approval-risk" style={{ background: riskColor + '22', color: riskColor, borderColor: riskColor + '55' }}>
+                    {item.risk || 'medium'}
+                  </span>
+                  <span className="mc-approval-action">{item.action || item.workflowId}</span>
+                  <span className="mc-approval-type">{item.approvalType}</span>
+                  <span className="mc-approval-conf">{Math.round((item.confidence || 0) * 100)}% confidence</span>
+                  <span className="mc-approval-caret">{isExpanded ? '▾' : '▸'}</span>
+                </div>
+                {isExpanded && (
+                  <div className="mc-approval-detail">
+                    <div className="mc-approval-detail-row"><span>Reason</span><span>{item.reason}</span></div>
+                    <div className="mc-approval-detail-row"><span>Expected outcome</span><span>{item.expectedOutcome}</span></div>
+                    <div className="mc-approval-detail-row"><span>Rollback plan</span><span>{item.rollbackPlan}</span></div>
+                    <div className="mc-approval-detail-row"><span>Triggered by</span><span>{item.triggeredBy}</span></div>
+                    <div className="mc-approval-detail-row"><span>Requested</span><span>{item.createdAt ? new Date(item.createdAt).toLocaleString() : '—'}</span></div>
+                    <div className="mc-approval-actions">
+                      <button
+                        className="mc-btn mc-btn--sm mc-btn--danger"
+                        disabled={isBusy}
+                        onClick={(e) => { e.stopPropagation(); decide(item.id, 'reject'); }}
+                      >
+                        {isBusy ? '…' : 'Reject'}
+                      </button>
+                      <button
+                        className="mc-btn mc-btn--sm mc-btn--resume"
+                        disabled={isBusy}
+                        onClick={(e) => { e.stopPropagation(); decide(item.id, 'approve'); }}
+                      >
+                        {isBusy ? '…' : 'Approve'}
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </section>
+  );
+}
 
 // ── J6: Mission Timeline Strip ───────────────────────────────────────────────
 const MC_LC_STAGE_COLORS = {
@@ -104,12 +246,12 @@ function MissionTimelineStrip() {
     <section className="mc-section">
       <div className="mc-section-head">
         <h2>Mission Timeline</h2>
-        <span style={{ fontSize: 10, color: '#22c55e', fontWeight: 700 }}>● LIVE</span>
+        <span style={{ fontSize: 10, color: 'var(--success)', fontWeight: 700 }}>● LIVE</span>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
         {missions.map(m => {
           const stage = stages[m.id];
-          const color = stage ? (MC_LC_STAGE_COLORS[stage.stage] || '#6b7280') : '#374151';
+          const color = stage ? (MC_LC_STAGE_COLORS[stage.stage] || 'var(--text-dim)') : '#374151';
           const pct   = stage?.progressPct ?? (m.metrics?.progress ?? 0);
           return (
             <div key={m.id} style={{ background: '#0c0e14', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 5, padding: '8px 10px' }}>
@@ -141,8 +283,8 @@ function MissionTimelineStrip() {
 const MC_COLLAB_ACTION_COLORS = {
   ask_ai: '#60a5fa', ask_agent: '#a78bfa', explain_decision: '#34d399',
   explain_risk: '#f87171', explain_confidence: '#fbbf24',
-  compare_alternatives: '#fb923c', accept_recommendation: '#22c55e',
-  reject_recommendation: '#ef4444', request_replan: '#f59e0b', escalate_operator: '#e11d48',
+  compare_alternatives: '#fb923c', accept_recommendation: 'var(--success)',
+  reject_recommendation: 'var(--danger)', request_replan: 'var(--warning)', escalate_operator: '#e11d48',
 };
 
 function MissionCollaborationPanel() {
@@ -255,7 +397,7 @@ function MissionCollaborationPanel() {
           <div style={{ maxHeight: 180, overflowY: 'auto', background: '#0c0e14', borderRadius: 5, border: '1px solid rgba(255,255,255,0.07)', padding: '6px 8px', marginBottom: 8 }}>
             {timeline.length === 0 && <div style={{ fontSize: 11, color: '#475569', textAlign: 'center', padding: 12 }}>No collaboration history.</div>}
             {timeline.slice(-20).map((item, i) => {
-              const color = item._kind === 'message' ? '#60a5fa' : (MC_COLLAB_ACTION_COLORS[item.action] || '#64748b');
+              const color = item._kind === 'message' ? '#60a5fa' : (MC_COLLAB_ACTION_COLORS[item.action] || 'var(--text-dim)');
               return (
                 <div key={item.id || i} style={{ padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 11 }}>
                   <span style={{ fontSize: 9, color: '#475569', marginRight: 6 }}>{new Date(item.ts || item.timestamp).toLocaleTimeString()}</span>
@@ -266,7 +408,7 @@ function MissionCollaborationPanel() {
                     {item._kind === 'message' ? item.body?.slice(0, 60) : (item.result?.type || '')}
                   </span>
                   {item._kind === 'message' && item.reply && (
-                    <div style={{ color: '#64748b', paddingLeft: 12, fontSize: 10, marginTop: 1 }}>↳ {item.reply.slice(0, 100)}</div>
+                    <div style={{ color: 'var(--text-dim)', paddingLeft: 12, fontSize: 10, marginTop: 1 }}>↳ {item.reply.slice(0, 100)}</div>
                   )}
                 </div>
               );
@@ -280,7 +422,7 @@ function MissionCollaborationPanel() {
               <span style={{ fontSize: 9, color: '#60a5fa', fontWeight: 700, marginRight: 6 }}>AI</span>{aiReply}
             </div>
           )}
-          {err && <div style={{ fontSize: 10, color: '#ef4444', marginBottom: 6 }}>{err}</div>}
+          {err && <div style={{ fontSize: 10, color: 'var(--danger)', marginBottom: 6 }}>{err}</div>}
 
           {/* Input */}
           <div style={{ display: 'flex', gap: 6 }}>
@@ -295,6 +437,121 @@ function MissionCollaborationPanel() {
             <button className="mc-btn mc-btn--sm" onClick={sendMsg} disabled={sending || !msg.trim()}>
               {sending ? '…' : 'Ask'}
             </button>
+          </div>
+        </>
+      )}
+    </section>
+  );
+}
+
+const MC_WF_STATUS_COLORS = {
+  pending: '#94a3b8', in_progress: '#60a5fa', awaiting_approval: 'var(--warning)',
+  completed: 'var(--success)', escalated: 'var(--danger)',
+};
+
+function MissionWorkforcePanel() {
+  const [missionId, setMissionId] = useState('');
+  const [inputId,   setInputId]   = useState('');
+  const [wf,        setWf]        = useState(null);
+  const [err,       setErr]       = useState(null);
+  const [busyStep,  setBusyStep]  = useState(null);
+
+  const load = useCallback(async (id) => {
+    try {
+      const r = await _fetch(`/workforce/${id}`);
+      setWf(r || null);
+      setErr(null);
+    } catch (e) { setErr(e.message); }
+  }, []);
+
+  useEffect(() => {
+    if (!missionId) return;
+    load(missionId);
+    const t = setInterval(() => { if (!document.hidden) load(missionId); }, 8000);
+    return () => clearInterval(t);
+  }, [missionId, load]);
+
+  const attach = () => {
+    if (!inputId.trim()) return;
+    setMissionId(inputId.trim());
+  };
+
+  const completeStep = useCallback(async (stepId) => {
+    setBusyStep(stepId);
+    try {
+      await _fetch(`/workforce/${missionId}/steps/${stepId}/complete`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ output: 'Marked complete by operator' }),
+      });
+      load(missionId);
+    } catch (e) { setErr(e.message); }
+    finally { setBusyStep(null); }
+  }, [missionId, load]);
+
+  const steps    = wf?.steps || [];
+  const summary  = wf?.summary || {};
+
+  return (
+    <section className="mc-section">
+      <div className="mc-section-head">
+        <h2>Mission Workforce</h2>
+      </div>
+
+      <div style={{ display: 'flex', gap: 6, marginBottom: 10 }}>
+        <input
+          className="mc-lc-input"
+          placeholder="Mission ID (msn_…)"
+          value={inputId}
+          onChange={e => setInputId(e.target.value)}
+          onKeyDown={e => { if (e.key === 'Enter') attach(); }}
+        />
+        <button className="mc-btn mc-btn--sm" onClick={attach} disabled={!inputId.trim()}>Attach</button>
+      </div>
+
+      {err && <div style={{ fontSize: 10, color: 'var(--danger)', marginBottom: 6 }}>{err}</div>}
+
+      {missionId && wf && !wf.plan && (
+        <p className="mc-empty">No collaboration plan for this mission.</p>
+      )}
+
+      {missionId && wf?.plan && (
+        <>
+          <div style={{ display: 'flex', gap: 10, marginBottom: 10, flexWrap: 'wrap' }}>
+            {[
+              ['Total', summary.total], ['Pending', summary.pending],
+              ['In Progress', summary.inProgress], ['Awaiting Approval', summary.awaitingApproval],
+              ['Completed', summary.completed], ['Escalated', summary.escalated],
+            ].map(([lbl, val]) => (
+              <div key={lbl} style={{ fontSize: 10, color: '#94a3b8' }}>
+                <span style={{ fontWeight: 700, color: '#e2e8f0', marginRight: 4 }}>{val ?? 0}</span>{lbl}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ maxHeight: 220, overflowY: 'auto', background: '#0c0e14', borderRadius: 5, border: '1px solid rgba(255,255,255,0.07)', padding: '6px 8px' }}>
+            {steps.length === 0 && <div style={{ fontSize: 11, color: '#475569', textAlign: 'center', padding: 12 }}>No steps in plan.</div>}
+            {steps.map((step) => (
+              <div key={step.stepId} style={{ padding: '6px 0', borderBottom: '1px solid rgba(255,255,255,0.04)', fontSize: 11, display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontWeight: 700, color: MC_WF_STATUS_COLORS[step.status] || 'var(--text-dim)', minWidth: 100, textTransform: 'uppercase', fontSize: 9 }}>
+                  {step.status}
+                </span>
+                <span style={{ flex: 1, color: '#e2e8f0' }}>{step.name || step.description || step.stepId}</span>
+                {step.worker && (
+                  <span style={{ fontSize: 9, color: '#94a3b8' }}>
+                    {step.worker.type === 'ai' ? '🤖' : '👤'} {step.worker.id}
+                  </span>
+                )}
+                {step.worker?.type === 'human' && step.status === 'in_progress' && (
+                  <button
+                    className="mc-btn mc-btn--sm"
+                    disabled={busyStep === step.stepId}
+                    onClick={() => completeStep(step.stepId)}
+                  >
+                    {busyStep === step.stepId ? '…' : 'Complete'}
+                  </button>
+                )}
+              </div>
+            ))}
           </div>
         </>
       )}
@@ -329,7 +586,7 @@ function RecommendationConfidence() {
       <div className="mc-section-head">
         <h2>Recommendation Confidence</h2>
         {summary && (
-          <span className="mc-badge" style={{ fontSize: 10, color: '#64748b' }}>
+          <span className="mc-badge" style={{ fontSize: 10, color: 'var(--text-dim)' }}>
             avg {summary.avgConfidence}% · {summary.total} recs
           </span>
         )}
@@ -337,7 +594,7 @@ function RecommendationConfidence() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 6 }}>
         {recs.slice(0, 6).map((r, i) => {
           const conf = r.confidence ?? 0;
-          const color = conf >= 80 ? '#22c55e' : conf >= 60 ? '#eab308' : '#ef4444';
+          const color = conf >= 80 ? 'var(--success)' : conf >= 60 ? '#eab308' : 'var(--danger)';
           return (
             <div key={r.id ?? i} style={{
               background: '#0c0e14', border: '1px solid rgba(255,255,255,0.07)',
@@ -435,7 +692,7 @@ function LifecyclePanel() {
     finally { setRetrying(false); }
   }, [missionId, retrying, loadStage]);
 
-  const stageColor = stage ? (LC_STAGE_COLOR[stage.stage] || '#6b7280') : '#374151';
+  const stageColor = stage ? (LC_STAGE_COLOR[stage.stage] || 'var(--text-dim)') : '#374151';
 
   return (
     <section className="mc-section mc-lifecycle">
@@ -550,7 +807,7 @@ function MissionReasoningPanel() {
             <div key={i} className="mc-activity-row">
               <StatusDot ok={false} warn={d.risk !== 'critical'} />
               <span className="mc-activity-text"><code>{d.type}:{d.id}</code></span>
-              <span className="mc-activity-status" style={{ color: d.risk === 'critical' ? '#ef4444' : '#f59e0b' }}>{d.inDegree} deps</span>
+              <span className="mc-activity-status" style={{ color: d.risk === 'critical' ? 'var(--danger)' : 'var(--warning)' }}>{d.inDegree} deps</span>
             </div>
           ))}
         </div>
@@ -562,7 +819,7 @@ function MissionReasoningPanel() {
             <div key={i} className="mc-activity-row">
               <StatusDot ok={false} warn={false} />
               <span className="mc-activity-text"><code>{s.type}:{s.id}</code></span>
-              <span className="mc-activity-status" style={{ color: '#ef4444' }}>SPOF</span>
+              <span className="mc-activity-status" style={{ color: 'var(--danger)' }}>SPOF</span>
             </div>
           ))}
         </div>
@@ -572,6 +829,7 @@ function MissionReasoningPanel() {
 }
 
 export default function MissionControlV1({ onNavigate }) {
+  const { user } = useAuth();
   const [health,    setHealth]    = useState(null);
   const [ops,       setOps]       = useState(null);
   const [stats,     setStats]     = useState(null);
@@ -588,13 +846,42 @@ export default function MissionControlV1({ onNavigate }) {
   const [resumePending, setResumePending] = useState(false);
   const [actionMsg, setActionMsg] = useState(null);
   const [stopConfirm, setStopConfirm]   = useState(false);
+  // A.10.1 finding: every "New Mission" entrypoint in the web app (Dashboard
+  // quick action, CommandCenter quick action, CommandPalette ⌘K) navigates
+  // to tab:"mission" (this component) — but this component is a read-only
+  // ops/health monitoring dashboard with zero create-mission UI anywhere on
+  // the page. The real create form (goal input -> POST /missions/orchestrator
+  // /create) already exists in MissionOrchestratorPanel.jsx, fully wired,
+  // but that component was only ever mounted inside ElectronWorkspace.jsx
+  // (the desktop shell), unreachable from the web app's tab router. Rather
+  // than build a new create UI, this toggle surfaces the existing panel
+  // in place — recovering existing capability, not adding new architecture.
+  const [showCreate, setShowCreate] = useState(false);
+  // Tracks which underlying fetches actually failed — a rejected promise must
+  // not render identically to real data ("—" from a failure looks the same as
+  // "—" from an empty/absent value otherwise, and every MetricCard used to
+  // hardcode status="ok" regardless of whether its own source succeeded).
+  const [failed, setFailed] = useState({});
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setStopConfirm(false));
 
   const load = useCallback(async () => {
     try {
+      // Workflow Coverage Completion finding: getOpsData()/getStats() (->
+      // /ops, /stats) are operatorOnly server-side ("platform-wide founder
+      // data... a regular customer must never reach these"). Every
+      // non-operator founder visiting Mission Control — a primary,
+      // ungated dashboard destination — fired a 403 on both every time
+      // this loaded. REVENUE/LEADS/etc. cards already render "—" safely
+      // when their source is absent, so gating by role (matching the same
+      // fix already applied to App.jsx's own polling, DevOpsCenterV2, and
+      // WorkspaceSettings) costs nothing for non-operators and preserves
+      // the real data for operators who are actually authorized to see it.
+      const isOperator = user?.role === "operator";
       const [h, o, s, rt, hist, ag, ms, cy, au, bl] = await Promise.allSettled([
         checkHealth(),
-        getOpsData(),
-        getStats(),
+        isOperator ? getOpsData()   : Promise.resolve(null),
+        isOperator ? getStats()     : Promise.resolve(null),
         getRuntimeStatus(),
         getRuntimeHistory(10),
         listAgents(),
@@ -607,17 +894,43 @@ export default function MissionControlV1({ onNavigate }) {
       if (o.status === "fulfilled")    setOps(o.value);
       if (s.status === "fulfilled")    setStats(s.value);
       if (rt.status === "fulfilled")   setRuntime(rt.value);
-      if (hist.status === "fulfilled") setHistory(hist.value?.history || hist.value || []);
+      // A.11.4 fix: getRuntimeHistory() → GET /runtime/history really responds
+      // { success: true, entries: [...] } (measured live: top-level keys are
+      // exactly ["success","entries"], with 10 real records present). Reading
+      // `.history` matched nothing, so this fell through to `hist.value` — the
+      // whole response OBJECT, not an array — whose `.length` is undefined, so
+      // the `history.length > 0` render guard below was always false and the
+      // Recent Activity panel claimed "No recent activity" while 10 real
+      // executions existed. Reads the real field, keeps the legacy `.history`
+      // check first for any other shape, and guarantees an array so `.length`
+      // and `.slice()` stay meaningful.
+      if (hist.status === "fulfilled") {
+        const _h = hist.value?.history ?? hist.value?.entries ?? hist.value;
+        setHistory(Array.isArray(_h) ? _h : []);
+      }
       if (ag.status === "fulfilled")   setAgents(ag.value?.agents || ag.value || []);
       if (ms.status === "fulfilled")   setMemStat(ms.value);
       if (cy.status === "fulfilled")   setCycles(cy.value);
       if (au.status === "fulfilled")   setAutonomy(au.value);
       if (bl.status === "fulfilled")   setBilling(bl.value);
+
+      setFailed({
+        health:   h.status === "rejected",
+        ops:      o.status === "rejected",
+        stats:    s.status === "rejected",
+        runtime:  rt.status === "rejected",
+        history:  hist.status === "rejected",
+        agents:   ag.status === "rejected",
+        memStat:  ms.status === "rejected",
+        cycles:   cy.status === "rejected",
+        autonomy: au.status === "rejected",
+        billing:  bl.status === "rejected",
+      });
     } finally {
       setLoading(false);
       setLastRefresh(new Date());
     }
-  }, []);
+  }, [user]);
 
   useEffect(() => {
     load();
@@ -689,7 +1002,7 @@ export default function MissionControlV1({ onNavigate }) {
   return (
     <div className="mc-root">
       {stopConfirm && (
-        <div className="mc-stop-overlay" onClick={() => setStopConfirm(false)}>
+        <div className="mc-stop-overlay" {...overlayProps(() => setStopConfirm(false))}>
           <div className="mc-stop-panel" onClick={e => e.stopPropagation()}>
             <div className="mc-stop-icon">⛔</div>
             <div className="mc-stop-title">Emergency Stop</div>
@@ -719,9 +1032,22 @@ export default function MissionControlV1({ onNavigate }) {
               refreshed {lastRefresh.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
             </span>
           )}
+          <button
+            className="mc-btn mc-btn--resume"
+            onClick={() => setShowCreate(v => !v)}
+            aria-expanded={showCreate}
+          >
+            {showCreate ? "✕ Close" : "＋ New Mission"}
+          </button>
           <button className="mc-btn mc-btn--ghost" onClick={load} title="Refresh">↻</button>
         </div>
       </div>
+
+      {showCreate && (
+        <div className="mc-card" style={{ height: 420, padding: 0, overflow: "hidden", marginBottom: 16 }}>
+          <MissionOrchestratorPanel />
+        </div>
+      )}
 
       <AlertBanner warnings={warnings} />
 
@@ -761,8 +1087,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="₹"
           label="Revenue"
           value={revenue != null ? `₹${Number(revenue).toLocaleString("en-IN")}` : "—"}
-          sub={msgToday != null ? `${msgToday} msgs today` : null}
-          status="ok"
+          sub={failed.stats ? "Failed to load" : msgToday != null ? `${msgToday} msgs today` : null}
+          status={failed.stats ? "err" : "ok"}
           onClick={() => nav("payments")}
         />
 
@@ -771,8 +1097,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="👥"
           label="Leads"
           value={leadsCount != null ? leadsCount.toLocaleString() : "—"}
-          sub="CRM pipeline"
-          status="ok"
+          sub={failed.stats ? "Failed to load" : "CRM pipeline"}
+          status={failed.stats ? "err" : "ok"}
           onClick={() => nav("clients")}
         />
 
@@ -781,8 +1107,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="🤖"
           label="Active Agents"
           value={activeAgents != null ? `${activeAgents}${totalAgents != null ? ` / ${totalAgents}` : ""}` : "—"}
-          sub="running now"
-          status={activeAgents === 0 ? "warn" : "ok"}
+          sub={failed.agents ? "Failed to load" : "running now"}
+          status={failed.agents ? "err" : activeAgents === 0 ? "warn" : "ok"}
           onClick={() => nav("agents")}
         />
 
@@ -791,8 +1117,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="🧠"
           label="Memory Health"
           value={memNodes != null ? `${memNodes} nodes` : "—"}
-          sub={memHealth ? memHealth.toUpperCase() : null}
-          status={memHealth === "ok" || memHealth == null ? "ok" : "warn"}
+          sub={failed.memStat ? "Failed to load" : memHealth ? memHealth.toUpperCase() : null}
+          status={failed.memStat ? "err" : (memHealth === "ok" || memHealth == null ? "ok" : "warn")}
           onClick={() => nav("memory")}
         />
 
@@ -801,8 +1127,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="⚙️"
           label="Workflow Health"
           value={wfRuns != null ? `${wfRuns} runs` : "—"}
-          sub={wfActive != null ? `${wfActive} active` : null}
-          status={wfActive === 0 && wfRuns === 0 ? "warn" : "ok"}
+          sub={failed.cycles ? "Failed to load" : wfActive != null ? `${wfActive} active` : null}
+          status={failed.cycles ? "err" : (wfActive === 0 && wfRuns === 0 ? "warn" : "ok")}
           onClick={() => nav("autonomouswf")}
         />
 
@@ -810,8 +1136,9 @@ export default function MissionControlV1({ onNavigate }) {
         <MetricCard
           icon="✦"
           label="AI Providers"
-          value={health?.services?.ai ? "Online" : health ? "Offline" : "—"}
-          status={health?.services?.ai ? "ok" : health ? "err" : "ok"}
+          value={failed.health ? "—" : health?.services?.ai ? "Online" : health ? "Offline" : "—"}
+          sub={failed.health ? "Failed to load" : null}
+          status={failed.health ? "err" : health?.services?.ai ? "ok" : health ? "err" : "ok"}
           onClick={() => nav("aicost")}
         >
           {health?.services && (
@@ -829,8 +1156,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="💾"
           label="System Health"
           value={heap != null ? `${heap} MB heap` : sysStatus !== "unknown" ? sysStatus : "—"}
-          sub={queueCts.pending != null ? `${queueCts.pending} pending / ${queueCts.running || 0} running` : null}
-          status={sysStatus === "ok" ? "ok" : sysStatus === "degraded" ? "warn" : "err"}
+          sub={failed.ops && failed.health ? "Failed to load" : queueCts.pending != null ? `${queueCts.pending} pending / ${queueCts.running || 0} running` : null}
+          status={(failed.ops && failed.health) ? "err" : (sysStatus === "ok" ? "ok" : sysStatus === "degraded" ? "warn" : "err")}
           onClick={() => nav("operations")}
         />
 
@@ -839,8 +1166,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="⚡"
           label="Autonomy Score"
           value={autoScore != null ? `${autoScore}%` : "—"}
-          sub="self-operation index"
-          status={autoScore != null ? (autoScore >= 70 ? "ok" : autoScore >= 40 ? "warn" : "err") : "ok"}
+          sub={failed.autonomy ? "Failed to load" : "self-operation index"}
+          status={failed.autonomy ? "err" : autoScore != null ? (autoScore >= 70 ? "ok" : autoScore >= 40 ? "warn" : "err") : "ok"}
           onClick={() => nav("autonomyscore")}
         >
           {autoScore != null && (
@@ -855,8 +1182,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="🚀"
           label="Deployment"
           value={billingStatus ? billingStatus.toUpperCase() : "—"}
-          sub={billingDays != null ? `${billingDays}d left · ${billingPlan}` : billingPlan}
-          status={billingStatus === "active" ? "ok" : billingStatus === "trial" ? "warn" : "err"}
+          sub={failed.billing ? "Failed to load" : billingDays != null ? `${billingDays}d left · ${billingPlan}` : billingPlan}
+          status={failed.billing ? "err" : billingStatus === "active" ? "ok" : billingStatus === "trial" ? "warn" : "err"}
           onClick={() => nav("billing")}
         />
 
@@ -865,8 +1192,8 @@ export default function MissionControlV1({ onNavigate }) {
           icon="📈"
           label="Growth Metrics"
           value={leadsCount != null && revenue != null ? "Live" : "—"}
-          sub={leadsCount != null ? `${leadsCount} leads · ₹${Number(revenue || 0).toLocaleString("en-IN")} rev` : null}
-          status="ok"
+          sub={failed.stats ? "Failed to load" : leadsCount != null ? `${leadsCount} leads · ₹${Number(revenue || 0).toLocaleString("en-IN")} rev` : null}
+          status={failed.stats ? "err" : "ok"}
           onClick={() => nav("seo")}
         />
 
@@ -874,6 +1201,9 @@ export default function MissionControlV1({ onNavigate }) {
 
       {/* J6: Mission Timeline Strip */}
       <MissionTimelineStrip />
+
+      {/* Approvals — human-in-the-loop queue for autonomous execution */}
+      <ApprovalQueuePanel />
 
       {/* Lifecycle Runtime */}
       <LifecyclePanel />
@@ -883,6 +1213,9 @@ export default function MissionControlV1({ onNavigate }) {
 
       {/* AI Collaboration */}
       <MissionCollaborationPanel />
+
+      {/* Mission Workforce — human+AI step assignment, handoff, approvals (Phase M2) */}
+      <MissionWorkforcePanel />
 
       {/* Recent Activity */}
       <section className="mc-section">
@@ -895,16 +1228,26 @@ export default function MissionControlV1({ onNavigate }) {
         {history.length > 0 ? (
           <div className="mc-activity-list">
             {history.slice(0, 8).map((item, i) => {
-              const ts  = item.completedAt || item.startedAt || item.createdAt;
-              const ok  = item.status === "done" || item.status === "completed" || item.status === "success";
-              const err = item.status === "failed" || item.status === "error";
+              // A.11.4 fix: real /runtime/history records carry `ts` (epoch ms) and a
+              // boolean `success` — never `completedAt`/`startedAt`/`createdAt`, and
+              // never a `status` string (measured live on 20/20 REST records and
+              // 30/30 live SSE frames). Every row therefore rendered with an empty
+              // status label and the neutral "warn" dot even for genuinely successful
+              // executions. Derives status the same way this codebase already does for
+              // the same class of record in SelfHealingCenter.jsx:
+              // `h.status || (h.success ? "success" : "failed")` — real status wins
+              // when genuinely present, otherwise fall back to the real boolean.
+              const ts  = item.completedAt || item.startedAt || item.createdAt || item.ts;
+              const _st = item.status || (item.success === undefined ? undefined : (item.success ? "success" : "failed"));
+              const ok  = _st === "done" || _st === "completed" || _st === "success";
+              const err = _st === "failed" || _st === "error";
               return (
                 <div key={i} className="mc-activity-row">
                   <StatusDot ok={ok} warn={!ok && !err} />
                   <span className="mc-activity-text">
                     {(item.input || item.task || item.name || "task").slice(0, 60)}
                   </span>
-                  <span className="mc-activity-status">{item.status}</span>
+                  <span className="mc-activity-status">{_st}</span>
                   {ts && (
                     <span className="mc-activity-time">
                       {new Date(ts).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
@@ -914,6 +1257,8 @@ export default function MissionControlV1({ onNavigate }) {
               );
             })}
           </div>
+        ) : failed.history ? (
+          <p className="mc-empty" style={{ color: '#f87171' }}>Couldn't load recent activity — backend request failed.</p>
         ) : (
           <p className="mc-empty">No recent activity</p>
         )}

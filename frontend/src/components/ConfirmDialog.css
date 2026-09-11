@@ -47,7 +47,7 @@
 
 .cdialog-message {
   font-size: 12px;
-  color: #888;
+  color: var(--text-dim);
   margin-bottom: 20px;
   line-height: 1.5;
 }
@@ -73,17 +73,17 @@
 .cdialog-cancel {
   background: transparent;
   border-color: #2a2a3a;
-  color: #888;
+  color: var(--text-dim);
 }
 
 .cdialog-cancel:hover {
   border-color: #555;
-  color: #ccc;
+  color: var(--text);
 }
 
 .cdialog-confirm {
-  background: #7c6af7;
-  color: #fff;
+  background: var(--accent);
+  color: var(--on-accent);
   border-color: #7c6af7;
 }
 
@@ -95,8 +95,8 @@
 }
 
 .cdialog-danger {
-  background: #ef4444;
-  border-color: #ef4444;
+  background: var(--danger);
+  border-color: var(--danger);
 }
 
 .cdialog-danger:hover { background: #dc2626; border-color: #dc2626; }

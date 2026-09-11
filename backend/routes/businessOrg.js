@@ -36,12 +36,23 @@
  */
 
 const router = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 
 function _org()  { return require("../services/businessOrg.cjs"); }
 function _sup()  { return require("../services/agentRuntimeSupervisor.cjs"); }
 function _st()   { try { return require("../services/businessOrgState.cjs");    } catch { return null; } }
 function _wf()   { try { return require("../services/businessOrgWorkflow.cjs"); } catch { return null; } }
+
+// OOPLIX V1 MASTER AUDIT (2026-08-16, endpoint authorization sweep): the
+// agent-control mutations below (tick/enable/disable) can force-tick or
+// enable/disable a real platform-wide autonomous department agent for
+// every org on the platform — the exact same class of gap already fixed
+// for the sibling Level 2 file (engineeringOrg.js), which reused this
+// identical operatorOnly escalation for its own tick/enable/disable
+// routes while correctly leaving read/v3-workflow routes at requireAuth.
+// businessOrg.cjs/businessOrgState.cjs are confirmed zero-orgId (this is
+// platform-wide autonomous-department state, not per-tenant CRM data —
+// businessDataService.cjs is the real, separately org-scoped CRM layer).
 
 // ── Agent management ──────────────────────────────────────────────────────────
 
@@ -67,7 +78,7 @@ router.get("/bizorg/agents/:id", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/bizorg/agents/:id/tick", requireAuth, async (req, res) => {
+router.post("/bizorg/agents/:id/tick", requireAuth, operatorOnly, async (req, res) => {
   try {
     const result = await _sup().triggerTick(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -75,7 +86,7 @@ router.post("/bizorg/agents/:id/tick", requireAuth, async (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/bizorg/agents/:id/enable", requireAuth, (req, res) => {
+router.post("/bizorg/agents/:id/enable", requireAuth, operatorOnly, (req, res) => {
   try {
     const result = _sup().enableAgent(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -83,7 +94,7 @@ router.post("/bizorg/agents/:id/enable", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
-router.post("/bizorg/agents/:id/disable", requireAuth, (req, res) => {
+router.post("/bizorg/agents/:id/disable", requireAuth, operatorOnly, (req, res) => {
   try {
     const result = _sup().disableAgent(req.params.id);
     if (!result.ok) return res.status(404).json({ success: false, error: result.error });
@@ -142,7 +153,7 @@ router.get("/bizorg/v3/pipeline", requireAuth, (req, res) => {
 router.get("/bizorg/v3/deals", requireAuth, (req, res) => {
   try {
     const { stage, deptId, campaignId } = req.query;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = Math.max(1, parseInt(req.query.limit) || 50);
     return res.json({ success: true, deals: _st().listDeals({ stage, deptId, campaignId, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -164,10 +175,21 @@ router.post("/bizorg/v3/deals/:id/advance", requireAuth, (req, res) => {
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
 
+// MASTER RECOVERY (2026-08-15, C10-029): a won deal had no way to be marked
+// churned and no MRR decrement path existed anywhere. Mirrors the /advance
+// route above exactly.
+router.post("/bizorg/v3/deals/:id/churn", requireAuth, (req, res) => {
+  try {
+    const { reason } = req.body;
+    const r = _wf().salesChurnDeal(req.params.id, { reason });
+    return res.json({ success: r.ok, deal: r.deal, error: r.error });
+  } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
+});
+
 router.get("/bizorg/v3/tasks", requireAuth, (req, res) => {
   try {
     const { deptId, status, type, priority } = req.query;
-    const limit = parseInt(req.query.limit) || 100;
+    const limit = Math.max(1, parseInt(req.query.limit) || 100);
     return res.json({ success: true, tasks: _st().listTasks({ deptId, status, type, priority, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -208,7 +230,7 @@ router.get("/bizorg/v3/kpis/:id", requireAuth, (req, res) => {
 router.get("/bizorg/v3/memory", requireAuth, (req, res) => {
   try {
     const { deptId, type } = req.query;
-    const limit = parseInt(req.query.limit) || 50;
+    const limit = Math.max(1, parseInt(req.query.limit) || 50);
     return res.json({ success: true, memory: _st().getMemory({ deptId, type, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });
@@ -216,7 +238,7 @@ router.get("/bizorg/v3/memory", requireAuth, (req, res) => {
 router.get("/bizorg/v3/reports", requireAuth, (req, res) => {
   try {
     const { deptId, type } = req.query;
-    const limit = parseInt(req.query.limit) || 20;
+    const limit = Math.max(1, parseInt(req.query.limit) || 20);
     return res.json({ success: true, reports: _st().listReports({ deptId, type, limit }) });
   } catch (e) { return res.status(500).json({ success: false, error: e.message }); }
 });

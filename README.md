@@ -17,11 +17,11 @@
 
 <br/>
 
-[![Version](https://img.shields.io/badge/version-3.0.0-7c6fff?style=flat-square)](https://github.com/EHTSM/jarvis-os/releases)
+[![Version](https://img.shields.io/badge/version-1.0.0--rc1-7c6fff?style=flat-square)](https://github.com/EHTSM/jarvis-os/releases)
 [![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-22c55e?style=flat-square&logo=node.js&logoColor=white)](https://nodejs.org)
 [![License](https://img.shields.io/badge/license-Proprietary-ef4444?style=flat-square)](LICENSE)
 [![Build](https://img.shields.io/github/actions/workflow/status/EHTSM/jarvis-os/ci.yml?branch=main&style=flat-square&label=CI)](https://github.com/EHTSM/jarvis-os/actions)
-[![Regression](https://img.shields.io/badge/regression-144%2F144-22c55e?style=flat-square)](tests/)
+[![Regression](https://img.shields.io/badge/regression-full%20suite%20on%20every%20push-22c55e?style=flat-square)](tests/)
 [![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Windows%20%7C%20Linux%20%7C%20VPS-888?style=flat-square)](https://ooplix.com)
 [![Security](https://img.shields.io/badge/security-responsible%20disclosure-7c6fff?style=flat-square)](SECURITY.md)
 
@@ -192,7 +192,8 @@ See [docs/guides/DEPLOYMENT.md](docs/guides/DEPLOYMENT.md) for the complete guid
 ## Tests
 
 ```bash
-npm run test:runtime     # 144 regression checks (50 suites)
+npm run test:runtime     # backend regression suite (runs every tests/runtime/*.test.cjs file)
+npm run test:security    # security/tenant-isolation suite (runs every numbered tests/security/*.cjs file)
 npm run test:api         # API smoke tests
 bash deploy/validate-production.sh   # 30-point production validation
 ```
@@ -223,8 +224,8 @@ bash deploy/validate-production.sh   # 30-point production validation
 | ✅ Shipped | Growth OS · Launch Platform · Founder Journal · ACP-12 |
 | ✅ Shipped | Production deployment infrastructure (OP-1) |
 | 🔄 Active | Closed Beta — first 100 users |
-| 📋 Planned | Mobile app (Android — APK ready) |
-| 📋 Planned | Team accounts (multi-seat, RBAC) |
+| 📋 Planned | Mobile app (Android — build instructions in `mobile/BUILD.md`; no packaged release yet) |
+| ✅ Shipped | Org/Dept/Team RBAC (6 roles, cross-org grants, enterprise admin) — corrected 2026-08-05, this was previously listed as "Planned" but already exists |
 | 📋 Planned | Public plugin marketplace |
 | 📋 Planned | White-label / API-only mode |
 

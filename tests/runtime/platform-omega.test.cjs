@@ -2,7 +2,15 @@
 /**
  * LEVEL Ω — Artificial Organization Platform test suite
  * Target: 120+ tests across all platform capabilities
+ *
+ * Gap Closure (Mission 102 follow-on): this suite reaches platformState.cjs
+ * (which already honors JARVIS_TEST_DATA_SUFFIX, per the ERA-1 Reliability
+ * gap-closure batch) via platformOrg.cjs's registerOrg(), but never set the
+ * suffix itself — confirmed, still-growing test pollution in the real
+ * data/platform/registry.json (Mission 102: 1,704 attributable records).
+ * Setting it here, before any require() below, redirects storage only.
  */
+process.env.JARVIS_TEST_DATA_SUFFIX = process.env.JARVIS_TEST_DATA_SUFFIX || `test-${process.pid}-${Date.now()}`;
 
 const TS = Date.now();
 const assert = (cond, msg) => { if (!cond) throw new Error(`FAIL: ${msg}`); };

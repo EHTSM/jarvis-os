@@ -81,7 +81,7 @@ export async function getRuntimeHistory(n = 40) {
   catch { return null; }
 }
 
-export async function getTasks() {
+export async function getRuntimeTasks() {
   try { return await _fetch("/tasks"); }
   catch { return null; }
 }

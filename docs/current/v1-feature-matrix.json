@@ -1,0 +1,142 @@
+{
+  "generatedAt": "2026-07-17",
+  "mission": "V1 Final Reality Completion",
+  "note": "Every entry verified against the actual running application this session, or re-confirmed from a prior session's live verification (marked reVerified:false where not independently re-run this pass). No entry is speculative.",
+  "states": ["REAL", "DISABLED", "REMOVED"],
+  "frontendPages": {
+    "totalAudited": 69,
+    "real": 55,
+    "disabled": 14,
+    "removed": 0,
+    "disabledList": [
+      { "id": "ecrm", "component": "EnterpriseCRM", "reason": "hardcoded SEED_OPPS fake leads (Arjun Mehta, Priya Sharma) as fallback pipeline, no backend CRM wiring", "action": "removed from nav/search/command-palette; component file retained, unreachable" },
+      { "id": "knowledge", "component": "KnowledgeCenter", "reason": "4 hardcoded const arrays, zero API call", "action": "removed from nav/search/command-palette" },
+      { "id": "memory", "component": "MemoryOSV2", "reason": "calls /personal/* which has no backend route file", "action": "removed from nav/search/command-palette" },
+      { "id": "autonomy", "component": "AutonomousCompanyCenter", "reason": "hardcoded DEPARTMENTS, literal fake metrics; duplicate of 3 other Autonomous*Center pages", "action": "removed from nav/search/command-palette" },
+      { "id": "dataowner", "component": "DataOwnershipCenter", "reason": "hardcoded DATA_INVENTORY with literal fake record counts", "action": "removed from nav/search/command-palette" },
+      { "id": "disasterrecovery", "component": "DisasterRecoveryCenter", "reason": "hardcoded BACKUPS/RECOVERY_PLANS/RESTORE_HISTORY/FAILOVER_STATUS presented as live", "action": "removed from nav/search/command-palette" },
+      { "id": "mobile", "component": "MobilePlatformCenter", "reason": "8 hardcoded arrays (releases, devices, push stats)", "action": "removed from nav/search/command-palette" },
+      { "id": "community", "component": "CommunityCenter", "reason": "hardcoded MEMBERS/DISCUSSIONS/SHOWCASES/CHALLENGES/EVENTS", "action": "removed from nav/search/command-palette" },
+      { "id": "autorevenue", "component": "AutonomousRevenueCenter", "reason": "hardcoded LEAD_AGENTS/FOLLOWUP_AGENTS/CONVERSION_AGENTS/PIPELINE; duplicate cluster", "action": "removed from nav/search/command-palette" },
+      { "id": "automarketing", "component": "AutonomousMarketingCenter", "reason": "hardcoded CONTENT_AGENTS/SEO_AGENTS/SOCIAL_AGENTS/CAMPAIGN_AGENTS/TRAFFIC_HISTORY; duplicate cluster", "action": "removed from nav/search/command-palette" },
+      { "id": "autosupport", "component": "AutonomousSupportCenter", "reason": "hardcoded TICKETS/KB_ARTICLES/SUPPORT_AGENTS; duplicate cluster", "action": "removed from nav/search/command-palette" },
+      { "id": "personal", "component": "PersonalOS", "reason": "calls /personal/* which has no backend route file anywhere in backend/routes/", "action": "removed from nav/search/command-palette" },
+      { "id": "developer", "component": "DeveloperOS", "reason": "calls /dev/* which has no backend route file anywhere in backend/routes/", "action": "removed from nav/search/command-palette" },
+      { "id": "enterprise", "component": "EnterpriseOS", "reason": "calls /enterprise/* which has no backend route file anywhere in backend/routes/", "action": "removed from nav/search/command-palette" }
+    ],
+    "disableMethod": "Removed the nav-array entry, GlobalSearch.jsx STATIC_ROUTES entry, and CommandPalette.jsx entry for each id, so the tab can no longer be navigated to by any UI path. Component files and their render conditions in App.jsx were left in place (unreachable, not deleted) — verified via `frontend npm run build` succeeding both before and after removal.",
+    "verifiedLive": true,
+    "buildVerified": "npm run build succeeded after nav removal, confirmed 2026-07-17"
+  },
+  "backendServices": {
+    "totalFiles": 367,
+    "note": "367 backend/services files, unchanged by this session's fixes — firebaseAuth.js is a backend/middleware file, not backend/services, so the services count is unaffected by its removal. db/sqlite.cjs is backend/db, also outside this count. See removedFiles below for what actually changed on disk.",
+    "removedFiles": [
+      { "file": "backend/middleware/firebaseAuth.js", "reason": "complete, working, real firebase-admin auth middleware, zero callers anywhere in the repo (backend/routes/auth.js uses firebase-admin directly and independently) — genuine duplicate/dead code", "verifiedZeroCallers": "grep -rln 'firebaseAuth' across backend/ agents/ scripts/ tests/ frontend/ electron/ mobile/ vscode-extension/ returns zero code references" }
+    ],
+    "incorrectlyFlaggedForRemoval": [
+      { "file": "backend/db/sqlite.cjs", "whatHappened": "Initially deleted after a backend/-only grep found zero callers. This was WRONG — 6 real callers exist in scripts/ (check-persistence-divergence.cjs, test-shadow-safety.cjs, test-shadow-degradation.cjs, test-survivability.cjs, validate-parallel-write.cjs), which the initial grep scope missed. The deletion broke `node scripts/test-restore.cjs` (disaster-recovery validator).", "resolution": "Restored via `git restore --staged --worktree backend/db/sqlite.cjs`. Re-ran `node scripts/test-restore.cjs` — exits 0 / PASSED again. Re-scanned for unused services with a corrected search across backend+agents+scripts+tests: 0 files found unused." }
+    ],
+    "pathTraversalFixes": [
+      { "file": "backend/services/selfHealingFrontend.cjs", "functions": ["generateFix", "applyFix", "rollbackFix"], "issue": "record.targetFile (ultimately client-supplied via POST /odi/heal request body) was passed unsanitized into path.join(process.cwd(), targetFile), allowing a crafted targetFile like '../../../etc/hosts' to read/write arbitrary files outside the project root.", "fix": "Added _safeResolve() helper that resolves against ROOT and rejects any result that escapes it; applied at all 3 call sites.", "verifiedLive": "Direct call with a traversal payload ('../../../../../../etc/hosts') returns {ok:false, error:'targetFile escapes project root...'}; a legitimate in-tree path (frontend/src/App.jsx) passes the guard and proceeds normally." },
+      { "file": "backend/services/uiPatchGenerator.cjs", "functions": ["generatePatch", "applyPatch", "rollbackPatch"], "issue": "Identical unsanitized path.resolve(ROOT, targetFile) pattern, reachable from the same POST /odi/heal-adjacent ODI-9 patch routes.", "fix": "Same _safeResolve() pattern added and applied at all 3 call sites.", "verifiedLive": "generatePatch() called directly with a traversal payload returns the expected rejection; a real in-tree path proceeds normally." }
+    ],
+    "connectorFixes": [
+      { "file": "backend/services/integrationConnectors.cjs", "issue": "Razorpay health-probe hit /v1/payment-links (hyphen) — wrong endpoint, real Razorpay API path is /v1/payment_links (underscore).", "fix": "One-character correction.", "verifiedLive": "With real rzp_live credentials in .env, the connector flipped from PARTIAL(404) to CONNECTED — 'Razorpay API authenticated, webhook secret set'." }
+    ],
+    "duplicateEnginesNotMerged": {
+      "count": 14,
+      "list": ["businessOrg", "autonomousOrg", "civilizationOrg", "ecosystemOrg", "enterpriseOrg", "executiveOrg", "autonomousEvolutionOrg", "autonomousKnowledgeOrg", "platformOrg", "plus *State/*Workflow siblings"],
+      "decision": "NOT merged. Each has real mounted routes and real (if self-referential) live data flowing through them. Merging 14 engines into a shared implementation is itself an architecture redesign, forbidden by this mission's explicit rules. Reported, not touched."
+    },
+    "simulatedButUsedByUI": [
+      {
+        "subsystem": "Physical/device orchestration family (automationScenarioEngine.cjs, deviceHealthEngine.cjs, deviceOrchestrationEngine.cjs, experimentOrchestratorEngine.cjs, infrastructureRecoveryEngine.cjs, physicalWorkflowEngine.cjs)",
+        "reason": "When no real physical/IoT device is connected (true in any environment without real hardware attached), these engines transparently fall back to a response that explicitly self-labels as mock (e.g. {ok:true, mock:true, ...} or result:'mock_ok') rather than fabricating a fake-but-unlabeled success. This is honest degraded-mode behavior for a feature category with no real backing infrastructure available anywhere in this repo, not a hidden fake presented as real.",
+        "actionTaken": "None — removing would either break the endpoint's only response path or require building real device connectivity (new architecture + real hardware, both out of scope). Reported precisely per mission Phase 3 instruction: 'If simulation but used by UI: report exactly why.'"
+      }
+    ]
+  },
+  "connectors": {
+    "source": "docs/current/phase4-6-connectors-electron.md",
+    "codeReady": ["Razorpay", "Telegram", "OpenAI"],
+    "waitingForCreds": ["GitHub", "Google", "Slack", "Discord", "Stripe", "Notion", "Anthropic", "Gemini", "Cloudflare", "AWS", "Supabase", "S3", "R2"],
+    "broken": [
+      { "name": "WhatsApp", "reason": "WA_PHONE_ID env value is a WhatsApp Business Account ID, not a phone-number-id; the connector code is correct per Meta's Cloud API, the fix is a credential/config value change, out of scope for a code-only pass" }
+    ],
+    "notImplemented": ["PayPal", "Gmail (Google Workspace scope-only, zero outbound Gmail API calls)", "Google Calendar (scope-only)", "Google Drive (scope-only)"]
+  },
+  "electron": {
+    "fullGuiLaunch": "GENUINELY_IMPOSSIBLE_IN_THIS_ENVIRONMENT",
+    "reason": "require('electron') resolves to a binary-path string, not the API object, in this non-interactive/no-display session; app.whenReady() never resolves. Proven with a live minimal reproduction, not assumed from the static smoke test.",
+    "liveVerifiedInstead": [
+      "Backend spawn logic (main.cjs _startBackend) replicated live: spawned backend/server.js, real PID, /health returned 200",
+      "IPC api-request handler logic round-tripped live against the spawned backend: 200",
+      "AI round-trip through the Electron-hosted-backend code path (send-command -> POST /jarvis): 200 structured reply",
+      "Auto-updater GitHub feed reachability: real HTTP GET to github.com/EHTSM/jarvis-os/releases and api.github.com/repos/.../releases/latest both returned 200",
+      "IPC channel consistency: 75 preload ipcRenderer.invoke channels vs 74 main.cjs ipcMain.handle channels, all cross-checked channels matched",
+      "electron-smoke-test.cjs: 22/22 static config checks pass"
+    ],
+    "genuinelyUnverifiable": [
+      "Real BrowserWindow rendering",
+      "Live preload<->renderer IPC bridge",
+      "Tray/notifications/globalShortcut",
+      "autoUpdater.checkForUpdates() actual execution"
+    ]
+  },
+  "apiRoutes": {
+    "source": "docs/current/phase2-route-audit.md",
+    "totalFiles": 127,
+    "working": 126,
+    "disabled": 0,
+    "removed": 0,
+    "newBugsFoundThisPass": 0,
+    "priorFixesReconfirmedLive": [
+      "33 requireAuth prefix mounts in index.js",
+      "5 no-op-in-file-guard corrections (approvalRoutes.js, computerController.js, founderTwin.js, workforceOS.js, companyFactory.js — an in-file requireAuth resolved to a no-op due to a bad require path; the real enforcement is the index.js prefix mount)",
+      "/agents prefix guard",
+      "organizations.js + workspace.js RBAC (req.body id-forwarding, not req.query)"
+    ],
+    "groundTruthCorrection": "Rate-limiter middleware is used by 7 files, not 8 as a partial prior scan suggested — commercial.js's 'rateLimited' is a data field in a status response, not a require() of the middleware. Real users: accounts.js, auth.js, browser.js, jarvis.js, odi.js, runtime.js, whatsapp.js.",
+    "liveAuthorizationProof": "A second 'attacker' identity received 403 on both DELETE and GET of another user's org (requires permission: delete_org / Not a member of this organization) — confirms real authz + tenant isolation, not just authentication.",
+    "mostImportantRemainingGap": "Rate-limiting coverage is thin: only 7 of 126 route files apply the limiter. Every org-ladder, POST-Omega domain, coding, and production-tooling route is unthrottled. All are auth-gated (not an open door), but a single valid operator token could issue unbounded requests to expensive endpoints (/computer/*, /research/*, AI-backed /coding/*). Hardening gap, not a correctness/auth bug. Not fixed this pass — applying rateLimiter(...) per-prefix across ~119 additional route families is a larger, more invasive change than the mission's per-bug-fix scope."
+  },
+  "autonomousRuntime": {
+    "source": "docs/current/phase6-autonomous-runtime.md and docs/current/phase5-7-runtime-production.md",
+    "trulyAutonomous": ["Observation", "Decision (wired, event-driven)", "Execution", "Recovery", "Self-healing", "Loop"],
+    "autonomousButSelfReferential": ["Learning", "Planning", "Memory-writes"],
+    "notAutonomous": {
+      "list": "The ~14 duplicate *Org engines have zero self-trigger (0 setInterval/cron); they only run on an API call or an AgentSupervisor persona tick, and 100% of their ticked actions are self-contained JSON mutations with no real external connector call or repo/infra modification."
+    },
+    "trueSelfCorrection": {
+      "found": false,
+      "evidence": "backend/services/autonomousDecisionEngine.cjs is a stateless deterministic rule-matcher with static per-rule confidence constants (0.7-1.0, hardcoded, never adjusted). agents/runtime/executionChainPlanner.cjs is a static regex-to-template matcher with no revision logic. backend/services/executionRecovery.cjs selectStrategy() is the closest analog but is an attempt-count-keyed escalation tree (same failure -> different strategy as attempts climb), not confidence-based revision of a prior judgment. Live-observed: a fresh 65s idle boot showed the self-heal probe healing 5 real failed cycles, ALL choosing the identical strategy (retry_with_backoff) at the identical confidence (14%, static) and re-dispatching the identical work. Confidence is recorded and logged but never changes runtime behavior. Grep of live logs for revision/reconsideration language: zero matches.",
+      "conclusion": "The system demonstrates real Recovery (retry the same failed thing) and real static Escalation (different strategy keyed on attempt count), but never demonstrates recognizing that a prior autonomous DECISION's judgment was wrong and choosing a different approach because of that judgment. This capability is NOT IMPLEMENTED, not partially implemented."
+    },
+    "liveEvidence": "70s+ idle-window observation with zero API calls from the auditor showed the log growing from ~520 to 5000+ lines: real execSync(git status)/exec(pm2 jlist) firing, 80 autonomous dispatch batches making 1585 real outbound HTTP calls to AI providers, and a self-heal probe detecting and re-executing 5 real failed cycles — all with zero human trigger."
+  },
+  "productionDeployment": {
+    "source": "docs/current/phase5-7-runtime-production.md and docs/current/phase7-9-performance-devops.md",
+    "verifiedLive": {
+      "regressionSuite": "144/144 passing, confirmed multiple times this session",
+      "frontendBuild": "npm run build succeeds",
+      "electronSmokeTest": "22/22 static checks pass",
+      "pm2": "both apps (jarvis-os, ooplix-backup) reach online with no crash-loop in the observed window",
+      "disasterRecoveryValidator": "node scripts/test-restore.cjs exits 0/PASSED (after the incorrect db/sqlite.cjs deletion was caught and reverted)",
+      "remoteCI": "gh CLI authenticated; v1.0.0-rc6 CI + Release both in_progress at audit time; no failed runs in the recent window (prior runs show cancelled = superseded by newer pushes, not failed)",
+      "releaseYmlLogicalCompleteness": "5 jobs, correct dependency chain (build -> package/desktop -> release), all 9 referenced top-level files exist"
+    },
+    "fixedThisSession": [
+      { "file": ".github/workflows/release.yml", "issue": "Generated release-notes wget URL used ooplix-server-v${{ github.ref_name }}.tar.gz — since github.ref_name already includes the leading 'v' (e.g. v1.0.0-rc6), this produced a doubled-v filename (ooplix-server-vv1.0.0-rc6.tar.gz) that does not match the real uploaded asset name (ooplix-server-v1.0.0-rc6.tar.gz, built from VERSION with the v already stripped).", "fix": "Removed the redundant hardcoded 'v', now reads ooplix-server-${{ github.ref_name }}.tar.gz.", "verified": "Manual substitution check confirms the corrected string matches the real PACKAGE_NAME construction at release.yml:72." }
+    ],
+    "environmentBlocked": {
+      "docker": "CLI present (v29.4.1) but daemon not running in this session (socket missing); no real image build possible. Dockerfile.production statically reviewed as correct in two prior sessions.",
+      "nginx": "not installed in this environment; deploy/nginx-jarvis.conf and deploy/nginx-multisite.conf could not be nginx -t syntax-checked.",
+      "electronGuiLaunch": "see electron.fullGuiLaunch above — genuinely impossible non-interactively."
+    },
+    "measuredPerformance": {
+      "coldBootMs": { "min": 972, "max": 1359, "avg": 1117 },
+      "idleRssTrend": "declined over a 60s idle window (95.9MB -> 69.2MB) — no fast memory leak in that window; does not rule out a slow multi-hour leak"
+    }
+  }
+}

@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { _fetch } from "../_client";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const ACTION_COLOR = {
-  Ignore:         "#444",
+  Ignore:         "#888",
   Monitor:        "#607d8b",
   Notify:         "#2196f3",
   Recommend:      "#00bcd4",
@@ -15,7 +16,7 @@ const ACTION_COLOR = {
   AutoRecover:    "#8bc34a",
 };
 
-const PRIORITY_COLOR = { CRITICAL: "#9c27b0", HIGH: "#f44336", MEDIUM: "#ff9800", LOW: "#2196f3", NONE: "#444" };
+const PRIORITY_COLOR = { CRITICAL: "#9c27b0", HIGH: "#f44336", MEDIUM: "#ff9800", LOW: "#2196f3", NONE: "#888" };
 
 function ActionBadge({ action }) {
   return (
@@ -30,7 +31,7 @@ function ActionBadge({ action }) {
 function PriorityDot({ priority }) {
   return (
     <span style={{ width: 7, height: 7, borderRadius: "50%", display: "inline-block", flexShrink: 0,
-      background: PRIORITY_COLOR[priority] || "#444", marginRight: 4 }} title={priority} />
+      background: PRIORITY_COLOR[priority] || "#888", marginRight: 4 }} title={priority} />
   );
 }
 
@@ -40,18 +41,18 @@ function DecisionRow({ d }) {
   return (
     <div style={{ borderBottom: "1px solid #1a1a1a", padding: "5px 0" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer", flexWrap: "nowrap" }}
-        onClick={() => setExpanded(e => !e)}>
-        <span style={{ color: "#444", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{ts}</span>
+        {...clickableProps(() => setExpanded(e => !e))}>
+        <span style={{ color: "#888", fontSize: 10, minWidth: 60, fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{ts}</span>
         <PriorityDot priority={d.priority} />
         <ActionBadge action={d.recommendedAction} />
-        <span style={{ color: "#666", fontSize: 10, minWidth: 70, flexShrink: 0 }}>{d.affectedSubsystem}</span>
+        <span style={{ color: "#999", fontSize: 10, minWidth: 70, flexShrink: 0 }}>{d.affectedSubsystem}</span>
         <span style={{ color: "#bbb", fontSize: 11, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {d.reason.replace(/\[AI:.*?\]/, "").trim()}
         </span>
         {d.requiresApproval && (
           <span style={{ color: "#ff5722", fontSize: 10, flexShrink: 0 }}>⚠ approval</span>
         )}
-        <span style={{ color: "#444", fontSize: 10, flexShrink: 0 }}>{expanded ? "▲" : "▼"}</span>
+        <span style={{ color: "#888", fontSize: 10, flexShrink: 0 }}>{expanded ? "▲" : "▼"}</span>
       </div>
       {expanded && (
         <div style={{ margin: "6px 0 2px 66px", padding: 8, background: "#111", borderRadius: 4, fontSize: 11 }}>
@@ -65,11 +66,11 @@ function DecisionRow({ d }) {
               ["Source Event", d.sourceEventId || "—"],
             ].map(([k, v]) => (
               <React.Fragment key={k}>
-                <span style={{ color: "#555" }}>{k}</span>
+                <span style={{ color: "#888" }}>{k}</span>
                 <span style={{ color: "#ccc", wordBreak: "break-all" }}>{v}</span>
               </React.Fragment>
             ))}
-            <span style={{ color: "#555" }}>Reason</span>
+            <span style={{ color: "#888" }}>Reason</span>
             <span style={{ color: "#aaa" }}>{d.reason}</span>
           </div>
         </div>
@@ -81,7 +82,7 @@ function DecisionRow({ d }) {
 function StatsBar({ stats }) {
   if (!stats) return null;
   return (
-    <div style={{ display: "flex", gap: 16, padding: "4px 0", fontSize: 11, color: "#666", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: 16, padding: "4px 0", fontSize: 11, color: "#999", flexWrap: "wrap" }}>
       <span>total <span style={{ color: "#ccc" }}>{stats.totalDecisions}</span></span>
       <span>avg <span style={{ color: "#ccc" }}>{stats.latency?.avgMs ?? 0}ms</span></span>
       <span>p99 <span style={{ color: "#ccc" }}>{stats.latency?.p99Ms ?? 0}ms</span></span>
@@ -131,7 +132,7 @@ export default function DecisionQueuePanel() {
 
   const tabStyle = t => ({
     padding: "4px 12px", cursor: "pointer", fontSize: 12, fontWeight: 500,
-    color: tab === t ? "#fff" : "#666", background: "none", border: "none",
+    color: tab === t ? "#fff" : "#999", background: "none", border: "none",
     borderBottom: tab === t ? "2px solid #9c27b0" : "2px solid transparent",
   });
 
@@ -148,7 +149,7 @@ export default function DecisionQueuePanel() {
         borderBottom: "1px solid #1e1e1e", flexShrink: 0 }}>
         <span style={{ color: "#9c27b0", fontWeight: 700, fontSize: 13 }}>◈ Decision Engine</span>
         {stats && (
-          <span style={{ color: "#555", fontSize: 11 }}>
+          <span style={{ color: "#888", fontSize: 11 }}>
             {stats.running ? <span style={{ color: "#9c27b0" }}>● live</span> : <span style={{ color: "#f44336" }}>● stopped</span>}
             {" "}{stats.totalDecisions} decisions · uptime {Math.floor((stats.uptimeSec || 0) / 60)}m
           </span>
@@ -179,7 +180,7 @@ export default function DecisionQueuePanel() {
               <StatsBar stats={stats} />
             </div>
             {decisions.length === 0 && (
-              <div style={{ color: "#555", fontSize: 12, padding: "20px 0" }}>
+              <div style={{ color: "#888", fontSize: 12, padding: "20px 0" }}>
                 No decisions yet — waiting for observer events…
               </div>
             )}
@@ -190,7 +191,7 @@ export default function DecisionQueuePanel() {
         {tab === "statistics" && stats && (
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
             <div>
-              <div style={{ color: "#666", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Performance</div>
+              <div style={{ color: "#999", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>Performance</div>
               {[
                 ["Total decisions", stats.totalDecisions],
                 ["Avg latency",     `${stats.latency?.avgMs ?? 0}ms`],
@@ -208,7 +209,7 @@ export default function DecisionQueuePanel() {
               ))}
             </div>
             <div>
-              <div style={{ color: "#666", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Action</div>
+              <div style={{ color: "#999", fontSize: 11, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Action</div>
               {Object.entries(stats.byAction || {}).sort((a, b) => b[1] - a[1]).map(([action, count]) => (
                 <div key={action} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0",
                   borderBottom: "1px solid #1a1a1a", fontSize: 12 }}>
@@ -216,7 +217,7 @@ export default function DecisionQueuePanel() {
                   <span style={{ color: "#ccc" }}>{count}</span>
                 </div>
               ))}
-              <div style={{ color: "#666", fontSize: 11, marginTop: 12, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Priority</div>
+              <div style={{ color: "#999", fontSize: 11, marginTop: 12, marginBottom: 6, textTransform: "uppercase", letterSpacing: 1 }}>By Priority</div>
               {Object.entries(stats.byPriority || {}).map(([pri, count]) => (
                 <div key={pri} style={{ display: "flex", justifyContent: "space-between", padding: "3px 0",
                   borderBottom: "1px solid #1a1a1a", fontSize: 12 }}>
@@ -230,15 +231,15 @@ export default function DecisionQueuePanel() {
 
         {tab === "rules" && (
           <>
-            <div style={{ color: "#555", fontSize: 11, marginBottom: 8 }}>{rules.length} rules active (evaluated in priority order)</div>
+            <div style={{ color: "#888", fontSize: 11, marginBottom: 8 }}>{rules.length} rules active (evaluated in priority order)</div>
             {rules.map(r => (
               <div key={r.id} style={{ padding: "6px 0", borderBottom: "1px solid #1a1a1a" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ color: "#555", fontSize: 10, minWidth: 40 }}>{r.id}</span>
+                  <span style={{ color: "#888", fontSize: 10, minWidth: 40 }}>{r.id}</span>
                   <span style={{ color: "#9c27b0", fontSize: 11, fontWeight: 600 }}>{r.name}</span>
-                  <span style={{ color: "#444", fontSize: 10, marginLeft: "auto" }}>pri {r.priority}</span>
+                  <span style={{ color: "#888", fontSize: 10, marginLeft: "auto" }}>pri {r.priority}</span>
                 </div>
-                <div style={{ color: "#666", fontSize: 11, marginTop: 2, marginLeft: 48 }}>{r.description}</div>
+                <div style={{ color: "#999", fontSize: 11, marginTop: 2, marginLeft: 48 }}>{r.description}</div>
               </div>
             ))}
           </>

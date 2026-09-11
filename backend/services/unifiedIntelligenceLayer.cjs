@@ -311,7 +311,23 @@ function _readEngState() {
     return state;
 }
 
-function _readBizState() {
+// MASTER RESIDUAL CLOSURE (2026-08-15, C10-017): this previously called
+// bds.listLeads/listOpportunities/listCampaigns with no orgId at all,
+// returning platform-wide business data (every tenant's leads/deals/
+// revenue) to whichever caller invoked it. GET /intelligence/unified/
+// executive is gated only by requireAuth (no org check), so any
+// authenticated user of any org could read every other tenant's real
+// pipeline value and revenue through it — live-reproduced: a fresh org
+// with zero real leads received activeLeads:31, revenueThisMonth:1393000,
+// pipelineValue:818000 from this endpoint.
+//
+// orgId is OPTIONAL here (not required), matching the same non-breaking
+// pattern already used for missionMemory.cjs (C10-004) — this function is
+// also called by genuinely platform-wide consumers (agentRuntimeSupervisor,
+// graphReasoningEngine) that compute cross-org system health, which must
+// keep working unscoped. Only the actual tenant-facing route
+// (/intelligence/unified/*) now passes a real orgId.
+function _readBizState(orgId) {
     const state = {
         leads: [], deals: [], customers: [], campaigns: [], events: [],
         health: null, dashboard: null,
@@ -319,14 +335,14 @@ function _readBizState() {
     try {
         const bds = _bds();
         if (bds) {
-            state.leads     = bds.listLeads({ limit: 500 }).items || [];
-            state.deals     = bds.listOpportunities({ limit: 500 }).items || [];
-            state.campaigns = bds.listCampaigns({ limit: 100 }).items || [];
-            state.dashboard = bds.getDashboard();
+            state.leads     = bds.listLeads({ limit: 500, orgId: orgId || undefined }).items || [];
+            state.deals     = bds.listOpportunities({ limit: 500, orgId: orgId || undefined }).items || [];
+            state.campaigns = bds.listCampaigns({ limit: 100, orgId: orgId || undefined }).items || [];
+            state.dashboard = bds.getDashboard(orgId || null);
         }
     } catch {}
     try {
-        const contacts = _bds()?.listContacts?.({ limit: 500 });
+        const contacts = _bds()?.listContacts?.({ limit: 500, orgId: orgId || undefined });
         state.customers = (contacts?.items || []).filter(c => c.status);
     } catch {}
     try {
@@ -334,7 +350,13 @@ function _readBizState() {
         state.events = evLog?.events || [];
     } catch {}
     try {
-        state.health = _bie()?.getHealthMetrics?.();
+        // This was the actual source of the live-reproduced leak: bizKPIs in
+        // getExecutiveDashboard() reads from state.health, not state.leads/
+        // deals directly — scoping those three lists alone left this one,
+        // separate unscoped call still returning platform-wide health
+        // metrics (activeLeads, revenueThisMonth, pipelineValue) regardless
+        // of the org-scoped lists above being correctly empty.
+        state.health = _bie()?.getHealthMetrics?.({ orgId: orgId || undefined });
     } catch {}
     return state;
 }
@@ -343,9 +365,9 @@ function _readBizState() {
 // CORRELATE — run all cross-domain rules against current state
 // ─────────────────────────────────────────────────────────────────────────────
 
-function correlate() {
+function correlate(orgId) {
     const eng   = _readEngState();
-    const biz   = _readBizState();
+    const biz   = _readBizState(orgId);
     const rules  = [...CROSS_DOMAIN_RULES, ..._customRules];
     const events = [];
 
@@ -393,7 +415,7 @@ function getUnifiedRecommendations(opts = {}) {
 
     // Business signals (from businessIntelligenceEngine scan — dryRun)
     try {
-        const bizScan = _bie()?.scan?.({ dryRun: true });
+        const bizScan = _bie()?.scan?.({ dryRun: true, orgId: opts.orgId });
         for (const sig of bizScan?.signals || []) {
             recs.push({
                 recId:      `bizsig_${sig.signalId}`,
@@ -444,11 +466,11 @@ function getUnifiedRecommendations(opts = {}) {
 // EXECUTIVE IMPACT SCORE — score any event against business + engineering health
 // ─────────────────────────────────────────────────────────────────────────────
 
-function scoreImpact(event) {
+function scoreImpact(event, orgId) {
     if (!event) throw new Error("event object required");
 
     const eng = _readEngState();
-    const biz = _readBizState();
+    const biz = _readBizState(orgId || event.orgId);
 
     // Base score factors
     let score      = 0;
@@ -516,10 +538,10 @@ function scoreImpact(event) {
 // EXECUTIVE DASHBOARD
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getExecutiveDashboard() {
+function getExecutiveDashboard(orgId) {
     const eng  = _readEngState();
-    const biz  = _readBizState();
-    const corr = correlate();
+    const biz  = _readBizState(orgId);
+    const corr = correlate(orgId);
 
     // Top risks = critical cross-domain events + high-confidence signals
     const topRisks = corr.crossDomainEvents
@@ -586,8 +608,8 @@ function getExecutiveDashboard() {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function detectCrossDomainEvents(opts = {}) {
-    const { dryRun = false } = opts;
-    const result = correlate();
+    const { dryRun = false, orgId } = opts;
+    const result = correlate(orgId);
     const triggered = [];
 
     for (const ev of result.crossDomainEvents) {

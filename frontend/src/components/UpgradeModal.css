@@ -151,6 +151,14 @@
   border-color: rgba(124,111,255,0.55);
   box-shadow: 0 0 0 1px rgba(124,111,255,0.20);
 }
+.um-plan--current {
+  border-color: rgba(78,205,196,0.4);
+  background: rgba(78,205,196,0.06);
+  cursor: default;
+}
+.um-plan-badge--current {
+  background: linear-gradient(90deg, var(--accent2), var(--success, #4ecdc4));
+}
 
 /* Recommended ribbon */
 .um-plan-badge {

@@ -12,26 +12,12 @@ const AGENTS = [
   { id: "ag_seo",       name: "SEO Agent",       icon: "⌕", color: "var(--accent2)" },
   { id: "ag_marketing", name: "Marketing Agent",  icon: "◉", color: "var(--warning)" },
   { id: "ag_content",   name: "Content Agent",    icon: "◈", color: "var(--accent)"  },
-  { id: "ag_support",   name: "Support Agent",    icon: "◎", color: "#52d68a"        },
+  { id: "ag_support",   name: "Support Agent",    icon: "◎", color: "var(--success)"        },
   { id: "ag_sales",     name: "Sales Agent",      icon: "◇", color: "#da552f"        },
-  { id: "ag_dev",       name: "Dev Agent",        icon: "⬡", color: "#e6edf3"        },
+  { id: "ag_dev",       name: "Dev Agent",        icon: "⬡", color: "var(--text)"        },
   { id: "ag_devops",    name: "DevOps Agent",     icon: "⬟", color: "#fc6d26"        },
   { id: "ag_research",  name: "Research Agent",   icon: "⊕", color: "#a78bfa"        },
   { id: "ag_analytics", name: "Analytics Agent",  icon: "▣", color: "#38bdf8"        },
-];
-
-// ── Seed tasks ────────────────────────────────────────────────────────
-const SEED_TASKS = [
-  { id: "rt1", title: "Generate meta descriptions for Phase 10 blog post",     priority: "high",     status: "completed",  agentId: "ag_seo",       category: "seo",        createdAt: "10:02", completedAt: "10:14", result: "5 meta descriptions generated. Avg length 148 chars. Keyword density 2.1%.", escalated: false },
-  { id: "rt2", title: "Triage 3 inbound support tickets",                      priority: "critical", status: "completed",  agentId: "ag_support",   category: "support",    createdAt: "10:08", completedAt: "10:11", result: "Tickets #1021, #1022 resolved. #1023 escalated to human — billing issue.", escalated: true  },
-  { id: "rt3", title: "Draft LinkedIn post about Phase 9 AI OS release",       priority: "medium",   status: "in_progress",agentId: "ag_marketing", category: "marketing",  createdAt: "10:15", completedAt: null,    result: null, escalated: false },
-  { id: "rt4", title: "Analyse keyword gap vs competitors",                    priority: "medium",   status: "queued",     agentId: "ag_seo",       category: "seo",        createdAt: "10:18", completedAt: null,    result: null, escalated: false },
-  { id: "rt5", title: "Write blog post: WhatsApp Automation for Agencies",    priority: "high",     status: "queued",     agentId: "ag_content",   category: "content",    createdAt: "10:20", completedAt: null,    result: null, escalated: false },
-  { id: "rt6", title: "Check deploy health after v9.4.0 push",                priority: "critical", status: "completed",  agentId: "ag_devops",    category: "devops",     createdAt: "09:58", completedAt: "09:59", result: "All services nominal. No error rate spike. Deploy confirmed healthy.", escalated: false },
-  { id: "rt7", title: "Qualify 5 new leads from yesterday sign-ups",          priority: "high",     status: "in_progress",agentId: "ag_sales",     category: "sales",      createdAt: "10:10", completedAt: null,    result: null, escalated: false },
-  { id: "rt8", title: "Research: top 10 Indian SaaS automation tools",        priority: "low",      status: "queued",     agentId: "ag_research",  category: "research",   createdAt: "10:22", completedAt: null,    result: null, escalated: false },
-  { id: "rt9", title: "Weekly analytics summary report",                      priority: "medium",   status: "completed",  agentId: "ag_analytics", category: "analytics",  createdAt: "09:00", completedAt: "09:05", result: "7-day summary: 142 leads, ₹34.2K revenue, 18% conv rate. Down 4% WoW.", escalated: false },
-  { id: "rt10",title: "Review PR #48: DevOps monitoring improvements",        priority: "medium",   status: "queued",     agentId: "ag_dev",       category: "engineering",createdAt: "10:25", completedAt: null,    result: null, escalated: false },
 ];
 
 const PRI_COLORS  = { critical: "var(--danger)", high: "var(--warning)", medium: "var(--accent2)", low: "var(--text-faint)" };
@@ -162,9 +148,10 @@ function TaskDetail({ task, agents, onReassign, onEscalate }) {
 }
 
 export default function TaskRouterCenter({ onNavigate }) {
-  const [tasks,        setTasks]       = useState(() => _load(TASKS_KEY, SEED_TASKS));
+  // Cached real tasks from a prior session, if any — never seed with fake data.
+  const [tasks,        setTasks]       = useState(() => _load(TASKS_KEY, []));
   const [section,      setSection]     = useState("queue");
-  const [selected,     setSelected]    = useState("rt3");
+  const [selected,     setSelected]    = useState(null);
   const [priFilter,    setPriFilter]   = useState("all");
   const [catFilter,    setCatFilter]   = useState("all");
   const [toast,        setToast]       = useState(null);
@@ -200,10 +187,9 @@ export default function TaskRouterCenter({ onNavigate }) {
           }));
         });
         if (liveTasks.length > 0) {
-          const merged = [...liveTasks, ...SEED_TASKS.slice(0, 3)];
-          setTasks(merged);
-          _save(TASKS_KEY, merged);
-          if (!selected || !merged.find(t => t.id === selected)) setSelected(merged[0]?.id || null);
+          setTasks(liveTasks);
+          _save(TASKS_KEY, liveTasks);
+          if (!selected || !liveTasks.find(t => t.id === selected)) setSelected(liveTasks[0]?.id || null);
         }
       })
       .catch(err => { if (!cancelled) setApiError(err.message); });
@@ -222,7 +208,7 @@ export default function TaskRouterCenter({ onNavigate }) {
     showToast("Task escalated");
   }, [tasks]);
 
-  const allCats = [...new Set(SEED_TASKS.map(t => t.category))];
+  const allCats = [...new Set(tasks.map(t => t.category))];
   const visibleTasks = (section === "history" ? tasks.filter(t => t.status === "completed") :
     section === "active" ? tasks.filter(t => t.status === "in_progress") :
     tasks.filter(t => t.status !== "completed"))

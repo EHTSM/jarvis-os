@@ -7,7 +7,10 @@ import {
   getOpportunities, createOpportunity, updateOpportunity, advanceOppStage, closeWon, closeLost,
   getCampaigns, createCampaign, updateCampaign, recordCampaignEvent, completeCampaign,
   getRevenue, recordRevenue, getRevenueStats,
+  getCustomers, createCustomer,
+  getBusinessRecommendations, acceptBusinessRecommendation, dismissBusinessRecommendation,
 } from "../businessApi";
+import { useConfirm } from "./ConfirmDialog";
 import "./BusinessOS.css";
 
 // ── Helpers ───────────────────────────────────────────────────────
@@ -39,13 +42,15 @@ const LEAD_STATUS_COLOR = { new: "var(--accent)", contacted: "var(--accent2)", q
 
 // ── Sub-nav ───────────────────────────────────────────────────────
 const VIEWS = [
-  { id: "dashboard",     label: "Overview"    },
-  { id: "leads",         label: "Leads"       },
-  { id: "contacts",      label: "Contacts"    },
-  { id: "opportunities", label: "Pipeline"    },
-  { id: "campaigns",     label: "Campaigns"   },
-  { id: "revenue",       label: "Revenue"     },
-  { id: "reasoning",     label: "Reasoning"   },
+  { id: "dashboard",     label: "Overview"      },
+  { id: "leads",         label: "Leads"         },
+  { id: "contacts",      label: "Contacts"      },
+  { id: "opportunities", label: "Pipeline"      },
+  { id: "customers",     label: "Customers"     },
+  { id: "campaigns",     label: "Campaigns"     },
+  { id: "revenue",       label: "Revenue"       },
+  { id: "suggestions",   label: "AI Suggestions"},
+  { id: "reasoning",     label: "Reasoning"     },
 ];
 
 // ── Shared UI atoms ───────────────────────────────────────────────
@@ -62,6 +67,18 @@ function Empty({ title, sub }) {
   return <div className="bos-empty"><p className="bos-empty-title">{title}</p><p className="bos-empty-sub">{sub}</p></div>;
 }
 
+// A real fetch failure is tracked as a distinct error state instead of
+// falling through to the "no records yet" empty state.
+function BosError({ error, onRetry }) {
+  return (
+    <div className="bos-error">
+      <p className="bos-error-title">Couldn't load this data</p>
+      <p className="bos-error-sub">{error}</p>
+      <button className="bos-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 // ═══════════════════════════════════════════════════════════════════
 // DASHBOARD VIEW
 // ═══════════════════════════════════════════════════════════════════
@@ -71,23 +88,30 @@ function DashboardView({ onToast }) {
   const [daily,   setDaily]   = useState(null);
   const [weekly,  setWeekly]  = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [d, s, w] = await Promise.all([
-      getBusinessDashboard(),
-      getBusinessDailySummary(),
-      getBusinessWeeklySummary(),
-    ]);
-    if (d.success !== false) setDash(d);
-    if (s.success !== false) setDaily(s);
-    if (w.success !== false) setWeekly(w);
+    try {
+      const [d, s, w] = await Promise.all([
+        getBusinessDashboard(),
+        getBusinessDailySummary(),
+        getBusinessWeeklySummary(),
+      ]);
+      if (d.success !== false) setDash(d);
+      if (s.success !== false) setDaily(s);
+      if (w.success !== false) setWeekly(w);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load business overview");
+    }
     setLoading(false);
   }, []);
 
   useEffect(() => { load(); }, [load]);
 
   if (loading) return <Skeleton />;
+  if (error) return <BosError error={error} onRetry={load} />;
 
   return (
     <div className="bos-section">
@@ -185,7 +209,7 @@ function DashboardView({ onToast }) {
         <div className="bos-dash-block">
           <h4 className="bos-block-title">High-Probability Deals</h4>
           {dash.urgentOpportunities.map(o => (
-            <div key={o.oppId} className="bos-opp-compact">
+            <div key={o.id} className="bos-opp-compact">
               <span className="bos-opp-title">{o.title}</span>
               <span className="bos-opp-val">{_fmtAmt(o.value, o.currency)}</span>
               <Badge label={o.stage} color={STAGE_COLOR[o.stage]} />
@@ -199,7 +223,7 @@ function DashboardView({ onToast }) {
         <div className="bos-dash-block">
           <h4 className="bos-block-title">Active Campaigns</h4>
           {dash.campaigns.list.map(c => (
-            <div key={c.campaignId} className="bos-camp-compact">
+            <div key={c.id} className="bos-camp-compact">
               <span className="bos-camp-name">{c.name}</span>
               <span className="bos-camp-channel">{c.channel}</span>
               <span className="bos-camp-budget">Budget: {_fmtAmt(c.budget)}</span>
@@ -217,20 +241,33 @@ function DashboardView({ onToast }) {
 
 const EMPTY_LEAD = { name: "", email: "", phone: "", company: "", source: "inbound", score: 50, notes: "" };
 
-function LeadsView({ onToast }) {
+export function LeadsView({ onToast }) {
   const [leads,    setLeads]   = useState(null);
   const [loading,  setLoading] = useState(true);
+  const [error,    setError]   = useState(null);
   const [filter,   setFilter]  = useState("new");
   const [form,     setForm]    = useState(EMPTY_LEAD);
   const [editing,  setEditing] = useState(null);
   const [saving,   setSaving]  = useState(false);
   const [showForm, setShowForm]= useState(false);
   const nameRef = useRef(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getLeadsV5({ status: filter === "all" ? undefined : filter, limit: 100 });
-    setLeads(r.leads ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getLeadsV5({ status: filter === "all" ? undefined : filter, limit: 100 });
+      // getLeadsV5 (businessApi.js) never throws — it catches internally and
+      // resolves {success:false, error, leads:[]} on any real backend failure
+      // (500, timeout, auth expiry). Reading only r.leads here always saw the
+      // empty-array fallback and reported "no leads" instead of a failure,
+      // so this catch block never actually ran for a real outage.
+      if (r?.success === false) throw new Error(r.error || "Failed to load leads");
+      setLeads(r.leads ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load leads");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -245,7 +282,7 @@ function LeadsView({ onToast }) {
 
   const openEdit = (lead) => {
     setForm({ name: lead.name, email: lead.email || "", phone: lead.phone || "", company: lead.company || "", source: lead.source, score: lead.score, notes: lead.notes || "" });
-    setEditing(lead.leadId); setShowForm(true);
+    setEditing(lead.id); setShowForm(true);
     setTimeout(() => nameRef.current?.focus(), 50);
   };
 
@@ -261,24 +298,32 @@ function LeadsView({ onToast }) {
 
   const handleQualify = async (leadId) => {
     const r = await qualifyBizLead(leadId);
-    if (r.ok) { onToast?.("success", "Lead qualified"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Lead qualified"); load(); }
+    else onToast?.("error", r.error || "Failed to qualify lead");
   };
 
   const handleDisqualify = async (leadId) => {
     const r = await disqualifyBizLead(leadId, "Not a fit");
-    if (r.ok) { onToast?.("success", "Lead disqualified"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Lead disqualified"); load(); }
+    else onToast?.("error", r.error || "Failed to disqualify lead");
+  };
+
+  const handleConvert = async (leadId) => {
+    const r = await updateBizLead(leadId, { status: "converted" });
+    if (r.success !== false) { onToast?.("success", "Lead converted to customer"); load(); }
+    else onToast?.("error", r.error || "Failed to convert lead");
   };
 
   const handleDelete = async (leadId) => {
+    if (!await confirm({ title: "Delete this lead?", message: "This cannot be undone.", danger: true, confirmLabel: "Delete" })) return;
     const r = await deleteBizLead(leadId);
-    if (r.ok) { onToast?.("success", "Lead deleted"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Lead deleted"); load(); }
+    else onToast?.("error", r.error || "Failed to delete lead");
   };
 
   return (
     <div className="bos-section">
+      {ConfirmUI}
       <div className="bos-section-header">
         <h3 className="bos-section-title">Leads</h3>
         <button className="bos-btn primary" onClick={openNew}>+ New Lead</button>
@@ -319,14 +364,16 @@ function LeadsView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !leads?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !leads?.length ? (
         <Empty title={`No ${filter === "all" ? "" : filter} leads`} sub="Create your first lead above." />
       ) : (
         <table className="bos-table">
           <thead><tr><th>Name</th><th>Company</th><th>Source</th><th>Score</th><th>Status</th><th>Created</th><th></th></tr></thead>
           <tbody>
             {leads.map(l => (
-              <tr key={l.leadId}>
+              <tr key={l.id}>
                 <td className="bos-td-name">{l.name}</td>
                 <td className="bos-td-dim">{l.company || "—"}</td>
                 <td className="bos-td-dim">{l.source}</td>
@@ -335,12 +382,14 @@ function LeadsView({ onToast }) {
                 <td className="bos-td-dim">{_fmtDate(l.createdAt)}</td>
                 <td className="bos-td-actions">
                   {l.status === "new" || l.status === "contacted"
-                    ? <button className="bos-icon-btn" title="Qualify" onClick={() => handleQualify(l.leadId)}>✓</button>
+                    ? <button className="bos-icon-btn" title="Qualify" onClick={() => handleQualify(l.id)}>✓</button>
                     : l.status === "qualified"
-                    ? <button className="bos-icon-btn warn" title="Disqualify" onClick={() => handleDisqualify(l.leadId)}>✗</button>
+                    ? <button className="bos-icon-btn warn" title="Disqualify" onClick={() => handleDisqualify(l.id)}>✗</button>
                     : null}
+                  {l.status === "qualified" &&
+                    <button className="bos-icon-btn" title="Convert to Customer" onClick={() => handleConvert(l.id)}>⇒</button>}
                   <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(l)}>✎</button>
-                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(l.leadId)}>🗑</button>
+                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(l.id)}>🗑</button>
                 </td>
               </tr>
             ))}
@@ -357,20 +406,31 @@ function LeadsView({ onToast }) {
 
 const EMPTY_CONTACT = { name: "", email: "", phone: "", company: "", title: "", notes: "" };
 
-function ContactsView({ onToast }) {
+export function ContactsView({ onToast }) {
   const [contacts, setContacts] = useState(null);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [search,   setSearch]   = useState("");
   const [form,     setForm]     = useState(EMPTY_CONTACT);
   const [editing,  setEditing]  = useState(null);
   const [saving,   setSaving]   = useState(false);
   const [showForm, setShowForm] = useState(false);
   const nameRef = useRef(null);
+  const [confirm, ConfirmUI] = useConfirm();
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getContacts({ search: search || undefined, limit: 100 });
-    setContacts(r.contacts ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getContacts({ search: search || undefined, limit: 100 });
+      // See the matching comment in LeadsView.load() above — this view
+      // previously had no error branch at all, so a real backend failure
+      // rendered "No contacts yet" identically to a genuinely empty account.
+      if (r?.success === false) throw new Error(r.error || "Failed to load contacts");
+      setContacts(r.contacts ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load contacts");
+    }
     setLoading(false);
   }, [search]);
 
@@ -388,7 +448,7 @@ function ContactsView({ onToast }) {
 
   const openEdit = (c) => {
     setForm({ name: c.name, email: c.email || "", phone: c.phone || "", company: c.company || "", title: c.title || "", notes: c.notes || "" });
-    setEditing(c.contactId); setShowForm(true);
+    setEditing(c.id); setShowForm(true);
     setTimeout(() => nameRef.current?.focus(), 50);
   };
 
@@ -402,13 +462,15 @@ function ContactsView({ onToast }) {
   };
 
   const handleDelete = async (contactId) => {
+    if (!await confirm({ title: "Delete this contact?", message: "This cannot be undone.", danger: true, confirmLabel: "Delete" })) return;
     const r = await deleteContact(contactId);
-    if (r.ok) { onToast?.("success", "Contact deleted"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Contact deleted"); load(); }
+    else onToast?.("error", r.error || "Failed to delete contact");
   };
 
   return (
     <div className="bos-section">
+      {ConfirmUI}
       <div className="bos-section-header">
         <h3 className="bos-section-title">Contacts</h3>
         <button className="bos-btn primary" onClick={openNew}>+ New Contact</button>
@@ -435,14 +497,16 @@ function ContactsView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !contacts?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !contacts?.length ? (
         <Empty title={search ? "No contacts found" : "No contacts yet"} sub={search ? "Try a different search." : "Add your first contact above."} />
       ) : (
         <table className="bos-table">
           <thead><tr><th>Name</th><th>Title</th><th>Company</th><th>Email</th><th>Opportunities</th><th></th></tr></thead>
           <tbody>
             {contacts.map(c => (
-              <tr key={c.contactId}>
+              <tr key={c.id}>
                 <td className="bos-td-name">{c.name}</td>
                 <td className="bos-td-dim">{c.title || "—"}</td>
                 <td className="bos-td-dim">{c.company || "—"}</td>
@@ -450,7 +514,7 @@ function ContactsView({ onToast }) {
                 <td className="bos-td-dim">{c.opportunityIds?.length ?? 0}</td>
                 <td className="bos-td-actions">
                   <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(c)}>✎</button>
-                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(c.contactId)}>🗑</button>
+                  <button className="bos-icon-btn danger" title="Delete" onClick={() => handleDelete(c.id)}>🗑</button>
                 </td>
               </tr>
             ))}
@@ -467,9 +531,10 @@ function ContactsView({ onToast }) {
 
 const EMPTY_OPP = { title: "", value: "", currency: "USD", stage: "prospect", company: "", assignee: "", notes: "" };
 
-function OpportunitiesView({ onToast }) {
+export function OpportunitiesView({ onToast }) {
   const [opps,    setOpps]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [filter,  setFilter]  = useState("all");
   const [form,    setForm]    = useState(EMPTY_OPP);
   const [editing, setEditing] = useState(null);
@@ -479,8 +544,17 @@ function OpportunitiesView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getOpportunities({ stage: filter === "all" ? undefined : filter, limit: 100 });
-    setOpps(r.opportunities ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getOpportunities({ stage: filter === "all" ? undefined : filter, limit: 100 });
+      // See the matching comment in LeadsView.load() above — the domain API
+      // functions never throw, so a real failure must be detected via
+      // r.success rather than relying on an unreachable catch block.
+      if (r?.success === false) throw new Error(r.error || "Failed to load pipeline");
+      setOpps(r.opportunities ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load pipeline");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -495,7 +569,7 @@ function OpportunitiesView({ onToast }) {
 
   const openEdit = (o) => {
     setForm({ title: o.title, value: String(o.value), currency: o.currency, stage: o.stage, company: o.company || "", assignee: o.assignee || "", notes: o.notes || "" });
-    setEditing(o.oppId); setShowForm(true);
+    setEditing(o.id); setShowForm(true);
     setTimeout(() => titleRef.current?.focus(), 50);
   };
 
@@ -513,20 +587,20 @@ function OpportunitiesView({ onToast }) {
     const idx  = STAGE_ORDER.indexOf(currentStage);
     const next = STAGE_ORDER[Math.min(idx + 1, 3)];   // max advance to negotiation
     const r = await advanceOppStage(oppId, next);
-    if (r.ok) { onToast?.("success", `Advanced to ${next}`); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", `Advanced to ${next}`); load(); }
+    else onToast?.("error", r.error || "Failed to advance deal");
   };
 
   const handleCloseWon = async (oppId) => {
     const r = await closeWon(oppId, { notes: "Closed from UI" });
-    if (r.ok) { onToast?.("success", "Deal closed — won! 🎉"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Deal closed — won! 🎉"); load(); }
+    else onToast?.("error", r.error || "Failed to close deal");
   };
 
   const handleCloseLost = async (oppId) => {
     const r = await closeLost(oppId, "Closed from UI");
-    if (r.ok) { onToast?.("success", "Deal marked closed-lost"); load(); }
-    else onToast?.("error", r.error);
+    if (r.success !== false) { onToast?.("success", "Deal marked closed-lost"); load(); }
+    else onToast?.("error", r.error || "Failed to close deal");
   };
 
   const openDeals = opps?.filter(o => !["closed-won","closed-lost"].includes(o.stage));
@@ -572,14 +646,16 @@ function OpportunitiesView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !opps?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !opps?.length ? (
         <Empty title="No deals" sub="Create your first opportunity above." />
       ) : (
         <div className="bos-opp-list">
           {opps.map(o => {
             const isOpen = !["closed-won","closed-lost"].includes(o.stage);
             return (
-              <div key={o.oppId} className={`bos-opp-card ${o.stage}`}>
+              <div key={o.id} className={`bos-opp-card ${o.stage}`}>
                 <div className="bos-opp-card-top">
                   <div className="bos-opp-card-left">
                     <span className="bos-opp-card-title">{o.title}</span>
@@ -591,17 +667,160 @@ function OpportunitiesView({ onToast }) {
                   </div>
                 </div>
                 <div className="bos-opp-card-meta">
-                  <span className="bos-opp-prob">Probability: {o.probability}%</span>
+                  {/* MASTER GAP CLOSURE (2026-08-15, C10-026 pass): the backend
+                      opportunity record (businessDataService.cjs) has no
+                      `probability` field — this line previously rendered
+                      "Probability: undefined%" on every card, a fabricated-
+                      looking number with no real measurement behind it.
+                      Removed rather than invented; if a real probability
+                      model is added to the backend later, render it here
+                      from that real field. */}
                   {o.assignee && <span className="bos-opp-assign">{o.assignee}</span>}
                   <span className="bos-opp-age">{_timeAgo(o.createdAt)}</span>
                 </div>
                 {isOpen && (
                   <div className="bos-opp-card-actions">
                     {STAGE_ORDER.indexOf(o.stage) < 3 &&
-                      <button className="bos-btn outline bos-btn--xs" onClick={() => handleAdvance(o.oppId, o.stage)}>Advance →</button>}
-                    <button className="bos-btn success bos-btn--xs" onClick={() => handleCloseWon(o.oppId)}>Won ✓</button>
-                    <button className="bos-btn danger  bos-btn--xs" onClick={() => handleCloseLost(o.oppId)}>Lost ✗</button>
+                      <button className="bos-btn outline bos-btn--xs" onClick={() => handleAdvance(o.id, o.stage)}>Advance →</button>}
+                    <button className="bos-btn success bos-btn--xs" onClick={() => handleCloseWon(o.id)}>Won ✓</button>
+                    <button className="bos-btn danger  bos-btn--xs" onClick={() => handleCloseLost(o.id)}>Lost ✗</button>
                     <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(o)}>✎</button>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// CUSTOMERS VIEW — mission-layer entities (customer success plays),
+// distinct from CRM Contacts. Each "customer" is a tracked Mission
+// Runtime record, not a bds row — no PATCH/DELETE, only create + list.
+// ═══════════════════════════════════════════════════════════════════
+
+const EMPTY_CUSTOMER = { name: "", phone: "", email: "", plan: "", status: "active", action: "" };
+const CUSTOMER_STATUS_COLOR = { active: "var(--success)", at_risk: "var(--danger)", churned: "var(--text-dim)" };
+
+function CustomersView({ onToast, onNavigate }) {
+  const [missions, setMissions] = useState(null);
+  const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
+  const [filter,   setFilter]   = useState("all");
+  const [form,     setForm]     = useState(EMPTY_CUSTOMER);
+  const [saving,   setSaving]   = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const nameRef = useRef(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await getCustomers({ status: filter === "all" ? undefined : filter });
+      // See the matching comment in LeadsView.load() above.
+      if (r?.success === false) throw new Error(r.error || "Failed to load customers");
+      setMissions(r.missions ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load customers");
+    }
+    setLoading(false);
+  }, [filter]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const setF = (k, v) => setForm(f => ({ ...f, [k]: v }));
+
+  const openNew = () => {
+    setForm(EMPTY_CUSTOMER); setShowForm(true);
+    setTimeout(() => nameRef.current?.focus(), 50);
+  };
+
+  const handleSave = async () => {
+    if (!form.name.trim() && !form.phone.trim() && !form.email.trim()) { onToast?.("error", "Name, phone, or email is required"); return; }
+    setSaving(true);
+    const r = await createCustomer(form);
+    if (r.success === false) onToast?.("error", r.error || "Save failed");
+    else { onToast?.("success", "Customer success mission created"); setShowForm(false); load(); }
+    setSaving(false);
+  };
+
+  return (
+    <div className="bos-section">
+      <div className="bos-section-header">
+        <h3 className="bos-section-title">Customers</h3>
+        <button className="bos-btn primary" onClick={openNew}>+ New Customer Play</button>
+      </div>
+      <p className="bos-text-dim" style={{ marginBottom: 12 }}>
+        Customer success plays run as tracked missions — health checks, retention actions, and at-risk escalation, separate from the Contacts directory.
+      </p>
+
+      <div className="bos-filter-row">
+        {["all","active","at_risk","churned"].map(f => (
+          <button key={f} className={`bos-filter-btn ${filter === f ? "active" : ""}`} onClick={() => setFilter(f)}>
+            {f === "at_risk" ? "At Risk" : f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {showForm && (
+        <div className="bos-form-card">
+          <div className="bos-form-row">
+            <input ref={nameRef} className="bos-input" placeholder="Customer name" value={form.name} onChange={e => setF("name", e.target.value)} />
+            <input className="bos-input" placeholder="Plan" value={form.plan} onChange={e => setF("plan", e.target.value)} />
+          </div>
+          <div className="bos-form-row">
+            <input className="bos-input" placeholder="Phone" value={form.phone} onChange={e => setF("phone", e.target.value)} />
+            <input className="bos-input" placeholder="Email" value={form.email} onChange={e => setF("email", e.target.value)} />
+          </div>
+          <div className="bos-form-row">
+            <select className="bos-select" value={form.status} onChange={e => setF("status", e.target.value)}>
+              {["active","at_risk","churned"].map(s => <option key={s} value={s}>{s}</option>)}
+            </select>
+            <input className="bos-input" placeholder="Action (e.g. Retain, Onboard, Renew)" value={form.action} onChange={e => setF("action", e.target.value)} />
+          </div>
+          <div className="bos-form-actions">
+            <button className="bos-btn primary" onClick={handleSave} disabled={saving}>{saving ? "Creating…" : "Create Play"}</button>
+            <button className="bos-btn outline" onClick={() => setShowForm(false)}>Cancel</button>
+          </div>
+        </div>
+      )}
+
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !missions?.length ? (
+        <Empty title={`No ${filter === "all" ? "" : filter.replace("_"," ")} customer plays`} sub="Create a customer success play above." />
+      ) : (
+        <div className="bos-opp-list">
+          {missions.map(m => {
+            const meta = m.metadata || {};
+            return (
+              <div key={m.id || m.missionId} className="bos-opp-card">
+                <div className="bos-opp-card-top">
+                  <div className="bos-opp-card-left">
+                    <span className="bos-opp-card-title">{m.objective}</span>
+                    {meta.plan && <span className="bos-opp-card-company">{meta.plan}</span>}
+                  </div>
+                  <div className="bos-opp-card-right">
+                    <Badge label={meta.status || "active"} color={CUSTOMER_STATUS_COLOR[meta.status] || "var(--text-dim)"} />
+                  </div>
+                </div>
+                <div className="bos-opp-card-meta">
+                  <span className="bos-opp-prob">Priority: {m.priority}</span>
+                  <span className="bos-opp-age">{_timeAgo(m.createdAt)}</span>
+                </div>
+                {m.subtasks?.length > 0 && (
+                  <div className="bos-camp-metrics" style={{ marginTop: 8 }}>
+                    {m.subtasks.map((s, i) => (
+                      <div key={i} className="bos-highlight-row"><span className="bos-highlight-dot" /><span>{s.description}</span></div>
+                    ))}
+                  </div>
+                )}
+                {onNavigate && (
+                  <div className="bos-opp-card-actions">
+                    <button className="bos-btn outline bos-btn--xs" onClick={() => onNavigate('mission')}>Open in Mission Control →</button>
                   </div>
                 )}
               </div>
@@ -624,6 +843,7 @@ const STATUS_COLOR = { draft: "var(--text-dim)", active: "var(--success)", pause
 function CampaignsView({ onToast }) {
   const [camps,   setCamps]   = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [filter,  setFilter]  = useState("all");
   const [form,    setForm]    = useState(EMPTY_CAMP);
   const [editing, setEditing] = useState(null);
@@ -633,8 +853,15 @@ function CampaignsView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const r = await getCampaigns({ status: filter === "all" ? undefined : filter, limit: 50 });
-    setCamps(r.campaigns ?? (Array.isArray(r) ? r : []));
+    try {
+      const r = await getCampaigns({ status: filter === "all" ? undefined : filter, limit: 50 });
+      // See the matching comment in LeadsView.load() above.
+      if (r?.success === false) throw new Error(r.error || "Failed to load campaigns");
+      setCamps(r.campaigns ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load campaigns");
+    }
     setLoading(false);
   }, [filter]);
 
@@ -649,7 +876,7 @@ function CampaignsView({ onToast }) {
 
   const openEdit = (c) => {
     setForm({ name: c.name, channel: c.channel, budget: String(c.budget || ""), startDate: c.startDate?.slice(0,10) || "", endDate: c.endDate?.slice(0,10) || "", notes: c.notes || "" });
-    setEditing(c.campaignId); setShowForm(true);
+    setEditing(c.id); setShowForm(true);
     setTimeout(() => nameRef.current?.focus(), 50);
   };
 
@@ -658,24 +885,27 @@ function CampaignsView({ onToast }) {
     setSaving(true);
     const payload = { ...form, budget: Number(form.budget) || 0 };
     const r = editing ? await updateCampaign(editing, payload) : await createCampaign(payload);
-    if (r.ok === false || r.success === false) onToast?.("error", r.error || "Save failed");
+    if (r.success === false) onToast?.("error", r.error || "Save failed");
     else { onToast?.("success", editing ? "Campaign updated" : "Campaign created"); setShowForm(false); load(); }
     setSaving(false);
   };
 
   const handleActivate = async (c) => {
-    const r = await updateCampaign(c.campaignId, { status: "active" });
-    if (r.ok) { onToast?.("success", "Campaign activated"); load(); }
+    const r = await updateCampaign(c.id, { status: "active" });
+    if (r.success !== false) { onToast?.("success", "Campaign activated"); load(); }
+    else onToast?.("error", r.error || "Activate failed");
   };
 
   const handleComplete = async (campaignId) => {
     const r = await completeCampaign(campaignId);
-    if (r.ok) { onToast?.("success", "Campaign completed"); load(); }
+    if (r.success !== false) { onToast?.("success", "Campaign completed"); load(); }
+    else onToast?.("error", r.error || "Complete failed");
   };
 
   const handleEvent = async (campaignId, type) => {
     const r = await recordCampaignEvent(campaignId, { type, value: 1 });
-    if (r.ok) { onToast?.("success", `${type} recorded`); load(); }
+    if (r.success !== false) { onToast?.("success", `${type} recorded`); load(); }
+    else onToast?.("error", r.error || "Failed to record event");
   };
 
   return (
@@ -714,12 +944,14 @@ function CampaignsView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !camps?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !camps?.length ? (
         <Empty title={`No ${filter === "all" ? "" : filter} campaigns`} sub="Create your first campaign above." />
       ) : (
         <div className="bos-camp-list">
           {camps.map(c => (
-            <div key={c.campaignId} className="bos-camp-card">
+            <div key={c.id} className="bos-camp-card">
               <div className="bos-camp-card-top">
                 <div>
                   <span className="bos-camp-card-name">{c.name}</span>
@@ -741,10 +973,10 @@ function CampaignsView({ onToast }) {
               <div className="bos-camp-card-actions">
                 {c.status === "draft"  && <button className="bos-btn success bos-btn--xs" onClick={() => handleActivate(c)}>Activate</button>}
                 {c.status === "active" && <>
-                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.campaignId, "click")}>+Click</button>
-                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.campaignId, "lead")}>+Lead</button>
-                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.campaignId, "conversion")}>+Conv</button>
-                  <button className="bos-btn danger  bos-btn--xs" onClick={() => handleComplete(c.campaignId)}>Complete</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.id, "click")}>+Click</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.id, "lead")}>+Lead</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleEvent(c.id, "conversion")}>+Conv</button>
+                  <button className="bos-btn danger  bos-btn--xs" onClick={() => handleComplete(c.id)}>Complete</button>
                 </>}
                 <button className="bos-icon-btn" title="Edit" onClick={() => openEdit(c)}>✎</button>
               </div>
@@ -767,6 +999,7 @@ function RevenueView({ onToast }) {
   const [records,  setRecords]  = useState(null);
   const [stats,    setStats]    = useState(null);
   const [loading,  setLoading]  = useState(true);
+  const [error,    setError]    = useState(null);
   const [typeFilter,setType]    = useState("all");
   const [form,     setForm]     = useState(EMPTY_REV);
   const [saving,   setSaving]   = useState(false);
@@ -774,12 +1007,17 @@ function RevenueView({ onToast }) {
 
   const load = useCallback(async () => {
     setLoading(true);
-    const [r, s] = await Promise.all([
-      getRevenue({ type: typeFilter === "all" ? undefined : typeFilter, limit: 50 }),
-      getRevenueStats({}),
-    ]);
-    setRecords(r.revenue ?? (Array.isArray(r) ? r : []));
-    if (s.success !== false) setStats(s);
+    try {
+      const [r, s] = await Promise.all([
+        getRevenue({ type: typeFilter === "all" ? undefined : typeFilter, limit: 50 }),
+        getRevenueStats({}),
+      ]);
+      setRecords(r.revenue ?? (Array.isArray(r) ? r : []));
+      if (s.success !== false) setStats(s);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load revenue");
+    }
     setLoading(false);
   }, [typeFilter]);
 
@@ -791,7 +1029,7 @@ function RevenueView({ onToast }) {
     if (!form.amount || isNaN(Number(form.amount))) { onToast?.("error", "Valid amount is required"); return; }
     setSaving(true);
     const r = await recordRevenue({ ...form, amount: Number(form.amount) });
-    if (!r.ok) onToast?.("error", r.error || "Could not record revenue");
+    if (r.success === false) onToast?.("error", r.error || "Could not record revenue");
     else { onToast?.("success", "Revenue recorded"); setForm(EMPTY_REV); setShowForm(false); load(); }
     setSaving(false);
   };
@@ -868,7 +1106,9 @@ function RevenueView({ onToast }) {
         </div>
       )}
 
-      {loading ? <Skeleton /> : !records?.length ? (
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !records?.length ? (
         <Empty title={`No ${typeFilter === "all" ? "" : typeFilter} revenue`} sub="Record your first transaction above." />
       ) : (
         <table className="bos-table">
@@ -891,10 +1131,111 @@ function RevenueView({ onToast }) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// AI SUGGESTIONS VIEW — business.js /intelligence/recommendations,
+// generated by the continuous learning engine from lead/deal/customer/
+// campaign signals (Phase B3). Distinct from the graph Reasoning view
+// below, which reasons over the engineering knowledge graph, not CRM data.
+// ═══════════════════════════════════════════════════════════════════
+
+const REC_PRIORITY_LABEL = { 1: "Critical", 2: "High", 3: "Medium", 4: "Low" };
+const REC_PRIORITY_COLOR = { 1: "var(--danger)", 2: "var(--warning)", 3: "var(--accent2)", 4: "var(--text-dim)" };
+
+function SuggestionsView({ onToast }) {
+  const [recs,    setRecs]    = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [filter,  setFilter]  = useState("open");
+  const [busyId,  setBusyId]  = useState(null);
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await getBusinessRecommendations({ status: filter === "all" ? undefined : filter, limit: 50 });
+      setRecs(r.recommendations ?? (Array.isArray(r) ? r : []));
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load suggestions");
+    }
+    setLoading(false);
+  }, [filter]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const handleAccept = async (recId) => {
+    setBusyId(recId);
+    const r = await acceptBusinessRecommendation(recId, { createMission: true });
+    setBusyId(null);
+    if (r.success === false) onToast?.("error", r.error || "Could not accept");
+    else { onToast?.("success", "Accepted — mission created"); load(); }
+  };
+
+  const handleDismiss = async (recId) => {
+    setBusyId(recId);
+    const r = await dismissBusinessRecommendation(recId);
+    setBusyId(null);
+    if (r.success === false) onToast?.("error", r.error || "Could not dismiss");
+    else { onToast?.("success", "Dismissed"); load(); }
+  };
+
+  return (
+    <div className="bos-section">
+      <div className="bos-section-header">
+        <h3 className="bos-section-title">AI Suggestions</h3>
+        <button className="bos-btn outline" onClick={load}>Refresh</button>
+      </div>
+      <p className="bos-text-dim" style={{ marginBottom: 12 }}>
+        Recommendations from the shared continuous learning engine — currently system-wide (engineering, ops, and business
+        signals together), not yet filtered to CRM-only activity.
+      </p>
+
+      <div className="bos-filter-row">
+        {["open","accepted","dismissed","all"].map(f => (
+          <button key={f} className={`bos-filter-btn ${filter === f ? "active" : ""}`} onClick={() => setFilter(f)}>
+            {f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {loading ? <Skeleton /> : error ? (
+        <BosError error={error} onRetry={load} />
+      ) : !recs?.length ? (
+        <Empty title={`No ${filter === "all" ? "" : filter} suggestions`} sub="Suggestions appear here as the learning engine analyzes CRM activity." />
+      ) : (
+        <div className="bos-opp-list">
+          {recs.map(r => (
+            <div key={r.recId} className="bos-opp-card">
+              <div className="bos-opp-card-top">
+                <div className="bos-opp-card-left">
+                  <span className="bos-opp-card-title">{r.title}</span>
+                </div>
+                <div className="bos-opp-card-right">
+                  <Badge label={REC_PRIORITY_LABEL[r.priority] || `P${r.priority}`} color={REC_PRIORITY_COLOR[r.priority] || "var(--text-dim)"} />
+                </div>
+              </div>
+              {r.detail && <p className="bos-text-dim" style={{ margin: "6px 0" }}>{r.detail}</p>}
+              <div className="bos-opp-card-meta">
+                <span className="bos-opp-age">{_timeAgo(r.createdAt)}</span>
+              </div>
+              {r.status === "open" && (
+                <div className="bos-opp-card-actions">
+                  <button className="bos-btn success bos-btn--xs" onClick={() => handleAccept(r.recId)} disabled={busyId === r.recId}>Accept → Mission</button>
+                  <button className="bos-btn outline bos-btn--xs" onClick={() => handleDismiss(r.recId)} disabled={busyId === r.recId}>Dismiss</button>
+                </div>
+              )}
+              {r.status !== "open" && <Badge label={r.status} color={r.status === "accepted" ? "var(--success)" : "var(--text-dim)"} />}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // REASONING VIEW (Q2)
 // ═══════════════════════════════════════════════════════════════════
 
-function ReasoningView() {
+function ReasoningView({ onNavigate }) {
   const [data, setData]       = useState(null);
   const [recs, setRecs]       = useState(null);
   const [loading, setLoading] = useState(true);
@@ -919,14 +1260,14 @@ function ReasoningView() {
   const gaps    = data.topKnowledgeGaps || [];
   const rList   = recs?.recommendations || [];
 
-  const riskColor = r => r.risk === 'critical' || r.severity === 'critical' ? '#ef4444' : r.risk === 'high' || r.severity === 'warning' ? '#f59e0b' : '#3b82f6';
+  const riskColor = r => r.risk === 'critical' || r.severity === 'critical' ? 'var(--danger)' : r.risk === 'high' || r.severity === 'warning' ? 'var(--warning)' : '#3b82f6';
 
   return (
     <div className="bos-section">
       <div className="bos-section-header">
         <h3 className="bos-section-title">Graph Reasoning Engine</h3>
         {health != null && (
-          <span style={{ fontSize: 12, fontWeight: 600, color: health >= 70 ? '#22c55e' : health >= 40 ? '#f59e0b' : '#ef4444' }}>
+          <span style={{ fontSize: 12, fontWeight: 600, color: health >= 70 ? 'var(--success)' : health >= 40 ? 'var(--warning)' : 'var(--danger)' }}>
             System Health: {health}/100
           </span>
         )}
@@ -951,9 +1292,14 @@ function ReasoningView() {
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Blocked Missions</div>
           {blocked.map((b, i) => (
-            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid #f59e0b' }}>
-              <strong>{b.objective || b.missionId}</strong>
-              {b.blockers && <span style={{ color: 'var(--text-dim,#888)', marginLeft: 8 }}>{b.blockers.join(' · ')}</span>}
+            <div key={i} style={{ fontSize: 12, padding: '6px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, borderLeft: '3px solid var(--warning)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
+              <span>
+                <strong>{b.objective || b.missionId}</strong>
+                {b.blockers && <span style={{ color: 'var(--text-dim,#888)', marginLeft: 8 }}>{b.blockers.join(' · ')}</span>}
+              </span>
+              {onNavigate && (
+                <button className="bos-icon-btn" style={{ flexShrink: 0 }} onClick={() => onNavigate('mission')} title="Open in Mission Control">→</button>
+              )}
             </div>
           ))}
         </div>
@@ -964,7 +1310,7 @@ function ReasoningView() {
           <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: 8, color: 'var(--text-dim,#888)' }}>Recommended Actions</div>
           {rList.slice(0, 6).map((r, i) => (
             <div key={i} style={{ fontSize: 12, padding: '8px 10px', background: 'var(--bg2,#18181b)', borderRadius: 6, marginBottom: 6, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-              <span style={{ background: r.priority === 'critical' ? '#ef4444' : r.priority === 'high' ? '#f59e0b' : '#3b82f6', borderRadius: 3, padding: '1px 6px', fontSize: 10, color: '#fff', flexShrink: 0, marginTop: 1 }}>
+              <span style={{ background: r.priority === 'critical' ? 'var(--danger)' : r.priority === 'high' ? 'var(--warning)' : '#3b82f6', borderRadius: 3, padding: '1px 6px', fontSize: 10, color: '#fff', flexShrink: 0, marginTop: 1 }}>
                 {r.priority}
               </span>
               <div>
@@ -996,7 +1342,7 @@ function ReasoningView() {
 // ROOT COMPONENT
 // ═══════════════════════════════════════════════════════════════════
 
-export default function BusinessOS({ onToast }) {
+export default function BusinessOS({ onToast, onNavigate }) {
   const [view, setView] = useState("dashboard");
 
   return (
@@ -1014,9 +1360,11 @@ export default function BusinessOS({ onToast }) {
         {view === "leads"         && <LeadsView         onToast={onToast} />}
         {view === "contacts"      && <ContactsView      onToast={onToast} />}
         {view === "opportunities" && <OpportunitiesView onToast={onToast} />}
+        {view === "customers"     && <CustomersView     onToast={onToast} onNavigate={onNavigate} />}
         {view === "campaigns"     && <CampaignsView     onToast={onToast} />}
         {view === "revenue"       && <RevenueView       onToast={onToast} />}
-        {view === "reasoning"     && <ReasoningView     />}
+        {view === "suggestions"   && <SuggestionsView   onToast={onToast} />}
+        {view === "reasoning"     && <ReasoningView     onNavigate={onNavigate} />}
       </div>
     </div>
   );

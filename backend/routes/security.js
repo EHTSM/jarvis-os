@@ -16,16 +16,21 @@
  */
 const router = require("express").Router();
 const { requireAuth }      = require("../middleware/authMiddleware");
-const { attachWorkspace, requireRole } = require("../middleware/workspaceMiddleware.cjs");
+const { attachWorkspace, requireWorkspaceMember, requireRole } = require("../middleware/workspaceMiddleware.cjs");
 const svc = require("../services/securityLayer.cjs");
 const wsSvc = require("../services/workspaceService.cjs");
 
 router.use("/security", requireAuth);
-router.use(attachWorkspace);
+router.use("/security", attachWorkspace);
+router.use("/security", requireWorkspaceMember);
 
-// Helper: resolve workspaceId from req (active or query param)
+// Workspace is always the authenticated requester's validated membership —
+// never a raw client-supplied id. attachWorkspace already resolves
+// req.workspace from query/body/header, but requireWorkspaceMember (above)
+// confirms req.user.sub is actually a member of that workspace before any
+// handler below runs, so req.workspace.id is safe to trust here.
 function _wsId(req) {
-  return req.query.workspaceId || req.body?.workspaceId || req.workspace?.id || "default";
+  return req.workspace.id;
 }
 
 // ── Sessions ──────────────────────────────────────────────────────

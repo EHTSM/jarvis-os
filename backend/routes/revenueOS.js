@@ -10,10 +10,17 @@
  */
 
 const router          = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const g               = require("../services/revenueOS.cjs");
+const approvalQueue    = require("../services/approvalQueue.cjs");
 
-router.use("/revenue", requireAuth);
+// Platform-wide founder financial data (aggregate MRR/ARR/churn across every
+// customer) — operator-only. Previously gated by requireAuth alone, so any
+// signed-up customer could read the whole platform's revenue numbers; the
+// CommandCenter.jsx comment claiming this was already 403'd for non-operators
+// was aspirational, not enforced. Regular customers get their OWN billing via
+// GET /billing/status (backend/routes/billing.js), which is correctly account-scoped.
+router.use("/revenue", requireAuth, operatorOnly);
 
 function _ok(res, data)           { res.json({ ok: true, ...data }); }
 function _err(res, e, code = 500) { res.status(code).json({ error: e.message || e }); }
@@ -38,10 +45,10 @@ router.get("/revenue/subscriptions/:accountId", (req, res) => {
 
 router.post("/revenue/subscriptions/:accountId/upgrade", (req, res) => {
   try {
-    const { plan } = req.body || {};
+    const { plan, razorpaySubId } = req.body || {};
     if (!plan) return res.status(400).json({ error: "plan required" });
-    _ok(res, g.upgradeSubscription(req.params.accountId, plan));
-  } catch (e) { _err(res, e); }
+    _ok(res, g.upgradeSubscription(req.params.accountId, plan, razorpaySubId));
+  } catch (e) { _err(res, e, e.message?.includes("razorpaySubId required") ? 402 : 500); }
 });
 
 router.post("/revenue/subscriptions/:accountId/pause",   (req, res) => {
@@ -60,9 +67,9 @@ router.post("/revenue/subscriptions/:accountId/cancel",  (req, res) => {
 
 router.post("/revenue/subscriptions/:accountId/reactivate", (req, res) => {
   try {
-    const { plan } = req.body || {};
-    _ok(res, g.reactivateSubscription(req.params.accountId, plan));
-  } catch (e) { _err(res, e); }
+    const { plan, razorpaySubId } = req.body || {};
+    _ok(res, g.reactivateSubscription(req.params.accountId, plan, razorpaySubId));
+  } catch (e) { _err(res, e, e.message?.includes("razorpaySubId required") ? 402 : 500); }
 });
 
 router.get("/revenue/lifecycle/events",      (req, res) => {
@@ -236,9 +243,65 @@ router.get("/revenue/finance/credit-notes",  (req, res) => {
   catch (e) { _err(res, e); }
 });
 
+// Refunds issue a real credit note against real revenue and are irreversible
+// once issued, so this route no longer executes immediately — it enqueues
+// an approval request via the existing approvalQueue (reused as-is; see
+// approvalPolicy.cjs wf_refund_finance) and returns the pending request.
+// The refund only actually runs from the /execute route below, and only
+// once that request's status is "approved" or "auto_approved".
+// See 100-COMPANY-GAP-LIST.md P0 #2 / 100-COMPANY-REALITY-AUDIT.md Part 8.
 router.post("/revenue/finance/refund",       (req, res) => {
-  try { _ok(res, { creditNote: g.issueRefund(req.body || {}) }); }
-  catch (e) { _err(res, e); }
+  try {
+    const { accountId, invoiceId, reason, amount, creditTopup } = req.body || {};
+    if (!accountId) return res.status(400).json({ error: "accountId required" });
+
+    const result = approvalQueue.enqueue({
+      workflowId:  "wf_refund_finance",
+      action:      `Issue finance refund of ${amount || 0} for account ${accountId}${invoiceId ? ` (invoice ${invoiceId})` : ""}`,
+      reason:      reason || "customer_request",
+      approvalType: "PAYMENT_CONFIRM",
+      expectedOutcome: `Credit note issued for ${amount || 0} against account ${accountId}`,
+      rollbackPlan: "No rollback needed if rejected — no credit note is issued until approved.",
+      confidence:  0,
+      context:     { accountId, invoiceId: invoiceId || null, reason: reason || "customer_request", amount: amount || 0, creditTopup: creditTopup || null },
+      triggeredBy: `operator:${req.user?.sub || "unknown"}`,
+    });
+
+    res.status(202).json({
+      ok: true,
+      status: result.autoApproved ? "auto_approved" : "pending_approval",
+      reqId: result.reqId,
+      request: result.request,
+      message: result.autoApproved
+        ? "Refund approved automatically by policy — call /revenue/finance/refund/:reqId/execute to complete it."
+        : "Refund requires approval before it will execute. Approve via POST /approval/approve/:reqId, then call /revenue/finance/refund/:reqId/execute.",
+    });
+  } catch (e) { _err(res, e); }
+});
+
+router.post("/revenue/finance/refund/:reqId/execute", (req, res) => {
+  try {
+    const reqRecord = approvalQueue.getRequest(req.params.reqId);
+    if (!reqRecord) return res.status(404).json({ error: "approval_request_not_found" });
+    if (reqRecord.workflowId !== "wf_refund_finance") return res.status(400).json({ error: "wrong_request_type" });
+    if (reqRecord.status !== "approved" && reqRecord.status !== "auto_approved") {
+      return res.status(409).json({ error: "not_approved", status: reqRecord.status });
+    }
+    if (reqRecord.resumedAt) {
+      return res.status(409).json({ error: "already_executed", executedAt: reqRecord.resumedAt });
+    }
+
+    const creditNote = g.issueRefund({
+      accountId:   reqRecord.context.accountId,
+      invoiceId:   reqRecord.context.invoiceId,
+      reason:      reqRecord.context.reason,
+      amount:      reqRecord.context.amount,
+      creditTopup: reqRecord.context.creditTopup,
+    });
+
+    approvalQueue.markResumed(req.params.reqId);
+    _ok(res, { creditNote });
+  } catch (e) { _err(res, e); }
 });
 
 router.get("/revenue/finance/report",        (req, res) => {

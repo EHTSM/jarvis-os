@@ -1,6 +1,7 @@
 // CO3 First User Success Program — UserSuccess.jsx
 import React, { useState, useCallback, useEffect } from "react";
 import "./UserSuccess.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -440,7 +441,7 @@ function CSInboxPanel() {
           {tickets.length === 0 && <div className="us-empty">No tickets</div>}
           {tickets.map(t => (
             <div key={t.id} className={`us-row ${t.status === "resolved" ? "us-row-pass" : t.status === "open" ? "" : "us-row-warn"}`}
-              style={{ cursor: "pointer" }} onClick={() => setSelected(t)}>
+              style={{ cursor: "pointer" }} {...clickableProps(() => setSelected(t))}>
               <div className="us-row-body">
                 <div className="us-row-name">{t.subject}</div>
                 <div className="us-row-meta">{t.userEmail} · {t.createdAt?.slice(0,10)}</div>

@@ -9,10 +9,39 @@
  * memoryPersistenceLayer.cjs — it borrows the atomic-write
  * pattern and uses its own dedicated file for mission objects.
  *
+ * MASTER RECOVERY (2026-08-15, C10-004/C9 mission-context leak): this file
+ * has 74 internal consumers across the codebase — autonomous engineering,
+ * knowledge graphs, executive/platform/civilization state, business
+ * automation, and more — the large majority of which use missions as
+ * shared, cross-cutting platform infrastructure, NOT as tenant-owned
+ * business objects. Making orgId a REQUIRED parameter (the pattern used for
+ * Developer OS, C10-003) would break dozens of legitimate internal
+ * integrations that were never meant to be org-scoped — exactly what the
+ * recovery mandate warns against ("do not break legitimate shared
+ * engineering knowledge").
+ *
+ * Instead: orgId is OPTIONAL everywhere in this file. createMission()
+ * stores it if the caller supplies one (data.orgId); every existing caller
+ * that doesn't pass one is completely unaffected — same behavior as before.
+ * listMissions() gained an OPTIONAL opts.orgId filter: when supplied, it
+ * returns ONLY missions with that exact orgId (never falls back to
+ * unscoped/global missions, and never returns another org's missions) —
+ * when omitted, behavior is byte-identical to before this change, which is
+ * what the 74 platform-internal callers need to keep working.
+ *
+ * The actual tenant-facing leak this closes: codingAssistant.js's
+ * _missionContext() (the function that injects "recent missions" into the
+ * AI's prompt) now passes the caller's real orgId, so the AI's mission
+ * context is scoped to the requesting tenant's own missions — proven live
+ * in C.9 to previously inject an unrelated org's mission objective text.
+ * Missions created with no orgId (the vast majority — genuine shared
+ * platform/autonomous-engineering missions) are correctly EXCLUDED from an
+ * orgId-filtered query, not incorrectly included as "everyone's".
+ *
  * Public API:
- *   createMission(data)                  → mission
+ *   createMission(data)                  → mission   (data.orgId optional)
  *   getMission(missionId)                → mission | null
- *   listMissions(opts)                   → { missions[], total }
+ *   listMissions(opts)                   → { missions[], total }   (opts.orgId optional filter)
  *   updateMission(missionId, patch)      → mission
  *   addSubtask(missionId, subtask)       → mission
  *   recordDecision(missionId, decision)  → mission
@@ -31,7 +60,18 @@ const crypto = require("crypto");
 const logger = require("../utils/logger");
 
 // ── File path ────────────────────────────────────────────────────────────────
-const MISSIONS_FILE = path.join(__dirname, "../../data/missions.json");
+// ERA-1 Manual Blocker Closure (Mission 80 follow-on): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by agentInstanceRegistry.cjs/skillRegistry.cjs/
+// businessDataService.cjs/toolExecutionLayer.cjs. Additive only — when unset,
+// resolution is byte-identical to before this change (real data/missions.json).
+// When set, redirects to an isolated per-process file so platform-scale test
+// suites (civ-v9/eco-v8/ent-v7/auto-v10/eos-v6, reached indirectly via
+// executiveState.cjs's createExecMission() -> missionOrchestrator.createManual()
+// -> this file's createMission()) stop writing real msn_* records into
+// production data/missions.json, per Mission 97/98's documented root cause.
+const MISSIONS_FILE = path.join(__dirname, "../../data", process.env.JARVIS_TEST_DATA_SUFFIX
+    ? `missions.${process.env.JARVIS_TEST_DATA_SUFFIX}.json`
+    : "missions.json");
 
 // ── ID generation ────────────────────────────────────────────────────────────
 function _uid(prefix) {
@@ -39,27 +79,508 @@ function _uid(prefix) {
 }
 
 // ── Atomic I/O helpers ───────────────────────────────────────────────────────
-function _loadMissions() {
+// Read-through cache keyed on the file's mtime — missions.json grows large
+// in real usage (10MB+/500+ missions observed live) and _loadMissions() is
+// called from all 14 read/write sites in this file, meaning every single
+// mission operation re-read and re-parsed the entire file even when
+// nothing had changed since the last call (measured live: ~35ms/call).
+// mtime-keyed so a genuinely different process's write (a real mtime
+// change on disk) is still detected on the next read.
+//
+// Mission 67: this comment previously claimed renameSync "always produces
+// a fresh mtime", which is not what POSIX rename() actually does —
+// verified directly (Node fs.renameSync + fs.statSync): the destination
+// inherits the SOURCE tmp file's mtime, it is not freshly stamped at
+// rename time. On a filesystem/runner with coarser mtime resolution than
+// this repo's usual dev machines (live-reproduced as the root cause of
+// ERA-1's recurring "recoverStaleMissions must report at least the 1
+// mission this test created" failure — mtimeMs identical across this
+// SAME process's own createMission() -> updateMission() -> listMissions()
+// sequence), two back-to-back writes from this SAME process can land on
+// an identical mtime, making the second write's read return the FIRST
+// write's now-stale cached store. _saveMissions() now updates this cache
+// itself right after every successful write (see below), so this
+// process never needs mtime detection for its own writes — mtime
+// detection is only still relied on for a genuinely different process's
+// write, which was always the real cross-process use case this comment
+// described.
+let _missionsCache = null; // { mtimeMs, store }
+
+// ── Create-time dedup index ─────────────────────────────────────────────────
+// JARVIS INCIDENT REPAIR (2026-09-03, P0-2): createMission() had no dedup of
+// its own — the two dedup layers that existed sat entirely above this file
+// (agentRuntimeSupervisor.cjs's _missionExists(), businessIntelligenceEngine
+// .cjs's _recentlyTriggered()) and neither covered the ~20 org-level
+// department modules (engineeringOrg/businessOrg/etc., each independently
+// calling missionOrchestrator.createManual() -> this file) or any other
+// direct caller. Confirmed live: 8,393 of 9,394 real missions sat permanently
+// "planned", with duplicate-objective clusters up to 3,550 copies of the same
+// text. This index is the final, storage-level safety boundary every caller
+// passes through, regardless of which layer above did or didn't dedup first.
+//
+// Scope rules (deliberately narrow — see file header on orgId being optional
+// platform-wide infrastructure for the large majority of the 74 existing
+// consumers):
+//   - Keyed on (orgId ?? "__unscoped__") + normalized objective — NEVER
+//     compares across two different real orgIds. Two different real orgs
+//     with the identical objective text always both get their own mission.
+//     Unscoped (orgId: null) missions dedup only against other unscoped
+//     missions, which is the correct behavior for shared platform/autonomous
+//     -engineering missions (the vast majority of traffic).
+//   - Only missions in a NON-TERMINAL status (planned/active/running) occupy
+//     an index slot. A terminal mission (completed/failed/cancelled/paused)
+//     is never matched against and never blocks a new, otherwise-identical
+//     mission from being created — historical missions are fully preserved,
+//     never touched, never reused.
+//   - Normalization is deliberately conservative: trim + lowercase only, NO
+//     digit-collapsing. agentRuntimeSupervisor.cjs's own _normalizeObjective()
+//     (digit runs -> "#") was tried here first and reverted after it broke a
+//     real, pre-existing test suite live: tests/runtime/mission-orchestrator-
+//     nodetypes.test.cjs creates missions with `goal: "test goal " +
+//     Date.now()` — every one of those objectives differs ONLY in its
+//     embedded digits, so digit-collapsing correctly flags "Verify 169
+//     missions" vs "Verify 220 missions" as the same recurring check (its
+//     one intended, narrow use in agentRuntimeSupervisor._missionExists())
+//     but WRONGLY flags every one of these genuinely-distinct test/CRM/RCA
+//     missions (a per-lead follow-up, a per-RCA fix, a timestamped test
+//     probe) as duplicates of each other. A storage-level safety boundary
+//     that every caller passes through must not assume every embedded digit
+//     is disposable — only exact, byte-identical (post-trim/case) objective
+//     text is treated as a duplicate here. This still catches the incident's
+//     actual worst offenders (3,550 byte-identical "[Auto] Follow up
+//     immediately..." copies, one recommendation repeated 246 times) without
+//     colliding on legitimately different text that merely shares a
+//     template. The narrower digit-collapsing heuristic remains exactly
+//     where it already was proven correct — agentRuntimeSupervisor.cjs's own
+//     _missionExists(), scoped to its own auto-generated recurring checks —
+//     untouched by this change.
+//   - The index is an in-memory Map, rebuilt only when the underlying store
+//     reference changes (same invalidation signal as _missionsCache's mtime
+//     key) — a create-time dedup check is therefore an O(1) Map lookup, not
+//     an O(N) re-scan of the whole mission list on every single create.
+const _TERMINAL_STATUSES_FOR_DEDUP = new Set(["completed", "failed", "cancelled", "paused"]);
+
+function _normalizeObjectiveForDedup(s) {
+    return (s || "").trim().toLowerCase();
+}
+
+// Two different, real, pre-existing org-scoping conventions coexist in this
+// codebase and must BOTH be recognized here, or org isolation silently
+// breaks for whichever one is missed:
+//   - the top-level mission.orgId field this file's own header comment
+//     documents (used by phase27.js, codingAssistant.js, and listMissions's
+//     own {orgId} filter)
+//   - organizationService.cjs's createMissionForOrg(), which stamps org
+//     ownership as metadata.orgId instead (its own listOrgMissions() filters
+//     on m.metadata?.orgId, never m.orgId) — confirmed by direct inspection,
+//     not assumed; a mission created through that path always has
+//     mission.orgId === null.
+// Without this fallback, every organizationService-created mission would
+// fall into the same "__unscoped__" dedup bucket regardless of which real
+// org created it — i.e. two different orgs' identical-objective missions
+// would incorrectly dedup against each other, exactly the cross-org leak
+// this dedup layer must never introduce.
+function _effectiveOrgId(mission) {
+    return (typeof mission.orgId === "string" && mission.orgId)
+        ? mission.orgId
+        : (typeof mission.metadata?.orgId === "string" && mission.metadata.orgId)
+            ? mission.metadata.orgId
+            : null;
+}
+
+function _dedupKey(orgId, objective) {
+    return `${orgId || "__unscoped__"}::${_normalizeObjectiveForDedup(objective)}`;
+}
+
+// { forStore: <store object identity>, map: Map<dedupKey, missionId> }
+let _dedupIndex = null;
+
+function _getDedupIndex(store) {
+    if (_dedupIndex && _dedupIndex.forStore === store) return _dedupIndex.map;
+    const map = new Map();
+    for (const m of store.missions) {
+        if (_TERMINAL_STATUSES_FOR_DEDUP.has(m.status)) continue;
+        map.set(_dedupKey(_effectiveOrgId(m), m.objective), m.id);
+    }
+    _dedupIndex = { forStore: store, map };
+    return map;
+}
+
+// B.20 chaos finding — orphaned tmp sweep.
+//
+// _saveMissions() writes `missions.json.<pid>.<rand>.tmp` then renames it, and
+// cleans the tmp up in its catch block. That covers a *caught* write error, but
+// not a process death between writeFileSync and renameSync: SIGKILL, OOM kill,
+// or a host restart leaves the tmp behind with no code path that ever removes
+// it. Measured on this repo: two orphans totalling ~11 MB of real disk, one of
+// them from a pid that no longer exists. Nothing reads `.tmp`, so there is no
+// correctness impact — it is unbounded disk growth across crash cycles.
+//
+// Swept once at module load (the same point the store is first used), and only
+// for files matching this store's own `missions.json.<pid>.<hex>.tmp` shape, so
+// it can never touch another service's tmp file or a real data file. A live
+// tmp belonging to a *currently running* write is younger than the grace
+// window, so a concurrent writer's file is never removed.
+const _TMP_RE = /^missions\.json\.\d+\.[0-9a-f]+\.tmp$/;
+const _TMP_GRACE_MS = 5 * 60 * 1000;
+
+function _sweepOrphanedTmp() {
     try {
-        const raw = fs.readFileSync(MISSIONS_FILE, "utf8");
-        const parsed = JSON.parse(raw);
-        if (!parsed || !Array.isArray(parsed.missions)) {
+        const dir = path.dirname(MISSIONS_FILE);
+        const now = Date.now();
+        let removed = 0, bytes = 0;
+        for (const name of fs.readdirSync(dir)) {
+            if (!_TMP_RE.test(name)) continue;
+            const full = path.join(dir, name);
+            try {
+                const st = fs.statSync(full);
+                if (now - st.mtimeMs < _TMP_GRACE_MS) continue; // possibly an in-flight write
+                bytes += st.size;
+                fs.unlinkSync(full);
+                removed++;
+            } catch { /* raced with another sweep or a rename — fine either way */ }
+        }
+        if (removed) {
+            logger.warn(`[MissionMemory] Swept ${removed} orphaned tmp file(s) (${Math.round(bytes / 1024)} KB) ` +
+                `left by an interrupted write.`);
+        }
+    } catch { /* directory unreadable — never block startup on cleanup */ }
+}
+
+_sweepOrphanedTmp();
+
+// ── Cross-process write lock ─────────────────────────────────────────────────
+// Mission 85 (82C reconciliation): the per-call unique tmp filename above
+// (Final Production Integration mission, Blocker #6) made two writers'
+// tmp files physically incapable of colliding, which eliminated the
+// ENOENT/corruption crash class — but as that fix's own comment already
+// documented, it does NOT fix the underlying lost-update race: two
+// processes (the running server + a script/test/second worker) can each
+// call _loadMissions(), read the same on-disk snapshot, mutate their own
+// in-memory copy, and whichever calls _saveMissions() second silently
+// overwrites the first's mutation. Each write individually succeeds and is
+// individually valid JSON, so nothing crashes or logs an error — the loss
+// is invisible without comparing intent to the final file.
+//
+// Fix: a real cross-process advisory file lock, held for the COMPLETE
+// read-modify-write transaction (every public mutation function's entire
+// body, from its own _loadMissions() call through _saveMissions()) — not
+// just around the final write, since the race is between two reads, not
+// two writes. This is the same file-lock primitive already proven in this
+// codebase for the identical problem (businessDataService.cjs's
+// _withLock()/_acquireLock()), reused here rather than inventing a new
+// mechanism, plus same-process re-entrancy (a depth counter) so a future
+// internal call from one mutation function into another can never
+// self-deadlock on a lock this same process already holds — no current
+// call site does this, but it costs nothing to make it safe.
+//
+// Design constraints:
+//   - Cross-process safe: fs.openSync(lockPath, "wx") is an atomic
+//     create-if-not-exists at the OS/filesystem level (POSIX O_EXCL) — two
+//     processes racing to create the same lock file can never both "win".
+//   - Bounded stale-lock recovery: a lock file older than _LOCK_STALE_MS is
+//     presumed abandoned (holder crashed/was SIGKILLed before releasing)
+//     and is force-broken by the next acquirer — the same grace-window
+//     design _sweepOrphanedTmp() above already uses for tmp files, applied
+//     to locks, so a crashed writer can never cause a permanent deadlock.
+//   - Bounded acquisition wait: retries with a short backoff for at most
+//     _LOCK_ACQUIRE_TIMEOUT_MS, then throws rather than blocking forever —
+//     no unbounded wait.
+//   - Exception-safe: release always runs in a `finally`, so a thrown error
+//     inside the locked section can never leave the lock held.
+const LOCK_FILE = `${MISSIONS_FILE}.lock`;
+const _LOCK_STALE_MS          = 30_000; // older than this is presumed a crashed holder
+const _LOCK_ACQUIRE_TIMEOUT_MS = 10_000; // give up (throw) rather than wait forever
+const _LOCK_RETRY_MS          = 20;      // backoff between acquisition attempts
+
+let _lockDepth = 0; // same-process re-entrancy only — cross-process exclusion is the lock file itself
+
+// Mission 89 P1 fix — lock release ownership race.
+//
+// _releaseMissionsLock() previously called fs.unlinkSync(LOCK_FILE)
+// unconditionally, with no check that the calling process still actually
+// owns the lock it is about to delete. Reproduced live (Mission 89 Phase 2,
+// test C1): Process A acquires the lock, is genuinely still alive but
+// stuck past _LOCK_STALE_MS (not crashed); Process B correctly force-
+// breaks A's now-stale-looking lock and acquires its own, legitimate
+// replacement lock; A eventually reaches its own release path and
+// unconditionally deletes whatever lock file exists at that path — which
+// by then is B's, not A's. B's ownership is silently destroyed with no
+// error on either side.
+//
+// Fix: each acquisition writes a unique per-acquisition TOKEN into the
+// lock file (process.pid + a random nonce — the pid alone is not enough,
+// since a stale-break-then-reacquire by a DIFFERENT process could
+// coincidentally still be a different pid, but the point is to identify
+// THIS SPECIFIC ACQUISITION, not merely "some process", so that even the
+// same process re-acquiring after losing and regaining the lock is
+// correctly treated as a new, distinct ownership epoch). This token is
+// kept in module state (_lockToken) alongside the existing _lockDepth
+// counter — _lockDepth alone is insufficient (it is pure in-process state
+// with no way to detect that the on-disk lock has been replaced by
+// another process entirely), so release now reads the on-disk lock's
+// current content and only unlinks it if that content still matches the
+// exact token this process itself wrote at acquisition time. If the
+// content differs (or the file is already gone), this process no longer
+// owns the lock — release is a safe no-op rather than an unconditional
+// delete, since deleting a lock this process does not recognize would
+// once again destroy the actual current owner's lock, exactly the class
+// of bug this fix closes.
+//
+// This narrows, rather than perfectly eliminates, the theoretical window
+// between the read-back verification and the unlink call itself (Node's
+// fs API has no atomic "delete-if-content-matches" primitive, and adding
+// OS-level advisory file locking here would be the "redesign the entire
+// locking system" this fix is explicitly scoped to avoid) — but converts
+// an ALWAYS-WRONG unconditional delete into a delete that only proceeds
+// when this process's own token is still the one on disk, at the moment
+// of release. A third process replacing the lock in the handful of
+// microseconds between this read and the unlink is a categorically
+// smaller and different risk than the previously-unconditional bug this
+// closes, and matches the same proportionate, narrowly-scoped verify-
+// before-mutate pattern already used elsewhere in this exact function
+// (_acquireMissionsLock()'s own stale-check-then-unlink for force-breaking
+// an abandoned lock has the identical, already-accepted race shape).
+let _lockToken = null;
+
+function _acquireMissionsLock() {
+    if (_lockDepth > 0) { _lockDepth++; return; } // already held by this process — safe re-entry
+    const deadline = Date.now() + _LOCK_ACQUIRE_TIMEOUT_MS;
+    for (;;) {
+        try {
+            const token = `${process.pid}.${crypto.randomBytes(8).toString("hex")}`;
+            const fd = fs.openSync(LOCK_FILE, "wx"); // atomic create-if-not-exists
+            fs.writeSync(fd, token);
+            fs.closeSync(fd);
+            _lockDepth = 1;
+            _lockToken = token;
+            return;
+        } catch (err) {
+            if (err.code !== "EEXIST") throw err; // a real filesystem error, not contention — propagate
+            try {
+                const st = fs.statSync(LOCK_FILE);
+                if (Date.now() - st.mtimeMs > _LOCK_STALE_MS) {
+                    // Presumed-abandoned lock — force-break it. unlinkSync can race
+                    // with the real holder finishing normally at the exact same
+                    // moment; either outcome (we remove a genuinely stale lock, or
+                    // we raced a real release and unlinkSync throws) is safe — the
+                    // next loop iteration simply retries acquisition.
+                    try { fs.unlinkSync(LOCK_FILE); } catch { /* raced a real release, or already gone — fine */ }
+                    logger.warn(`[MissionMemory] Broke stale lock file (older than ${_LOCK_STALE_MS}ms) — presumed crashed holder`);
+                    continue;
+                }
+            } catch { /* stat raced the real holder's own release — just retry below */ }
+            if (Date.now() >= deadline) {
+                throw new Error(`[MissionMemory] Failed to acquire missions.json lock within ${_LOCK_ACQUIRE_TIMEOUT_MS}ms — another process is holding it`);
+            }
+            // Bounded synchronous backoff — this module's API is synchronous by
+            // design (matches businessDataService.cjs's own _acquireLock()), so a
+            // real async wait would require a larger refactor than this fix is
+            // scoped for. _LOCK_RETRY_MS is short enough that real contention
+            // (a write normally takes low single-digit ms) resolves in 1-2 iterations.
+            const spinUntil = Date.now() + _LOCK_RETRY_MS;
+            while (Date.now() < spinUntil) { /* bounded busy-wait */ }
+        }
+    }
+}
+
+function _releaseMissionsLock() {
+    if (_lockDepth > 1) { _lockDepth--; return; } // still held by an outer re-entrant call
+    const token = _lockToken;
+    _lockDepth = 0;
+    _lockToken = null;
+    if (!token) return; // this process never actually held a token (defensive — should not occur)
+    try {
+        const onDisk = fs.readFileSync(LOCK_FILE, "utf8");
+        if (onDisk !== token) {
+            // The lock on disk is no longer ours — another process force-broke
+            // it as stale and acquired its own replacement lock. Deleting it
+            // now would destroy that process's legitimate ownership, exactly
+            // the bug this fix closes. Safe no-op: our own logical hold on
+            // the lock already ended (we lost it to the stale-break), so
+            // there is nothing further for us to release.
+            logger.warn(`[MissionMemory] Skipped lock release — on-disk lock token no longer matches this process's own (lock was reassigned, likely via stale-break by another process)`);
+            return;
+        }
+        fs.unlinkSync(LOCK_FILE);
+    } catch (err) {
+        if (err.code === "ENOENT") return; // already gone — fine, nothing to release
+        // Any other read/unlink error: fail safe by NOT deleting — an
+        // unconditional delete on an error path is exactly the risk this
+        // fix removes. Logged, not thrown, matching this function's
+        // existing non-throwing contract (release must never itself
+        // become a new failure mode for the caller's own mutation).
+        logger.warn(`[MissionMemory] Lock release check failed (${err.message}) — leaving lock file untouched rather than risking an unsafe delete`);
+    }
+}
+
+/**
+ * Runs `fn` (a synchronous, zero-argument function) with the cross-process
+ * missions.json lock held for its entire duration. The correct unit of
+ * atomicity is the WHOLE read-modify-write transaction, not just the final
+ * write — every public mutation function below wraps its entire body in
+ * this rather than only _saveMissions() acquiring a lock around the write
+ * step alone.
+ */
+function _withMissionsLock(fn) {
+    _acquireMissionsLock();
+    try {
+        return fn();
+    } finally {
+        _releaseMissionsLock();
+    }
+}
+
+// Mission 89 P0 fix — corruption-then-mutation permanent data loss.
+//
+// The previous behavior: any parse failure (invalid JSON, truncated JSON,
+// or a valid-JSON-but-wrong-shape file) was treated identically to "file
+// doesn't exist yet" — _loadMissions() silently returned a fresh empty
+// store, logged one warn-level line, and returned control to the caller
+// exactly as if there were simply no prior history. The caller (any of
+// this file's 10 mutation functions) would then proceed normally,
+// eventually calling _saveMissions(store) with that empty-plus-one-new-
+// mission store — permanently overwriting the corrupted file (which still
+// contained 100% of the real, recoverable mission history as raw bytes on
+// disk) with a store containing only the single new mutation. Reproduced
+// live (Mission 89 Phase 2, tests A1/A2): 5 seeded historical missions,
+// corrupted via either invalid JSON or truncation, were unrecoverably
+// destroyed by the very next createMission() call.
+//
+// Fix: a genuine parse/shape failure on an EXISTING file (never on a
+// missing file — ENOENT remains the legitimate "no history yet" case,
+// unchanged) is no longer treated as "empty store". Instead:
+//   1. The corrupted file's raw bytes are copied (never moved — the
+//      original stays exactly where an operator or recovery tool would
+//      look for it) to a timestamped, uniquely-named quarantine path
+//      alongside it, so the pre-corruption content is never lost even if
+//      corruption itself is unrecoverable from the live file.
+//   2. A typed error (code: "MISSION_STORE_CORRUPTED") is thrown instead
+//      of returning an empty store — this propagates through every
+//      caller's normal control flow exactly like any other thrown error
+//      already does in this file (e.g. createMission()'s own input-
+//      validation throws), releasing _withMissionsLock()'s lock via its
+//      existing `finally` and surfacing a clear, actionable failure to
+//      the caller rather than silently proceeding as if nothing were
+//      wrong. No mutation function can reach its own _saveMissions(store)
+//      call after this throw, so no subsequent write can ever overwrite
+//      the corrupted source before it has been preserved.
+// Existing valid-store behavior (the overwhelming common case) and the
+// existing missing-file behavior are both completely unchanged.
+const _CORRUPTION_QUARANTINE_RE = /^missions\.json\.corrupted\.\d+\.[0-9a-f]+\.bak$/;
+
+function _quarantineCorruptedFile(reason) {
+    try {
+        const dir = path.dirname(MISSIONS_FILE);
+        const quarantinePath = path.join(dir, `missions.json.corrupted.${Date.now()}.${crypto.randomBytes(6).toString("hex")}.bak`);
+        fs.copyFileSync(MISSIONS_FILE, quarantinePath);
+        logger.error(`[MissionMemory] CORRUPTION DETECTED: ${reason} — original file preserved for recovery at ${quarantinePath}`);
+        return quarantinePath;
+    } catch (copyErr) {
+        // Even if quarantine copy itself fails (e.g. disk full, permissions),
+        // this must never crash the corruption-reporting path — the original
+        // file is still untouched on disk either way, since nothing here
+        // ever writes to MISSIONS_FILE itself.
+        logger.error(`[MissionMemory] CORRUPTION DETECTED: ${reason} — quarantine copy FAILED (${copyErr.message}); original file remains at ${MISSIONS_FILE}, untouched`);
+        return null;
+    }
+}
+
+function _loadMissions() {
+    let mtimeMs;
+    try { mtimeMs = fs.statSync(MISSIONS_FILE).mtimeMs; }
+    catch { mtimeMs = null; } // file doesn't exist yet — fall through to the empty-store path below
+
+    if (mtimeMs !== null && _missionsCache && _missionsCache.mtimeMs === mtimeMs) {
+        return _missionsCache.store;
+    }
+
+    let raw;
+    try {
+        raw = fs.readFileSync(MISSIONS_FILE, "utf8");
+    } catch (err) {
+        if (err.code === "ENOENT") {
             return { missions: [], lastUpdated: new Date().toISOString() };
         }
-        return parsed;
-    } catch (err) {
-        if (err.code !== "ENOENT") {
-            logger.warn(`[MissionMemory] Load failed: ${err.message} — starting empty`);
-        }
-        return { missions: [], lastUpdated: new Date().toISOString() };
+        // A real filesystem error reading an EXISTING file (permissions,
+        // I/O error, etc.) — not corruption in the parse sense, but still
+        // must never silently masquerade as "no history": fail loudly
+        // rather than risk the same overwrite-on-next-write class of bug.
+        logger.error(`[MissionMemory] Load failed (filesystem error, not corruption): ${err.message}`);
+        throw Object.assign(new Error(`[MissionMemory] Failed to read mission store: ${err.message}`), { code: "MISSION_STORE_READ_ERROR", cause: err });
     }
+
+    let parsed;
+    try {
+        parsed = JSON.parse(raw);
+    } catch (err) {
+        const quarantinePath = _quarantineCorruptedFile(`invalid JSON (${err.message})`);
+        throw Object.assign(
+            new Error(`[MissionMemory] missions.json contains invalid JSON and cannot be safely loaded. Original file preserved${quarantinePath ? ` at ${quarantinePath}` : " (quarantine copy failed — see logs)"}. Refusing to proceed to avoid silently discarding mission history.`),
+            { code: "MISSION_STORE_CORRUPTED", quarantinePath }
+        );
+    }
+
+    if (!parsed || !Array.isArray(parsed.missions)) {
+        const quarantinePath = _quarantineCorruptedFile("valid JSON but wrong shape (missing or non-array `missions` field)");
+        throw Object.assign(
+            new Error(`[MissionMemory] missions.json is valid JSON but has an unexpected shape and cannot be safely loaded. Original file preserved${quarantinePath ? ` at ${quarantinePath}` : " (quarantine copy failed — see logs)"}. Refusing to proceed to avoid silently discarding mission history.`),
+            { code: "MISSION_STORE_CORRUPTED", quarantinePath }
+        );
+    }
+
+    const store = parsed;
+    if (mtimeMs !== null) _missionsCache = { mtimeMs, store };
+    return store;
+}
+
+// Final Production Integration mission, Blocker #6 fix — the shared
+// literal ".tmp" path collided across processes: a real, long-running
+// server process and a second process (test/script/ops tool) writing
+// missions.json around the same time could each write their own content
+// to the SAME tmp path, then the first to rename() would consume it out
+// from under the second, producing a reproducible ENOENT on renameSync
+// and silently dropping that write. Same real fix already applied to
+// organizationService.cjs and secretVault.cjs this session: a
+// per-call-unique tmp filename (pid + random suffix) means two
+// processes/calls can never share a tmp path, so rename() always finds
+// its own file. This does not fix the underlying lost-update race for
+// two writes based on the same stale read (a real lock/single-writer
+// queue would be a larger architectural change, out of scope here) — it
+// eliminates the file-corruption/ENOENT-crash class, which is what was
+// actually observed and reproduced.
+// B.1 runtime stabilization: missions.json had no retention cap and had
+// grown to 76.8 MB / 10,370 missions. Measured consequences on the running
+// server: every write invalidates the mtime cache above, so the next read
+// re-parses the whole file — 483 ms of blocked event loop (158 ms read +
+// 325 ms JSON.parse). Writes were measured at 16/minute, i.e. ~7.7 s of
+// event-loop stall per minute (~13% of wall-clock frozen). That is the
+// measured root cause of Phase A's 33% /health failure rate and 5,800x
+// latency variance at only 31% CPU — it was never CPU exhaustion.
+//
+// 90% of the file is terminal history (9,320 completed / 394 failed /
+// 12 cancelled vs 644 live). Capping retained TERMINAL missions bounds the
+// file while preserving every active/planned mission untouched. Uses the
+// same slice(-N) retention pattern already used by productPlannerEngine
+// (200 plans) and growthOS (10,000 events) — no new architecture.
+const TERMINAL_STATUSES = new Set(["completed", "failed", "cancelled"]);
+const MAX_TERMINAL_MISSIONS = 1000;
+
+function _capTerminalMissions(missions) {
+    if (!Array.isArray(missions) || missions.length <= MAX_TERMINAL_MISSIONS) return missions;
+    const live = [], terminal = [];
+    for (const m of missions) (TERMINAL_STATUSES.has(m?.status) ? terminal : live).push(m);
+    if (terminal.length <= MAX_TERMINAL_MISSIONS) return missions;
+    // Keep every live mission plus the most recent terminal ones (array order
+    // is append-order, so the tail is newest).
+    return live.concat(terminal.slice(-MAX_TERMINAL_MISSIONS));
 }
 
 function _saveMissions(store) {
     const dir = path.dirname(MISSIONS_FILE);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const updated = { missions: store.missions, lastUpdated: new Date().toISOString() };
-    const tmp = MISSIONS_FILE + ".tmp";
+    const updated = { missions: _capTerminalMissions(store.missions), lastUpdated: new Date().toISOString() };
+    const tmp = `${MISSIONS_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     try {
         fs.writeFileSync(tmp, JSON.stringify(updated, null, 2), "utf8");
         fs.renameSync(tmp, MISSIONS_FILE);
@@ -69,6 +590,18 @@ function _saveMissions(store) {
         try { fs.unlinkSync(tmp); } catch { /* ignore */ }
         throw err;
     }
+    // Mission 67: refresh the read-through cache with exactly what this
+    // process just wrote, keyed on the real post-rename mtime — closes
+    // the same-process stale-read window described above. If statSync
+    // fails here (file removed by something else in the instant after
+    // our own rename — pathological, but must never crash a successful
+    // save), simply leave the cache uninitialized; the next _loadMissions()
+    // falls back to reading from disk exactly as it always did before
+    // this fix.
+    try {
+        const mtimeMs = fs.statSync(MISSIONS_FILE).mtimeMs;
+        _missionsCache = { mtimeMs, store: updated };
+    } catch { /* non-fatal — next read just re-reads from disk */ }
     return updated;
 }
 
@@ -98,8 +631,36 @@ function _appendTimeline(mission, event, details = {}) {
     mission.timeline.push({
         timestamp: new Date().toISOString(),
         event,
-        details,
+        details: _scrubSecrets(details),
     });
+}
+
+// ── Credential redaction (Phase 2, Mission 133-136: Agent Memory) ────────────
+// "Credential values must NEVER be stored in agent memory." missionMemory.cjs
+// had no guard of this kind on any of its 8 write entrypoints (createMission,
+// addSubtask, recordDecision/Artifact/Failure/Deployment/Approval, addLearning)
+// despite every one of them accepting caller-supplied free text/objects
+// (metadata, output, rationale, rootCause, description, insight, ...) that a
+// careless caller could stuff a token/secret/password into. Reuses the exact
+// key-matching pattern already established at two other write chokepoints in
+// this codebase — toolExecutionLayer.cjs's _sanitizeParams() and
+// sentryService.cjs's _redact() — rather than inventing a new scheme; this is
+// a policy gap being closed, not new architecture.
+const _SENSITIVE_KEY_RE = /token|secret|key|password|passwd|auth|credential|cookie|session|dsn|apikey/i;
+const _REDACTED = "[redacted]";
+
+function _scrubSecrets(value, depth = 0) {
+    if (depth > 6) return "[max-depth]"; // guard against pathological/circular input
+    if (value === null || value === undefined) return value;
+    if (Array.isArray(value)) return value.map(v => _scrubSecrets(v, depth + 1));
+    if (typeof value === "object") {
+        const out = {};
+        for (const [k, v] of Object.entries(value)) {
+            out[k] = _SENSITIVE_KEY_RE.test(k) ? _REDACTED : _scrubSecrets(v, depth + 1);
+        }
+        return out;
+    }
+    return value;
 }
 
 // ── Mission factory ──────────────────────────────────────────────────────────
@@ -107,9 +668,15 @@ function _buildMission(data) {
     const now = new Date().toISOString();
     const mission = {
         id:          _uid("msn"),
+        // Optional — see file header comment. Most callers (74 internal
+        // consumers) never pass this and get identical behavior to before
+        // this field existed. When a real tenant-facing caller passes it,
+        // listMissions({orgId}) can filter correctly.
+        orgId:       typeof data.orgId === "string" && data.orgId ? data.orgId : null,
         objective:   (data.objective || "").trim(),
         status:      "planned",
         priority:    data.priority || "medium",
+        metadata:    (data.metadata && typeof data.metadata === "object") ? _scrubSecrets(data.metadata) : {},
         createdAt:   now,
         updatedAt:   now,
         completedAt: null,
@@ -148,7 +715,7 @@ function _ingestSubtask(mission, subtask, emitTimeline = true) {
         assignedAgent: subtask.assignedAgent || null,
         startedAt:    subtask.startedAt || null,
         completedAt:  subtask.completedAt || null,
-        output:       subtask.output || null,
+        output:       subtask.output != null ? _scrubSecrets(subtask.output) : null,
     };
     mission.subtasks.push(st);
     if (emitTimeline) {
@@ -158,7 +725,18 @@ function _ingestSubtask(mission, subtask, emitTimeline = true) {
 }
 
 // ── Validation helpers ───────────────────────────────────────────────────────
-const VALID_STATUSES  = new Set(["planned", "active", "paused", "completed", "failed", "cancelled"]);
+// "running" is missionRuntime.cjs's status for an in-progress mission (its
+// TRANSITIONS state machine uses this vocabulary throughout, and the real
+// POST /mission/runtime/start/:id route depends on it) — every call to
+// startMission() threw "invalid status \"running\"" here before this was
+// added, because this set only had "active" for that same concept. Keeping
+// both: "active" already has scattered lower-confidence external readers
+// (e.g. backend/routes/engineering.js explicitly checks
+// `status === "running" || status === "active"`, apparently defensively
+// coded around this exact mismatch previously), so removing it risks a
+// silent behavior change elsewhere; adding "running" is the minimal fix
+// that makes the actually-used state machine work.
+const VALID_STATUSES  = new Set(["planned", "active", "running", "paused", "completed", "failed", "cancelled"]);
 const VALID_PRIORITIES = new Set(["low", "medium", "high", "critical"]);
 
 function _assertMission(mission, missionId) {
@@ -182,13 +760,43 @@ function createMission(data = {}) {
         throw new Error(`createMission: invalid priority "${data.priority}". Must be one of: ${[...VALID_PRIORITIES].join(", ")}`);
     }
 
-    const store   = _loadMissions();
-    const mission = _buildMission(data);
-    store.missions.push(mission);
-    _saveMissions(store);
+    return _withMissionsLock(() => {
+        const store = _loadMissions();
+        // _effectiveOrgId() also recognizes data.metadata.orgId (organizationService
+        // .cjs's convention) so a caller through THAT path is scoped correctly too
+        // — not just the top-level data.orgId this file's own _buildMission() persists.
+        const orgId = _effectiveOrgId(data);
 
-    logger.info(`[MissionMemory] Created mission ${mission.id}: "${mission.objective}"`);
-    return { ...mission };
+        // P0-2 dedup check — see _getDedupIndex() above for scope rules. A hit
+        // means an equivalent NON-TERMINAL mission already exists for this exact
+        // org (or this exact "unscoped" bucket) — return it as-is instead of
+        // creating a duplicate. Nothing is mutated on this path: no write, no
+        // subtask/timeline change to the existing mission, same guarantee as any
+        // other read (getMission/listMissions). Running this check inside the
+        // lock (Mission 85) closes the race where two processes could both pass
+        // the dedup check against the same pre-write snapshot and both create
+        // what was supposed to be a single deduped mission.
+        const dedupIndex = _getDedupIndex(store);
+        const existingId = dedupIndex.get(_dedupKey(orgId, data.objective));
+        if (existingId) {
+            const existing = _findMission(store, existingId);
+            if (existing) {
+                logger.info(`[MissionMemory] createMission: deduped against existing ${existing.id} (org=${orgId || "unscoped"}): "${existing.objective}"`);
+                return { ...existing, deduped: true, dedupedAgainst: existing.id };
+            }
+        }
+
+        const mission = _buildMission(data);
+        store.missions.push(mission);
+        _saveMissions(store);
+        // _saveMissions() always replaces _missionsCache.store with a new object
+        // (see its own `updated` literal below), so the next _loadMissions() call
+        // returns a different reference and _getDedupIndex() naturally rebuilds
+        // against post-write state — no separate index invalidation needed here.
+
+        logger.info(`[MissionMemory] Created mission ${mission.id}: "${mission.objective}"`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -208,14 +816,22 @@ function getMission(missionId) {
 
 /**
  * listMissions(opts)
- * opts: { status, priority, limit, since, search }
+ * opts: { status, priority, limit, since, search, orgId }
+ * orgId is OPTIONAL — see file header comment. When supplied, returns ONLY
+ * missions whose own orgId exactly matches (never falls back to unscoped
+ * missions, never returns another org's). When omitted, behavior is
+ * unchanged from before this parameter existed — required for the 74
+ * existing internal, non-tenant-scoped consumers of this function.
  * Returns { missions[], total }
  */
 function listMissions(opts = {}) {
-    const { status, priority, limit = 100, since, search } = opts;
+    const { status, priority, limit = 100, since, search, orgId } = opts;
     const store = _loadMissions();
     let   list  = store.missions;
 
+    if (orgId) {
+        list = list.filter(m => m.orgId === orgId);
+    }
     if (status) {
         if (!VALID_STATUSES.has(status)) throw new Error(`listMissions: invalid status "${status}"`);
         list = list.filter(m => m.status === status);
@@ -232,19 +848,117 @@ function listMissions(opts = {}) {
     if (search) {
         const q = search.toLowerCase();
         list = list.filter(m =>
-            m.objective.toLowerCase().includes(q) ||
-            m.id.toLowerCase().includes(q) ||
-            m.subtasks.some(s => s.description.toLowerCase().includes(q))
+            (m.objective || "").toLowerCase().includes(q) ||
+            (m.id || "").toLowerCase().includes(q) ||
+            // Mission 64: same class of gap as the sort fix above — a
+            // record missing subtasks (reachable the same way: a direct
+            // out-of-band write bypassing createMission()/_buildMission(),
+            // live-reproduced by this file's own Mission 63 regression
+            // test) threw "Cannot read properties of undefined (reading
+            // 'some')" here. (m.subtasks || []) matches the same
+            // graceful-degradation approach as the sort fix — a malformed
+            // record simply doesn't match on subtask text, it doesn't
+            // crash the whole search for every other caller.
+            (m.subtasks || []).some(s => (s.description || "").toLowerCase().includes(q))
         );
     }
 
     // Sort newest first
+    // Mission 63: every mission created through this file's own
+    // createMission()/_buildMission() always sets createdAt (confirmed —
+    // it is the only production write path into store.missions). A
+    // record missing createdAt can only reach here via a direct,
+    // out-of-band write to the store bypassing this API — a real one was
+    // found live-reproduced (a test fixture that pushed a raw record
+    // without going through createMission()). One such malformed record
+    // must not crash localeCompare() for every OTHER caller's listMissions()
+    // — sort it as oldest (empty string sorts last against any real
+    // ISO-8601 createdAt) rather than throwing, so a single bad record
+    // degrades gracefully instead of taking down the whole list.
     list = list
         .slice()
-        .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+        .sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || ""))
         .slice(0, limit);
 
     return { missions: list.map(m => ({ ...m })), total: list.length };
+}
+
+/**
+ * hasMissionMatching(opts)
+ *
+ * JARVIS INCIDENT REPAIR (2026-09-03, P0 dedup-window-truncation fix):
+ * businessIntelligenceEngine.cjs's _recentlyTriggered() used
+ * listMissions({since, limit: 500}) as a 24h duplicate-existence check. That
+ * is correct only while the true number of missions inside the `since`
+ * window stays under `limit` — listMissions() sorts newest-first and THEN
+ * applies .slice(0, limit) (see above), so once the window's real row count
+ * exceeds `limit`, the truncation silently drops older-but-still-in-window
+ * rows before the caller's own .some() predicate ever sees them. Live-
+ * reproduced: at the real Aug 27 incident's peak, ~3001 missions existed in
+ * one trailing-24h window against a limit of 500 — 6x over — producing up
+ * to 71 duplicate missions for a single lead (only 1 of 71 ever completed).
+ * Root cause is structural (a bounded existence check built on top of a
+ * capped listing primitive), not a wrong constant — raising `limit` further
+ * would only raise the volume needed to reproduce the same defect again,
+ * per this incident's own remediation instructions.
+ *
+ * This function is a SEPARATE, purpose-built existence check — it does NOT
+ * change listMissions()'s own behavior, signature, or default in any way
+ * (confirmed: listMissions() below is completely unmodified by this fix).
+ * It reuses the exact same `since`/`orgId` filter semantics listMissions()
+ * already has (same _effectiveOrgId()-free direct `m.orgId === orgId`
+ * comparison listMissions() itself uses, same `since` ISO-parse + comparison
+ * against `createdAt`), but:
+ *   - takes NO `limit` — there is no row count this check is allowed to
+ *     silently stop scanning at; correctness requires seeing every mission
+ *     inside the time window, not a capped page of it.
+ *   - takes a caller-supplied `predicate(mission) => boolean` instead of
+ *     returning a list, and short-circuits (stops scanning) the moment the
+ *     predicate first returns true — so the common case (a match exists and
+ *     is found quickly) does no more work than a single Array.prototype.some()
+ *     over the since-filtered set, same complexity class as the array the
+ *     old capped call already produced for a typical (<500-row) window; it
+ *     never behaves worse than the code it replaces for realistic loads, and
+ *     is now also CORRECT for the >500-row loads that broke it.
+ *   - never materializes a second full copy of every matched mission object
+ *     (no `.map(m => ({...m}))` — this function returns only a boolean, the
+ *     caller doesn't need mission objects, so no unnecessary allocation is
+ *     introduced for a call site that never asked for one).
+ *
+ * @param {object} opts
+ * @param {string} opts.since - ISO-8601 lower bound on createdAt (required — this
+ *   function exists specifically for bounded-window checks; an unbounded
+ *   scan of the entire mission store belongs to a real listMissions() call,
+ *   not here)
+ * @param {string} [opts.orgId] - same optional exact-match org filter as
+ *   listMissions(); omitted = unscoped search across all missions (matches
+ *   listMissions()'s own existing omitted-orgId behavior)
+ * @param {(mission: object) => boolean} opts.predicate - required; return
+ *   true for a match. Called with the raw stored mission object (NOT a
+ *   shallow copy) — read-only use only, exactly as safe as listMissions()'s
+ *   own per-row access before its `.map(m => ({...m}))` copy step, since
+ *   this function itself never returns those objects to the caller.
+ * @returns {boolean} true iff at least one mission satisfies since + orgId
+ *   (if supplied) + predicate
+ */
+function hasMissionMatching(opts = {}) {
+    const { since, orgId, predicate } = opts;
+    if (!since) throw new Error("hasMissionMatching: `since` is required");
+    if (typeof predicate !== "function") throw new Error("hasMissionMatching: `predicate` function is required");
+
+    const sinceMs = new Date(since).getTime();
+    if (isNaN(sinceMs)) throw new Error(`hasMissionMatching: invalid \`since\` value "${since}"`);
+
+    const store = _loadMissions();
+    for (const m of store.missions) {
+        // Same org-isolation guarantee as listMissions()'s own opts.orgId
+        // filter: an exact match only, never a fallback to unscoped
+        // missions, never another org's — see this file's header comment.
+        if (orgId && m.orgId !== orgId) continue;
+        if (new Date(m.createdAt).getTime() < sinceMs) continue;
+        if (predicate(m)) return true;
+    }
+    return false;
 }
 
 /**
@@ -264,41 +978,83 @@ function updateMission(missionId, patch = {}) {
         throw new Error(`updateMission: invalid priority "${patch.priority}"`);
     }
 
+    // Mission 89 P1 fix — orgId ownership reassignment.
+    //
+    // "orgId" protects the top-level mission.orgId field (the primary
+    // org-scoping convention this file's own header documents — used by
+    // phase27.js, codingAssistant.js, and listMissions()'s own {orgId}
+    // filter). Reproduced live (Mission 89 Phase 2, test B1):
+    // updateMission(id, {orgId: "org-B"}) previously succeeded silently
+    // and durably reassigned a mission's org ownership — genuinely
+    // externally reachable, not just internal, since
+    // backend/routes/phase27.js's PATCH handler passes req.body directly
+    // as this function's patch with no field allowlist. Once created, a
+    // mission's org ownership must never change via this general-purpose
+    // update path — the same posture already applied to id/createdAt/etc.
     const IMMUTABLE = new Set([
-        "id", "createdAt", "subtasks", "decisions", "artifacts",
+        "id", "createdAt", "orgId", "subtasks", "decisions", "artifacts",
         "failures", "deployments", "approvals", "learnings", "timeline", "metrics",
     ]);
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now     = new Date().toISOString();
-    const changed = {};
+        const now     = new Date().toISOString();
+        const changed = {};
 
-    for (const [k, v] of Object.entries(patch)) {
-        if (IMMUTABLE.has(k)) continue;
-        if (mission[k] !== v) {
-            changed[k] = { from: mission[k], to: v };
-            mission[k] = v;
+        for (const [k, v] of Object.entries(patch)) {
+            if (IMMUTABLE.has(k)) continue;
+            // Mission 133-136 (Agent Memory): this loop is reachable directly
+            // from backend/routes/phase27.js's PATCH handler with req.body as
+            // `patch` and no field allowlist (see the orgId-immutability
+            // comment above) — the single most exposed write surface in this
+            // file. metadata is an arbitrary caller-supplied object; scrub it
+            // the same way every other free-text write path in this file now
+            // is, so a client can't durably persist a credential value into
+            // mission history via a PATCH body.
+            let effectiveValue = (k === "metadata" && v && typeof v === "object") ? _scrubSecrets(v) : v;
+            // The second, org-scoping convention this file's header also
+            // documents (organizationService.cjs's own createMissionForOrg())
+            // stamps ownership as metadata.orgId instead of the top-level
+            // field. Since "metadata" itself must remain a legitimately
+            // patchable field (existing callers — e.g. agentRuntimeSupervisor
+            // .cjs's tester tick, engineeringOrg.cjs's QA tick — replace the
+            // whole metadata object to add fields like `verified`/
+            // `qaVerified`), immutability here is enforced narrowly: if the
+            // incoming metadata patch would change orgId from what the
+            // mission already has, the existing value wins — every other
+            // field in the patched metadata object is still applied exactly
+            // as the caller intended. Reproduced live (Mission 89 Phase 2,
+            // test B2) prior to this fix. Derives from effectiveValue (already
+            // scrubbed above), not the raw v, so this orgId-preservation step
+            // can never resurrect an unscrubbed credential value.
+            if (k === "metadata" && v && typeof v === "object" && mission.metadata && typeof mission.metadata.orgId !== "undefined") {
+                effectiveValue = { ...effectiveValue, orgId: mission.metadata.orgId };
+            }
+            if (mission[k] !== effectiveValue) {
+                changed[k] = { from: mission[k], to: effectiveValue };
+                mission[k] = effectiveValue;
+            }
         }
-    }
 
-    // Auto-set completedAt when transitioning to terminal states
-    if (patch.status === "completed" || patch.status === "failed" || patch.status === "cancelled") {
-        if (!mission.completedAt) {
-            mission.completedAt = now;
-            changed.completedAt = { from: null, to: now };
+        // Auto-set completedAt when transitioning to terminal states
+        if (patch.status === "completed" || patch.status === "failed" || patch.status === "cancelled") {
+            if (!mission.completedAt) {
+                mission.completedAt = now;
+                changed.completedAt = { from: null, to: now };
+            }
         }
-    }
 
-    mission.updatedAt = now;
-    _appendTimeline(mission, "mission_updated", { changes: changed });
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        mission.updatedAt = now;
+        _appendTimeline(mission, "mission_updated", { changes: changed });
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Updated mission ${missionId}`, Object.keys(changed));
-    return { ...mission };
+        logger.info(`[MissionMemory] Updated mission ${missionId}`, Object.keys(changed));
+        return { ...mission };
+    });
 }
 
 /**
@@ -311,18 +1067,78 @@ function addSubtask(missionId, subtask = {}) {
         throw new Error("addSubtask: subtask.description is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const st = _ingestSubtask(mission, subtask, true);
-    mission.metrics  = _recomputeMetrics(mission);
-    mission.updatedAt = new Date().toISOString();
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        const st = _ingestSubtask(mission, subtask, true);
+        mission.metrics  = _recomputeMetrics(mission);
+        mission.updatedAt = new Date().toISOString();
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Subtask ${st.id} added to mission ${missionId}`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Subtask ${st.id} added to mission ${missionId}`);
+        return { ...mission };
+    });
+}
+
+/**
+ * updateSubtask(missionId, subtaskId, patch)
+ * patch: any subtask field except id (e.g. { status, startedAt, completedAt, output })
+ *
+ * A.5.2 runtime-stability finding: there was previously no dedicated way to
+ * mutate a subtask in place — the only path (missionRuntime.cjs's
+ * updateSubtaskStatus) went through updateMission(missionId, { subtasks }),
+ * but "subtasks" is in updateMission()'s own IMMUTABLE set, so that patch
+ * key was always silently dropped. Every subtask, on every mission, system
+ * -wide, was permanently stuck at its initial status. This was silent (no
+ * error, no log) and had real downstream effects beyond correctness: graphReasoningEngine.cjs's
+ * findBlockedMissions() flags any active mission whose subtasks are ALL
+ * still "pending" as stuck/blocked — which, because subtask status could
+ * never persist, was true of essentially every active mission with
+ * subtasks, including the very "Resolve blockers for mission: X" missions
+ * created to address it. That produced unbounded self-referential mission
+ * creation ("Resolve blockers for mission: Resolve blockers for mission:
+ * ..." nesting deeper each cycle), confirmed live in this session. Fixed
+ * at the actual source (real subtask persistence) rather than patched
+ * downstream, since the missing capability is what every symptom traced
+ * back to. Mirrors addSubtask's shape exactly — no new persistence
+ * mechanism, same load/mutate/save pattern already used throughout this
+ * file.
+ */
+function updateSubtask(missionId, subtaskId, patch = {}) {
+    if (!missionId)  throw new Error("updateSubtask: missionId is required");
+    if (!subtaskId)  throw new Error("updateSubtask: subtaskId is required");
+    if (!patch || typeof patch !== "object") throw new Error("updateSubtask: patch must be an object");
+
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
+
+        const st = (mission.subtasks || []).find(s => s.id === subtaskId);
+        if (!st) throw new Error(`updateSubtask: subtask ${subtaskId} not found in mission ${missionId}`);
+
+        const changed = {};
+        for (const [k, v] of Object.entries(patch)) {
+            if (k === "id") continue;
+            if (st[k] !== v) {
+                changed[k] = { from: st[k], to: v };
+                st[k] = v;
+            }
+        }
+
+        if (Object.keys(changed).length === 0) return { ...mission };
+
+        mission.metrics   = _recomputeMetrics(mission);
+        mission.updatedAt = new Date().toISOString();
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Subtask ${subtaskId} updated on mission ${missionId}`, Object.keys(changed));
+        return { ...mission };
+    });
 }
 
 /**
@@ -335,27 +1151,29 @@ function recordDecision(missionId, decision = {}) {
         throw new Error("recordDecision: decision.description is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const dec = {
-        id:          _uid("dec"),
-        timestamp:   now,
-        type:        decision.type        || "operational",
-        description: (decision.description || "").trim(),
-        rationale:   decision.rationale   || null,
-        outcome:     decision.outcome     || null,
-    };
-    mission.decisions.push(dec);
-    _appendTimeline(mission, "decision_recorded", { decisionId: dec.id, type: dec.type, description: dec.description });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        const now = new Date().toISOString();
+        const dec = {
+            id:          _uid("dec"),
+            timestamp:   now,
+            type:        decision.type        || "operational",
+            description: (decision.description || "").trim(),
+            rationale:   decision.rationale != null ? _scrubSecrets(decision.rationale) : null,
+            outcome:     decision.outcome   != null ? _scrubSecrets(decision.outcome)   : null,
+        };
+        mission.decisions.push(dec);
+        _appendTimeline(mission, "decision_recorded", { decisionId: dec.id, type: dec.type, description: dec.description });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Decision ${dec.id} recorded on mission ${missionId}`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Decision ${dec.id} recorded on mission ${missionId}`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -368,27 +1186,29 @@ function recordArtifact(missionId, artifact = {}) {
         throw new Error("recordArtifact: artifact.name is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const art = {
-        id:          _uid("art"),
-        type:        artifact.type        || "file",
-        name:        (artifact.name || "").trim(),
-        path:        artifact.path        || null,
-        createdAt:   now,
-        description: artifact.description || null,
-    };
-    mission.artifacts.push(art);
-    _appendTimeline(mission, "artifact_recorded", { artifactId: art.id, type: art.type, name: art.name });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
+        const now = new Date().toISOString();
+        const art = {
+            id:          _uid("art"),
+            type:        artifact.type        || "file",
+            name:        (artifact.name || "").trim(),
+            path:        artifact.path        || null,
+            createdAt:   now,
+            description: artifact.description != null ? _scrubSecrets(artifact.description) : null,
+        };
+        mission.artifacts.push(art);
+        _appendTimeline(mission, "artifact_recorded", { artifactId: art.id, type: art.type, name: art.name });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
 
-    logger.info(`[MissionMemory] Artifact ${art.id} recorded on mission ${missionId}`);
-    return { ...mission };
+        logger.info(`[MissionMemory] Artifact ${art.id} recorded on mission ${missionId}`);
+        return { ...mission };
+    });
 }
 
 /**
@@ -401,33 +1221,35 @@ function recordFailure(missionId, failure = {}) {
         throw new Error("recordFailure: failure.description is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const fail = {
-        id:          _uid("fail"),
-        timestamp:   now,
-        phase:       (failure.phase        || "unknown").trim(),
-        description: (failure.description  || "").trim(),
-        rootCause:   failure.rootCause     || null,
-        resolved:    failure.resolved      ?? false,
-    };
-    mission.failures.push(fail);
-    mission.metrics  = _recomputeMetrics(mission);
-    _appendTimeline(mission, "failure_recorded", {
-        failureId:   fail.id,
-        phase:       fail.phase,
-        description: fail.description,
-        resolved:    fail.resolved,
+        const now = new Date().toISOString();
+        const fail = {
+            id:          _uid("fail"),
+            timestamp:   now,
+            phase:       (failure.phase        || "unknown").trim(),
+            description: (failure.description  || "").trim(),
+            rootCause:   failure.rootCause != null ? _scrubSecrets(failure.rootCause) : null,
+            resolved:    failure.resolved      ?? false,
+        };
+        mission.failures.push(fail);
+        mission.metrics  = _recomputeMetrics(mission);
+        _appendTimeline(mission, "failure_recorded", {
+            failureId:   fail.id,
+            phase:       fail.phase,
+            description: fail.description,
+            resolved:    fail.resolved,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.warn(`[MissionMemory] Failure ${fail.id} recorded on mission ${missionId} — phase: ${fail.phase}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.warn(`[MissionMemory] Failure ${fail.id} recorded on mission ${missionId} — phase: ${fail.phase}`);
-    return { ...mission };
 }
 
 /**
@@ -443,33 +1265,35 @@ function recordDeployment(missionId, deployment = {}) {
         throw new Error("recordDeployment: deployment.status is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const dep = {
-        id:                _uid("dep"),
-        timestamp:         now,
-        environment:       (deployment.environment        || "").trim(),
-        status:            (deployment.status             || "").trim(),
-        version:           deployment.version             || null,
-        rollbackAvailable: deployment.rollbackAvailable   ?? false,
-    };
-    mission.deployments.push(dep);
-    mission.metrics  = _recomputeMetrics(mission);
-    _appendTimeline(mission, "deployment_recorded", {
-        deploymentId: dep.id,
-        environment:  dep.environment,
-        status:       dep.status,
-        version:      dep.version,
+        const now = new Date().toISOString();
+        const dep = {
+            id:                _uid("dep"),
+            timestamp:         now,
+            environment:       (deployment.environment        || "").trim(),
+            status:            (deployment.status             || "").trim(),
+            version:           deployment.version             || null,
+            rollbackAvailable: deployment.rollbackAvailable   ?? false,
+        };
+        mission.deployments.push(dep);
+        mission.metrics  = _recomputeMetrics(mission);
+        _appendTimeline(mission, "deployment_recorded", {
+            deploymentId: dep.id,
+            environment:  dep.environment,
+            status:       dep.status,
+            version:      dep.version,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Deployment ${dep.id} recorded on mission ${missionId} — env: ${dep.environment}, status: ${dep.status}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.info(`[MissionMemory] Deployment ${dep.id} recorded on mission ${missionId} — env: ${dep.environment}, status: ${dep.status}`);
-    return { ...mission };
 }
 
 /**
@@ -485,33 +1309,35 @@ function recordApproval(missionId, approval = {}) {
         throw new Error("recordApproval: approval.status is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const apr = {
-        id:          _uid("apr"),
-        timestamp:   now,
-        requestedBy: approval.requestedBy || null,
-        approvedBy:  approval.approvedBy  || null,
-        type:        (approval.type   || "").trim(),
-        status:      (approval.status || "").trim(),
-    };
-    mission.approvals.push(apr);
-    _appendTimeline(mission, "approval_recorded", {
-        approvalId:  apr.id,
-        type:        apr.type,
-        status:      apr.status,
-        requestedBy: apr.requestedBy,
-        approvedBy:  apr.approvedBy,
+        const now = new Date().toISOString();
+        const apr = {
+            id:          _uid("apr"),
+            timestamp:   now,
+            requestedBy: approval.requestedBy || null,
+            approvedBy:  approval.approvedBy  || null,
+            type:        (approval.type   || "").trim(),
+            status:      (approval.status || "").trim(),
+        };
+        mission.approvals.push(apr);
+        _appendTimeline(mission, "approval_recorded", {
+            approvalId:  apr.id,
+            type:        apr.type,
+            status:      apr.status,
+            requestedBy: apr.requestedBy,
+            approvedBy:  apr.approvedBy,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Approval ${apr.id} recorded on mission ${missionId} — type: ${apr.type}, status: ${apr.status}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.info(`[MissionMemory] Approval ${apr.id} recorded on mission ${missionId} — type: ${apr.type}, status: ${apr.status}`);
-    return { ...mission };
 }
 
 /**
@@ -524,34 +1350,36 @@ function addLearning(missionId, learning = {}) {
         throw new Error("addLearning: learning.insight is required");
     }
 
-    const store   = _loadMissions();
-    const mission = _findMission(store, missionId);
-    _assertMission(mission, missionId);
+    return _withMissionsLock(() => {
+        const store   = _loadMissions();
+        const mission = _findMission(store, missionId);
+        _assertMission(mission, missionId);
 
-    const now = new Date().toISOString();
-    const confidence = Number.isFinite(learning.confidence)
-        ? Math.min(100, Math.max(0, learning.confidence))
-        : 80;
+        const now = new Date().toISOString();
+        const confidence = Number.isFinite(learning.confidence)
+            ? Math.min(100, Math.max(0, learning.confidence))
+            : 80;
 
-    const lrn = {
-        id:         _uid("lrn"),
-        timestamp:  now,
-        insight:    (learning.insight || "").trim(),
-        source:     learning.source   || null,
-        confidence,
-    };
-    mission.learnings.push(lrn);
-    _appendTimeline(mission, "learning_added", {
-        learningId: lrn.id,
-        insight:    lrn.insight,
-        confidence: lrn.confidence,
+        const lrn = {
+            id:         _uid("lrn"),
+            timestamp:  now,
+            insight:    (learning.insight || "").trim(),
+            source:     learning.source != null ? _scrubSecrets(learning.source) : null,
+            confidence,
+        };
+        mission.learnings.push(lrn);
+        _appendTimeline(mission, "learning_added", {
+            learningId: lrn.id,
+            insight:    lrn.insight,
+            confidence: lrn.confidence,
+        });
+        mission.updatedAt = now;
+        _replaceMission(store, mission);
+        _saveMissions(store);
+
+        logger.info(`[MissionMemory] Learning ${lrn.id} added to mission ${missionId}`);
+        return { ...mission };
     });
-    mission.updatedAt = now;
-    _replaceMission(store, mission);
-    _saveMissions(store);
-
-    logger.info(`[MissionMemory] Learning ${lrn.id} added to mission ${missionId}`);
-    return { ...mission };
 }
 
 /**
@@ -702,14 +1530,27 @@ function getMissionStats() {
           )
         : null;
 
+    // Mission 76 (2026-08-29) — same class of gap as the search-filter fix
+    // above (Mission 64): a record missing subtasks/deployments/learnings/
+    // failures (reachable the same way — a direct out-of-band write
+    // bypassing createMission()/_buildMission(), live-reproduced via
+    // post-omega-p10.test.cjs's getDashboard()/getStatistics() chain and
+    // 4 real malformed records currently in data/missions.json) threw
+    // "Cannot read properties of undefined (reading 'length')" on every
+    // one of the 5 unguarded accesses below. (m.field || []) matches the
+    // exact same graceful-degradation approach already proven for
+    // listMissions()'s search filter — a malformed record simply
+    // contributes 0 to these aggregates, it doesn't crash the whole
+    // statistics call for every other caller.
+
     // Failure rate (missions that hit at least one failure / total)
-    const missionsWithFailures = missions.filter(m => m.failures.length > 0).length;
+    const missionsWithFailures = missions.filter(m => (m.failures || []).length > 0).length;
     const failureRate = total > 0 ? Number((missionsWithFailures / total).toFixed(4)) : 0;
 
     // Most common failure phases
     const phaseCounts = {};
     for (const m of missions) {
-        for (const f of m.failures) {
+        for (const f of (m.failures || [])) {
             const ph = f.phase || "unknown";
             phaseCounts[ph] = (phaseCounts[ph] || 0) + 1;
         }
@@ -720,9 +1561,9 @@ function getMissionStats() {
         .map(([phase, count]) => ({ phase, count }));
 
     // Aggregated counts
-    const totalSubtasks    = missions.reduce((s, m) => s + m.subtasks.length,    0);
-    const totalDeployments = missions.reduce((s, m) => s + m.deployments.length, 0);
-    const totalLearnings   = missions.reduce((s, m) => s + m.learnings.length,   0);
+    const totalSubtasks    = missions.reduce((s, m) => s + (m.subtasks    || []).length, 0);
+    const totalDeployments = missions.reduce((s, m) => s + (m.deployments || []).length, 0);
+    const totalLearnings   = missions.reduce((s, m) => s + (m.learnings   || []).length, 0);
 
     return {
         total,
@@ -742,8 +1583,10 @@ module.exports = {
     createMission,
     getMission,
     listMissions,
+    hasMissionMatching,
     updateMission,
     addSubtask,
+    updateSubtask,
     recordDecision,
     recordArtifact,
     recordFailure,
@@ -752,4 +1595,16 @@ module.exports = {
     addLearning,
     replayMission,
     getMissionStats,
+    // Mission 88: exposes the existing Mission-85 cross-process lock so a
+    // caller (autonomousMissionGuard.cjs) can hold it across its own
+    // read-decision-create sequence, not just around a single mutation
+    // function's body — see autonomousMissionGuard.cjs's own
+    // admitAndCreateAutonomousMission() for why that atomic unit is
+    // required. Same-process re-entrant (see _acquireMissionsLock()), so
+    // any missionMemory mutation function called from inside `fn` composes
+    // safely rather than deadlocking.
+    withMissionsLock: _withMissionsLock,
+    // Mission 133-136 (Agent Memory) — exported for direct regression coverage
+    // of the redaction guard itself, independent of any one write function.
+    _scrubSecretsForTest: _scrubSecrets,
 };

@@ -4,9 +4,29 @@ import "./MarketplaceCenter.css";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
+// Phase A.11.8 — this helper previously returned `r.json()` unconditionally, so a
+// non-2xx response was indistinguishable from a successful empty one. The backend
+// genuinely gates this whole surface behind a plan: GET /marketplace/catalog and
+// /marketplace/categories both answer HTTP 402 with
+//   {"error":"feature_gated","featureId":"plugins.marketplace",
+//    "upgradeRequired":"starter","message":"This feature requires the Starter plan or higher."}
+// That body parses fine, `catalog?.plugins` is undefined → [], the catch never
+// fires, and the screen asserted "0 TOTAL PLUGINS" + "No plugins in this category
+// yet." — a false claim about the catalog being empty when it was never read.
+// Surfacing the real status is what lets the caller tell the two apart. This is
+// the same shape as the sibling PluginMarketplace.jsx, which already tracks a
+// catalogErr and renders "Marketplace catalog unavailable" rather than a zero.
 async function get(path) {
   const r = await fetch(`${BASE}${path}`, { credentials: "include" });
-  return r.json();
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) {
+    const e = new Error(body.message || body.error || `HTTP ${r.status}`);
+    e.status = r.status;
+    e.gated  = r.status === 402 || body.error === "feature_gated";
+    e.upgradeRequired = body.upgradeRequired || null;
+    throw e;
+  }
+  return body;
 }
 async function post(path, body = {}) {
   const r = await fetch(`${BASE}${path}`, {
@@ -51,6 +71,7 @@ export default function MarketplaceCenter({ onNavigate }) {
   const [installedIds, setInstalledIds] = useState(new Set());
   const [installingId, setInstallingId] = useState(null);
   const [loading, setLoading]   = useState(true);
+  const [loadError, setLoadError] = useState(null);
   const [toast, setToast]       = useState(null);
 
   useEffect(() => { track.event("marketplace_viewed"); }, []);
@@ -73,8 +94,19 @@ export default function MarketplaceCenter({ onNavigate }) {
       const plugins = catalog?.plugins || [];
       setItems(plugins);
       setInstalledIds(new Set(plugins.filter(p => p.installed).map(p => p.id)));
-    } catch {
-      showToast("Marketplace unavailable — check server connection");
+      setLoadError(null);
+    } catch (e) {
+      // Phase A.11.8 — never fall through to an empty catalog on a failed read.
+      // The counts and the "no plugins" empty state are only truthful when the
+      // catalog was genuinely fetched; otherwise say what actually happened.
+      setLoadError({
+        gated: !!e.gated,
+        upgradeRequired: e.upgradeRequired,
+        message: e.message || "Marketplace unavailable",
+      });
+      setItems(null);
+      setCategories([]);
+      if (!e.gated) showToast("Marketplace unavailable — check server connection");
     } finally {
       setLoading(false);
     }
@@ -104,7 +136,13 @@ export default function MarketplaceCenter({ onNavigate }) {
     }
   }, [showToast]);
 
-  const totalCount = categories.find(c => c.id === "all")?.count || 0;
+  // Phase A.11.8 — "—" is this app's established unknown-value placeholder
+  // (Mission Control's stat cards, Billing's absent payment method, Launch
+  // Platform's fmt(), Customer Success's KPIs, Reports' Messages Sent). When the
+  // catalog was never successfully read, the total is genuinely unknown, so it
+  // renders as "—" rather than a fabricated 0.
+  const catalogRead = !loadError;
+  const totalCount  = catalogRead ? (categories.find(c => c.id === "all")?.count || 0) : "—";
 
   return (
     <div className="marketplace-center page-enter">
@@ -152,6 +190,18 @@ export default function MarketplaceCenter({ onNavigate }) {
       <div className="mc-content">
         {loading ? (
           <div className="mc-empty">Loading…</div>
+        ) : loadError ? (
+          // Phase A.11.8 — disclose the real reason instead of claiming the
+          // catalog is empty. The backend's own message is shown verbatim.
+          <div className="mc-empty">
+            {loadError.gated
+              ? <>
+                  {loadError.message}
+                  {loadError.upgradeRequired && <><br />Upgrade to <strong>{loadError.upgradeRequired}</strong> to browse and install plugins.</>}
+                  <br />The plugin catalog was not loaded, so no plugin counts are shown.
+                </>
+              : <>Marketplace catalog unavailable — {loadError.message}. Check your connection and retry.</>}
+          </div>
         ) : items.length === 0 ? (
           <div className="mc-empty">{search ? `No results for "${search}"` : "No plugins in this category yet."}</div>
         ) : (

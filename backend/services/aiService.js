@@ -2,7 +2,7 @@
 /**
  * AI Service — multi-provider router with health-based failover.
  *
- * Provider order (default): LLM_PROVIDER env var → ["groq","openrouter","openai","claude","gemini","ollama","deepseek","together","fireworks","cohere","nvidia","lmstudio"]
+ * Provider order (default): LLM_PROVIDER env var → ["groq","openrouter","openai","claude","gemini","ollama","deepseek","together","fireworks","cohere","nvidia","lmstudio","grok","qwen"]
  * Each provider is attempted once per call; failures are logged and the next
  * provider is tried. The last failure reason per provider is retained for
  * the /ai/status endpoint.
@@ -24,6 +24,11 @@
  *   - Cohere     (api.cohere.ai/v1)            COHERE_API_KEY
  *   - NVIDIA NIM (integrate.api.nvidia.com/v1) NVIDIA_API_KEY
  *   - LM Studio  (localhost:1234 by default)   LM_STUDIO_URL
+ *
+ * AI Provider Orchestration mission additions (OpenAI-compatible REST):
+ *   - Grok (x.ai)  (api.x.ai/v1)                              GROK_API_KEY
+ *   - Qwen (Alibaba DashScope, compatible-mode endpoint)       DASHSCOPE_API_KEY
+ *     International endpoint by default; set QWEN_REGION=cn for mainland China.
  */
 
 const axios  = require("axios");
@@ -54,6 +59,22 @@ async function _assertLocalServerUp(url, label) {
     if (!up) throw new Error(`${label} not reachable at ${hostname}:${p} (not installed/running?)`);
 }
 
+/**
+ * Public reachability probe for local providers (Ollama, LM Studio). Reuses
+ * the exact TCP-probe logic _assertLocalServerUp already uses internally to
+ * fail fast on unreachable local servers — exported so callers building a
+ * provider ranking (aiOrchestrator.cjs) can check reachability BEFORE
+ * ranking a local provider ahead of real, working cloud providers, instead
+ * of finding out only after a wasted retry attempt.
+ */
+async function isLocalServerReachable(url) {
+    try {
+        const { hostname, port, protocol } = new URL(url);
+        const p = port ? parseInt(port, 10) : (protocol === "https:" ? 443 : 80);
+        return await _isPortOpen(hostname, p);
+    } catch { return false; }
+}
+
 // ── Provider endpoints ────────────────────────────────────────────────────────
 const GROQ_URL        = "https://api.groq.com/openai/v1/chat/completions";
 const OPENAI_URL      = "https://api.openai.com/v1/chat/completions";
@@ -65,6 +86,17 @@ const TOGETHER_URL    = "https://api.together.xyz/v1/chat/completions";
 const FIREWORKS_URL   = "https://api.fireworks.ai/inference/v1/chat/completions";
 const COHERE_URL      = "https://api.cohere.ai/v1/chat";
 const NVIDIA_URL      = "https://integrate.api.nvidia.com/v1/chat/completions";
+const GROK_URL        = "https://api.x.ai/v1/chat/completions";
+// DashScope's "compatible-mode" endpoint speaks the OpenAI chat/completions
+// schema — same wire format as every other OpenAI-compatible adapter below.
+// International vs China endpoint selectable via QWEN_REGION (defaults intl,
+// since DASHSCOPE_API_KEY keys issued outside mainland China only work there).
+function _qwenUrl() {
+    const region = (process.env.QWEN_REGION || "intl").toLowerCase();
+    return region === "cn"
+        ? "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+        : "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions";
+}
 
 function _ollamaUrl()    { return (process.env.OLLAMA_URL    || "http://localhost:11434") + "/api/chat"; }
 function _lmStudioUrl()  { return (process.env.LM_STUDIO_URL || "http://localhost:1234")  + "/v1/chat/completions"; }
@@ -77,6 +109,8 @@ function _togetherModel(){ return process.env.TOGETHER_MODEL  || "meta-llama/Lla
 function _fireworksModel(){ return process.env.FIREWORKS_MODEL || "accounts/fireworks/models/llama-v3-70b-instruct"; }
 function _cohereModel()  { return process.env.COHERE_MODEL    || "command-r-plus"; }
 function _nvidiaModel()  { return process.env.NVIDIA_MODEL    || "meta/llama-3.1-70b-instruct"; }
+function _grokModel()    { return process.env.GROK_MODEL      || "grok-2-latest"; }
+function _qwenModel()    { return process.env.QWEN_MODEL      || "qwen-plus"; }
 function _geminiUrl()    {
     const model  = _geminiModel();
     const apiKey = process.env.GEMINI_API_KEY || "";
@@ -92,7 +126,7 @@ const _state = {
     failCount:        0,
 };
 // Initialise per-provider call counters for all providers
-["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"].forEach(p => { _state.callCount[p] = 0; });
+["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"].forEach(p => { _state.callCount[p] = 0; });
 
 // ── System prompt ─────────────────────────────────────────────────────────────
 let _cachedPrompt = null;
@@ -115,11 +149,64 @@ function _getSystemPrompt() {
 
 // ── Provider priority ─────────────────────────────────────────────────────────
 // Respects LLM_PROVIDER env var as the primary; others follow in fixed order.
+// Each key-based provider's credential env var. Local providers (ollama,
+// lmstudio) are deliberately absent — they have no key and are already
+// fail-fast guarded by _assertLocalServerUp() above.
+const _PROVIDER_KEY_ENV = {
+    groq:       "GROQ_API_KEY",
+    openrouter: "OPENROUTER_API_KEY",
+    openai:     "OPENAI_API_KEY",
+    claude:     "ANTHROPIC_API_KEY",
+    gemini:     "GEMINI_API_KEY",
+    deepseek:   "DEEPSEEK_API_KEY",
+    together:   "TOGETHER_API_KEY",
+    fireworks:  "FIREWORKS_API_KEY",
+    cohere:     "COHERE_API_KEY",
+    nvidia:     "NVIDIA_API_KEY",
+    grok:       "GROK_API_KEY",
+    qwen:       "DASHSCOPE_API_KEY",
+};
+
+/**
+ * True when a provider is *statically* unusable — it needs an API key and no
+ * key is configured. This is knowable without any network call.
+ *
+ * B.1 P1 measurement: with no keys configured, callAI() attempted all 14
+ * providers on every request and each key-less one threw "X_API_KEY not set"
+ * only after being entered. Measured on the running server, that produced
+ * 8,358 WARN lines out of 13,541 total log lines — 62% of all backend logging
+ * was the same statically-knowable failure repeated, with ten providers
+ * failing 592 times each. The autonomous AutoLoop drives this continuously,
+ * so it burned CPU in bursts (measured 80-100% during every stall) on work
+ * that could never succeed.
+ *
+ * NOTE ON HONESTY: this skips only providers with NO key configured. A
+ * provider that HAS a key and fails authentication or rate limits (the
+ * measured OpenAI 401 and Groq 429) is still attempted and still reported
+ * exactly as before — real credential failures must never be hidden.
+ */
+function _isUnconfigured(provider) {
+    const env = _PROVIDER_KEY_ENV[provider];
+    if (!env) return false;                       // local provider — not key-gated
+    return !String(process.env[env] || "").trim();
+}
+
 function _providerOrder() {
     const preferred = (process.env.LLM_PROVIDER || "").toLowerCase().trim();
-    const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"];
-    if (!preferred || !defaults.includes(preferred)) return defaults;
-    return [preferred, ...defaults.filter(p => p !== preferred)];
+    const defaults  = ["groq", "openrouter", "openai", "claude", "gemini", "ollama", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"];
+    const ordered = (!preferred || !defaults.includes(preferred))
+        ? defaults
+        : [preferred, ...defaults.filter(p => p !== preferred)];
+
+    const usable = ordered.filter(p => !_isUnconfigured(p));
+    // Never return an empty list: callAI() must still run, still fail, and
+    // still return its real "AI backend unavailable" sentinel. Skipping every
+    // provider silently would turn a reported failure into a silent one.
+    // In practice the local providers are never key-gated, so this list is
+    // non-empty even with zero API keys configured — they are attempted and
+    // fail loudly via _assertLocalServerUp(). The guard stays as a correctness
+    // backstop in case the provider list ever becomes fully key-gated.
+    return usable.length ? usable : ordered;
 }
 
 // ── Per-provider timeout (ms) ─────────────────────────────────────────────────
@@ -136,6 +223,8 @@ const TIMEOUTS = {
     cohere:     parseInt(process.env.COHERE_TIMEOUT     || "25000", 10),
     nvidia:     parseInt(process.env.NVIDIA_TIMEOUT     || "30000", 10),
     lmstudio:   parseInt(process.env.LM_STUDIO_TIMEOUT  || "30000", 10),
+    grok:       parseInt(process.env.GROK_TIMEOUT       || "25000", 10),
+    qwen:       parseInt(process.env.QWEN_TIMEOUT       || "25000", 10),
 };
 
 // ── Retry helper (network-class errors only, 1 retry) ────────────────────────
@@ -160,26 +249,26 @@ async function _withRetry(fn) {
 
 // ── Provider adapters ─────────────────────────────────────────────────────────
 
-async function _groq(messages, model) {
+async function _groq(messages, model, opts = {}) {
     const key = process.env.GROQ_API_KEY;
     if (!key) throw new Error("GROQ_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             GROQ_URL,
-            { model: model || "llama-3.3-70b-versatile", messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || "openai/gpt-oss-120b", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.groq }
         );
         return res.data.choices[0].message.content;
     });
 }
 
-async function _openrouter(messages, model) {
+async function _openrouter(messages, model, opts = {}) {
     const key = process.env.OPENROUTER_API_KEY;
     if (!key) throw new Error("OPENROUTER_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             OPENROUTER_URL,
-            { model: model || "anthropic/claude-haiku-4-5", messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || "anthropic/claude-haiku-4-5", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             {
                 headers: {
                     Authorization:  `Bearer ${key}`,
@@ -194,25 +283,25 @@ async function _openrouter(messages, model) {
     });
 }
 
-async function _openai(messages, model) {
+async function _openai(messages, model, opts = {}) {
     const key = process.env.OPENAI_API_KEY;
     if (!key) throw new Error("OPENAI_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             OPENAI_URL,
-            { model: model || "gpt-4o-mini", messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || "gpt-4o-mini", messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.openai }
         );
         return res.data.choices[0].message.content;
     });
 }
 
-async function _ollama(messages, model) {
+async function _ollama(messages, model, opts = {}) {
     const url = _ollamaUrl();
     await _assertLocalServerUp(url, "Ollama");
     const res = await axios.post(
         url,
-        { model: model || _ollamaModel(), messages, stream: false },
+        { model: model || _ollamaModel(), messages, stream: false, options: { num_predict: opts.maxTokens || 1024 } },
         { timeout: TIMEOUTS.ollama }
     );
     const content = res.data?.message?.content;
@@ -267,7 +356,7 @@ async function _gemini(messages, model, opts = {}) {
 
     const res = await axios.post(
         url,
-        { contents: [{ parts: [{ text: fullPrompt }] }] },
+        { contents: [{ parts: [{ text: fullPrompt }] }], generationConfig: { maxOutputTokens: opts.maxTokens || 1024 } },
         { headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.gemini }
     );
     const text = res.data?.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -276,13 +365,13 @@ async function _gemini(messages, model, opts = {}) {
 }
 
 // ── DeepSeek adapter (OpenAI-compatible) ─────────────────────────────────────
-async function _deepseek(messages, model) {
+async function _deepseek(messages, model, opts = {}) {
     const key = process.env.DEEPSEEK_API_KEY;
     if (!key) throw new Error("DEEPSEEK_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             DEEPSEEK_URL,
-            { model: model || _deepseekModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _deepseekModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.deepseek }
         );
         return res.data.choices[0].message.content;
@@ -290,13 +379,13 @@ async function _deepseek(messages, model) {
 }
 
 // ── Together AI adapter (OpenAI-compatible) ───────────────────────────────────
-async function _together(messages, model) {
+async function _together(messages, model, opts = {}) {
     const key = process.env.TOGETHER_API_KEY;
     if (!key) throw new Error("TOGETHER_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             TOGETHER_URL,
-            { model: model || _togetherModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _togetherModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.together }
         );
         return res.data.choices[0].message.content;
@@ -304,13 +393,13 @@ async function _together(messages, model) {
 }
 
 // ── Fireworks AI adapter (OpenAI-compatible) ──────────────────────────────────
-async function _fireworks(messages, model) {
+async function _fireworks(messages, model, opts = {}) {
     const key = process.env.FIREWORKS_API_KEY;
     if (!key) throw new Error("FIREWORKS_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             FIREWORKS_URL,
-            { model: model || _fireworksModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _fireworksModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.fireworks }
         );
         return res.data.choices[0].message.content;
@@ -319,7 +408,7 @@ async function _fireworks(messages, model) {
 
 // ── Cohere adapter ─────────────────────────────────────────────────────────────
 // Cohere Chat v1 accepts OpenAI-style message arrays.
-async function _cohere(messages, model) {
+async function _cohere(messages, model, opts = {}) {
     const key = process.env.COHERE_API_KEY;
     if (!key) throw new Error("COHERE_API_KEY not set");
     return _withRetry(async () => {
@@ -333,7 +422,7 @@ async function _cohere(messages, model) {
 
         const res = await axios.post(
             COHERE_URL,
-            { model: model || _cohereModel(), message: lastUser?.message || "", chat_history: chatHistory, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _cohereModel(), message: lastUser?.message || "", chat_history: chatHistory, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json", Accept: "application/json" }, timeout: TIMEOUTS.cohere }
         );
         const text = res.data?.text || res.data?.message?.content?.[0]?.text;
@@ -343,26 +432,54 @@ async function _cohere(messages, model) {
 }
 
 // ── NVIDIA NIM adapter (OpenAI-compatible) ────────────────────────────────────
-async function _nvidia(messages, model) {
+async function _nvidia(messages, model, opts = {}) {
     const key = process.env.NVIDIA_API_KEY;
     if (!key) throw new Error("NVIDIA_API_KEY not set");
     return _withRetry(async () => {
         const res = await axios.post(
             NVIDIA_URL,
-            { model: model || _nvidiaModel(), messages, temperature: 0.7, max_tokens: 1024 },
+            { model: model || _nvidiaModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
             { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.nvidia }
         );
         return res.data.choices[0].message.content;
     });
 }
 
+// ── Grok (x.ai) adapter (OpenAI-compatible) ──────────────────────────────────
+async function _grok(messages, model, opts = {}) {
+    const key = process.env.GROK_API_KEY;
+    if (!key) throw new Error("GROK_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            GROK_URL,
+            { model: model || _grokModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.grok }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
+// ── Qwen (Alibaba DashScope) adapter (OpenAI-compatible) ─────────────────────
+async function _qwen(messages, model, opts = {}) {
+    const key = process.env.DASHSCOPE_API_KEY;
+    if (!key) throw new Error("DASHSCOPE_API_KEY not set");
+    return _withRetry(async () => {
+        const res = await axios.post(
+            _qwenUrl(),
+            { model: model || _qwenModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
+            { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout: TIMEOUTS.qwen }
+        );
+        return res.data.choices[0].message.content;
+    });
+}
+
 // ── LM Studio adapter (OpenAI-compatible, local) ─────────────────────────────
-async function _lmstudio(messages, model) {
+async function _lmstudio(messages, model, opts = {}) {
     const url = _lmStudioUrl();
     await _assertLocalServerUp(url, "LM Studio");
     const res = await axios.post(
         url,
-        { model: model || _lmStudioModel(), messages, temperature: 0.7, max_tokens: 1024 },
+        { model: model || _lmStudioModel(), messages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 },
         { headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.lmstudio }
     );
     const content = res.data?.choices?.[0]?.message?.content;
@@ -448,6 +565,22 @@ async function _healthCheck(provider) {
                 await axios.get("https://integrate.api.nvidia.com/v1/models",
                     { headers: { Authorization: `Bearer ${process.env.NVIDIA_API_KEY}` }, timeout: 5000 });
                 return { ok: true };
+            case "grok":
+                if (!process.env.GROK_API_KEY) return { ok: false, reason: "GROK_API_KEY not set" };
+                await axios.get("https://api.x.ai/v1/models",
+                    { headers: { Authorization: `Bearer ${process.env.GROK_API_KEY}` }, timeout: 5000 });
+                return { ok: true };
+            case "qwen":
+                if (!process.env.DASHSCOPE_API_KEY) return { ok: false, reason: "DASHSCOPE_API_KEY not set" };
+                // DashScope's compatible-mode endpoint doesn't expose GET /models the
+                // same way OpenAI does — probe with a minimal real chat completion
+                // instead (1 max_token, cheapest reasonable liveness check).
+                await axios.post(
+                    _qwenUrl(),
+                    { model: _qwenModel(), messages: [{ role: "user", content: "hi" }], max_tokens: 1 },
+                    { headers: { Authorization: `Bearer ${process.env.DASHSCOPE_API_KEY}`, "Content-Type": "application/json" }, timeout: 6000 }
+                );
+                return { ok: true };
             case "lmstudio": {
                 const lmBase = process.env.LM_STUDIO_URL || "http://localhost:1234";
                 await axios.get(`${lmBase}/v1/models`, { timeout: 3000 });
@@ -473,6 +606,25 @@ async function _healthCheck(provider) {
  * @param {string}  [opts.provider]  force a specific provider
  * @param {string}  [opts.model]     override model for chosen provider
  */
+// OOPLIX V1 MASTER AUDIT (2026-08-16, A-to-Z backend coverage audit):
+// callAI() tries up to 14 providers sequentially, each with its own 20-30s
+// individual timeout (see TIMEOUTS above) — a worst case of several minutes
+// cumulative, even though callers like agents/autonomousLoop.cjs wrap the
+// whole call in a single 30s _withTimeout() and treat that as a hard
+// ceiling. Confirmed live in this session's own real logs: tasks reporting
+// "ERROR ... (5304216ms)" — 5.3 minutes — for a single AI call, because the
+// outer timeout only stops the CALLER from waiting, it does not cancel the
+// still-running sequential fallback chain underneath (no AbortController
+// exists anywhere in this call path — threading one through all 14 provider
+// helper functions would be a real architecture change, out of scope for
+// this pass). This overall deadline is the safe, minimal fix available
+// without that larger change: once the cumulative time already spent
+// trying providers would leave no reasonable time for the outer caller's
+// own ceiling, stop trying further providers and return the same honest
+// "AI backend unavailable" sentinel immediately, rather than continuing to
+// burn time nothing is still waiting for.
+const CALL_AI_OVERALL_BUDGET_MS = 28_000; // stays under autonomousLoop.cjs's 30s TASK_TIMEOUT_MS
+
 async function callAI(prompt, opts = {}) {
     const systemMsg = { role: "system", content: opts.system || _getSystemPrompt() };
     const history   = Array.isArray(opts.history) ? opts.history : [];
@@ -480,23 +632,30 @@ async function callAI(prompt, opts = {}) {
     const model     = opts.model || null;
 
     const providers = opts.provider ? [opts.provider] : _providerOrder();
+    const _callStart = Date.now();
 
     for (const provider of providers) {
+        if (Date.now() - _callStart >= CALL_AI_OVERALL_BUDGET_MS) {
+            logger.warn(`AI: overall budget (${CALL_AI_OVERALL_BUDGET_MS}ms) exhausted — stopping before trying "${provider}"`);
+            break;
+        }
         try {
             let reply;
             switch (provider) {
-                case "groq":       reply = await _groq(messages, model);              break;
-                case "openrouter": reply = await _openrouter(messages, model);        break;
-                case "openai":     reply = await _openai(messages, model);            break;
-                case "ollama":     reply = await _ollama(messages, model);            break;
+                case "groq":       reply = await _groq(messages, model, opts);         break;
+                case "openrouter": reply = await _openrouter(messages, model, opts);   break;
+                case "openai":     reply = await _openai(messages, model, opts);       break;
+                case "ollama":     reply = await _ollama(messages, model, opts);       break;
                 case "claude":     reply = await _claude(messages, model, opts);      break;
                 case "gemini":     reply = await _gemini(messages, model, opts);      break;
-                case "deepseek":   reply = await _deepseek(messages, model);          break;
-                case "together":   reply = await _together(messages, model);          break;
-                case "fireworks":  reply = await _fireworks(messages, model);         break;
-                case "cohere":     reply = await _cohere(messages, model);            break;
-                case "nvidia":     reply = await _nvidia(messages, model);            break;
-                case "lmstudio":   reply = await _lmstudio(messages, model);         break;
+                case "deepseek":   reply = await _deepseek(messages, model, opts);     break;
+                case "together":   reply = await _together(messages, model, opts);     break;
+                case "fireworks":  reply = await _fireworks(messages, model, opts);    break;
+                case "cohere":     reply = await _cohere(messages, model, opts);       break;
+                case "nvidia":     reply = await _nvidia(messages, model, opts);       break;
+                case "lmstudio":   reply = await _lmstudio(messages, model, opts);    break;
+                case "grok":       reply = await _grok(messages, model, opts);        break;
+                case "qwen":       reply = await _qwen(messages, model, opts);        break;
                 default:
                     logger.warn(`AI: unknown provider "${provider}", skipping`);
                     continue;
@@ -549,6 +708,8 @@ async function getAIStatus() {
         cohere:     !!process.env.COHERE_API_KEY,
         nvidia:     !!process.env.NVIDIA_API_KEY,
         lmstudio:   true,   // local — no key required
+        grok:       !!process.env.GROK_API_KEY,
+        qwen:       !!process.env.DASHSCOPE_API_KEY,
     };
 
     // Run health probes in parallel, with 6s cap so /ai/status stays fast
@@ -666,23 +827,34 @@ async function chat(messages, opts = {}) {
 
     const providers = chosenProvider ? [chosenProvider] : _providerOrder();
 
+    // Same overall-deadline fix as callAI() above, and for the same
+    // reason: a sequential fallback across up to 14 providers, each with
+    // its own 20-30s individual timeout, can legitimately run for minutes
+    // even though callers wrap this whole function in a much shorter
+    // single-call timeout.
     for (const p of providers) {
+        if (Date.now() - t0 >= CALL_AI_OVERALL_BUDGET_MS) {
+            logger.warn(`AI chat: overall budget (${CALL_AI_OVERALL_BUDGET_MS}ms) exhausted — stopping before trying "${p}"`);
+            break;
+        }
         try {
             let text;
             const allMessages = systemMsg ? [systemMsg, ...rest] : rest;
             switch (p) {
-                case "groq":       text = await _groq(allMessages, model);             break;
-                case "openrouter": text = await _openrouter(allMessages, model);       break;
-                case "openai":     text = await _openai(allMessages, model);           break;
-                case "ollama":     text = await _ollama(allMessages, model);           break;
+                case "groq":       text = await _groq(allMessages, model, adapterOpts);       break;
+                case "openrouter": text = await _openrouter(allMessages, model, adapterOpts); break;
+                case "openai":     text = await _openai(allMessages, model, adapterOpts);     break;
+                case "ollama":     text = await _ollama(allMessages, model, adapterOpts);     break;
                 case "claude":     text = await _claude(allMessages, model, adapterOpts); break;
                 case "gemini":     text = await _gemini(allMessages, model, adapterOpts); break;
-                case "deepseek":   text = await _deepseek(allMessages, model);         break;
-                case "together":   text = await _together(allMessages, model);         break;
-                case "fireworks":  text = await _fireworks(allMessages, model);        break;
-                case "cohere":     text = await _cohere(allMessages, model);           break;
-                case "nvidia":     text = await _nvidia(allMessages, model);           break;
-                case "lmstudio":   text = await _lmstudio(allMessages, model);        break;
+                case "deepseek":   text = await _deepseek(allMessages, model, adapterOpts);   break;
+                case "together":   text = await _together(allMessages, model, adapterOpts);   break;
+                case "fireworks":  text = await _fireworks(allMessages, model, adapterOpts);  break;
+                case "cohere":     text = await _cohere(allMessages, model, adapterOpts);     break;
+                case "nvidia":     text = await _nvidia(allMessages, model, adapterOpts);     break;
+                case "lmstudio":   text = await _lmstudio(allMessages, model, adapterOpts);  break;
+                case "grok":       text = await _grok(allMessages, model, adapterOpts);      break;
+                case "qwen":       text = await _qwen(allMessages, model, adapterOpts);      break;
                 default:
                     continue;
             }
@@ -708,7 +880,7 @@ async function chat(messages, opts = {}) {
 /** Helper: return the default model string for a provider (for metadata only). */
 function _defaultModel(provider) {
     switch (provider) {
-        case "groq":       return process.env.GROQ_MODEL       || "llama-3.3-70b-versatile";
+        case "groq":       return process.env.GROQ_MODEL       || "openai/gpt-oss-120b";
         case "openrouter": return process.env.OPENROUTER_MODEL || "anthropic/claude-haiku-4-5";
         case "openai":     return process.env.OPENAI_MODEL     || "gpt-4o-mini";
         case "ollama":     return _ollamaModel();
@@ -720,6 +892,8 @@ function _defaultModel(provider) {
         case "cohere":     return _cohereModel();
         case "nvidia":     return _nvidiaModel();
         case "lmstudio":   return _lmStudioModel();
+        case "grok":       return _grokModel();
+        case "qwen":       return _qwenModel();
         default:           return "unknown";
     }
 }
@@ -732,7 +906,7 @@ function _defaultModel(provider) {
  * @returns {{ [provider]: { available: boolean, hasKey: boolean, lastFailure: string|null, callCount: number } }}
  */
 function getProviderStatus() {
-    const ALL = ["groq", "openrouter", "openai", "ollama", "claude", "gemini", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio"];
+    const ALL = ["groq", "openrouter", "openai", "ollama", "claude", "gemini", "deepseek", "together", "fireworks", "cohere", "nvidia", "lmstudio", "grok", "qwen"];
     const result = {};
 
     for (const p of ALL) {
@@ -750,6 +924,8 @@ function getProviderStatus() {
                 case "cohere":     return !!process.env.COHERE_API_KEY;
                 case "nvidia":     return !!process.env.NVIDIA_API_KEY;
                 case "lmstudio":   return true;   // local, no key needed
+                case "grok":       return !!process.env.GROK_API_KEY;
+                case "qwen":       return !!process.env.DASHSCOPE_API_KEY;
                 default:           return false;
             }
         })();
@@ -771,7 +947,7 @@ function getProviderStatus() {
 // Returns a unified shape: { text, toolCalls: [{id,name,arguments}], provider, model }.
 // toolCalls is [] when the model responded with plain text instead of a call.
 
-async function _openaiCompatWithTools(url, key, messages, tools, model, defaultModel, timeout) {
+async function _openaiCompatWithTools(url, key, messages, tools, model, defaultModel, timeout, opts = {}) {
     if (!key) throw new Error("API key not set");
     const res = await axios.post(
         url,
@@ -781,7 +957,7 @@ async function _openaiCompatWithTools(url, key, messages, tools, model, defaultM
             tools: tools.map(t => ({ type: "function", function: { name: t.name, description: t.description, parameters: t.parameters } })),
             tool_choice: "auto",
             temperature: 0.7,
-            max_tokens: 1024,
+            max_tokens: opts.maxTokens || 1024,
         },
         { headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, timeout }
     );
@@ -864,7 +1040,17 @@ async function chatWithTools(messages, tools = [], opts = {}) {
         return { ...result, toolCalls: [] };
     }
 
-    const TOOL_CAPABLE = ["claude", "openai", "openrouter", "gemini"];
+    // AI Ecosystem mission: groq/deepseek/together/fireworks/nvidia added —
+    // all genuinely OpenAI-compatible chat-completions APIs that support
+    // real `tools`/`tool_choice` on their actual endpoints, using the SAME
+    // shared _openaiCompatWithTools() helper already used for openai/
+    // openrouter (it takes url/key/model as parameters — no new logic was
+    // needed, only wiring the existing constants already used elsewhere in
+    // this file for streaming). Cohere/Qwen/Grok/Ollama/LM Studio remain
+    // excluded — not verified against a real tools-capable request shape
+    // for those APIs in this codebase, so left as PROVIDER-LIMITATION
+    // rather than guessed at.
+    const TOOL_CAPABLE = ["claude", "openai", "openrouter", "gemini", "groq", "deepseek", "together", "fireworks", "nvidia"];
     const providers = opts.provider ? [opts.provider] : TOOL_CAPABLE.filter(p => _providerOrder().includes(p));
     const model = opts.model || null;
 
@@ -874,10 +1060,25 @@ async function chatWithTools(messages, tools = [], opts = {}) {
             let result;
             switch (p) {
                 case "openai":
-                    result = await _openaiCompatWithTools(OPENAI_URL, process.env.OPENAI_API_KEY, messages, tools, model, "gpt-4o-mini", TIMEOUTS.openai);
+                    result = await _openaiCompatWithTools(OPENAI_URL, process.env.OPENAI_API_KEY, messages, tools, model, "gpt-4o-mini", TIMEOUTS.openai, opts);
                     break;
                 case "openrouter":
-                    result = await _openaiCompatWithTools(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, messages, tools, model, "anthropic/claude-haiku-4-5", TIMEOUTS.openrouter);
+                    result = await _openaiCompatWithTools(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, messages, tools, model, "anthropic/claude-haiku-4-5", TIMEOUTS.openrouter, opts);
+                    break;
+                case "groq":
+                    result = await _openaiCompatWithTools(GROQ_URL, process.env.GROQ_API_KEY, messages, tools, model, _defaultModel("groq"), TIMEOUTS.groq, opts);
+                    break;
+                case "deepseek":
+                    result = await _openaiCompatWithTools(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, messages, tools, model, _deepseekModel(), TIMEOUTS.deepseek, opts);
+                    break;
+                case "together":
+                    result = await _openaiCompatWithTools(TOGETHER_URL, process.env.TOGETHER_API_KEY, messages, tools, model, _togetherModel(), TIMEOUTS.together, opts);
+                    break;
+                case "fireworks":
+                    result = await _openaiCompatWithTools(FIREWORKS_URL, process.env.FIREWORKS_API_KEY, messages, tools, model, _fireworksModel(), TIMEOUTS.fireworks, opts);
+                    break;
+                case "nvidia":
+                    result = await _openaiCompatWithTools(NVIDIA_URL, process.env.NVIDIA_API_KEY, messages, tools, model, _nvidiaModel(), TIMEOUTS.nvidia, opts);
                     break;
                 case "claude":
                     result = await _claudeWithTools(messages, tools, model, opts);
@@ -899,7 +1100,297 @@ async function chatWithTools(messages, tools = [], opts = {}) {
         }
     }
 
-    throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini.");
+    throw new Error("No tool-capable AI provider succeeded — check API keys for openai/openrouter/claude/gemini/groq/deepseek/together/fireworks/nvidia.");
 }
 
-module.exports = { callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus };
+// ── Streaming (SSE passthrough) ──────────────────────────────────────────────
+// aiRegistry.cjs already carried a `streamable: true/false` capability flag
+// per provider, but nothing in this file (or anywhere else) ever read it or
+// requested a streamed response — Ollama's adapter explicitly passed
+// `stream: false`, and every other adapter used the default non-streaming
+// response shape. STREAM_CAPABLE below reflects only providers verified here
+// to genuinely support it via a real streaming API (not aiRegistry's
+// per-capability flag, which is broader/aspirational metadata).
+const STREAM_CAPABLE = ["groq", "openrouter", "openai", "deepseek", "together", "fireworks", "nvidia", "grok", "qwen", "claude", "gemini", "ollama", "lmstudio"];
+
+function isStreamCapable(provider) { return STREAM_CAPABLE.includes(provider); }
+
+// OpenAI-compatible SSE stream parser — shared by every provider on this wire
+// format (groq/openai/openrouter/deepseek/together/fireworks/nvidia/grok/qwen).
+// Each SSE frame is `data: {...}\n\n`, terminated by `data: [DONE]\n\n`.
+async function _streamOpenAICompatible(url, key, body, timeout, onChunk) {
+    const res = await axios.post(url, { ...body, stream: true }, {
+        headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+        timeout, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop(); // keep the last (possibly partial) line for the next chunk
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                const payload = trimmed.slice(5).trim();
+                if (payload === "[DONE]") continue;
+                try {
+                    const json = JSON.parse(payload);
+                    const delta = json.choices?.[0]?.delta?.content;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore malformed/keepalive frames */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+// Claude's SSE format differs: named events (content_block_delta etc.), each
+// with its own `data: {...}` payload carrying `delta.text`.
+async function _streamClaude(messages, model, opts, onChunk) {
+    const key = process.env.ANTHROPIC_API_KEY;
+    if (!key) throw new Error("ANTHROPIC_API_KEY not set");
+    const systemMsg = messages.find(m => m.role === "system");
+    const userMsgs  = messages.filter(m => m.role !== "system");
+    const body = {
+        model: model || _claudeModel(), max_tokens: opts.maxTokens || 1024, stream: true,
+        messages: userMsgs.map(m => ({ role: m.role, content: m.content })),
+    };
+    if (systemMsg) body.system = systemMsg.content;
+
+    const res = await axios.post(ANTHROPIC_URL, body, {
+        headers: { "x-api-key": key, "anthropic-version": ANTHROPIC_VER, "Content-Type": "application/json" },
+        timeout: TIMEOUTS.claude, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                try {
+                    const json = JSON.parse(trimmed.slice(5).trim());
+                    const delta = json.delta?.text;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore event-type lines / keepalives */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+// Gemini's streaming endpoint returns a JSON array streamed incrementally
+// (not SSE) — parse candidate text out of each top-level object as it arrives.
+async function _streamGemini(messages, model, opts, onChunk) {
+    const key = process.env.GEMINI_API_KEY;
+    if (!key) throw new Error("GEMINI_API_KEY not set");
+    const systemMsg = messages.find(m => m.role === "system");
+    const userMsgs  = messages.filter(m => m.role !== "system");
+    const systemPart = systemMsg ? systemMsg.content + "\n\n" : "";
+    const fullPrompt = systemPart + userMsgs.map(m => m.content).join("\n");
+    const chosenModel = model || _geminiModel();
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${chosenModel}:streamGenerateContent?alt=sse&key=${key}`;
+
+    const res = await axios.post(url, { contents: [{ parts: [{ text: fullPrompt }] }] }, {
+        headers: { "Content-Type": "application/json" }, timeout: TIMEOUTS.gemini, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+            for (const line of lines) {
+                const trimmed = line.trim();
+                if (!trimmed.startsWith("data:")) continue;
+                try {
+                    const json = JSON.parse(trimmed.slice(5).trim());
+                    const delta = json.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore malformed frames */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+async function _streamOllama(messages, model, onChunk) {
+    const url = _ollamaUrl();
+    await _assertLocalServerUp(url, "Ollama");
+    const res = await axios.post(url, { model: model || _ollamaModel(), messages, stream: true }, {
+        timeout: TIMEOUTS.ollama, responseType: "stream",
+    });
+    return new Promise((resolve, reject) => {
+        let full = "";
+        let buffer = "";
+        res.data.on("data", chunk => {
+            buffer += chunk.toString("utf8");
+            const lines = buffer.split("\n");
+            buffer = lines.pop();
+            for (const line of lines) {
+                if (!line.trim()) continue;
+                try {
+                    const json = JSON.parse(line);
+                    const delta = json.message?.content;
+                    if (delta) { full += delta; onChunk(delta); }
+                } catch { /* ignore partial/malformed lines */ }
+            }
+        });
+        res.data.on("end", () => resolve(full));
+        res.data.on("error", reject);
+    });
+}
+
+/**
+ * Stream a chat completion, invoking onChunk(deltaText) as tokens arrive.
+ * Resolves with the same shape as chat(): { text, provider, model, latencyMs }.
+ * Falls back through the same provider order as chat()/callAI() — if a
+ * provider fails before producing any chunk, tries the next.
+ *
+ * @param {Array<{role,content}>} messages
+ * @param {object} opts   same as chat() — provider, task, model, maxTokens
+ * @param {(delta: string) => void} onChunk
+ */
+async function streamChat(messages, opts = {}, onChunk = () => {}) {
+    let chosenProvider;
+    if (opts.provider) chosenProvider = opts.provider;
+    else if (opts.task) chosenProvider = routeByCapability(opts.task, opts).provider;
+
+    const model = opts.model || null;
+    const t0 = Date.now();
+    const systemMsg = messages.find(m => m.role === "system");
+    const rest = messages.filter(m => m.role !== "system");
+    const allMessages = systemMsg ? [systemMsg, ...rest] : rest;
+
+    const providers = (chosenProvider ? [chosenProvider] : _providerOrder()).filter(isStreamCapable);
+    if (!providers.length) throw new Error("No streaming-capable provider available in the current provider order");
+
+    for (const p of providers) {
+        try {
+            let text;
+            switch (p) {
+                case "groq":       text = await _streamOpenAICompatible(GROQ_URL, process.env.GROQ_API_KEY, { model: model || "openai/gpt-oss-120b", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.groq, onChunk); break;
+                case "openrouter": text = await _streamOpenAICompatible(OPENROUTER_URL, process.env.OPENROUTER_API_KEY, { model: model || "anthropic/claude-haiku-4-5", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.openrouter, onChunk); break;
+                case "openai":     text = await _streamOpenAICompatible(OPENAI_URL, process.env.OPENAI_API_KEY, { model: model || "gpt-4o-mini", messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.openai, onChunk); break;
+                case "deepseek":   text = await _streamOpenAICompatible(DEEPSEEK_URL, process.env.DEEPSEEK_API_KEY, { model: model || _deepseekModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.deepseek, onChunk); break;
+                case "together":   text = await _streamOpenAICompatible(TOGETHER_URL, process.env.TOGETHER_API_KEY, { model: model || _togetherModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.together, onChunk); break;
+                case "fireworks":  text = await _streamOpenAICompatible(FIREWORKS_URL, process.env.FIREWORKS_API_KEY, { model: model || _fireworksModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.fireworks, onChunk); break;
+                case "nvidia":     text = await _streamOpenAICompatible(NVIDIA_URL, process.env.NVIDIA_API_KEY, { model: model || _nvidiaModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.nvidia, onChunk); break;
+                case "grok":       text = await _streamOpenAICompatible(GROK_URL, process.env.GROK_API_KEY, { model: model || _grokModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.grok, onChunk); break;
+                case "qwen":       text = await _streamOpenAICompatible(_qwenUrl(), process.env.DASHSCOPE_API_KEY, { model: model || _qwenModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.qwen, onChunk); break;
+                // AI Ecosystem mission: LM Studio's local server explicitly
+                // emulates the OpenAI API (including SSE streaming with the
+                // same delta.content chunk shape) — that emulation is the
+                // entire premise of the product, unlike Cohere's genuinely
+                // different named-event wire format (left unimplemented,
+                // still PROVIDER-LIMITATION/unverified per the comment
+                // below). _streamOpenAICompatible() always sends an
+                // Authorization header; the non-streaming _lmstudio()
+                // adapter sends none at all (LM Studio doesn't require a
+                // key), so "lm-studio" here is a harmless placeholder
+                // value — the same convention widely used by OpenAI-SDK
+                // clients pointed at a local LM Studio server, which
+                // ignores unrecognized/placeholder auth by default.
+                case "lmstudio":   text = await _streamOpenAICompatible(_lmStudioUrl(), "lm-studio", { model: model || _lmStudioModel(), messages: allMessages, temperature: 0.7, max_tokens: opts.maxTokens || 1024 }, TIMEOUTS.lmstudio, onChunk); break;
+                case "claude":     text = await _streamClaude(allMessages, model, opts, onChunk); break;
+                case "gemini":     text = await _streamGemini(allMessages, model, opts, onChunk); break;
+                case "ollama":     text = await _streamOllama(allMessages, model, onChunk); break;
+                default: continue;
+            }
+            if (_state.callCount[p] !== undefined) _state.callCount[p]++;
+            _state.activeProvider = p;
+            _state.lastSuccess = new Date().toISOString();
+            return { text, provider: p, model: model || _defaultModel(p), latencyMs: Date.now() - t0 };
+        } catch (err) {
+            _state.failCount++;
+            _state.lastFailures[p] = { reason: err.message, ts: new Date().toISOString() };
+            logger.warn(`AI streamChat [${p}] failed: ${err.message}`);
+        }
+    }
+
+    throw new Error("All streaming-capable AI providers failed — check your API keys.");
+}
+
+/**
+ * Extract and parse a JSON object from a raw LLM text response.
+ *
+ * Every AI-JSON generator in this codebase (componentGenerator.cjs,
+ * autonomousPageBuilder.cjs, aiDesignPlanner.cjs, selfHealingFrontend.cjs,
+ * and others) independently duplicated the same `raw.match(/\{[\s\S]*\}/)`
+ * + `JSON.parse()` pattern, none of them handling a real, observed failure
+ * mode: LLMs frequently return multi-line code inside a JSON string value
+ * with literal (unescaped) newlines/tabs instead of `\n`/`\t` — valid as
+ * "text a model would write," invalid per the JSON spec, and something
+ * `JSON.parse` rejects outright ("Bad control character in string
+ * literal"). Consolidating here (not redesigning each caller's contract)
+ * so every generator gets the same real fix and only needs to switch its
+ * two-line inline block for a call to this.
+ *
+ * @param {string} raw - full LLM response text
+ * @returns {{ok:true, data:object}|{ok:false, error:string}}
+ */
+function extractJSON(raw) {
+    if (typeof raw !== "string") return { ok: false, error: "AI response was not text" };
+    const jsonMatch = raw.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) return { ok: false, error: "AI did not return JSON" };
+    const candidate = jsonMatch[0];
+    try {
+        return { ok: true, data: JSON.parse(candidate) };
+    } catch (firstErr) {
+        // Escape raw control characters (newline, tab, CR) that appear
+        // INSIDE string literals — the single most common real failure
+        // mode for multi-line code/text embedded in an LLM's JSON output.
+        // Walks the string tracking quote state so control chars outside
+        // strings (real JSON formatting whitespace) are left untouched.
+        let repaired = "";
+        let inString = false;
+        let escaped  = false;
+        for (const ch of candidate) {
+            if (inString) {
+                if (escaped) { repaired += ch; escaped = false; continue; }
+                if (ch === "\\") { repaired += ch; escaped = true; continue; }
+                if (ch === '"') { inString = false; repaired += ch; continue; }
+                if (ch === "\n") { repaired += "\\n"; continue; }
+                if (ch === "\r") { repaired += "\\r"; continue; }
+                if (ch === "\t") { repaired += "\\t"; continue; }
+                repaired += ch;
+            } else {
+                if (ch === '"') inString = true;
+                repaired += ch;
+            }
+        }
+        try {
+            return { ok: true, data: JSON.parse(repaired) };
+        } catch (secondErr) {
+            return { ok: false, error: `AI returned malformed JSON: ${firstErr.message}` };
+        }
+    }
+}
+
+module.exports = {
+    callAI, detectIntentWithAI, getAIStatus, routeByCapability, chat, chatWithTools, getProviderStatus, extractJSON,
+    // Exported for aiOrchestrator.cjs's availability probing — read-only
+    // accessors, no new behavior; local-server URL builders + reachability
+    // check already existed internally (used by _ollama/_lmstudio's own
+    // fail-fast path), just weren't exposed for callers to probe ahead of time.
+    isLocalServerReachable, ollamaUrl: _ollamaUrl, lmStudioUrl: _lmStudioUrl,
+    // Streaming (SSE passthrough) — see STREAM_CAPABLE for exactly which
+    // providers this supports. LM Studio was added (AI Ecosystem mission):
+    // its local server explicitly emulates the OpenAI API, the same real,
+    // already-implemented _streamOpenAICompatible() parser applies with no
+    // new logic. Cohere remains deliberately excluded — its streaming wire
+    // format genuinely differs from every other provider here (named
+    // event_type frames, not OpenAI-style delta chunks) and would need a
+    // real verified implementation before being added, not a guess.
+    streamChat, isStreamCapable,
+    CALL_AI_OVERALL_BUDGET_MS,
+};

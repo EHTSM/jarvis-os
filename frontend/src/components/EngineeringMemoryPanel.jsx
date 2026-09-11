@@ -1,15 +1,47 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { _fetch } from "../_client";
 import "./EngineeringMemoryPanel.css";
 
 // ── helpers ───────────────────────────────────────────────────────────────────
 
+// A.11.2: this helper returned r.json() with NO status check, so a 4xx/5xx
+// body flowed through as if it were data and the caller's catch only fired on
+// a network error. Same defect class as A.11 F1. Fixed by delegating to the
+// canonical _client.js _fetch, which already throws on !res.ok and preserves
+// the backend's own message + status — so callers can surface the real
+// reason. Do not re-add a local `if (!r.ok)` check here: _fetch() never
+// returns a non-ok response, it throws before returning, so that check would
+// be unreachable dead code, not a real guard.
+//
+// OOPLIX V1 MASTER AUDIT (2026-08-16): this helper called a bare fetch()
+// against `/api${path}` — e.g. /api/memory/stats — but the real backend
+// mounts these routes at /memory/*, /memory-index/* with NO /api prefix
+// (confirmed: only /api/auth/*, /api/accounts/*, and /api/status are real
+// duplicate-mounted routes — grep-confirmed across every route file, not a
+// general rule). Every single call this entire panel makes (8 tabs: Timeline,
+// Lessons, Similarity, Predictions, Growth, Evolve, Benchmark, Index) 404'd,
+// live-confirmed: GET /api/memory/stats -> 404 "Not Found: GET /api/memory/stats"
+// with real auth, for every user, always. The bare fetch() also omitted
+// credentials:"include" (cookies never sent) and BASE_URL support (would
+// have broken under REACT_APP_API_URL/Electron regardless of the path fix).
+// Replaced with the canonical _fetch (_client.js), matching every other
+// component in the codebase including this file's own sibling MemoryOSV2.jsx
+// — preserves this file's existing API(method, path, body) call-site
+// signature and its Error{message,status} contract that all 8 view
+// components already depend on, so no other line in this file needed to
+// change.
 const API = async (method, path, body) => {
-    const r = await fetch(`/api${path}`, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        ...(body ? { body: JSON.stringify(body) } : {}),
-    });
-    return r.json();
+    try {
+        return await _fetch(path, {
+            method,
+            ...(body ? { body: JSON.stringify(body) } : {}),
+        });
+    } catch (e) {
+        // _fetch already throws a real Error with the backend's own message
+        // and e.status set (see _client.js) — rethrow as-is, matching the
+        // shape every caller in this file already expects.
+        throw e;
+    }
 };
 
 function formatMs(ms) {
@@ -28,30 +60,30 @@ function timeAgo(iso) {
 }
 
 function scoreColor(score) {
-    if (score >= 0.6) return "#10b981";
-    if (score >= 0.3) return "#f59e0b";
-    return "#6b7280";
+    if (score >= 0.6) return "var(--success)";
+    if (score >= 0.3) return "var(--warning)";
+    return "var(--text-dim)";
 }
 
 function riskColor(score) {
-    if (score >= 70) return "#ef4444";
-    if (score >= 40) return "#f59e0b";
-    return "#10b981";
+    if (score >= 70) return "var(--danger)";
+    if (score >= 40) return "var(--warning)";
+    return "var(--success)";
 }
 
 const SOURCE_COLORS = {
     lesson:          "#60a5fa",
-    rule:            "#10b981",
+    rule:            "var(--success)",
     rca:             "#a78bfa",
-    mission:         "#f59e0b",
-    raw_lesson:      "#6b7280",
-    failure_lesson:  "#ef4444",
-    success_lesson:  "#10b981",
+    mission:         "var(--warning)",
+    raw_lesson:      "var(--text-dim)",
+    failure_lesson:  "var(--danger)",
+    success_lesson:  "var(--success)",
     reusable_rule:   "#34d399",
     rca_playbook:    "#c084fc",
-    rule_match:      "#10b981",
-    mission_failure: "#ef4444",
-    approved_decision: "#f59e0b",
+    rule_match:      "var(--success)",
+    mission_failure: "var(--danger)",
+    approved_decision: "var(--warning)",
     patch:           "#fb923c",
     pipeline:        "#94a3b8",
     acp6_bundle:     "#818cf8",
@@ -76,16 +108,16 @@ function StatsRow({ stats }) {
         <div className="emp-stats-row">
             {[
                 { k: "Lessons",     v: src.lessons,          c: "#60a5fa" },
-                { k: "Rules",       v: src.rules,            c: "#10b981" },
+                { k: "Rules",       v: src.rules,            c: "var(--success)" },
                 { k: "RCAs",        v: src.rcas,             c: "#a78bfa" },
-                { k: "Failures ✓",  v: src.failuresAnalysed, c: "#6b7280" },
-                { k: "Missions",    v: src.missions,         c: "#f59e0b" },
+                { k: "Failures ✓",  v: src.failuresAnalysed, c: "var(--text-dim)" },
+                { k: "Missions",    v: src.missions,         c: "var(--warning)" },
                 { k: "Patches",     v: src.patches,          c: "#fb923c" },
                 { k: "Pipelines",   v: src.pipelineRuns,     c: "#94a3b8" },
                 { k: "Knowledge",   v: grw.totalKnowledgeItems, c: "#e5e7eb" },
                 { k: "This Week",   v: grw.lessonsThisWeek,  c: "#34d399" },
-                { k: "Open Recs",   v: eng.openRecommendations, c: "#f59e0b" },
-                { k: "Active RCAs", v: eng.activeRCAs,       c: "#ef4444" },
+                { k: "Open Recs",   v: eng.openRecommendations, c: "var(--warning)" },
+                { k: "Active RCAs", v: eng.activeRCAs,       c: "var(--danger)" },
                 { k: "Playbooks",   v: eng.playbooks,        c: "#c084fc" },
             ].map(t => (
                 <div key={t.k} className="emp-stat">
@@ -114,7 +146,7 @@ function TimelineView() {
 
     const TYPE_COLOR = {
         lesson: "#60a5fa", patch: "#fb923c", pipeline: "#94a3b8",
-        mission: "#f59e0b", rca: "#a78bfa",
+        mission: "var(--warning)", rca: "#a78bfa",
     };
 
     return (
@@ -123,7 +155,7 @@ function TimelineView() {
                 <div key={i} className="emp-tl-row">
                     <div className="emp-tl-dot" style={{ background: TYPE_COLOR[e.type] || "#374151" }} />
                     <div className="emp-tl-body">
-                        <span className="emp-tl-type" style={{ color: TYPE_COLOR[e.type] || "#6b7280" }}>
+                        <span className="emp-tl-type" style={{ color: TYPE_COLOR[e.type] || "var(--text-dim)" }}>
                             {TYPE_ICONS[e.type] || "·"} {e.type}
                         </span>
                         <span className="emp-tl-title">{e.title}</span>
@@ -155,7 +187,8 @@ function SimilarityExplorer() {
             if (mode === "patches")    r = await API("POST", "/memory/similar-patches",    { targetFile: query, reasonHint: query, limit: 10 });
             if (mode === "strategies") r = await API("POST", "/memory/successful-strategies", { goal: query, limit: 10 });
             setResult(r);
-        } catch {}
+        // A.11.2: search failure was invisible; surface the backend reason.
+        } catch (e) { setResult({ error: e?.message || 'Memory search failed.' }); }
         setLoading(false);
     };
 
@@ -191,7 +224,7 @@ function SimilarityExplorer() {
                     <div key={i} className="emp-result-card">
                         <div className="emp-result-head">
                             <span className="emp-result-icon">{TYPE_ICONS[item.type] || "·"}</span>
-                            <span className="emp-result-type" style={{ color: SOURCE_COLORS[item.type] || "#6b7280" }}>
+                            <span className="emp-result-type" style={{ color: SOURCE_COLORS[item.type] || "var(--text-dim)" }}>
                                 {item.type}
                             </span>
                             <div className="emp-score-bar">
@@ -295,7 +328,7 @@ function PredictionsView() {
                             { k: "Repair",   v: risk.repairProbability },
                         ].map(p => (
                             <div key={p.k} className="emp-prob-tile">
-                                <div className="emp-prob-val" style={{ color: p.k === "Rollback" || p.k === "Repair" ? riskColor(p.v) : "#10b981" }}>
+                                <div className="emp-prob-val" style={{ color: p.k === "Rollback" || p.k === "Repair" ? riskColor(p.v) : "var(--success)" }}>
                                     {Math.round(p.v)}%
                                 </div>
                                 <div className="emp-prob-key">{p.k}</div>
@@ -353,7 +386,7 @@ function PredictionsView() {
                     <div className="emp-pred-label">Historical Comparison</div>
                     <div className="emp-compare-row">
                         <div className="emp-compare-kpi">
-                            <div className="emp-compare-val" style={{ color: compare.historicalSuccessRate >= 70 ? "#10b981" : "#f59e0b" }}>
+                            <div className="emp-compare-val" style={{ color: compare.historicalSuccessRate >= 70 ? "var(--success)" : "var(--warning)" }}>
                                 {compare.historicalSuccessRate ?? "—"}%
                             </div>
                             <div className="emp-compare-key">Historical Success</div>
@@ -363,7 +396,7 @@ function PredictionsView() {
                             <div className="emp-compare-key">Successes</div>
                         </div>
                         <div className="emp-compare-kpi">
-                            <div className="emp-compare-val" style={{ color: compare.historicalFailures > 0 ? "#ef4444" : "#6b7280" }}>
+                            <div className="emp-compare-val" style={{ color: compare.historicalFailures > 0 ? "var(--danger)" : "var(--text-dim)" }}>
                                 {compare.historicalFailures}
                             </div>
                             <div className="emp-compare-key">Failures</div>
@@ -426,7 +459,7 @@ function KnowledgeGrowthView() {
                 })}
             </div>
             <div className="emp-growth-legend">
-                {[["#60a5fa","Lessons"],["#fb923c","Patches"],["#f59e0b","Missions"],["#10b981","Rules"]].map(([c,l]) => (
+                {[["#60a5fa","Lessons"],["#fb923c","Patches"],["var(--warning)","Missions"],["var(--success)","Rules"]].map(([c,l]) => (
                     <div key={l} className="emp-growth-leg-item">
                         <div className="emp-growth-leg-dot" style={{ background: c }} />
                         <span>{l}</span>
@@ -522,8 +555,8 @@ function BenchmarkView() {
                 <>
                     <div className="emp-bench-kpis">
                         {[
-                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
-                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "#10b981" : "#f59e0b" },
+                            { k: "Passed",     v: `${result.passed}/${result.total}`, c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
+                            { k: "Pass Rate",  v: `${result.passRate}%`,              c: result.passRate >= 90 ? "var(--success)" : "var(--warning)" },
                             { k: "Total Time", v: formatMs(result.totalMs),           c: "#60a5fa" },
                             { k: "Knowledge",  v: result.stats?.growth?.totalKnowledgeItems || 0, c: "#d1d5db" },
                             { k: "Lessons",    v: result.stats?.memorySources?.lessons || 0,      c: "#60a5fa" },
@@ -539,7 +572,7 @@ function BenchmarkView() {
                         {(result.scenarios || []).map((s, i) => (
                             <div key={i} className={`emp-bench-row emp-bench-row--${s.ok ? "ok" : "fail"}`}>
                                 <span className="emp-bench-num">{i + 1}.</span>
-                                <span className="emp-bench-dot" style={{ background: s.ok ? "#10b981" : "#ef4444" }} />
+                                <span className="emp-bench-dot" style={{ background: s.ok ? "var(--success)" : "var(--danger)" }} />
                                 <span className="emp-bench-goal">{s.name}</span>
                                 <span className="emp-bench-val">{s.value}</span>
                                 <span className="emp-bench-ms">{formatMs(s.elapsedMs)}</span>
@@ -585,7 +618,7 @@ function EvolveView() {
                 <div className="emp-evolve-results">
                     {Object.entries(result).filter(([k]) => k !== 'evolvedAt').map(([key, val]) => (
                         <div key={key} className={`emp-evolve-row emp-evolve-row--${val.ok ? "ok" : "fail"}`}>
-                            <span className="emp-evolve-dot" style={{ background: val.ok ? "#10b981" : "#ef4444" }} />
+                            <span className="emp-evolve-dot" style={{ background: val.ok ? "var(--success)" : "var(--danger)" }} />
                             <span className="emp-evolve-key">{key}</span>
                             {val.ok ? (
                                 <span className="emp-evolve-detail">
@@ -607,13 +640,114 @@ function EvolveView() {
     );
 }
 
+// ── Unified Index view (cross-product memory index: agents/runtime/unifiedMemoryEngine.cjs) ──
+
+const NS_COLORS = {
+    project: "#60a5fa", workflow: "#94a3b8", incident: "var(--danger)",
+    decision: "#a78bfa", knowledge: "var(--success)",
+};
+
+function IndexView() {
+    const [summary, setSummary] = useState(null);
+    const [query,   setQuery]   = useState("");
+    const [results, setResults] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [rebuilding, setRebuilding] = useState(false);
+
+    const loadSummary = useCallback(() => {
+        API("GET", "/memory-index/summary").then(r => r.namespaces && setSummary(r));
+    }, []);
+
+    useEffect(() => { loadSummary(); }, [loadSummary]);
+
+    const search = async () => {
+        if (!query.trim()) return;
+        setLoading(true);
+        try {
+            const r = await API("GET", `/memory-index/search?q=${encodeURIComponent(query)}&limit=20`);
+            setResults(r.results || []);
+        } catch { setResults([]); }
+        setLoading(false);
+    };
+
+    const rebuild = async () => {
+        setRebuilding(true);
+        try { await API("POST", "/memory-index/rebuild"); loadSummary(); }
+        finally { setRebuilding(false); }
+    };
+
+    return (
+        <div className="emp-sim">
+            {summary && (
+                <div className="emp-stats-row">
+                    {Object.entries(summary.namespaces || {}).map(([ns, count]) => (
+                        <div key={ns} className="emp-stat">
+                            <div className="emp-stat-val" style={{ color: NS_COLORS[ns] || "var(--text-dim)" }}>{count}</div>
+                            <div className="emp-stat-key">{ns}</div>
+                        </div>
+                    ))}
+                    <div className="emp-stat">
+                        <div className="emp-stat-val">{summary.totalIndexed ?? 0}</div>
+                        <div className="emp-stat-key">Total Indexed</div>
+                    </div>
+                    <div className="emp-stat">
+                        <div className="emp-stat-val" style={{ fontSize: 11 }}>{summary.indexAge}</div>
+                        <div className="emp-stat-key">Index Age</div>
+                    </div>
+                </div>
+            )}
+            <div className="emp-sim-toolbar">
+                <div className="emp-sim-search-row">
+                    <input className="emp-sim-input"
+                        placeholder="Search across blueprints, incidents, RCAs, pipeline runs, decisions…"
+                        value={query}
+                        onChange={e => setQuery(e.target.value)}
+                        onKeyDown={e => e.key === "Enter" && search()} />
+                    <button className="emp-search-btn" onClick={search} disabled={loading || !query.trim()}>
+                        {loading ? "…" : "Search"}
+                    </button>
+                    <button className="emp-search-btn" onClick={rebuild} disabled={rebuilding}>
+                        {rebuilding ? "Rebuilding…" : "Rebuild Index"}
+                    </button>
+                </div>
+            </div>
+            <div className="emp-sim-results">
+                {results === null && !loading && (
+                    <div className="emp-empty">Search the unified cross-product memory index</div>
+                )}
+                {results && results.length === 0 && !loading && (
+                    <div className="emp-empty">No matches found</div>
+                )}
+                {(results || []).map((item, i) => (
+                    <div key={i} className="emp-result-card">
+                        <div className="emp-result-head">
+                            <span className="emp-result-type" style={{ color: NS_COLORS[item.ns] || "var(--text-dim)" }}>
+                                {item.ns} · {item.type}
+                            </span>
+                        </div>
+                        <div className="emp-result-body">
+                            {item.title && <div className="emp-result-title">{item.title}</div>}
+                            {item.summary && <div className="emp-result-detail">{item.summary}</div>}
+                            <div className="emp-result-meta">
+                                {item.blueprintId && <span>blueprint: {item.blueprintId}</span>}
+                                {item.ts && <span>{timeAgo(item.ts)}</span>}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+}
+
 // ── Main panel ────────────────────────────────────────────────────────────────
 
-const VIEWS = ["timeline", "lessons", "similarity", "predictions", "growth", "evolve", "benchmark"];
+const VIEWS = ["timeline", "lessons", "similarity", "predictions", "growth", "evolve", "benchmark", "index"];
 
 const VIEW_LABELS = {
     timeline: "Timeline", lessons: "Lessons", similarity: "Similarity",
     predictions: "Predictions", growth: "Growth", evolve: "Evolve", benchmark: "Benchmark",
+    index: "Unified Index",
 };
 
 export default function EngineeringMemoryPanel() {
@@ -650,6 +784,7 @@ export default function EngineeringMemoryPanel() {
                 {view === "growth"      && <KnowledgeGrowthView />}
                 {view === "evolve"      && <EvolveView />}
                 {view === "benchmark"   && <BenchmarkView />}
+                {view === "index"       && <IndexView />}
             </div>
         </div>
     );

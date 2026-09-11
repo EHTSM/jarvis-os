@@ -348,8 +348,25 @@ test("certification has expiresAt date", () => {
 });
 
 test("certifyBatch certifies multiple assets", () => {
-  const assets = mce.listAssets({ type: "blueprint", limit: 3 });
-  const ids    = assets.assets.map(a => a.id);
+  // Mission 60A: discover()'s blueprint source is companyBlueprintEngine.cjs
+  // (the real, live data/company-blueprints.json) — a genuinely fresh
+  // environment (clean CI checkout; data/ is gitignored) starts with zero
+  // real blueprints, so this test's original assumption of ">= 2 already
+  // discovered blueprint assets" is an environment dependency, not
+  // something certifyBatch()/discover() themselves get wrong. Seed
+  // directly via publishAsset() (the same reliable mechanism this file's
+  // own "publishAsset creates new asset" test above already uses) rather
+  // than depending on pre-existing platform data.
+  let assets = mce.listAssets({ type: "blueprint", limit: 3 });
+  while (assets.assets.length < 2) {
+    mce.publishAsset({
+      type: "blueprint", name: `Test Blueprint ${assets.assets.length + 1}`,
+      desc: "A test blueprint for marketplace certification batch testing",
+      tags: ["test", "blueprint"], source: "test_suite", version: "1.0.0",
+    });
+    assets = mce.listAssets({ type: "blueprint", limit: 3 });
+  }
+  const ids = assets.assets.map(a => a.id);
   assert.ok(ids.length >= 2, "need >= 2 blueprint assets");
   const r = mce2.certifyBatch(ids);
   assert.ok(r.ok);
@@ -704,8 +721,20 @@ test("discover → certify → recommend → rate pipeline", () => {
   const disc = mce.discover();
   assert.ok(disc.ok && disc.total > 0);
 
-  // 2. list blueprints (from live blueprintEngine)
-  const bps = mce.listAssets({ type: "blueprint", limit: 3 });
+  // 2. list blueprints (from live blueprintEngine, or seeded — see Mission
+  // 60A comment on "certifyBatch certifies multiple assets" above: a
+  // genuinely fresh environment starts with zero real discovered
+  // blueprints, since companyBlueprintEngine.cjs's own store is gitignored
+  // local data, not something a clean checkout carries)
+  let bps = mce.listAssets({ type: "blueprint", limit: 3 });
+  if (bps.assets.length === 0) {
+    mce.publishAsset({
+      type: "blueprint", name: "Test Pipeline Blueprint",
+      desc: "A test blueprint for the discover→certify→recommend→rate pipeline",
+      tags: ["test", "blueprint", "saas"], source: "test_suite", version: "1.0.0",
+    });
+    bps = mce.listAssets({ type: "blueprint", limit: 3 });
+  }
   assert.ok(bps.assets.length > 0, "no blueprints discovered from live data");
 
   // 3. certify first blueprint

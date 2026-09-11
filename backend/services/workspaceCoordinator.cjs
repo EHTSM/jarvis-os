@@ -163,7 +163,25 @@ async function _dispatch(subTask, missionId) {
       case "electron":
       default:
         // Cloud/remote workspaces: use computer controller as unified dispatcher
-        result = await _try(() => _cc()?.run?.({ command: action, workspaceType }))
+        // Mission 63: computerController.run(command, opts) takes the
+        // command as a STRING first argument — this previously passed a
+        // single object ({ command: action, workspaceType }) as the whole
+        // first argument, so computerExecutionEngine.execute()'s own
+        // command.slice()/regex .test(command) calls threw
+        // "command.slice is not a function" for every electron/cloud-
+        // routed step (live-reproduced — confirmed the exact TypeError).
+        // _try() swallowed that throw and fell through to the
+        // {ok:true, simulated:true} fallback... except this call is
+        // awaited inside _try()'s callback via a Promise, so the
+        // rejection surfaced as `null` from _try() only for the
+        // synchronous-appearing case; the real observed symptom (a
+        // genuine {ok:false} with no error message reaching
+        // workspaceMesh.execute()'s caller) traces to this exact
+        // wrong-shaped call. Fixed to call run() with the real
+        // (command, opts) signature every other real caller in this
+        // codebase already uses (see computerController.cjs's own
+        // browser/desktop/editor/terminal facades).
+        result = await _try(() => _cc()?.run?.(action, { workspaceType }))
                  || { ok: true, simulated: true, action, via: workspaceType };
         break;
     }

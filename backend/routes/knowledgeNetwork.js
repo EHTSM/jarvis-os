@@ -39,12 +39,16 @@
 
 const router = require("express").Router();
 
-const kfe  = () => require("../services/knowledgeFederationEngine.cjs");
-const kcor = () => require("../services/knowledgeCorrelationEngine.cjs");
-const kde  = () => require("../services/knowledgeDiscoveryEngine.cjs");
-const kgov = () => require("../services/knowledgeGovernanceEngine.cjs");
-const kex  = () => require("../services/knowledgeExchangeEngine.cjs");
-const knd  = () => require("../services/knowledgeNetworkDashboard.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const kfe  = () => _try(() => require("../services/knowledgeFederationEngine.cjs"));
+const kcor = () => _try(() => require("../services/knowledgeCorrelationEngine.cjs"));
+const kde  = () => _try(() => require("../services/knowledgeDiscoveryEngine.cjs"));
+const kgov = () => _try(() => require("../services/knowledgeGovernanceEngine.cjs"));
+const kex  = () => _try(() => require("../services/knowledgeExchangeEngine.cjs"));
+const knd  = () => _try(() => require("../services/knowledgeNetworkDashboard.cjs"));
 
 function ok(res, data)           { res.json({ ok: true, ...data }); }
 function err(res, msg, code=400) { res.status(code).json({ ok: false, error: msg }); }

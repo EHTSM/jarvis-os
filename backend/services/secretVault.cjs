@@ -38,15 +38,134 @@
 const fs     = require("fs");
 const path   = require("path");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const VAULT_FILE   = path.join(__dirname, "../../data/vault.json");
 const HISTORY_FILE = path.join(__dirname, "../../data/vault-history.json");
+const AUDIT_FILE    = path.join(__dirname, "../../data/vault-access-audit.json");
+const KDF_SALT_FILE = path.join(__dirname, "../../data/vault-kdf-salt.bin");
 
-// ── Encryption (AES-256-GCM, key from JWT_SECRET) ────────────────────────────
-function _key() {
+function _try(fn) { try { return fn(); } catch { return null; } }
+function _orgService() { return _try(() => require("./organizationService.cjs")); }
+
+// ── Org-scoping enforcement (Vault Security Hardening) ───────────────────────
+// Prior state: every function below accepted an orgId parameter purely as a
+// storage-key component (_vkey()) — nothing verified the CALLER was actually
+// authorized for that org. A caller that (accidentally or maliciously) passed
+// a different orgId string could transparently read/write/rotate/delete that
+// other org's secret. This closes that gap additively: when a caller passes
+// a requestingAccountId, the org membership is genuinely verified via the
+// real organizationService.hasPermission() (no new permission model) before
+// the vault operation proceeds. Existing call sites that don't pass
+// requestingAccountId (there are several — internal service-to-service calls
+// that already resolved authorization at a higher layer, e.g.
+// companyFactory.js's routes, which call organizationService's own
+// _requireCompanyOrgPermission() before ever reaching the vault) are
+// completely unaffected — this is opt-in stricter checking, not a breaking
+// change to every caller.
+//
+// GLOBAL_ORG is exempt from this check — it is the founder/operator-only
+// vault partition (founderVault.js's routes, gated by operatorOnly
+// middleware upstream), not a multi-tenant org a regular account could ever
+// legitimately claim membership in.
+function _assertOrgAccess(orgId, requestingAccountId, action) {
+  if (!requestingAccountId) return; // opt-in: no accountId passed = no check (backward compatible)
+  if (!orgId || orgId === GLOBAL_ORG) return; // founder/operator vault partition — gated upstream, not per-org
+  const org = _orgService();
+  if (!org) return; // organizationService unavailable — fail open only in a genuinely broken install, matching this file's existing _try()-everywhere convention
+  if (!org.hasPermission(orgId, requestingAccountId, action)) {
+    const err = new Error(`Forbidden — account is not authorized for org ${orgId}`);
+    err.status = 403;
+    throw err;
+  }
+}
+
+// ── Vault access audit log (Vault Security Hardening) ────────────────────────
+// Separate from _appendHistory() (which records store/rotate/delete events
+// keyed by connectorId — an operational log). This is a security audit
+// trail specifically for plaintext reveals: who saw which secret's raw
+// value, when, and why. Append-only, capped, mode 0600 like every other
+// vault file.
+function _loadAudit() {
+  try { return JSON.parse(fs.readFileSync(AUDIT_FILE, "utf8")); } catch { return []; }
+}
+function _appendAudit(entry) {
+  const a = _loadAudit();
+  a.unshift({ ...entry, ts: new Date().toISOString() });
+  const trimmed = a.slice(0, 1000);
+  try {
+    const dir = path.dirname(AUDIT_FILE);
+    fs.mkdirSync(dir, { recursive: true });
+    // Persistence Sweep (2026-08-20): this used to write AUDIT_FILE directly
+    // — a crash/SIGKILL mid-writeFileSync could leave this security-sensitive
+    // reveal-audit-trail truncated/corrupted. Matches _save()'s own
+    // already-fixed VAULT_FILE pattern a few dozen lines below: a unique
+    // per-call tmp name + renameSync, which is atomic at the OS level (a
+    // reader/subsequent boot never observes a partially-written file).
+    const tmp = `${AUDIT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
+    fs.renameSync(tmp, AUDIT_FILE);
+  } catch { /* non-fatal — audit logging must never block the underlying operation */ }
+}
+function getAccessAudit({ connectorId, limit = 200 } = {}) {
+  const all = _loadAudit();
+  const filtered = connectorId ? all.filter(e => e.connectorId === connectorId) : all;
+  return filtered.slice(0, limit);
+}
+
+// ── Encryption (AES-256-GCM) ──────────────────────────────────────────────────
+// Vault Security Hardening — key derivation upgrade.
+//
+// Prior: the AES-256-GCM key was crypto.createHash("sha256").update(JWT_SECRET)
+// — a single unsalted hash. JWT_SECRET is already high-entropy (it's a real
+// signing secret, not a user password), so this was never brute-forceable
+// like a weak-password KDF gap would be; the actual weakness was structural:
+// no salt (the exact same key is derivable by anyone who ever learns
+// JWT_SECRET, with no per-install variance) and no cryptographic domain
+// separation from JWT signing's own use of the same secret.
+//
+// Fix: HKDF-SHA256 (RFC 5869) with a random, persistent, per-install salt
+// (data/vault-kdf-salt.bin, generated once, mode 0600) and an explicit
+// "info" context string that cryptographically separates this derived key
+// from any other use of JWT_SECRET (e.g. JWT signing itself). HKDF, not
+// PBKDF2/scrypt, is the correct primitive here: PBKDF2/scrypt exist to slow
+// down brute-forcing a LOW-entropy secret (a human password); JWT_SECRET is
+// already high-entropy key material, so what's needed is key separation via
+// HKDF's extract-and-expand construction, not added computational cost.
+//
+// Ciphertext stays AES-256-GCM, encoded as before, with one additive change:
+// new ciphertext is prefixed "v2:" (v2:iv:tag:enc). Ciphertext with no
+// recognized version prefix (the old iv:tag:enc, 3-part hex format) is
+// decrypted with the legacy raw-SHA-256 key — every credential already
+// encrypted under the old scheme keeps working with zero migration or
+// re-encryption required. New writes always use the new key.
+function _legacyKey() {
   const secret = process.env.JWT_SECRET;
   if (!secret) throw new Error("JWT_SECRET required for vault encryption");
   return crypto.createHash("sha256").update(secret).digest();
+}
+
+function _kdfSalt() {
+  try {
+    return fs.readFileSync(KDF_SALT_FILE);
+  } catch {
+    const salt = crypto.randomBytes(32);
+    try {
+      fs.mkdirSync(path.dirname(KDF_SALT_FILE), { recursive: true });
+      const tmp = `${KDF_SALT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+      fs.writeFileSync(tmp, salt, { mode: 0o600 });
+      fs.renameSync(tmp, KDF_SALT_FILE);
+    } catch { /* if persistence fails, still return this salt for this process's lifetime */ }
+    return salt;
+  }
+}
+
+function _key() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET required for vault encryption");
+  const salt = _kdfSalt();
+  const info = Buffer.from("jarvis-os:secretVault:aes-256-gcm:v2", "utf8");
+  return Buffer.from(crypto.hkdfSync("sha256", Buffer.from(secret, "utf8"), salt, info, 32));
 }
 
 function _encrypt(plaintext) {
@@ -55,13 +174,15 @@ function _encrypt(plaintext) {
   const c   = crypto.createCipheriv("aes-256-gcm", k, iv);
   const enc = Buffer.concat([c.update(plaintext, "utf8"), c.final()]);
   const tag = c.getAuthTag();
-  return iv.toString("hex") + ":" + tag.toString("hex") + ":" + enc.toString("hex");
+  return "v2:" + iv.toString("hex") + ":" + tag.toString("hex") + ":" + enc.toString("hex");
 }
 
 function _decrypt(ciphertext) {
-  const [ivHex, tagHex, encHex] = ciphertext.split(":");
+  const parts = ciphertext.split(":");
+  const isV2  = parts.length === 4 && parts[0] === "v2";
+  const [ivHex, tagHex, encHex] = isV2 ? parts.slice(1) : parts;
   if (!ivHex || !tagHex || !encHex) throw new Error("Invalid ciphertext format");
-  const k   = _key();
+  const k   = isV2 ? _key() : _legacyKey();
   const iv  = Buffer.from(ivHex,  "hex");
   const tag = Buffer.from(tagHex, "hex");
   const enc = Buffer.from(encHex, "hex");
@@ -77,13 +198,42 @@ function _load() {
 }
 function _save(d) {
   const dir = path.dirname(VAULT_FILE);
-  fs.mkdirSync(dir, { recursive: true });
-  const tmp = VAULT_FILE + ".tmp";
-  // mode 0o600: vault holds AES-GCM ciphertext of live credentials — other
-  // local users/processes on the same host must not be able to read it.
-  fs.writeFileSync(tmp, JSON.stringify(d, null, 2), { mode: 0o600 });
-  fs.chmodSync(tmp, 0o600);
-  fs.renameSync(tmp, VAULT_FILE);
+  const tmp = `${VAULT_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    // Vault Security Hardening: the tmp filename used to be a fixed
+    // `${VAULT_FILE}.tmp` shared by every caller. Under concurrent
+    // storeSecret()/deleteSecret()/rotateSecret() calls in the same
+    // process (confirmed via a real test failure: two concurrent stores
+    // raced, one's renameSync() completed before the other's chmodSync()
+    // ran against the now-renamed-away path, throwing ENOENT), a second
+    // call's write could be silently lost or crash mid-save. A unique
+    // per-call tmp name (pid + random) makes concurrent saves independent;
+    // each still atomically replaces VAULT_FILE via renameSync.
+    //
+    // mode 0o600 set atomically at creation: vault holds AES-GCM ciphertext
+    // of live credentials — other local users/processes on the same host
+    // must not be able to read it. (A separate chmodSync() after the write
+    // was redundant AND the actual race window above — removed.)
+    fs.writeFileSync(tmp, JSON.stringify(d, null, 2), { mode: 0o600 });
+    fs.renameSync(tmp, VAULT_FILE);
+  } catch (e) {
+    // Residual Filesystem Path & Sensitive Error Leakage Deep Sweep
+    // (2026-08-21): unlike its siblings _appendHistory()/_appendAudit(),
+    // this write was completely unguarded — a real failure (disk full,
+    // permission change) threw Node's raw fs error straight up through
+    // storeSecret()/deleteSecret()/rotateSecret() into
+    // POST /company-factory/companies/:id/connectors/:connectorId/:type's
+    // route catch block (ordinary requireAuth customer, not operator-only),
+    // leaking the absolute path of the encrypted credential store plus its
+    // tmp-file naming scheme. Live-reproduced via a safe isolated
+    // read-only-directory test (never the real vault):
+    // "EACCES: permission denied, open '.../vault.json.<pid>.<hex>.tmp'".
+    // Full detail logged server-side; the error re-thrown to callers is now
+    // a fixed, path-free message.
+    logger.error(`[SecretVault] vault write failed: ${e.message}`);
+    throw new Error("Could not save credential vault");
+  }
 }
 function _loadHistory() {
   try { return JSON.parse(fs.readFileSync(HISTORY_FILE, "utf8")); }
@@ -96,13 +246,34 @@ function _appendHistory(entry) {
   try {
     const dir = path.dirname(HISTORY_FILE);
     fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(HISTORY_FILE, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
-    fs.chmodSync(HISTORY_FILE, 0o600);
+    // Persistence Sweep (2026-08-20): same crash-safety fix as _appendAudit
+    // above — direct writeFileSync risked a truncated/corrupted history file
+    // on a crash mid-write. Same tmp+rename pattern as VAULT_FILE's _save().
+    const tmp = `${HISTORY_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify(trimmed, null, 2), { mode: 0o600 });
+    fs.renameSync(tmp, HISTORY_FILE);
   } catch { /* non-fatal */ }
 }
 
 function _ts()  { return new Date().toISOString(); }
-function _vkey(connectorId, type) { return `${connectorId}::${type}`; }
+
+// GLOBAL_ORG is the implicit tenant for every pre-multi-tenant install and
+// for any caller that doesn't pass an orgId. Its key format
+// (`connectorId::type`) is unchanged from before org-scoping existed, so
+// every credential already in data/vault.json today stays reachable with
+// zero migration. Only a real, non-default orgId gets the `orgId::` prefix —
+// this makes org isolation strictly additive: existing single-tenant
+// deployments and already-configured connectors are byte-for-byte
+// unaffected.
+const GLOBAL_ORG = "global";
+function _vkey(connectorId, type, orgId = GLOBAL_ORG) {
+  return orgId && orgId !== GLOBAL_ORG ? `${orgId}::${connectorId}::${type}` : `${connectorId}::${type}`;
+}
+// Recover the orgId a stored key belongs to, for filtering/iteration.
+function _keyOrg(vaultKey) {
+  const parts = vaultKey.split("::");
+  return parts.length === 3 ? parts[0] : GLOBAL_ORG;
+}
 
 // ── Credential type definitions ───────────────────────────────────────────────
 const CRED_TYPES = new Set([
@@ -141,6 +312,8 @@ const ENV_MAP = {
   "ai:fireworks::api_key":      "FIREWORKS_API_KEY",
   "ai:cohere::api_key":         "COHERE_API_KEY",
   "ai:nvidia::api_key":         "NVIDIA_API_KEY",
+  "ai:grok::api_key":           "GROK_API_KEY",
+  "ai:qwen::api_key":           "DASHSCOPE_API_KEY",
   // Phase B — Git
   "git:github::personal_access_token": "GITHUB_TOKEN",
   "git:github::oauth_token":    "GITHUB_CLIENT_SECRET",
@@ -177,6 +350,8 @@ const ENV_MAP = {
   "msg:twilio::api_key":        "TWILIO_AUTH_TOKEN",
   "msg:discord::api_key":       "DISCORD_BOT_TOKEN",
   "msg:slack::oauth_token":     "SLACK_BOT_TOKEN",
+  "msg:teams::oauth_token":     "MICROSOFT_CLIENT_SECRET", // Teams rides the same Graph OAuth app as Microsoft 365
+  "msg:teams::webhook_secret":  "TEAMS_WEBHOOK_URL",
   // Phase G — Auth
   "auth:google::oauth_token":   "GOOGLE_CLIENT_SECRET",
   "auth:github::oauth_token":   "GITHUB_CLIENT_SECRET",
@@ -187,6 +362,8 @@ const ENV_MAP = {
   // Phase H — Productivity
   "prod:dropbox::oauth_token":  "DROPBOX_ACCESS_TOKEN",
   "prod:m365::oauth_token":     "MS_GRAPH_TOKEN",
+  "prod:notion::api_key":       "NOTION_API_KEY",
+  "prod:notion::oauth_token":   "NOTION_CLIENT_SECRET",
   // Phase J — Creative
   "creative:figma::personal_access_token": "FIGMA_ACCESS_TOKEN",
   "creative:canva::api_key":    "CANVA_API_KEY",
@@ -198,21 +375,26 @@ const ENV_MAP = {
   "monitor:sentry::api_key":    "SENTRY_DSN",
   "monitor:datadog::api_key":   "DATADOG_API_KEY",
   "monitor:uptime::api_key":    "UPTIMEROBOT_API_KEY",
+  // Phase M — Project Management
+  "issue:jira::personal_access_token": "JIRA_API_TOKEN",
+  "issue:linear::api_key":      "LINEAR_API_KEY",
 };
 
 // ── Core CRUD ─────────────────────────────────────────────────────────────────
-function storeSecret(connectorId, type, value, meta = {}) {
+function storeSecret(connectorId, type, value, meta = {}, orgId = GLOBAL_ORG, requestingAccountId = null) {
   if (!CRED_TYPES.has(type)) throw new Error(`Unknown credential type: ${type}. Supported: ${[...CRED_TYPES].join(", ")}`);
   if (typeof value !== "string" || !value) throw new Error("Secret value must be a non-empty string");
   if (value.length > 32768) throw new Error("Secret value exceeds maximum length (32KB)");
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
 
   const vault  = _load();
-  const vk     = _vkey(connectorId, type);
+  const vk     = _vkey(connectorId, type, orgId);
   const existing = vault.secrets[vk];
 
   vault.secrets[vk] = {
     connectorId,
     type,
+    orgId,
     encrypted: _encrypt(value),
     storedAt:  existing?.storedAt || _ts(),
     updatedAt: _ts(),
@@ -225,33 +407,102 @@ function storeSecret(connectorId, type, value, meta = {}) {
   };
 
   _save(vault);
-  _appendHistory({ event: "stored", connectorId, type, version: vault.secrets[vk].version });
+  _appendHistory({ event: "stored", connectorId, type, orgId, version: vault.secrets[vk].version });
   return _publicRecord(vault.secrets[vk]);
 }
 
-function getSecret(connectorId, type) {
+function getSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = null, opts = {}) {
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
   const vault = _load();
   if (type) {
-    const rec = vault.secrets[_vkey(connectorId, type)];
+    const rec = vault.secrets[_vkey(connectorId, type, orgId)];
     if (!rec) return null;
-    try { return _decrypt(rec.encrypted); }
+    try {
+      const value = _decrypt(rec.encrypted);
+      if (requestingAccountId) _appendAudit({ event: "reveal", connectorId, type, orgId, accountId: requestingAccountId, reason: opts.reason || null });
+      return value;
+    }
     catch { return null; }
   }
-  // Return all types for this connector
+  // Return all types for this connector, scoped to this org
+  if (requestingAccountId) _appendAudit({ event: "reveal_all", connectorId, orgId, accountId: requestingAccountId, reason: opts.reason || null });
   return Object.values(vault.secrets)
-    .filter(r => r.connectorId === connectorId)
+    .filter(r => r.connectorId === connectorId && (r.orgId || GLOBAL_ORG) === orgId)
     .map(r => {
       try { return { ...r, value: _decrypt(r.encrypted), encrypted: undefined }; }
       catch { return { ...r, value: null, decryptError: true, encrypted: undefined }; }
     });
 }
 
+// ── Credential reference resolution (Vault Security Hardening — Agent →
+// Connector → Vault Authorization) ───────────────────────────────────────
+// A credentialRef is a plain string of the form "connectorId::type"
+// (matching the vault's own GLOBAL_ORG key format from _vkey() — never
+// the raw orgId-prefixed internal key, since a ref is meant to be a
+// stable, org-independent pointer a Company/Agent/Workflow definition can
+// declare; the ORG comes from the caller's own authorized context, not
+// from the ref string itself, so a ref can never be used to reach across
+// orgs by embedding someone else's orgId in it).
+//
+// This closes a real gap: agentInstanceRegistry.cjs stores credentialRefs
+// on AgentInstance records and capabilityContract.cjs validates their
+// shape, but until now nothing ever turned a ref into an actual secret —
+// the composition chain's "Credential Reference -> Vault authorization ->
+// internal secret resolution" step didn't exist. Reuses getSecret() as-is
+// (same _assertOrgAccess() org-check, same audit-log-on-reveal behavior)
+// — this is not a new resolution mechanism, just the missing wiring.
+function _parseCredentialRef(ref) {
+  if (typeof ref !== "string" || !ref.includes("::")) return null;
+  const [connectorId, type] = ref.split("::");
+  if (!connectorId || !type) return null;
+  return { connectorId, type };
+}
+
+/**
+ * Resolve a single credentialRef string into its plaintext value, scoped
+ * to the calling org/agent. Never a "reveal" in the founder-vault sense —
+ * no audit-log reason is required or recorded beyond the existing
+ * reveal-tracking getSecret() already does, since this is a programmatic
+ * runtime resolution (agent execution), not a human inspecting a secret.
+ * Returns null (never throws) for a malformed ref or a ref that doesn't
+ * resolve — callers (executionEngine.cjs) must treat this as "credential
+ * unavailable", not a crash.
+ */
+function resolveCredentialRef(ref, { orgId = GLOBAL_ORG, requestingAccountId = null } = {}) {
+  const parsed = _parseCredentialRef(ref);
+  if (!parsed) return null;
+  try {
+    return getSecret(parsed.connectorId, parsed.type, orgId, requestingAccountId);
+  } catch {
+    return null; // fail closed — org-check failure or decrypt error both resolve to "unavailable", never throw into the caller's dispatch path
+  }
+}
+
+/**
+ * Resolve every credentialRef in an array, scoped to the same org. Skips
+ * (does not include) any ref that fails to resolve — callers get only the
+ * credentials they were genuinely authorized for and that actually exist,
+ * never a sparse array with holes.
+ */
+function resolveCredentialRefs(refs = [], { orgId = GLOBAL_ORG, requestingAccountId = null } = {}) {
+  const out = {};
+  for (const ref of Array.isArray(refs) ? refs : []) {
+    const value = resolveCredentialRef(ref, { orgId, requestingAccountId });
+    if (value !== null) out[ref] = value;
+  }
+  return out;
+}
+
 function listSecrets(filter = {}) {
+  _assertOrgAccess(filter.orgId, filter.requestingAccountId, "view_analytics");
   const vault   = _load();
   const all     = Object.values(vault.secrets);
   const records = all.filter(r => {
     if (filter.connectorId && r.connectorId !== filter.connectorId) return false;
     if (filter.type        && r.type        !== filter.type)        return false;
+    // orgId filter is opt-in: omitting it lists across all orgs (operator/
+    // admin view), matching pre-multi-tenant behavior exactly.
+    if (filter.orgId       && (r.orgId || GLOBAL_ORG) !== filter.orgId) return false;
     if (filter.phase) {
       const [ph] = r.connectorId.split(":");
       const phaseMap = { A: "ai", B: "git", C: "infra", D: "pay", E: "email", F: "msg", G: "auth", H: "prod", I: "commerce", J: "creative", K: "auto", L: "monitor" };
@@ -262,24 +513,26 @@ function listSecrets(filter = {}) {
   return records.map(_publicRecord);
 }
 
-function deleteSecret(connectorId, type) {
+function deleteSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = null) {
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
   const vault = _load();
-  const vk    = _vkey(connectorId, type);
+  const vk    = _vkey(connectorId, type, orgId);
   if (!vault.secrets[vk]) return false;
   delete vault.secrets[vk];
   _save(vault);
-  _appendHistory({ event: "deleted", connectorId, type });
+  _appendHistory({ event: "deleted", connectorId, type, orgId });
   return true;
 }
 
-function rotateSecret(connectorId, type, newValue) {
+function rotateSecret(connectorId, type, newValue, orgId = GLOBAL_ORG, requestingAccountId = null) {
+  _assertOrgAccess(orgId, requestingAccountId, "manage_billing");
   const vault = _load();
-  const vk    = _vkey(connectorId, type);
+  const vk    = _vkey(connectorId, type, orgId);
   const existing = vault.secrets[vk];
   if (!existing) throw new Error(`No vault entry found for ${connectorId}::${type}`);
 
   // Keep old encrypted value in history before overwriting
-  _appendHistory({ event: "rotated", connectorId, type, oldVersion: existing.version });
+  _appendHistory({ event: "rotated", connectorId, type, orgId, oldVersion: existing.version });
 
   existing.encrypted       = _encrypt(newValue);
   existing.updatedAt       = _ts();
@@ -288,14 +541,14 @@ function rotateSecret(connectorId, type, newValue) {
   existing.version        += 1;
 
   _save(vault);
-  _appendHistory({ event: "rotation_complete", connectorId, type, newVersion: existing.version });
+  _appendHistory({ event: "rotation_complete", connectorId, type, orgId, newVersion: existing.version });
   return _publicRecord(existing);
 }
 
 // ── Resolve: vault first, then env var ───────────────────────────────────────
-function resolveEnvKey(connectorId, type) {
+function resolveEnvKey(connectorId, type, orgId = GLOBAL_ORG) {
   // 1. Vault
-  const fromVault = getSecret(connectorId, type);
+  const fromVault = getSecret(connectorId, type, orgId);
   if (fromVault) return fromVault;
   // 2. Env var fallback
   const envKey = ENV_MAP[`${connectorId}::${type}`];
@@ -304,8 +557,8 @@ function resolveEnvKey(connectorId, type) {
 }
 
 // Look up all secrets for a connector (vault + env vars combined)
-function resolveAll(connectorId) {
-  const vaultEntries = getSecret(connectorId) || [];
+function resolveAll(connectorId, orgId = GLOBAL_ORG) {
+  const vaultEntries = getSecret(connectorId, undefined, orgId) || [];
   const envEntries   = Object.entries(ENV_MAP)
     .filter(([k]) => k.startsWith(`${connectorId}::`) && !vaultEntries.find(v => `${v.connectorId}::${v.type}` === k))
     .map(([k, envKey]) => ({
@@ -322,20 +575,39 @@ function resolveAll(connectorId) {
 }
 
 // ── Validation ────────────────────────────────────────────────────────────────
-function validateSecret(connectorId, type) {
+function validateSecret(connectorId, type, orgId = GLOBAL_ORG, requestingAccountId = null) {
+  _assertOrgAccess(orgId, requestingAccountId, "view_analytics");
   const vault = _load();
-  const vk    = _vkey(connectorId, type);
+  const vk    = _vkey(connectorId, type, orgId);
   const rec   = vault.secrets[vk];
 
   if (!rec) {
-    const envKey = ENV_MAP[`${connectorId}::${type}`];
+    // Integration & Connector Security / Tenant-Boundary Audit (2026-08-21):
+    // the env-var fallback below is correct ONLY for GLOBAL_ORG (the
+    // founder's own platform-wide vault partition — see getSecret()'s
+    // identical GLOBAL_ORG-only exemption for _assertOrgAccess above, and
+    // this file's own GLOBAL_ORG doc comment). For any real customer org
+    // it previously reported the FOUNDER's env-configured key (e.g.
+    // RAZORPAY_KEY_ID) as {present:true, valid:true, source:"env"} under
+    // that customer's own orgId — live-reproduced via both myConnectors.js
+    // (curated 9-provider subset) and companyFactory.js's connectorId/type
+    // path params (all ~56 connectors, caller-controlled): a customer with
+    // zero stored credentials of their own saw their Razorpay/OpenAI/etc
+    // connector reported as connected and valid, and could enumerate which
+    // of the founder's platform credentials exist across the full catalogue.
+    // getSecret() (the function actually used for live payment/AI-call
+    // execution) never had this bug — it returns null with no org match,
+    // confirmed by reading its body — so no financial/execution action was
+    // ever at risk, only this status-check surface. Fixed by scoping the
+    // fallback to GLOBAL_ORG only, matching getSecret's own convention.
+    const envKey = orgId === GLOBAL_ORG ? ENV_MAP[`${connectorId}::${type}`] : null;
     const envVal = envKey ? process.env[envKey] : null;
     return {
       connectorId, type,
       source:  envVal ? "env" : "none",
       present: !!envVal,
       valid:   !!envVal,
-      detail:  envVal ? `Found in env var ${envKey}` : (envKey ? `Not in vault or env (${envKey})` : "Not configured"),
+      detail:  envVal ? `Found in env var ${envKey}` : "Not configured",
     };
   }
 
@@ -511,19 +783,29 @@ function getDashboard() {
   } catch { /* optional */ }
 
   // Missing connectors — list of known connector IDs that have no vault or env entry
+  // Phase 6 connector reachability audit: KNOWN_CONNECTORS previously
+  // omitted ai:grok, ai:qwen (both have real probe logic in AI_PROVIDERS
+  // and ENV_MAP entries above, just never added here), msg:teams,
+  // prod:notion (Phase F/H — real connect functions + ENV_MAP entries),
+  // and issue:jira/issue:linear (Phase M — scanAllProjectManagementProviders
+  // already probes both). All six were reachable via /integrations/* and
+  // myConnectors.js's customer setup forms but invisible on this founder
+  // dashboard, so IntegrationCenter.jsx (which renders dashboard.connected
+  // + dashboard.missing) never showed them at all.
   const KNOWN_CONNECTORS = [
-    "ai:groq","ai:openrouter","ai:openai","ai:anthropic","ai:gemini","ai:deepseek","ai:together","ai:fireworks","ai:cohere","ai:nvidia",
+    "ai:groq","ai:openrouter","ai:openai","ai:anthropic","ai:gemini","ai:deepseek","ai:together","ai:fireworks","ai:cohere","ai:nvidia","ai:grok","ai:qwen",
     "git:github","git:gitlab","git:bitbucket",
     "infra:aws","infra:r2","infra:cloudflare","infra:hostinger","infra:supabase","infra:firebase",
     "pay:razorpay","pay:stripe","pay:paddle","pay:lemonsqueezy",
     "email:resend","email:sendgrid","email:mailgun","email:postmark","email:brevo","email:smtp",
-    "msg:whatsapp","msg:telegram","msg:twilio","msg:discord","msg:slack",
+    "msg:whatsapp","msg:telegram","msg:twilio","msg:discord","msg:slack","msg:teams",
     "auth:google","auth:github","auth:microsoft","auth:linkedin","auth:apple","auth:discord",
-    "prod:google_workspace","prod:m365","prod:dropbox",
+    "prod:google_workspace","prod:m365","prod:dropbox","prod:notion",
     "commerce:shopify","commerce:woocommerce","commerce:wordpress",
     "creative:figma","creative:canva",
     "auto:zapier","auto:make","auto:n8n",
     "monitor:sentry","monitor:datadog","monitor:uptime",
+    "issue:jira","issue:linear",
   ];
   const connected  = KNOWN_CONNECTORS.filter(id => {
     const inVault = records.some(r => r.connectorId === id);
@@ -566,6 +848,7 @@ function _publicRecord(r) {
   return {
     connectorId:     r.connectorId,
     type:            r.type,
+    orgId:           r.orgId || GLOBAL_ORG,
     storedAt:        r.storedAt,
     updatedAt:       r.updatedAt,
     rotationDueAt:   r.rotationDueAt,
@@ -656,4 +939,8 @@ module.exports = {
   exportVault, importVault, getDashboard, resolveEnvKey, resolveAll,
   getCredentialTypes, CRED_TYPES, ENV_MAP,
   prepareRotationCandidate, applyStagedRotation, listStagedRotations, AUTO_ROTATABLE_TYPES,
+  GLOBAL_ORG,
+  // Vault Security Hardening
+  getAccessAudit,
+  resolveCredentialRef, resolveCredentialRefs,
 };

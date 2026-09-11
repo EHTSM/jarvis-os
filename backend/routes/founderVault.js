@@ -4,7 +4,7 @@
  *
  * Founder Identity & Secret Vault routes.
  *
- * /vault/*      — encrypted secret store (57 connectors, 12 credential types)
+ * /vault/*      — encrypted secret store (60 connectors, 12 credential types)
  * /vault/env/*  — environment manager
  *
  * All routes require authentication.
@@ -14,6 +14,7 @@
 
 const router         = require("express").Router();
 const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
+const rateLimiter    = require("../middleware/rateLimiter");
 
 const _try    = fn => { try { return fn(); } catch { return null; } };
 const _vault  = () => _try(() => require("../services/secretVault.cjs"));
@@ -22,6 +23,7 @@ const _ic     = () => _try(() => require("../services/integrationConnectors.cjs"
 const _oauth  = () => _try(() => require("../services/oauthIntegrationLayer.cjs"));
 const _sml    = () => _try(() => require("../services/secretManagementLayer.cjs"));
 const _rot    = () => _try(() => require("../services/secretRotationAutomation.cjs"));
+const _import = () => _try(() => require("../services/credentialImportTool.cjs"));
 
 // This is the single-operator Founder Identity & Secret Vault (userId
 // defaults to "founder" below) — distinct from the regular end-user OAuth
@@ -93,21 +95,46 @@ router.get("/vault/secrets/:connectorId/:type", (req, res) => {
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
 
-// ── Retrieve plaintext value (requires confirmation header) ───────────────────
+// ── Retrieve plaintext value (requires confirmation header + a reason) ────────
 // Header: X-Vault-Confirm: reveal
+// Body/query: reason (string) — required, recorded in the vault access
+// audit trail (Vault Security Hardening) alongside who revealed what and
+// when. The confirmation header alone was never a real second factor
+// (any caller can set it themselves) — it stays as a "did you mean to do
+// this" guard against accidental automated calls, but the actual
+// accountability now comes from the audit log, not the header.
 // Only use this to inject into process.env or pass to connectors programmatically.
-router.get("/vault/secrets/:connectorId/:type/value", (req, res) => {
+// Rate-limited (10/min per IP) — a genuine second factor beyond the
+// client-settable confirm header: even a valid operator session cannot
+// script bulk plaintext extraction from this route (Vault Security
+// Hardening — Mandatory Proof 3).
+router.get("/vault/secrets/:connectorId/:type/value", rateLimiter(10, 60_000, "vault-reveal"), (req, res) => {
   try {
     const v = _vault();
     if (!v) return res.status(503).json({ ok: false, error: "secretVault unavailable" });
     if (req.headers["x-vault-confirm"] !== "reveal") {
       return res.status(403).json({ ok: false, error: "Set header X-Vault-Confirm: reveal to retrieve plaintext value" });
     }
+    const reason = req.query.reason || req.body?.reason;
+    if (!reason || !String(reason).trim()) {
+      return res.status(400).json({ ok: false, error: "reason (query param or body field) is required and is recorded in the vault access audit log" });
+    }
     const connectorId = decodeURIComponent(req.params.connectorId);
     const type        = decodeURIComponent(req.params.type);
-    const value = v.getSecret(connectorId, type);
+    const value = v.getSecret(connectorId, type, v.GLOBAL_ORG, req.user.sub, { reason: String(reason).trim() });
     if (value === null) return res.status(404).json({ ok: false, error: "Secret not found or decrypt failed" });
     res.json({ ok: true, connectorId, type, value });
+  } catch (e) { res.status(e.status || 500).json({ ok: false, error: e.message }); }
+});
+
+// ── Vault access audit trail (Vault Security Hardening) ───────────────────────
+router.get("/vault/access-audit", (req, res) => {
+  try {
+    const v = _vault();
+    if (!v) return res.status(503).json({ ok: false, error: "secretVault unavailable" });
+    const { connectorId, limit } = req.query;
+    const audit = v.getAccessAudit({ connectorId, limit: limit ? +limit : undefined });
+    res.json({ ok: true, count: audit.length, audit });
   } catch (e) { res.status(500).json({ ok: false, error: e.message }); }
 });
 
@@ -454,6 +481,43 @@ router.post("/vault/connect/:connectorId/:type", async (req, res) => {
       envInjected: !!envKey,
       note: "Secret stored in vault and injected into runtime env. Restart server to persist to .env.",
     });
+  } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
+});
+
+// ── Bulk credential import (env-var snapshot -> Vault) ─────────────────────────
+// Recovered capability: credentialImportTool.cjs was fully built (dry-run
+// classification, real Vault-backed import, structural no-secret-logging
+// guarantee) but had zero route ever calling it. Exposes its existing public
+// API verbatim — no new import/classification logic added here.
+// Body: { rows: ImportRow[] }
+router.post("/vault/bulk-import/dry-run", (req, res) => {
+  try {
+    const tool = _import();
+    if (!tool) return res.status(503).json({ ok: false, error: "credentialImportTool unavailable" });
+    const { rows } = req.body || {};
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ ok: false, error: "rows (non-empty array) required" });
+    }
+    res.json({ ok: true, ...tool.dryRun(rows, { overwrite: !!req.body?.overwrite }) });
+  } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
+});
+
+// Body: { rows: ImportRow[], overwrite?: boolean, confirm: true }
+// `confirm: true` is a required explicit-confirmation gate, matching the
+// tool's own realImport() contract — this route does not loosen it.
+router.post("/vault/bulk-import/run", (req, res) => {
+  try {
+    const tool = _import();
+    if (!tool) return res.status(503).json({ ok: false, error: "credentialImportTool unavailable" });
+    const { rows, overwrite, confirm } = req.body || {};
+    if (!Array.isArray(rows) || rows.length === 0) {
+      return res.status(400).json({ ok: false, error: "rows (non-empty array) required" });
+    }
+    if (confirm !== true) {
+      return res.status(400).json({ ok: false, error: "confirm:true required to perform a real Vault write" });
+    }
+    const result = tool.realImport(rows, { overwrite: !!overwrite, confirm: true, requestingAccountId: req.user?.sub || null });
+    res.json({ ok: true, ...result });
   } catch (e) { res.status(400).json({ ok: false, error: e.message }); }
 });
 

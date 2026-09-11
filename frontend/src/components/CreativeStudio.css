@@ -156,7 +156,7 @@
 .cs-asset-type-badge {
   font-size: 10px;
   background: var(--accent, #7c6af7);
-  color: white;
+  color: var(--on-accent);
   padding: 2px 6px;
   border-radius: 99px;
 }
@@ -181,6 +181,9 @@
 .cs-cap-icon { font-size: 14px; color: var(--accent, #7c6af7); flex-shrink: 0; }
 .cs-cap-label { flex: 1; font-size: 11px; text-transform: capitalize; }
 .cs-cap-providers { font-size: 10px; color: var(--fg-muted, #888); white-space: nowrap; }
+.cs-cap-card--noroute { opacity: 0.6; border-style: dashed; }
+.cs-cap-noroute-tag { font-size: 9.5px; color: var(--warning, #f0b429); white-space: nowrap; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+.cs-cap-footnote { font-size: 11px; color: var(--fg-muted, #888); margin: 8px 0 0; line-height: 1.6; }
 
 /* ── Studio ── */
 .cs-studio { display: flex; flex-direction: column; gap: 14px; }
@@ -223,7 +226,7 @@
   background: var(--accent, #7c6af7);
   border: none;
   border-radius: var(--radius-sm, 6px);
-  color: white;
+  color: var(--on-accent);
   cursor: pointer;
   font-size: 13px;
   font-weight: 600;
@@ -251,6 +254,17 @@
   padding: 10px 14px;
   color: var(--danger, #ef4444);
   font-size: 12px;
+}
+.cs-badge--noroute { background: rgba(240,180,41,0.10); color: var(--warning, #f0b429); border: 1px solid rgba(240,180,41,0.24); }
+.cs-result-noconnector {
+  background: rgba(240,180,41,0.08);
+  border: 1px solid var(--warning, #f0b429);
+  border-radius: var(--radius-sm, 6px);
+  padding: 10px 14px;
+  color: var(--warning, #f0b429);
+  font-size: 12px;
+  line-height: 1.6;
+  margin-bottom: 10px;
 }
 
 /* ── Badges ── */
@@ -392,7 +406,7 @@
   padding: 0;
   flex-shrink: 0;
 }
-.cs-fav-btn.active { color: #f59e0b; }
+.cs-fav-btn.active { color: var(--warning); }
 
 /* ── History ── */
 .cs-hist-item {

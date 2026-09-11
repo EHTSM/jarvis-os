@@ -35,12 +35,16 @@
 
 const router = require("express").Router();
 
-const mce  = () => require("../services/marketplaceCatalogEngine.cjs");
-const mre  = () => require("../services/marketplaceRecommendationEngine.cjs");
-const mce2 = () => require("../services/marketplaceCertificationEngine.cjs");
-const mae  = () => require("../services/marketplaceAutomationEngine.cjs");
-const mee  = () => require("../services/marketplaceEconomyEngine.cjs");
-const mfd  = () => require("../services/marketplaceDashboard.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const mce  = () => _try(() => require("../services/marketplaceCatalogEngine.cjs"));
+const mre  = () => _try(() => require("../services/marketplaceRecommendationEngine.cjs"));
+const mce2 = () => _try(() => require("../services/marketplaceCertificationEngine.cjs"));
+const mae  = () => _try(() => require("../services/marketplaceAutomationEngine.cjs"));
+const mee  = () => _try(() => require("../services/marketplaceEconomyEngine.cjs"));
+const mfd  = () => _try(() => require("../services/marketplaceDashboard.cjs"));
 
 function ok(res, data)           { res.json({ ok: true, ...data }); }
 function err(res, msg, code=400) { res.status(code).json({ ok: false, error: msg }); }

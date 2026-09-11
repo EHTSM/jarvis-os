@@ -16,16 +16,68 @@ FROM node:20-alpine AS frontend-builder
 
 WORKDIR /build
 
-# Copy only package files first for layer caching
+# Copy only package files first for layer caching.
+# Same exit-code-preservation fix as the runtime stage's npm ci below —
+# frontend/ has no native dependencies today (verified: no sharp/sqlite/
+# pty-like packages in frontend/package.json), so this specific stage
+# isn't currently exposed to the toolchain failure that broke the runtime
+# stage, but piping npm ci straight into grep silently discards ANY future
+# install failure the same way, so it gets the identical fix for
+# consistency rather than leaving one of the two npm ci calls in this file
+# still able to mask a real failure.
 COPY frontend/package*.json ./frontend/
-RUN cd frontend && npm ci --omit=dev 2>&1 | grep -v "^npm warn" || true
+RUN cd frontend && npm ci --omit=dev > /tmp/npm-ci-frontend.log 2>&1; ec=$?; \
+    grep -v "^npm warn" /tmp/npm-ci-frontend.log || true; \
+    if [ "$ec" != "0" ]; then echo "npm ci (frontend) FAILED (exit $ec)" >&2; exit "$ec"; fi
 
 # Copy source and build
 COPY frontend/ ./frontend/
 ARG REACT_APP_API_URL
 RUN cd frontend && REACT_APP_API_URL="${REACT_APP_API_URL}" npm run build
 
-# ── Stage 2: Production runtime ──────────────────────────────────────────
+# ── Stage 2: Build native modules ────────────────────────────────────────
+# Packaging Certification finding: the previous `npm ci --ignore-scripts`
+# combined with `|| true` masked two real, compounding failures —
+# reproduced with `docker build --no-cache`:
+#   1. `--ignore-scripts` skips better-sqlite3's install step entirely,
+#      leaving ZERO native binary (verified: a fresh --ignore-scripts
+#      install produces no .node file at all, not a wrong-ABI one).
+#   2. Removing --ignore-scripts to fix (1) surfaces that `npm ci` was
+#      never actually succeeding on this base image: without scripts
+#      enabled, node-pty (no musl-arm64 prebuild published) and
+#      better-sqlite3 both need python3/make/g++ to compile from source,
+#      and a THIRD dependency, @authenio/xsd-schema-validator (used by
+#      ssoService.cjs's optional SAML XSD pre-validation — already
+#      gracefully degraded in application code if unavailable), needs
+#      `javac` in its postinstall. With none of that present, `npm ci`
+#      exited 127 — but `|| true` swallowed it, so the Docker build
+#      reported success with an EMPTY node_modules (verified: `ls
+#      node_modules | wc -l` → 0 in the resulting image; `require`ing
+#      express itself would have crashed the container on every boot).
+# sharp is NOT rebuilt here — verified separately that its @img/sharp-*
+# optional dependencies resolve a working musl binary with zero install
+# script, even under --ignore-scripts.
+# This build stage carries the full toolchain (~400MB combined) so `npm
+# ci` (no --ignore-scripts, no `|| true` masking a real failure) succeeds
+# for real; only the resulting node_modules is copied into the slim
+# runtime stage below, so none of this weight reaches production.
+FROM node:20-alpine AS native-builder
+RUN apk add --no-cache python3 make g++ openjdk17-jdk
+WORKDIR /build
+COPY package*.json ./
+# Alpine's /bin/sh is BusyBox ash — no $PIPESTATUS, so piping npm ci
+# straight into `grep -v` (the previous approach) silently discards npm's
+# real exit code in favor of grep's (grep exits 0 whenever any line
+# survives the filter). Redirecting to a file first, THEN checking $? of
+# the actual npm ci invocation, preserves the real failure signal. The
+# previous `| grep ... || true` form masked exactly this: npm ci failed
+# (exit 127, one dependency's postinstall missing a compiler) but the RUN
+# step still reported success, shipping an empty node_modules.
+RUN npm ci --omit=dev > /tmp/npm-ci.log 2>&1; ec=$?; \
+    grep -v "^npm warn" /tmp/npm-ci.log || true; \
+    if [ "$ec" != "0" ]; then echo "npm ci FAILED (exit $ec)" >&2; exit "$ec"; fi
+
+# ── Stage 3: Production runtime ──────────────────────────────────────────
 FROM node:20-alpine AS runtime
 
 # Install tini for proper signal handling and process reaping
@@ -37,14 +89,22 @@ WORKDIR /app
 RUN addgroup -g 1001 jarvis \
  && adduser  -u 1001 -G jarvis -s /bin/sh -D jarvis
 
-# Copy package files and install production dependencies only
+# node_modules comes from native-builder (already includes compiled
+# better-sqlite3/node-pty binaries for this exact base image + arch) —
+# not re-installed here, so the runtime image never needs a C++ toolchain.
 COPY package*.json ./
-RUN npm ci --omit=dev --ignore-scripts 2>&1 | grep -v "^npm warn" || true
+COPY --from=native-builder /build/node_modules ./node_modules
 
 # Copy backend source
+# (orchestrator.cjs was previously COPY'd here but never existed at the
+# repo root — build always failed on this exact line, before any native-
+# module fix even ran. backend/server.js is the real, sole entrypoint
+# per ecosystem.config.cjs's own comment; all real orchestrators live
+# under agents/ and backend/services/, already copied below.)
 COPY backend/        ./backend/
 COPY agents/         ./agents/
-COPY orchestrator.cjs ./
+COPY plugins/         ./plugins/
+COPY utils/          ./utils/
 
 # Copy built frontend from stage 1
 COPY --from=frontend-builder /build/frontend/build ./frontend/build
@@ -67,4 +127,10 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
 ENTRYPOINT ["/sbin/tini", "--"]
 
 # Run the server directly — Docker/compose handles restarts
-CMD ["node", "--max-old-space-size=400", "backend/server.js"]
+# Phase B.8: was --max-old-space-size=400, the same cap that produced 223
+# "FATAL ERROR: Reached heap limit" aborts under PM2 (earliest 2026-06-06).
+# Measured steady-state RSS is 700-880 MB, so 400 MB is inside the normal
+# operating range, not a safety margin. Kept in step with the PM2 value in
+# ecosystem.config.cjs; docker-compose.prod.yml's container memory limit was
+# raised alongside it so the container ceiling still sits above this cap.
+CMD ["node", "--max-old-space-size=1024", "backend/server.js"]

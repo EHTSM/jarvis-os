@@ -103,7 +103,11 @@ async function _executeTool(tool, command, context = {}) {
       return { ok: true, tool: "editor", note: "Editor command dispatched" };
 
     case "browser":
-      if (/screenshot/i.test(command)) return (_bc()?.captureScreenshot?.(null) || { ok: true, note: "screenshot attempted" });
+      // Trust boundary: a missing module/method (the `||` fallback) is
+      // "not attempted," never "succeeded" — matches every sibling branch
+      // in this function. Previously reported ok:true here even when
+      // browserController was unavailable and nothing was captured.
+      if (/screenshot/i.test(command)) return (_bc()?.captureScreenshot?.(null) || { ok: false, error: "browserController unavailable" });
       if (/navigate|go.*to|open/i.test(command)) {
         const url = command.match(/https?:\/\/\S+/)?.[0];
         if (url) return _bc()?.openTab?.({ url }) || { ok: false };
@@ -111,7 +115,7 @@ async function _executeTool(tool, command, context = {}) {
       return _bc()?.executeWorkflow?.(command, { context }) || { ok: false };
 
     case "desktop":
-      if (/screenshot/i.test(command)) return (_dc()?.captureScreenshot?.() || { ok: true });
+      if (/screenshot/i.test(command)) return (_dc()?.captureScreenshot?.() || { ok: false, error: "desktopController unavailable" });
       if (/launch|open.*app/i.test(command)) {
         const app = command.replace(/launch|open|app/gi, "").trim();
         return _dc()?.launchApp?.(app) || { ok: false };
@@ -138,7 +142,10 @@ async function _deployRelease(run) {
   steps.push({ step: "build", ok: build?.ok !== false });
 
   // 3. Verify environment
-  const health = _tc()?.verify?.("deployment") || { ok: true };
+  // Trust boundary: this feeds directly into the deploy-gate `steps.every()`
+  // check below — an unavailable verify() must not silently pass a
+  // deployment health check. Previously defaulted to {ok:true}.
+  const health = _tc()?.verify?.("deployment") || { ok: false, error: "terminalController.verify unavailable" };
   steps.push({ step: "health_check", ok: health.ok });
 
   // 4. Trigger AEE for actual deploy workflow
@@ -165,16 +172,27 @@ async function _runRegression(run) {
 async function _captureScreenshots(run) {
   const results = [];
   // Desktop screenshot
-  const desk = await _dc()?.captureScreenshot?.({}) || { ok: true, note: "desktop screenshot attempted" };
+  const desk = await _dc()?.captureScreenshot?.({}) || { ok: false, note: "desktop capture unavailable" };
   results.push({ type: "desktop", ok: desk.ok, path: desk.path });
   // Browser screenshot
   const tabs = _bc()?.listTabs?.({ status: "open" }) || [];
   for (const tab of tabs.slice(0, 3)) {
-    const shot = await _bc()?.captureScreenshot?.(tab.tabId, {}) || { ok: true };
+    const shot = await _bc()?.captureScreenshot?.(tab.tabId, {}) || { ok: false };
     results.push({ type: "browser", tabId: tab.tabId, url: tab.url, ok: shot.ok });
   }
   run.minutesSaved = 5;
-  return { ok: true, screenshots: results };
+  // Trust boundary fix (FINAL-JARVIS-DREAM-CERTIFICATION.md's
+  // computerExecutionEngine false-success finding): this previously
+  // returned { ok: true, ... } unconditionally, discarding the real
+  // per-capture ok values collected in `results` — a request where every
+  // underlying screenshot attempt genuinely failed still reported
+  // outcome:"success" one level up in execute(). ok now reflects whether
+  // ANY real capture succeeded (there is genuinely no capture to take when
+  // zero tabs are open and desktop capture is unavailable — that's not a
+  // failure of this step, so `some`, not `every`, matches
+  // _deployRelease's/the generic branch's existing every-vs-some
+  // discipline for "at least one requested thing worked" semantics).
+  return { ok: results.length > 0 && results.some(r => r.ok), screenshots: results };
 }
 
 async function _generateDocumentation(run) {
@@ -185,7 +203,10 @@ async function _generateDocumentation(run) {
   ];
   const results = cmds.map(cmd => _tc()?.execute?.(cmd, { timeoutMs: 15000 }) || { ok: false });
   run.minutesSaved = 30;
-  return { ok: results.some(r => r.ok), results };
+  // Trust boundary fix: allOk lets execute()'s outcome logic distinguish
+  // "all 3 introspection commands worked" from "only 1 of 3 worked" —
+  // previously both collapsed to the same ok:true/outcome:"success".
+  return { ok: results.some(r => r.ok), allOk: results.every(r => r.ok), results };
 }
 
 async function _fixTests(run) {
@@ -257,7 +278,9 @@ async function execute(command, opts = {}) {
       if (!result.ok && result.error?.includes("Nothing to commit")) result.ok = true; // clean tree is not a failure
       run.minutesSaved = 5;
     } else if (/health.*check|verify.*env/i.test(command)) {
-      result = _tc()?.verify?.("general") || { ok: true };
+      // Trust boundary: an explicit health-check command must not report
+      // ok:true when the underlying verify() couldn't even run.
+      result = _tc()?.verify?.("general") || { ok: false, error: "terminalController.verify unavailable" };
       run.minutesSaved = 10;
     } else {
       // Generic: route to best-matching tool
@@ -267,7 +290,13 @@ async function execute(command, opts = {}) {
         toolResults.push({ tool, ...r });
         run.toolsUsed.push(tool);
       }
-      result = { ok: toolResults.some(r => r.ok), toolResults };
+      // Trust boundary fix: ok reflects "did anything work" (some), but
+      // allOk separately records "did EVERYTHING requested work" (every) —
+      // used below so a partially-failed multi-tool request is reported
+      // as outcome:"partial", not outcome:"success". Previously result.ok
+      // alone drove the success/partial split, so 1-of-2 tools failing
+      // was indistinguishable from 2-of-2 succeeding.
+      result = { ok: toolResults.some(r => r.ok), allOk: toolResults.length > 0 && toolResults.every(r => r.ok), toolResults };
     }
 
     // Step 5: Validate
@@ -284,7 +313,17 @@ async function execute(command, opts = {}) {
       }
     }
 
-    run.outcome    = result.ok ? "success" : "partial";
+    // Trust boundary fix: when a branch above distinguishes "some worked"
+    // (result.ok) from "everything requested worked" (result.allOk — set
+    // only by the generic multi-tool branch, whose composite ok was a
+    // .some() rather than .every()), a partial result must not be
+    // reported as outcome:"success". Branches that don't set allOk (they
+    // already return a single unambiguous ok, e.g. _deployRelease's own
+    // .every()) are unaffected — result.allOk === undefined there, so the
+    // `!== false` check preserves their existing ok-driven behavior
+    // exactly.
+    const fullSuccess = result.ok && result.allOk !== false;
+    run.outcome    = fullSuccess ? "success" : "partial";
     run.status     = result.ok ? "completed" : "completed_with_errors";
     run.result     = result;
 
@@ -373,6 +412,28 @@ function listRuns({ status, domain, limit = 50 } = {}) {
   return runs.sort((a, b) => new Date(b.startedAt) - new Date(a.startedAt)).slice(0, limit);
 }
 
+/**
+ * Render a run's `command` as a short display string.
+ *
+ * Phase C.1.1: execute(command) persists whatever the caller passed, and
+ * 109 of 500 stored runs hold an OBJECT ({ command, workspaceType }) rather
+ * than a string. `r.command?.slice(0, 50)` optional-chains away null but not
+ * a wrong TYPE, so it threw "r.command?.slice is not a function" and
+ * GET /computer/dashboard returned 500 on every call — the last 5 runs (the
+ * exact window this reads) were all objects.
+ *
+ * Reader-side normalisation only: the stored records are left untouched, and
+ * writers keep their current contract. Callers that pass an object get its
+ * inner `.command` surfaced instead of a crash.
+ */
+function _commandLabel(cmd) {
+  if (typeof cmd === "string") return cmd.slice(0, 50);
+  if (cmd && typeof cmd === "object" && typeof cmd.command === "string") {
+    return cmd.command.slice(0, 50);
+  }
+  return cmd == null ? null : String(cmd).slice(0, 50);
+}
+
 function getStats() {
   const d  = _load();
   const wc = _wc()?.getContext?.() || {};
@@ -380,7 +441,7 @@ function getStats() {
     ...d.stats,
     successRate:  d.stats.total > 0 ? Math.round(d.stats.succeeded / d.stats.total * 100) : 0,
     context:      wc,
-    recentRuns:   d.runs.slice(-5).map(r => ({ runId: r.runId, command: r.command?.slice(0, 50), outcome: r.outcome, durationMs: r.durationMs })),
+    recentRuns:   d.runs.slice(-5).map(r => ({ runId: r.runId, command: _commandLabel(r.command), outcome: r.outcome, durationMs: r.durationMs })),
   };
 }
 

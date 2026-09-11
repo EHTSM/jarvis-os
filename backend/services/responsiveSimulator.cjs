@@ -20,6 +20,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const RESPONSIVE_DIR = path.join(__dirname, "../../data/odi/responsive");
 
@@ -143,6 +144,8 @@ async function _testViewport(page, vp) {
 
 async function simulate({ url, viewports } = {}) {
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

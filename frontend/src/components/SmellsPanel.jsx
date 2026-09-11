@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { _fetch } from '../_client';
 import './SmellsPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 const PatchPreviewPanel = lazy(() => import('./PatchPreviewPanel'));
 
@@ -13,21 +14,21 @@ async function get(path) {
 
 // ── Type badge ─────────────────────────────────────────────────────────
 const TYPE_META = {
-  todo_fixme:         { icon: '📝', label: 'TODO/FIXME',       color: '#6b7280' },
-  duplicate_literal:  { icon: '©',  label: 'Dup Literal',      color: '#6b7280' },
-  empty_catch:        { icon: '⚠',  label: 'Empty Catch',      color: '#f59e0b' },
-  console_log_prod:   { icon: '🖨', label: 'console.log',      color: '#6b7280' },
-  sync_fs:            { icon: '⛔', label: 'Sync FS',          color: '#f59e0b' },
-  blocking_crypto:    { icon: '🔐', label: 'Blocking Crypto',  color: '#ef4444' },
-  long_function:      { icon: '📏', label: 'Long Function',    color: '#f59e0b' },
-  stale_feature_flag: { icon: '🚩', label: 'Stale Flag',       color: '#6b7280' },
-  stale_mission:      { icon: '⏰', label: 'Stale Mission',    color: '#f59e0b' },
-  build_failure:      { icon: '🔴', label: 'Build Failure',    color: '#ef4444' },
-  benchmark_decline:  { icon: '📉', label: 'Perf Decline',     color: '#f59e0b' },
+  todo_fixme:         { icon: '📝', label: 'TODO/FIXME',       color: 'var(--text-dim)' },
+  duplicate_literal:  { icon: '©',  label: 'Dup Literal',      color: 'var(--text-dim)' },
+  empty_catch:        { icon: '⚠',  label: 'Empty Catch',      color: 'var(--warning)' },
+  console_log_prod:   { icon: '🖨', label: 'console.log',      color: 'var(--text-dim)' },
+  sync_fs:            { icon: '⛔', label: 'Sync FS',          color: 'var(--warning)' },
+  blocking_crypto:    { icon: '🔐', label: 'Blocking Crypto',  color: 'var(--danger)' },
+  long_function:      { icon: '📏', label: 'Long Function',    color: 'var(--warning)' },
+  stale_feature_flag: { icon: '🚩', label: 'Stale Flag',       color: 'var(--text-dim)' },
+  stale_mission:      { icon: '⏰', label: 'Stale Mission',    color: 'var(--warning)' },
+  build_failure:      { icon: '🔴', label: 'Build Failure',    color: 'var(--danger)' },
+  benchmark_decline:  { icon: '📉', label: 'Perf Decline',     color: 'var(--warning)' },
 };
 
 function TypeBadge({ type }) {
-  const meta = TYPE_META[type] || { icon: '◦', label: type, color: '#6b7280' };
+  const meta = TYPE_META[type] || { icon: '◦', label: type, color: 'var(--text-dim)' };
   return (
     <span className="smell-type-badge" style={{ borderColor: meta.color, color: meta.color }}>
       {meta.icon} {meta.label}
@@ -74,6 +75,13 @@ function SummaryBar({ summary, loading, onRefresh }) {
 function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
   const [expanded, setExpanded] = useState(false);
   const [converting, setConverting] = useState(false);
+  // Mission 58: identical silent-no-op pattern as PatchPreviewPanel.jsx's
+  // own convertToMission (Mission 43B finding) — a failed conversion was
+  // zero feedback, button just returns to idle. No toast infrastructure
+  // exists in this file, so a minimal inline error (same shape
+  // PatchPreviewPanel.jsx already uses) is the smallest fix, scoped to
+  // this one card.
+  const [convertError, setConvertError] = useState(null);
 
   const convertToMission = useCallback(async () => {
     if (converting) return;
@@ -86,13 +94,15 @@ function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
         confidence: smell.confidence,
         riskLevel: smell.severity === 'high' ? 'high' : smell.severity === 'medium' ? 'medium' : 'low',
       });
-      if (r?.ok) onConvertToMission?.(r.mission);
-    } catch {} finally { setConverting(false); }
+      if (r?.ok) { onConvertToMission?.(r.mission); setConvertError(null); }
+      else setConvertError(r?.error || 'Could not convert to a mission.');
+    } catch (e) { setConvertError(e?.message || 'Could not convert to a mission.'); }
+    finally { setConverting(false); }
   }, [converting, smell, onConvertToMission]);
 
   return (
     <div className={`smell-card smell-card--${smell.severity}`}>
-      <div className="smell-card__header" onClick={() => setExpanded(e => !e)}>
+      <div className="smell-card__header" {...clickableProps(() => setExpanded(e => !e))}>
         <div className="smell-card__badges">
           <SevBadge severity={smell.severity} />
           <TypeBadge type={smell.type} />
@@ -141,6 +151,8 @@ function SmellCard({ smell, cwd, onDismiss, onPatch, onConvertToMission }) {
           )}
         </div>
       )}
+
+      {convertError && <div className="smell-card__error">{convertError}</div>}
 
       <div className="smell-card__actions">
         {smell.aiPatchSpec && (
@@ -228,7 +240,7 @@ export default function SmellsPanel({ cwd }) {
     try {
       const r = await post('/coding/smells/dismiss', { smellId: id });
       if (r?.ok) setSmells(s => s.filter(x => x.id !== id));
-    } catch {}
+    } catch (e) { setError(e?.message || 'Could not dismiss.'); }
   }, []);
 
   const openPatch = useCallback((smell) => {

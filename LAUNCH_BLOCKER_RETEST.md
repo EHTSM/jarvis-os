@@ -152,8 +152,8 @@ All signup, validation, auto-login, and trial activation paths work end-to-end. 
 
 | Variable | Value |
 |---|---|
-| `RAZORPAY_KEY_ID` | `rzp_live_Sefw02YRABlczU` |
-| `RAZORPAY_KEY_SECRET` | `id3u0bf14Jq5NhfhZ5GFjQ3e` (24 chars) |
+| `RAZORPAY_KEY_ID` | `rzp_live_<REDACTED-see-SECURITY.md>` |
+| `RAZORPAY_KEY_SECRET` | `<REDACTED-see-SECURITY.md>` (24 chars) |
 | `RAZORPAY_WEBHOOK_SECRET` | *(empty)* |
 | `RAZORPAY_PLAN_ID_STARTER` | *(not set)* |
 | `RAZORPAY_PLAN_ID_GROWTH` | *(not set)* |
@@ -162,7 +162,7 @@ All signup, validation, auto-login, and trial activation paths work end-to-end. 
 
 ```javascript
 // Executed via Node.js against production Razorpay API
-const rz = new Razorpay({ key_id: 'rzp_live_Sefw02YRABlczU', key_secret: 'id3u0bf14Jq5NhfhZ5GFjQ3e' });
+const rz = new Razorpay({ key_id: 'rzp_live_<REDACTED-see-SECURITY.md>', key_secret: '<REDACTED-see-SECURITY.md>' });
 rz.paymentLink.create({ amount: 99900, currency: 'INR', description: 'test' })
   .catch(e => console.log(e.statusCode, e.error?.description));
 
@@ -187,7 +187,7 @@ POST /webhook/razorpay (bad signature, no RAZORPAY_WEBHOOK_SECRET)
 
 ### Root cause
 
-The key pair `rzp_live_Sefw02YRABlczU` / `id3u0bf14Jq5NhfhZ5GFjQ3e` returns HTTP 401 from Razorpay's API. This is a credential issue on the Razorpay dashboard side — the keys have either been deactivated, rotated, or the key/secret pair is mismatched. No code change fixes this.
+The key pair `rzp_live_<REDACTED-see-SECURITY.md>` / `<REDACTED-see-SECURITY.md>` returns HTTP 401 from Razorpay's API. This is a credential issue on the Razorpay dashboard side — the keys have either been deactivated, rotated, or the key/secret pair is mismatched. No code change fixes this.
 
 ### Code change made (UpgradeModal.jsx)
 

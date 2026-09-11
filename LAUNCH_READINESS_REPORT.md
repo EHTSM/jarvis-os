@@ -80,7 +80,7 @@
 | Upgrade modal | ✓ | Plan comparison + feature table + Growth pre-selected |
 | `POST /billing/upgrade` | ✓ | Creates Razorpay subscription or falls back to payment link |
 | Razorpay subscription IDs | ✗ | `RAZORPAY_PLAN_ID_STARTER` / `RAZORPAY_PLAN_ID_GROWTH` not set — falls back to one-time payment link |
-| **Razorpay API key 401** | **✗ P0 BLOCKER** | `rzp_live_Sefw02YRABlczU` returns HTTP 401 from Razorpay. Payment links cannot be created. The fallback path inside `billing.js` also calls Razorpay (`paymentService.createPaymentLink`) — also fails with 401. |
+| **Razorpay API key 401** | **✗ P0 BLOCKER** | `rzp_live_<REDACTED-see-SECURITY.md>` returns HTTP 401 from Razorpay. Payment links cannot be created. The fallback path inside `billing.js` also calls Razorpay (`paymentService.createPaymentLink`) — also fails with 401. |
 | Razorpay webhook secret | ✗ | `RAZORPAY_WEBHOOK_SECRET` empty — webhooks will be rejected in production |
 | Cancel subscription | ✓ | `POST /billing/cancel` sets status to cancelled |
 | Billing dashboard | ✓ | Shows plan, status, trial ring, feature list, upgrade CTA |

@@ -15,8 +15,9 @@
  * HITL requests are still created for UI compatibility — this layer adds metadata.
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 
 const DATA_FILE = path.join(__dirname, "../../data/approval-queue.json");
 
@@ -34,9 +35,17 @@ function _load() {
   catch { return { requests: {}, stats: { created: 0, approved: 0, rejected: 0, expired: 0, autoApproved: 0, totalResponseMs: 0 } }; }
 }
 
+// Queue Layer Reliability & Safety Audit (2026-08-16): was a direct
+// fs.writeFileSync — a crash mid-write could corrupt approval-queue.json
+// mid-JSON, and a genuinely concurrent writer could interleave with this
+// one. Per-call-unique tmp filename (pid + random suffix) + renameSync,
+// the same certified pattern already used by taskQueue.cjs (Blocker #6)
+// and missionMemory.cjs/organizationService.cjs/secretVault.cjs.
 function _save(d) {
   fs.mkdirSync(path.dirname(DATA_FILE), { recursive: true });
-  fs.writeFileSync(DATA_FILE, JSON.stringify(d, null, 2));
+  const tmp = `${DATA_FILE}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(d, null, 2));
+  fs.renameSync(tmp, DATA_FILE);
 }
 
 // ── Enqueue ───────────────────────────────────────────────────────────────────

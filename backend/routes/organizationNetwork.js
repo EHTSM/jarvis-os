@@ -47,26 +47,49 @@
  */
 
 const router = require("express").Router();
+const { operatorOnly } = require("../middleware/authMiddleware");
 
-const reg    = () => require("../services/organizationRegistryEngine.cjs");
-const collab = () => require("../services/organizationCollaborationEngine.cjs");
-const cap    = () => require("../services/organizationCapabilityExchangeEngine.cjs");
-const gov    = () => require("../services/organizationGovernanceEngine.cjs");
-const evo    = () => require("../services/organizationEvolutionEngine.cjs");
-const db     = () => require("../services/organizationNetworkDashboard.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try   = fn => { try { return fn(); } catch { return null; } };
+const reg    = () => _try(() => require("../services/organizationRegistryEngine.cjs"));
+const collab = () => _try(() => require("../services/organizationCollaborationEngine.cjs"));
+const cap    = () => _try(() => require("../services/organizationCapabilityExchangeEngine.cjs"));
+const gov    = () => _try(() => require("../services/organizationGovernanceEngine.cjs"));
+const evo    = () => _try(() => require("../services/organizationEvolutionEngine.cjs"));
+const db     = () => _try(() => require("../services/organizationNetworkDashboard.cjs"));
 
 function ok(res, data)           { res.json({ ok: true, ...data }); }
 function err(res, msg, code=400) { res.status(code).json({ ok: false, error: msg }); }
 
+// Phase A.1 Recertification finding: every route in this file resolved or
+// mutated shared platform-org-network state by client-supplied :id with no
+// authorization check beyond the barrel-level `router.use("/org-network",
+// requireAuth)` — authentication only, never authorization. Unlike
+// platformOrg.js's per-account IDOR (fixed in the Zero-Trust remediation),
+// organizationRegistryEngine.cjs's data model has no ownerId/tenantId
+// concept at all — its 16 seeded PLATFORM_ORGS (org_engineering,
+// org_business, etc.) are genuinely global, shared platform infrastructure,
+// not per-user tenant data, so a per-owner check isn't the right fix here.
+// The real gap: any authenticated user could mutate that shared state
+// (flip a platform org's status, approve/apply evolutions, alter
+// governance agreements) — an authorization gap, not a data leak. Fixed by
+// gating every state-mutating route with operatorOnly (the same
+// already-established pattern used for other platform-wide, non-tenant
+// resources, e.g. revenueOS.js) while leaving read routes open to any
+// authenticated user, since the registry itself is non-sensitive
+// discoverable federation metadata.
+
 // ── Registry ──────────────────────────────────────────────────────────────────
 
-router.post("/org-network/orgs/register", (req, res) => {
+router.post("/org-network/orgs/register", operatorOnly, (req, res) => {
   const r = reg().registerOrg(req.body || {});
   if (!r.ok) return err(res, r.error);
   ok(res, r);
 });
 
-router.put("/org-network/orgs/:id/status", (req, res) => {
+router.put("/org-network/orgs/:id/status", operatorOnly, (req, res) => {
   const { status, trustLevel } = req.body || {};
   if (!status) return err(res, "status is required");
   const r = reg().updateOrgStatus(req.params.id, status, { trustLevel });
@@ -95,7 +118,7 @@ router.get("/org-network/orgs", (req, res) => {
 
 // ── Collaboration ─────────────────────────────────────────────────────────────
 
-router.post("/org-network/collaborate", async (req, res) => {
+router.post("/org-network/collaborate", operatorOnly, async (req, res) => {
   const { fromOrgId, toOrgId, type, payload, skipExecute } = req.body || {};
   if (!fromOrgId || !toOrgId || !type) return err(res, "fromOrgId, toOrgId, type are required");
   const r = await collab().collaborate({ fromOrgId, toOrgId, type, payload, skipExecute });
@@ -118,7 +141,7 @@ router.get("/org-network/collaborations", (req, res) => {
   ok(res, collab().listCollaborations({ fromOrgId, toOrgId, type, status, limit: limit ? parseInt(limit) : 100 }));
 });
 
-router.post("/org-network/route", (req, res) => {
+router.post("/org-network/route", operatorOnly, (req, res) => {
   const { capability, excludeOrgId } = req.body || {};
   if (!capability) return err(res, "capability is required");
   const r = collab().routeToOrg(capability, { excludeOrgId });
@@ -128,7 +151,7 @@ router.post("/org-network/route", (req, res) => {
 
 // ── Capability Exchange ───────────────────────────────────────────────────────
 
-router.post("/org-network/capabilities/discover", (req, res) => {
+router.post("/org-network/capabilities/discover", operatorOnly, (req, res) => {
   ok(res, cap().discoverCapabilities());
 });
 
@@ -136,30 +159,30 @@ router.get("/org-network/capabilities", (req, res) => {
   ok(res, cap().getAllCapabilities());
 });
 
-router.post("/org-network/capabilities/find-best-org", (req, res) => {
+router.post("/org-network/capabilities/find-best-org", operatorOnly, (req, res) => {
   const { goal, requiredCapabilities } = req.body || {};
   const r = cap().findBestOrg({ goal, requiredCapabilities: requiredCapabilities || [] });
   if (!r.ok) return err(res, r.error, r.gap ? 422 : 400);
   ok(res, r);
 });
 
-router.post("/org-network/capabilities/detect-gaps", (req, res) => {
+router.post("/org-network/capabilities/detect-gaps", operatorOnly, (req, res) => {
   ok(res, cap().detectGaps());
 });
 
-router.post("/org-network/capabilities/:capability/resolve-overlap", (req, res) => {
+router.post("/org-network/capabilities/:capability/resolve-overlap", operatorOnly, (req, res) => {
   ok(res, cap().resolveOverlap(req.params.capability));
 });
 
 // ── Governance ────────────────────────────────────────────────────────────────
 
-router.post("/org-network/agreements", (req, res) => {
+router.post("/org-network/agreements", operatorOnly, (req, res) => {
   const r = gov().createAgreement(req.body || {});
   if (!r.ok) return err(res, r.error);
   ok(res, r);
 });
 
-router.put("/org-network/agreements/:id", (req, res) => {
+router.put("/org-network/agreements/:id", operatorOnly, (req, res) => {
   const r = gov().updateAgreement(req.params.id, req.body || {});
   if (!r.ok) return err(res, r.error, 404);
   ok(res, r);
@@ -188,11 +211,11 @@ router.get("/org-network/trust-network", (req, res) => {
   ok(res, gov().getTrustNetwork());
 });
 
-router.post("/org-network/compliance/assess", (req, res) => {
+router.post("/org-network/compliance/assess", operatorOnly, (req, res) => {
   ok(res, gov().assessCompliance());
 });
 
-router.post("/org-network/violations", (req, res) => {
+router.post("/org-network/violations", operatorOnly, (req, res) => {
   const r = gov().recordViolation(req.body || {});
   if (!r.ok) return err(res, r.error);
   ok(res, r);
@@ -200,11 +223,11 @@ router.post("/org-network/violations", (req, res) => {
 
 // ── Evolution ─────────────────────────────────────────────────────────────────
 
-router.post("/org-network/evolve", (req, res) => {
+router.post("/org-network/evolve", operatorOnly, (req, res) => {
   ok(res, evo().evolve());
 });
 
-router.put("/org-network/evolutions/:id/apply", (req, res) => {
+router.put("/org-network/evolutions/:id/apply", operatorOnly, (req, res) => {
   const r = evo().applyEvolution(req.params.id);
   if (!r.ok) return err(res, r.error, 404);
   ok(res, r);
@@ -245,7 +268,7 @@ router.get("/org-network/platform-inventory", (req, res) => {
 
 // ── Full Pipeline ─────────────────────────────────────────────────────────────
 
-router.post("/org-network/pipeline/run", async (req, res) => {
+router.post("/org-network/pipeline/run", operatorOnly, async (req, res) => {
   const { skipExecute } = req.body || {};
   const steps = [];
 

@@ -31,11 +31,34 @@ function _readAll() {
 function _writeAll(data) {
   fs.writeFileSync(WORKSPACES_FILE, JSON.stringify(data, null, 2));
 }
-function _readActive() {
-  try { return JSON.parse(fs.readFileSync(ACTIVE_WS_FILE, "utf8")); } catch { return { workspaceId: "default" }; }
+// Per-account map: { [accountId]: { workspaceId, switchedAt } }. Previously a
+// single flat { workspaceId } object with no account key at all — meaning any
+// user's "switch workspace" click silently changed the active workspace for
+// every other concurrent user/request that didn't pass an explicit
+// workspaceId. Migrated to a per-account map; a bare legacy { workspaceId }
+// shape (no accountId) is treated as having no accountId-scoped entries and
+// falls through to "default" for everyone, which is safe (worst case: nobody
+// has a saved preference yet, same as a fresh install).
+function _readActiveMap() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(ACTIVE_WS_FILE, "utf8"));
+    // Legacy shape guard: { workspaceId: "..." } has no accountId keys to read.
+    if (raw && typeof raw.workspaceId === "string") return {};
+    return raw && typeof raw === "object" ? raw : {};
+  } catch { return {}; }
 }
-function _writeActive(obj) {
-  fs.writeFileSync(ACTIVE_WS_FILE, JSON.stringify(obj, null, 2));
+function _writeActiveMap(map) {
+  fs.writeFileSync(ACTIVE_WS_FILE, JSON.stringify(map, null, 2));
+}
+function _readActive(accountId) {
+  const map = _readActiveMap();
+  return (accountId && map[accountId]) || { workspaceId: "default" };
+}
+function _writeActive(accountId, obj) {
+  if (!accountId) return; // no account context — nothing safe to persist
+  const map = _readActiveMap();
+  map[accountId] = obj;
+  _writeActiveMap(map);
 }
 
 // ── Bootstrap default workspace if missing ────────────────────────
@@ -90,10 +113,13 @@ function getWorkspace(workspaceId) {
 }
 
 /**
- * Get the currently active workspace (or default).
+ * Get the currently active workspace for a given account (or default).
+ * accountId is required for a per-account result — omitting it always
+ * resolves to "default" rather than silently reading another user's
+ * selection.
  */
-function getActiveWorkspace() {
-  const { workspaceId } = _readActive();
+function getActiveWorkspace(accountId) {
+  const { workspaceId } = _readActive(accountId);
   return getWorkspace(workspaceId) || getWorkspace("default");
 }
 
@@ -148,7 +174,7 @@ function switchWorkspace(workspaceId, accountId) {
   if (!ws) throw new Error("Workspace not found");
   const member = ws.members.find(m => m.accountId === accountId);
   if (!member) throw new Error("Not a member of this workspace");
-  _writeActive({ workspaceId, switchedAt: Date.now() });
+  _writeActive(accountId, { workspaceId, switchedAt: Date.now() });
   _logActivity(ws, accountId, "workspace_switched", workspaceId);
   _writeAll(all);
   return { workspaceId, workspace: ws };
@@ -179,7 +205,48 @@ function createInvitation(workspaceId, { email, role = "Operator" }, requestingA
   ws.invitations.push(inv);
   _logActivity(ws, requestingAccountId, "invitation_created", `${email} as ${role}`);
   _writeAll(all);
-  return { token, email, role, expiresAt: inv.expiresAt };
+  return { token, email, role, expiresAt: inv.expiresAt, workspaceName: ws.name };
+}
+
+/**
+ * Email the invite link. Separate from createInvitation so the token/record
+ * creation (the part that must succeed for the invite to be real) never fails
+ * because of an email provider hiccup — mirrors betaReadiness.sendEmailVerification's
+ * split between token generation and best-effort delivery.
+ */
+// A.6 business-owner-journey finding: sendEmail() is async (real work —
+// picks a provider, opens a connection, sends) but was called here
+// without await, so this function always returned { sent: true }
+// immediately, before the real send had even started — regardless of
+// whether it later succeeded or failed. Confirmed live: real signup,
+// real "Invite team member" submission, zero email provider credentials
+// configured in this environment (no RESEND_API_KEY/SENDGRID_API_KEY/
+// POSTMARK_API_KEY/SMTP_*/AWS SES vars) — the founder saw "Invite sent
+// to colleague@..." even though sendEmail() would have returned
+// {ok:false, error:"No email provider configured"} had anyone actually
+// looked at it. This directly violates this pass's explicit rule: expose
+// the real infrastructure error, never a false success. Now async +
+// awaited, propagating the real { ok, error } result from sendEmail().
+async function sendInvitationEmail({ email, token, role, workspaceName, invitedByName }) {
+  let emailSvc = null;
+  try { emailSvc = require("./emailService.cjs"); } catch { return { sent: false, reason: "emailService unavailable" }; }
+
+  const base = (process.env.BASE_URL || "http://localhost:5050").replace(/\/$/, "");
+  const link = `${base}/accept-invite?token=${token}`;
+  try {
+    const result = await emailSvc.sendEmail({
+      to: email,
+      subject: `${invitedByName || "Someone"} invited you to join ${workspaceName || "a workspace"} on Ooplix`,
+      html: `<p>You've been invited to join <strong>${workspaceName || "a workspace"}</strong> as <strong>${role}</strong>.</p>
+<p><a href="${link}">Accept invitation</a></p>
+<p>This invitation expires in 7 days. If you don't have an Ooplix account yet, you'll be asked to create one.</p>`,
+      text: `You've been invited to join ${workspaceName || "a workspace"} as ${role}. Accept: ${link}`,
+    });
+    if (!result.ok) return { sent: false, reason: result.error || "Email send failed", link };
+    return { sent: true, link };
+  } catch (e) {
+    return { sent: false, reason: e.message, link };
+  }
 }
 
 /**
@@ -204,6 +271,53 @@ function acceptInvitation(token, accountId) {
     return { workspaceId: ws.id, role: inv.role };
   }
   throw new Error("Invalid or expired invitation token");
+}
+
+/**
+ * Look up a pending invitation by token without consuming it — used to show
+ * the invitee "You've been invited to join <workspace> as <role>" before
+ * they've logged in/registered, since acceptInvitation requires an accountId
+ * (the invitee may not have an account yet).
+ */
+function getInvitationByToken(token) {
+  const all = _readAll();
+  for (const ws of Object.values(all)) {
+    const inv = (ws.invitations || []).find(i => i.token === token);
+    if (!inv) continue;
+    return {
+      workspaceId: ws.id,
+      workspaceName: ws.name,
+      email: inv.email,
+      role: inv.role,
+      expired: inv.expiresAt < Date.now(),
+      used: !!inv.usedAt,
+    };
+  }
+  return null;
+}
+
+/**
+ * Remove a member from a workspace. Requires Admin+ (same bar as inviting).
+ * The workspace's last Owner cannot be removed — mirrors organizationService's
+ * addMember/removeMember guard against leaving an ownerless org.
+ */
+function removeMember(workspaceId, targetAccountId, requestingAccountId) {
+  const all = _ensureDefault();
+  const ws = all[workspaceId];
+  if (!ws) throw new Error("Workspace not found");
+  const requester = ws.members.find(m => m.accountId === requestingAccountId);
+  if (!requester || !_roleAtLeast(requester.role, "Admin")) throw new Error("Insufficient role");
+
+  const target = ws.members.find(m => m.accountId === targetAccountId);
+  if (!target) throw new Error("Member not found");
+  if (target.role === "Owner" && ws.members.filter(m => m.role === "Owner").length <= 1) {
+    throw new Error("Cannot remove the last Owner");
+  }
+
+  ws.members = ws.members.filter(m => m.accountId !== targetAccountId);
+  _logActivity(ws, requestingAccountId, "member_removed", targetAccountId);
+  _writeAll(all);
+  return { removed: true, workspaceId, accountId: targetAccountId };
 }
 
 /**
@@ -273,7 +387,10 @@ module.exports = {
   updateWorkspace,
   switchWorkspace,
   createInvitation,
+  sendInvitationEmail,
+  getInvitationByToken,
   acceptInvitation,
+  removeMember,
   getMembers,
   getActivity,
   getMemberRole,

@@ -25,6 +25,16 @@ function _ensureDir() {
   if (!fs.existsSync(PATCHES_DIR)) fs.mkdirSync(PATCHES_DIR, { recursive: true });
 }
 
+// Resolves a caller-supplied relative path against ROOT and rejects any
+// result that escapes it (e.g. "../../../etc/passwd") — targetFile
+// ultimately originates from a client request body, so it must not be
+// trusted to stay inside the project tree.
+function _safeResolve(targetFile) {
+  const absPath = path.resolve(ROOT, targetFile);
+  if (absPath !== ROOT && !absPath.startsWith(ROOT + path.sep)) return null;
+  return absPath;
+}
+
 function _getAI() { return require("./aiService.js"); }
 
 // ── Git helpers ───────────────────────────────────────────────────────────────
@@ -120,7 +130,8 @@ async function generatePatch({ finding, targetFile } = {}) {
   if (!finding) return { ok: false, error: "finding required" };
   if (!targetFile) return { ok: false, error: "targetFile required" };
 
-  const absPath = path.resolve(ROOT, targetFile);
+  const absPath = _safeResolve(targetFile);
+  if (!absPath) return { ok: false, error: `targetFile escapes project root: ${targetFile}` };
   if (!fs.existsSync(absPath)) return { ok: false, error: `File not found: ${targetFile}` };
 
   const originalContent = fs.readFileSync(absPath, "utf8");
@@ -177,7 +188,8 @@ function applyPatch(patchId) {
   if (!fs.existsSync(patchPath)) return { ok: false, error: `Patch ${patchId} not found` };
 
   const record  = JSON.parse(fs.readFileSync(patchPath, "utf8"));
-  const absPath = path.resolve(ROOT, record.targetFile);
+  const absPath = _safeResolve(record.targetFile);
+  if (!absPath) return { ok: false, error: `targetFile escapes project root: ${record.targetFile}` };
   if (!fs.existsSync(absPath)) return { ok: false, error: `Target file missing: ${record.targetFile}` };
 
   const applied = _applySpecs(absPath, record.specs);
@@ -206,7 +218,8 @@ function rollbackPatch(patchId) {
   if (!fs.existsSync(patchPath)) return { ok: false, error: `Patch ${patchId} not found` };
   const record = JSON.parse(fs.readFileSync(patchPath, "utf8"));
   if (!record.originalContent) return { ok: false, error: "No original content stored — cannot rollback" };
-  const absPath = path.resolve(ROOT, record.targetFile);
+  const absPath = _safeResolve(record.targetFile);
+  if (!absPath) return { ok: false, error: `targetFile escapes project root: ${record.targetFile}` };
   _rollback(absPath, record.originalContent);
   record.status = "rolled_back";
   fs.writeFileSync(patchPath, JSON.stringify(record, null, 2));

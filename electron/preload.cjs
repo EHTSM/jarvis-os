@@ -53,6 +53,8 @@ contextBridge.exposeInMainWorld("electronAPI", {
         return ipcRenderer.invoke("api-request", opts);
     },
     getServerHealth:   ()            => ipcRenderer.invoke("get-server-health"),
+    getOfflineQueue:    ()            => ipcRenderer.invoke("get-offline-queue"),
+    replayOfflineQueue: ()            => ipcRenderer.invoke("replay-offline-queue"),
     getEvolutionScore: ()            => ipcRenderer.invoke("get-evolution-score"),
     getSuggestions:    ()            => ipcRenderer.invoke("get-suggestions"),
     approveSuggestion: (id)          => ipcRenderer.invoke("approve-suggestion", id),
@@ -82,6 +84,28 @@ contextBridge.exposeInMainWorld("electronAPI", {
     fsOpenPath:       (p)            => ipcRenderer.invoke("fs-open-path",         p),
     fsGetDownloadsPath: ()           => ipcRenderer.invoke("fs-get-downloads-path"),
     fsGetHomePath:    ()             => ipcRenderer.invoke("fs-get-home-path"),
+
+    // ── Hardware: Printer ─────────────────────────────────────────
+    printerList:       ()            => ipcRenderer.invoke("printer-list"),
+    printerPrint:      (opts)        => ipcRenderer.invoke("printer-print",         _obj(opts || {})),
+    printerPrintToPdf: (opts)        => ipcRenderer.invoke("printer-print-to-pdf",  _obj(opts || {})),
+
+    // ── Hardware: Scanner (hand-off to OS scan app — see main.cjs) ─
+    scannerListDevices:  ()          => ipcRenderer.invoke("scanner-list-devices"),
+    scannerOpenNativeApp: ()         => ipcRenderer.invoke("scanner-open-native-app"),
+
+    // ── Hardware: Webcam / Microphone ───────────────────────────────
+    // Actual capture uses navigator.mediaDevices.getUserMedia() directly in
+    // the renderer (standard Web API) — this just reports whether the main
+    // process's permission handler will grant "media" to this origin.
+    mediaPermissionStatus: ()        => ipcRenderer.invoke("media-permission-status"),
+
+    // ── Local folder sync ───────────────────────────────────────────
+    folderSyncStart:  (localPath)    => ipcRenderer.invoke("folder-sync-start",     { localPath: _str(localPath, 1024) }),
+    folderSyncStop:   (watchId)      => ipcRenderer.invoke("folder-sync-stop",      { watchId: _str(watchId, 64) }),
+    folderSyncStatus: ()             => ipcRenderer.invoke("folder-sync-status"),
+    folderSyncReadFile: (fullPath)   => ipcRenderer.invoke("folder-sync-read-file", { fullPath: _str(fullPath, 2048) }),
+    onFolderSyncEvent: (cb)          => _on("folder-sync-event", cb),
 
     // ── Terminal / Shell ─────────────────────────────────────────
     shellExec: (opts) => {
@@ -181,6 +205,9 @@ contextBridge.exposeInMainWorld("electronAPI", {
     // Backend connectivity
     onBackendOnline:        (cb)     => _on("backend-online",          cb),
     onBackendOffline:       (cb)     => _on("backend-offline",         cb),
+    onOfflineWriteQueued:   (cb)     => _on("offline-write-queued",    cb),
+    onOfflineReplayStarted: (cb)     => _on("offline-replay-started",  cb),
+    onOfflineReplayCompleted: (cb)   => _on("offline-replay-completed", cb),
 
     // System events
     onSystemResume:         (cb)     => _on("system-resume",           cb),

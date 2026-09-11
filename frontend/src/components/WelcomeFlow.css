@@ -11,7 +11,7 @@
 }
 
 .wf-panel {
-  background: #0d1117;
+  background: var(--surface-base);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 16px;
   width: 100%;
@@ -47,7 +47,7 @@
   align-items: center;
   justify-content: center;
   font-size: 11px;
-  color: rgba(255,255,255,0.3);
+  color: rgba(var(--fg-rgb), 0.62);
   flex-shrink: 0;
   transition: all 0.2s;
 }
@@ -61,17 +61,17 @@
 .wf-step--done .wf-step-dot {
   background: rgba(34,197,94,0.15);
   border-color: rgba(34,197,94,0.4);
-  color: #22c55e;
+  color: var(--success);
 }
 
 .wf-step-label {
   font-size: 11px;
   font-weight: 600;
-  color: rgba(255,255,255,0.3);
+  color: rgba(var(--fg-rgb), 0.62);
   white-space: nowrap;
 }
 
-.wf-step--active .wf-step-label { color: rgba(255,255,255,0.75); }
+.wf-step--active .wf-step-label { color: rgba(var(--fg-rgb), 0.78); }
 .wf-step--done .wf-step-label   { color: rgba(34,197,94,0.7); }
 
 .wf-step-line {
@@ -105,7 +105,7 @@
 
 .wf-desc {
   font-size: 13px;
-  color: rgba(255,255,255,0.5);
+  color: rgba(var(--fg-rgb), 0.62);
   margin: 0;
   line-height: 1.6;
 }
@@ -124,11 +124,11 @@
   align-items: center;
   gap: 8px;
   font-size: 12px;
-  color: rgba(255,255,255,0.55);
+  color: rgba(var(--fg-rgb), 0.62);
 }
 
 .wf-checklist li span {
-  color: #22c55e;
+  color: var(--success);
   font-weight: 700;
 }
 
@@ -150,12 +150,12 @@
 .wf-folder-btn--done {
   background: rgba(34,197,94,0.1);
   border-color: rgba(34,197,94,0.35);
-  color: #22c55e;
+  color: var(--success);
 }
 
 .wf-skip-hint {
   font-size: 11px;
-  color: rgba(255,255,255,0.25);
+  color: rgba(var(--fg-rgb), 0.62);
   margin: 0;
 }
 
@@ -190,9 +190,9 @@
 
 .wf-mission-icon { font-size: 14px; color: var(--accent, #7c6fff); flex-shrink: 0; }
 .wf-mission-text { display: flex; flex-direction: column; gap: 2px; flex: 1; }
-.wf-mission-label { font-size: 12px; font-weight: 600; color: rgba(255,255,255,0.8); }
-.wf-mission-desc  { font-size: 10px; color: rgba(255,255,255,0.35); }
-.wf-mission-check { color: #22c55e; font-size: 13px; font-weight: 700; }
+.wf-mission-label { font-size: 12px; font-weight: 600; color: rgba(var(--fg-rgb), 0.92); }
+.wf-mission-desc  { font-size: 10px; color: rgba(var(--fg-rgb), 0.62); }
+.wf-mission-check { color: var(--success); font-size: 13px; font-weight: 700; }
 
 /* ── Footer ── */
 .wf-footer {
@@ -214,7 +214,7 @@
   background: var(--accent, #7c6fff);
   border: none;
   border-radius: 8px;
-  color: #fff;
+  color: var(--on-accent);
   font-size: 13px;
   font-weight: 700;
   font-family: inherit;
@@ -229,11 +229,11 @@
   background: transparent;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 8px;
-  color: rgba(255,255,255,0.4);
+  color: rgba(var(--fg-rgb), 0.62);
   font-size: 12px;
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
   transition: all 0.12s;
 }
-.wf-btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: rgba(255,255,255,0.65); }
+.wf-btn-ghost:hover { border-color: rgba(255,255,255,0.2); color: rgba(var(--fg-rgb), 0.66); }

@@ -16,8 +16,9 @@
  *   recall({ agentId, input })    → { nodes[] }  — agent context injection
  */
 
-const fs   = require("fs");
-const path = require("path");
+const fs     = require("fs");
+const path   = require("path");
+const crypto = require("crypto");
 const logger = require("../utils/logger");
 
 const STORE_FILE   = path.join(__dirname, "../../data/memory-store.json");
@@ -35,7 +36,18 @@ function _readJson(file, fallback = []) {
 function _writeJson(file, data) {
     const dir = path.dirname(file);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const tmp = file + ".tmp";
+    // Persistence Sweep (2026-08-20): the tmp filename used to be a fixed
+    // `${file}.tmp` shared by every caller of this one helper across all 3
+    // backing files (STORE_FILE/ARCHIVE_FILE/INDEX_FILE) — crash-mid-write
+    // corruption risk regardless of concurrency (a SIGKILL during the write
+    // syscall could leave a truncated/torn file, since the old fixed tmp
+    // path itself was never a unique, collision-proof staging file). Same
+    // fix already applied to secretVault.cjs's VAULT_FILE/AUDIT_FILE/
+    // HISTORY_FILE this mission: a unique per-call tmp name (pid + random)
+    // makes every write independent; renameSync() is still what makes the
+    // real file's replacement atomic (a reader/subsequent boot never
+    // observes a partially-written file).
+    const tmp = `${file}.${process.pid}.${crypto.randomBytes(6).toString("hex")}.tmp`;
     fs.writeFileSync(tmp, JSON.stringify(data, null, 2));
     fs.renameSync(tmp, file);
 }
@@ -67,11 +79,54 @@ let _archive = new Map(
 const MAX_STORE_NODES   = 2000;
 const MAX_ARCHIVE_NODES = 2000;
 
+// Phase B.10: eviction ordered by importance alone silently destroyed every
+// NEW memory once the store was full.
+//
+// Measured on the live store: 2000/2000 nodes with a MINIMUM importance of 95
+// (1918 of them written at exactly 95 by the autonomous RCA-playbook writer —
+// 640 for circuit_breaker_open_media and 639 for ai_service_timeout alone).
+// saveTypedMemory() defaults to importance 60, so any newly-learned memory was
+// the lowest-ranked node in the map and was evicted inside the very same
+// _persist() call that saved it. Reproduced deterministically: save() returned
+// { saved: true } while the node was already unreadable, with a hard cutoff at
+// importance >= 95. Retrieval measured recall@8 = 0/3 for three memories that
+// had just been written "successfully".
+//
+// Two independent problems, both fixed here without changing the storage
+// engine, the cap, or the schema:
+//
+//  1. A brand-new node could never win eviction against a saturated store.
+//     Nodes are now protected for a short grace window after creation, so a
+//     just-written memory always survives long enough to be read back. Beyond
+//     that window the original importance/age ordering applies unchanged.
+//
+//  2. Eviction never considered recency of USE, so a node recalled seconds ago
+//     ranked identically to one never read. usageCount/lastUsedAt are already
+//     maintained by load() — they are now part of the ordering, which is what
+//     the surrounding comment ("frequently-recalled/important nodes survive
+//     longest") always claimed but did not implement.
+const EVICTION_GRACE_MS = 60_000;   // a new node is never evicted for 60s
+
 function _evictOverflow(map, maxSize) {
     if (map.size <= maxSize) return;
-    const over = map.size - maxSize;
-    const sorted = Array.from(map.values())
-        .sort((a, b) => (a.importance || 0) - (b.importance || 0) || a.updatedAt.localeCompare(b.updatedAt));
+    const now = Date.now();
+    const _ms = (ts) => { const t = Date.parse(ts || ""); return Number.isNaN(t) ? 0 : t; };
+
+    const candidates = Array.from(map.values())
+        .filter(n => (now - _ms(n.createdAt)) > EVICTION_GRACE_MS);
+
+    // If everything is inside the grace window the store is being written to
+    // faster than the window allows; fall back to the full set so the cap is
+    // still honoured rather than growing unbounded.
+    const pool = candidates.length ? candidates : Array.from(map.values());
+
+    const over = Math.min(map.size - maxSize, pool.length);
+    const sorted = pool.sort((a, b) =>
+        (a.importance || 0) - (b.importance || 0) ||
+        (a.usageCount  || 0) - (b.usageCount  || 0) ||
+        _ms(a.lastUsedAt) - _ms(b.lastUsedAt)      ||
+        _ms(a.updatedAt) - _ms(b.updatedAt));
+
     for (let i = 0; i < over; i++) map.delete(sorted[i].nodeId);
 }
 
@@ -102,6 +157,7 @@ function _rebuildIndex() {
  *   value      : any      — the actual data
  *   type       : string   — entity|procedure|goal|metric|insight|technical|person
  *   tags       : string[]
+ *   orgId      : string | null — OPTIONAL, see M-4 fix comment below
  *   importance : number   0–100
  *   confidence : number   0–100
  *   agentIds   : string[] — which agents may read/write this node
@@ -111,6 +167,28 @@ function _rebuildIndex() {
  *   usageCount : number
  *   lastUsedAt : ISO string | null
  * }
+ *
+ * M-4 (2026-08-28): orgId is OPTIONAL everywhere in this file, same design
+ * as missionMemory.cjs's own orgId field (see that file's header comment).
+ * Confirmed live: ~15 distinct write call sites into this store, and only
+ * ONE (companyFactory.js's org-scoped company memory, via
+ * semanticMemorySearch.cjs's projectId partition) already carries real org
+ * context. The other ~14 are genuinely autonomous/background writers with
+ * no request context at all (RCA engines, rule-learning, self-improvement
+ * loops, agent factory, cron-driven maintenance) — making orgId REQUIRED
+ * would break all of them, exactly the mistake missionMemory.cjs's header
+ * comment warns against. createMission()-equivalent callers that DO have
+ * real org context (phase18.js's POST/PATCH/DELETE /p18/memory*, gated
+ * operatorOnly) now pass it through; list()/recall()/search()/stats() gained
+ * an OPTIONAL orgId filter — when supplied, returns/counts ONLY nodes with
+ * that exact orgId (or orgId-less nodes are excluded, matching
+ * missionMemory.cjs listMissions()'s never-fall-back-to-shared behavior);
+ * when omitted, every internal caller's existing behavior is unchanged byte
+ * -for-byte. Existing nodes created before this fix have no orgId and
+ * remain in the shared/unowned bucket — there is no reliable way to infer
+ * historical ownership after the fact, so no retroactive backfill was
+ * attempted (would require guessing, which is worse than leaving them
+ * correctly classified as "unknown owner, treat as shared").
  */
 
 function _defaults(partial) {
@@ -121,6 +199,7 @@ function _defaults(partial) {
         value:      partial.value      ?? null,
         type:       partial.type       || "insight",
         tags:       Array.isArray(partial.tags) ? partial.tags : [],
+        orgId:      typeof partial.orgId === "string" && partial.orgId ? partial.orgId : null,
         importance: Number.isFinite(partial.importance) ? Math.min(100, Math.max(0, partial.importance)) : 50,
         confidence: Number.isFinite(partial.confidence) ? Math.min(100, Math.max(0, partial.confidence)) : 80,
         agentIds:   Array.isArray(partial.agentIds) ? partial.agentIds : [],
@@ -178,8 +257,14 @@ function archive(nodeId) {
 }
 
 /** List active nodes with optional filters. */
-function list({ type, tag, minImportance = 0, limit = 100, offset = 0, agentId } = {}) {
+// M-4: orgId is an OPTIONAL filter, same rule as missionMemory.cjs's
+// listMissions({orgId}) — when supplied, returns ONLY nodes with that exact
+// orgId (an orgId-less node is a different owner's context and must never
+// leak into a tenant-scoped query, so it is excluded, not included); when
+// omitted, behavior is byte-identical to before this parameter existed.
+function list({ type, tag, minImportance = 0, limit = 100, offset = 0, agentId, orgId } = {}) {
     let nodes = Array.from(_store.values());
+    if (orgId)         nodes = nodes.filter(n => n.orgId === orgId);
     if (type)          nodes = nodes.filter(n => n.type === type);
     if (tag)           nodes = nodes.filter(n => (n.tags || []).includes(tag));
     if (minImportance) nodes = nodes.filter(n => (n.importance || 0) >= minImportance);
@@ -190,11 +275,13 @@ function list({ type, tag, minImportance = 0, limit = 100, offset = 0, agentId }
     return { nodes: nodes.slice(offset, offset + limit), total: nodes.length };
 }
 
-/** Simple keyword search over key + tags + stringified value. */
-function search(query) {
-    if (!query) return list();
+/** Simple keyword search over key + tags + stringified value. orgId is an OPTIONAL filter (see list()). */
+function search(query, { orgId } = {}) {
+    if (!query) return list({ orgId });
     const q = query.toLowerCase();
-    const nodes = Array.from(_store.values()).filter(n => {
+    let nodes = Array.from(_store.values());
+    if (orgId) nodes = nodes.filter(n => n.orgId === orgId);
+    nodes = nodes.filter(n => {
         const haystack = [n.key, ...( n.tags || []), JSON.stringify(n.value || "")].join(" ").toLowerCase();
         return haystack.includes(q);
     });
@@ -202,9 +289,11 @@ function search(query) {
     return { nodes: nodes.slice(0, 50), total: nodes.length };
 }
 
-/** Stats snapshot. */
-function stats() {
-    const all  = Array.from(_store.values());
+/** Stats snapshot. orgId is an OPTIONAL filter (see list()). */
+function stats({ orgId } = {}) {
+    const all  = orgId
+        ? Array.from(_store.values()).filter(n => n.orgId === orgId)
+        : Array.from(_store.values());
     const byType = {};
     for (const n of all) { byType[n.type] = (byType[n.type] || 0) + 1; }
     const avgImportance = all.length
@@ -227,23 +316,40 @@ function stats() {
 
 /**
  * Agent context recall — given an agent + input, return relevant memory nodes.
- * Simple keyword + importance ranking.
+ * Simple keyword + importance ranking. orgId is an OPTIONAL filter (see list()).
  */
-function recall({ agentId, input = "", limit = 10 } = {}) {
+function recall({ agentId, input = "", limit = 10, orgId } = {}) {
     const words   = input.toLowerCase().split(/\s+/).filter(w => w.length > 3);
     let   nodes   = Array.from(_store.values()).filter(
         n => n.agentIds.length === 0 || n.agentIds.includes(agentId)
     );
+    if (orgId) nodes = nodes.filter(n => n.orgId === orgId);
 
-    // Score each node: importance + keyword matches
+    // Relevance must outrank importance. The previous score was
+    // `importance + hits * 10`, so a single keyword hit was worth only 10 points
+    // — on the live store (1918 of 2000 nodes written at importance >= 95 by the
+    // autonomous RCA writer) an EXACT keyword match at importance 88 scored 98 and
+    // lost to completely unrelated nodes sitting at importance 100. Measured:
+    // recall@10 = 0/3 for exact-keyword queries against memories written seconds
+    // earlier, and a known exact match ranked #82 of 1946.
+    //
+    // Rank by match count FIRST, then by importance as the tie-breaker within an
+    // equal number of matches. A node that matches nothing can no longer displace
+    // a node that matches the query, regardless of importance. Nothing about
+    // storage, the cap, the schema, or agent scoping changes — only the ordering.
+    // `_score` is preserved for callers/telemetry that already read it.
     const scored = nodes.map(n => {
         const haystack = [n.key, ...(n.tags || [])].join(" ").toLowerCase();
         const hits     = words.filter(w => haystack.includes(w)).length;
-        return { ...n, _score: n.importance + hits * 10 };
+        return { ...n, _hits: hits, _score: n.importance + hits * 10 };
     });
 
-    scored.sort((a, b) => b._score - a._score);
-    return { nodes: scored.slice(0, limit).map(n => { const c = { ...n }; delete c._score; return c; }) };
+    scored.sort((a, b) =>
+        (b._hits - a._hits) ||
+        ((b.importance || 0) - (a.importance || 0)) ||
+        ((b.usageCount || 0) - (a.usageCount || 0)));
+
+    return { nodes: scored.slice(0, limit).map(n => { const c = { ...n }; delete c._score; delete c._hits; return c; }) };
 }
 
 module.exports = { save, load, update, archive, list, search, stats, recall };

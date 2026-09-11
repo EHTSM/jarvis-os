@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from "react";
 import { track } from "../analytics";
 import { listMemoryNodes, searchMemory, saveMemoryNode, archiveMemoryNode, memoryStats } from "../phase18Api";
 import "./MemoryCenter.css";
+import { useEscapeKey } from "../hooks/useEscapeKey";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Persistence ───────────────────────────────────────────────────────
 const MEM_KEY = "ooplix_memory_entries";
@@ -17,7 +19,7 @@ const MEMORY_TYPES = [
   { id: "user",     label: "User",     icon: "◎", color: "var(--accent)"  },
   { id: "company",  label: "Company",  icon: "◉", color: "var(--warning)" },
   { id: "project",  label: "Project",  icon: "◈", color: "var(--accent2)" },
-  { id: "workflow", label: "Workflow", icon: "▷", color: "#52d68a"        },
+  { id: "workflow", label: "Workflow", icon: "▷", color: "var(--success)"        },
   { id: "agent",    label: "Agent",    icon: "⬟", color: "var(--danger)"  },
 ];
 
@@ -114,6 +116,8 @@ export default function MemoryCenter({ onNavigate }) {
   const [selected,    setSelected]    = useState(null);
   const [toast,       setToast]       = useState(null);
   const [apiError,    setApiError]    = useState(null);
+  // B19.2.3: Escape mirrors the backdrop click — restored from B19.1.
+  useEscapeKey(true, () => setEditing(null));
 
   useEffect(() => { track.event("memory_center_viewed"); }, []);
 
@@ -234,15 +238,15 @@ export default function MemoryCenter({ onNavigate }) {
       {/* Add form */}
       {adding && (
         <div className="mc-form-card">
-          <h3 className="mc-form-heading">New memory</h3>
+          <h3 className="mc-form-heading" id="mc-form-heading">New memory</h3>
           <MemoryForm onSave={handleAdd} onCancel={() => setAdding(false)} />
         </div>
       )}
 
       {/* Edit form */}
       {editing && (
-        <div className="mc-modal-overlay" onClick={() => setEditing(null)}>
-          <div className="mc-modal" onClick={e=>e.stopPropagation()}>
+        <div className="mc-modal-overlay" {...overlayProps(() => setEditing(null))}>
+          <div className="mc-modal" role="dialog" aria-modal="true" aria-labelledby="mc-form-heading" onClick={e=>e.stopPropagation()}>
             <h3 className="mc-form-heading">Edit memory</h3>
             <MemoryForm
               initial={{ ...editing, tags: editing.tags.join(", ") }}

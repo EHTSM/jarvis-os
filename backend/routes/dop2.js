@@ -4,7 +4,7 @@
  * All routes require authentication.
  */
 const router          = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
 const svc             = require("../services/dop2Deployment.cjs");
 
 function _ok(res, data)  { res.json({ ok: true,  ...data }); }
@@ -13,6 +13,19 @@ function _err(res, e, c) { res.status(c || 500).json({ ok: false, error: e?.mess
 // POST /dop2/deploy — run full 10-phase deployment validation
 router.post("/dop2/deploy", requireAuth, async (req, res) => {
   try { _ok(res, { report: await svc.runFullDeployment() }); }
+  catch (e) { _err(res, e); }
+});
+
+// POST /dop2/vps/run — ad-hoc allowlisted VPS command execution
+// (FINAL-JARVIS-DREAM-CERTIFICATION.md P2 SSH/VPS finding). Real
+// infrastructure control — operator-only, matching the gate already
+// applied to revenueOS.js's billing routes. allowMutation must be
+// explicitly opted into for the small pm2/nginx restart allowlist;
+// read-only commands work without it.
+router.post("/dop2/vps/run", requireAuth, operatorOnly, (req, res) => {
+  const { command, allowMutation } = req.body || {};
+  if (!command) return _err(res, new Error("command required"), 400);
+  try { _ok(res, svc.runVpsCommand(command, { allowMutation: !!allowMutation })); }
   catch (e) { _err(res, e); }
 });
 

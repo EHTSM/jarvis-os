@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { getOpsData } from "../telemetryApi";
+import { _fetch } from "../_client";
 import "./TrustComplianceCenter.css";
 
 // ── Frameworks ────────────────────────────────────────────────────────
+// Illustrative — no backend tracks per-framework control checklists at this
+// granularity (verified: governanceService.cjs's built-in templates list
+// policies per framework, not an 8-item done/partial/todo control checklist).
+// Kept illustrative rather than fabricating a false completeness score.
 const FRAMEWORKS = [
   {
     id:"gdpr", name:"GDPR", region:"EU", icon:"🇪🇺", color:"#3b82f6",
@@ -51,7 +57,7 @@ const FRAMEWORKS = [
     ],
   },
   {
-    id:"dpdp", name:"DPDP 2023", region:"India", icon:"🇮🇳", color:"#f59e0b",
+    id:"dpdp", name:"DPDP 2023", region:"India", icon:"🇮🇳", color:"var(--warning)",
     description:"Digital Personal Data Protection Act 2023 — Indian personal data law.",
     completeness:82,
     controls:[
@@ -67,8 +73,12 @@ const FRAMEWORKS = [
   },
 ];
 
-// ── Risk register ─────────────────────────────────────────────────────
-const RISK_REGISTER = [
+// ── Risk register (illustrative fallback) ──────────────────────────────
+// Used only until real /governance/risk data loads. Real data comes back as
+// generic categories (access/data/deployment/compliance/operational) with
+// likelihood/impact/mitigation — structurally different (no specific named
+// risks like "WhatsApp token exposure") but genuinely real, not fabricated.
+const RISK_REGISTER_FALLBACK = [
   { id:"r1", title:"WhatsApp session token exposure",            likelihood:"medium", impact:"high",    status:"mitigated", mitigation:"Tokens stored in encrypted session. QR re-auth required if session invalidated." },
   { id:"r2", title:"Razorpay API key in environment variables",  likelihood:"low",    impact:"critical",status:"mitigated", mitigation:"Key stored in .env, never committed to repo. Rotate quarterly." },
   { id:"r3", title:"No DPA signed with Razorpay",               likelihood:"high",   impact:"medium",  status:"open",      mitigation:"TODO: Review Razorpay DPA. Use their standard agreement." },
@@ -78,7 +88,23 @@ const RISK_REGISTER = [
   { id:"r7", title:"Android cold-start auth null crash",        likelihood:"high",   impact:"medium",  status:"in_progress",mitigation:"PR #3 in review. Fix ships today. Affects ~15% Android users." },
 ];
 
+// Maps a real /governance/risk entry → the risk-register row shape this view renders.
+function riskEntryToRow(r) {
+  return {
+    id: r.category,
+    title: `${r.category[0].toUpperCase()}${r.category.slice(1)} risk`,
+    likelihood: r.likelihood,
+    impact: r.impact,
+    status: r.mitigation?.trim() ? "mitigated" : "open",
+    mitigation: r.mitigation?.trim() || "Not yet documented — no mitigation notes recorded for this category.",
+  };
+}
+
 // ── Vendor reviews ────────────────────────────────────────────────────
+// Illustrative — verified no backend tracks vendor DPA/review status for
+// this product's real vendors (enterpriseState.cjs has a `vendors` list but
+// it belongs to the unrelated "Enterprise Org" simulation domain, not this
+// product's actual vendor relationships). Left illustrative, not fabricated-live.
 const VENDORS = [
   { id:"v1", name:"Razorpay",   purpose:"Payment processing",    reviewed:"2026-05-01", nextReview:"2026-11-01", status:"approved",  dpa:"pending",  dataTypes:["PII","Payment data"] },
   { id:"v2", name:"AWS",        purpose:"Cloud infrastructure",  reviewed:"2026-04-01", nextReview:"2026-10-01", status:"approved",  dpa:"signed",   dataTypes:["All platform data"] },
@@ -93,14 +119,26 @@ const RISK_IMPACT  = { critical:"var(--danger)", high:"var(--warning)", medium:"
 const RISK_STATUS  = { mitigated:"var(--success)", open:"var(--danger)", in_progress:"var(--accent2)", accepted:"var(--text-faint)" };
 
 export default function TrustComplianceCenter({ onNavigate }) {
+  const { user } = useAuth();
   const [section,   setSection]   = useState("overview");
   const [selFw,     setSelFw]     = useState("gdpr");
   const [liveOps,   setLiveOps]   = useState(null);
+  const [liveRisks, setLiveRisks] = useState(null);
 
   useEffect(() => {
     track.event("trust_compliance_viewed");
-    getOpsData().then(d => { if (d) setLiveOps(d); });
-  }, []);
+    // Workflow Coverage Completion finding: /ops is operatorOnly
+    // server-side; any non-operator founder opening Trust & Compliance
+    // fired a 403 fetching it.
+    if (user?.role === "operator") {
+      getOpsData().then(d => { if (d) setLiveOps(d); });
+    }
+    _fetch("/governance/risk").then(d => {
+      if (Array.isArray(d?.riskMatrix) && d.riskMatrix.length > 0) setLiveRisks(d.riskMatrix.map(riskEntryToRow));
+    }).catch(() => {});
+  }, [user]);
+
+  const RISK_REGISTER = liveRisks || RISK_REGISTER_FALLBACK;
 
   const selFramework = FRAMEWORKS.find(f=>f.id===selFw);
   const overallScore = Math.round(FRAMEWORKS.reduce((s,f)=>s+f.completeness,0)/FRAMEWORKS.length);
@@ -208,6 +246,7 @@ export default function TrustComplianceCenter({ onNavigate }) {
 
         {section==="controls" && selFramework && (
           <div className="tcc-controls-section">
+            <div className="ac-api-banner ac-api-banner--error">⚠ No per-control compliance backend exists yet — this checklist is illustrative, not live.</div>
             <div className="tcc-controls-header">
               <span className="tcc-ov-icon">{selFramework.icon}</span>
               <span className="tcc-controls-fw-name" style={{color:selFramework.color}}>{selFramework.name}</span>
@@ -228,6 +267,9 @@ export default function TrustComplianceCenter({ onNavigate }) {
 
         {section==="risks" && (
           <div className="tcc-risk-list">
+            {!liveRisks && (
+              <div className="ac-api-banner ac-api-banner--error">⚠ Live governance risk matrix unavailable — showing illustrative register.</div>
+            )}
             {RISK_REGISTER.map(r=>(
               <div key={r.id} className="tcc-risk-row">
                 <div className="tcc-risk-info">
@@ -248,6 +290,7 @@ export default function TrustComplianceCenter({ onNavigate }) {
 
         {section==="vendors" && (
           <div className="tcc-vendor-list">
+            <div className="ac-api-banner ac-api-banner--error">⚠ No vendor review tracking backend exists yet — this list is illustrative, not live.</div>
             {VENDORS.map(v=>(
               <div key={v.id} className="tcc-vendor-row">
                 <div className="tcc-vendor-info">

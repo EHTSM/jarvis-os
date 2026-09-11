@@ -28,7 +28,7 @@ function PlanBar({ name, count, total, color }) {
 }
 
 function MarginGauge({ pct, status }) {
-  const color = status === "healthy" ? "#4ade80" : status === "watch" ? "#f59e0b" : "#f87171";
+  const color = status === "healthy" ? "#4ade80" : status === "watch" ? "var(--warning)" : "#f87171";
   const clamped = Math.min(100, Math.max(0, pct));
   return (
     <div className="ad-margin-gauge">
@@ -38,7 +38,7 @@ function MarginGauge({ pct, status }) {
           <path d="M10,60 A50,50,0,0,1,110,60" fill="none" stroke={color} strokeWidth="10" strokeLinecap="round"
             strokeDasharray={`${(clamped / 100) * 157} 157`} />
           <text x="60" y="58" textAnchor="middle" fill={color} fontSize="18" fontWeight="bold">{pct}%</text>
-          <text x="60" y="70" textAnchor="middle" fill="#64748b" fontSize="9">gross margin</text>
+          <text x="60" y="70" textAnchor="middle" fill="var(--text-dim)" fontSize="9">gross margin</text>
         </svg>
       </div>
     </div>

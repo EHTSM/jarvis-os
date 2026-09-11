@@ -76,7 +76,7 @@ export default function AutonomousMarketingCenter({ onNavigate }) {
           { label:"Agents running",     value:`${runningAll}/${totalAll}`, color:"var(--success)" },
           { label:"Content today",      value:contentToday,                color:"var(--accent2)" },
           { label:"Keywords tracked",   value:seoToday,                    color:"var(--accent)"  },
-          { label:"Total reach",        value:totalReach,                  color:"#7c6fff"        },
+          { label:"Total reach",        value:totalReach,                  color:"var(--accent)"        },
           { label:"Organic visits/mo",  value:"2,340",                     color:"var(--success)" },
           { label:"Campaigns active",   value:CAMPAIGN_AGENTS.filter(a=>a.status==="running").length, color:"var(--warning)" },
         ].map(s=>(
@@ -119,7 +119,7 @@ export default function AutonomousMarketingCenter({ onNavigate }) {
                 <p className="amc-ov-label">Content produced (total)</p>
                 {[
                   {label:"Blog articles",  val:142, color:"var(--accent2)"},
-                  {label:"Social posts",   val:782, color:"#7c6fff"},
+                  {label:"Social posts",   val:782, color:"var(--accent)"},
                   {label:"Newsletters",    val:28,  color:"var(--warning)"},
                   {label:"Case studies",   val:19,  color:"var(--success)"},
                   {label:"Short-form",     val:320, color:"var(--accent)"},
@@ -137,7 +137,7 @@ export default function AutonomousMarketingCenter({ onNavigate }) {
                 {label:"Rankings improved", value:"+47",     note:"positions, last 30d", color:"var(--success)"},
                 {label:"Campaigns executed",value:"14",      note:"this quarter",        color:"var(--accent2)"},
                 {label:"Avg SEO position",  value:"#4.2",    note:"tracked keywords",    color:"var(--accent)" },
-                {label:"Content ROI",       value:"∞",       note:"zero ad spend",       color:"#52d68a"       },
+                {label:"Content ROI",       value:"∞",       note:"zero ad spend",       color:"var(--success)"       },
               ].map(k=>(
                 <div key={k.label} className="amc-kpi-card">
                   <span className="amc-kpi-val" style={{color:k.color}}>{k.value}</span>
@@ -201,7 +201,7 @@ export default function AutonomousMarketingCenter({ onNavigate }) {
                   <span className="amc-agent-model">{a.total} posts total</span>
                 </div>
                 <div className="amc-agent-metrics">
-                  <span className="amc-agent-metric"><span className="amc-agent-mv" style={{color:"#7c6fff"}}>{a.today}</span> today</span>
+                  <span className="amc-agent-metric"><span className="amc-agent-mv" style={{color:"var(--accent)"}}>{a.today}</span> today</span>
                   <span className="amc-agent-metric"><span className="amc-agent-mv">{a.reach}</span> reach</span>
                   <span className="amc-agent-metric"><span className="amc-agent-mv" style={{color:"var(--success)"}}>{a.engagement}</span> eng.</span>
                 </div>

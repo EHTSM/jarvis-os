@@ -1,0 +1,91 @@
+{
+  "generatedAt": "2026-07-17",
+  "mission": "V1 Final Reality Completion",
+  "goDecision": "NO-GO for full multi-tenant enterprise SaaS production launch. GO for a single-operator / small-team desktop deployment with the credential-provisioning items below completed.",
+  "blockers": [
+    {
+      "id": "B1",
+      "title": "No database-enforced tenant isolation",
+      "detail": "All state (organizations, workspaces, missions, billing) lives in flat data/*.json files read/written by application code. No row-level or schema-level isolation boundary exists. This is an architectural gap; not fixable within a no-new-architecture mission.",
+      "blocksWhat": "Multi-tenant SaaS at scale with untrusted tenants sharing infrastructure."
+    },
+    {
+      "id": "B2",
+      "title": "Rate limiting covers only 7 of 126 route files",
+      "detail": "Login/register and a handful of high-cost surfaces (jarvis, browser, odi, runtime, whatsapp) are throttled. Every org-ladder, POST-Omega domain, coding-assistant, and production-tooling route is unthrottled. Auth-gated (not an anonymous open door), but a single compromised or malicious operator token can hammer expensive AI-backed endpoints without limit.",
+      "blocksWhat": "Public multi-tenant exposure without a WAF/API-gateway-level rate limit in front of it."
+    },
+    {
+      "id": "B3",
+      "title": "No true self-correction in the autonomous runtime",
+      "detail": "The system retries failures (Recovery, real) and escalates strategy by attempt count (real), but never revises a prior autonomous decision because it recognizes the decision's judgment was wrong. Confidence scores are computed, logged, and behaviorally ignored.",
+      "blocksWhat": "Marketing or sales claims of 'self-correcting AI' or 'learns from its mistakes' at the decision level — this is not demonstrated and should not be represented as implemented."
+    },
+    {
+      "id": "B4",
+      "title": "14 duplicate *Org engines are architecturally repetitive scaffolding",
+      "detail": "businessOrg/autonomousOrg/civilizationOrg/ecosystemOrg/enterpriseOrg/executiveOrg/autonomousEvolutionOrg/autonomousKnowledgeOrg/platformOrg (+ *State/*Workflow siblings) have zero self-trigger and, when manually ticked, only ever mutate their own JSON — no real external connector call or real infra modification. Not merged (would be architecture redesign) or removed (real mounted routes with real, if self-referential, data behind them).",
+      "blocksWhat": "Selling these subsystems as live autonomous business/civilization operations would be a factual misrepresentation to an enterprise buyer."
+    }
+  ],
+  "credentialsNeeded": [
+    { "connector": "GitHub", "envVars": ["GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET", "GITHUB_TOKEN"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "Google (OAuth)", "envVars": ["GOOGLE_CLIENT_ID", "GOOGLE_CLIENT_SECRET"], "status": "CODE READY, WAITING FOR CREDS — GOOGLE_CLIENT_ID present, SECRET missing" },
+    { "connector": "Slack", "envVars": ["SLACK_BOT_TOKEN", "SLACK_CLIENT_ID", "SLACK_CLIENT_SECRET"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "Discord", "envVars": ["DISCORD_BOT_TOKEN", "DISCORD_CLIENT_ID", "DISCORD_CLIENT_SECRET", "DISCORD_WEBHOOK"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "Stripe", "envVars": ["STRIPE_SECRET_KEY", "STRIPE_WEBHOOK_SECRET", "STRIPE_PUBLISHABLE_KEY"], "status": "CODE READY, WAITING FOR CREDS — no Stripe webhook route exists yet either" },
+    { "connector": "Notion", "envVars": ["NOTION_TOKEN"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "Anthropic", "envVars": ["ANTHROPIC_API_KEY"], "status": "CODE READY, WAITING FOR CREDS — var name now documented in .env.example as of the prior session" },
+    { "connector": "Gemini", "envVars": ["GEMINI_API_KEY"], "status": "CODE READY, WAITING FOR CREDS — var name now documented in .env.example as of the prior session" },
+    { "connector": "Cloudflare", "envVars": ["CLOUDFLARE_ACCOUNT_ID", "CLOUDFLARE_API_TOKEN"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "AWS", "envVars": ["AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "Supabase", "envVars": ["SUPABASE_URL", "SUPABASE_ANON_KEY", "SUPABASE_SERVICE_KEY"], "status": "CODE READY, WAITING FOR CREDS" },
+    { "connector": "WhatsApp", "envVars": ["WA_PHONE_ID (currently set to a WABA id, not a phone-number-id)"], "status": "BROKEN — credential VALUE is wrong type, not missing. Correct value must be fetched from {WABA_ID}/phone_numbers on Meta's Graph API." }
+  ],
+  "brokenFeatures": [
+    { "feature": "WhatsApp connector live status", "detail": "WA_PHONE_ID in .env holds a WhatsApp Business Account ID, not a phone-number-id, causing a 400 on the display_phone_number field probe. Connector code is correct; the fix is an operator credential correction.", "fixRequiresCode": false },
+    { "feature": "/queue/status deep metrics endpoint", "detail": "backend/routes/tasks.js requires agents/metrics/metricsCollector.cjs, which exists only under _archive/, not the live agents/ tree. Degrades to 503 rather than crashing. /scheduler/status is unaffected (different code path).", "fixRequiresCode": true, "fixNotApplied": "Resurrecting archived code without knowing why it was archived was judged out of scope for this pass." }
+  ],
+  "disabledFeatures": {
+    "count": 14,
+    "detail": "See docs/current/v1-feature-matrix.json frontendPages.disabledList for the full list with reasons. All were fake-data or backend-missing pages, removed from nav/search/command-palette (unreachable) with component files retained on disk."
+  },
+  "removedFeatures": [
+    { "file": "backend/middleware/firebaseAuth.js", "reason": "Complete, working, but entirely unused duplicate of the real auth mechanism (backend/middleware/authMiddleware.js). Zero callers confirmed across the full repo." }
+  ],
+  "verifiedFeatures": {
+    "authentication": "REAL — HS256 JWT, constant-time comparison, expiry enforced, fail-closed dev bypass. Live: no cookie -> 401, bad token -> 401, valid token -> 200.",
+    "authorization": "REAL — org RBAC and workspace membership return 403 to a second 'attacker' identity on both read and privileged operations.",
+    "workspaceIsolation": "REAL — GET /workspace/:id/members now enforces membership (fixed this session; previously leaked any workspace's member list to any authenticated user).",
+    "aiRouter": "REAL — 12-provider router, real HTTP, live-CONNECTED with OpenAI this session.",
+    "missionEngine": "REAL — real fs persistence, 228+ real missions observed live.",
+    "memorySystem": "REAL — remember()/recall() with genuine persistence and similarity search, live-verified.",
+    "vault": "REAL — AES-256-GCM, wired to real callers, live dashboard/health endpoints return real data.",
+    "oauthLayer": "REAL — authorization-code exchange/refresh/revoke implemented for 6 providers.",
+    "autonomousCore": "REAL — Observe/Execute/Recover/Loop genuinely fire with zero human trigger and produce real external side effects (1585 real AI provider HTTP calls in one idle window).",
+    "electronBackendSpawn": "REAL — live-verified the exact spawn mechanism main.cjs uses reaches a real /health 200.",
+    "electronAutoUpdaterFeed": "REAL — live HTTP confirms the GitHub release feed is reachable.",
+    "ci": "REAL — regression suite, frontend build, and deploy-script syntax all pass; real remote CI (rc6) confirmed running via gh CLI, no recent failures.",
+    "backups": "REAL — safe-backup.cjs creates real tar.gz snapshots; test-restore.cjs disaster-recovery validator passes end to end.",
+    "pm2": "REAL — both apps reach online with no crash-loop observed."
+  },
+  "regressionStatus": {
+    "suite": "npm run test:runtime",
+    "result": "144/144 passing",
+    "confirmedRuns": "Multiple times across this session, most recently after all fixes were applied."
+  },
+  "estimatedEffortRemaining": {
+    "note": "Stated as concrete units of work per mission rules — no percentages, no time estimates.",
+    "items": [
+      "Real database-backed tenant isolation for organizations/workspaces/billing (the largest single item; explicitly new architecture, outside this mission's scope even to size).",
+      "3 new backend route namespaces (/dev/*, /personal/*, /enterprise/*) plus real service logic, to make the disabled DeveloperOS/PersonalOS/EnterpriseOS tabs real rather than removed.",
+      "Real Gmail/Calendar/Drive API calls (currently zero exist) to make those connectors real rather than scope-only.",
+      "A real PayPal connector built from scratch (currently zero code).",
+      "A decision on the *Org engine family: wire real autonomous triggers and real external actions, or stop describing it as autonomous business operation in customer-facing material.",
+      "Rate-limiter coverage extended across the ~119 currently-unthrottled route files, or an API-gateway-level rate limit in front of the whole app.",
+      "Credential provisioning (not code) for GitHub/Google/Slack/Discord/Stripe/Notion/Anthropic/Gemini/Cloudflare/AWS/Supabase to move them from WAITING FOR CREDS to live-verified CONNECTED.",
+      "A correct WA_PHONE_ID value (operator action, not code) to move WhatsApp from BROKEN to CONNECTED.",
+      "A decision on whether to resurrect agents/metrics/metricsCollector.cjs from _archive/ (unknown why it was archived) to fix /queue/status."
+    ]
+  }
+}

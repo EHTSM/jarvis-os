@@ -65,6 +65,7 @@ function _uil()   { try { return require("./unifiedIntelligenceLayer.cjs");     
 function _bench() { try { return require("./engineeringBenchmark.cjs");                        } catch { return null; } }
 function _le()    { try { return require("./continuousLearningEngine.cjs");                    } catch { return null; } }
 function _ec()    { try { return require("./engineeringCapabilities.cjs");                     } catch { return null; } }
+function _dop2()  { try { return require("./dop2Deployment.cjs");                               } catch { return null; } }
 
 // ── Persistence ────────────────────────────────────────────────────────────────
 const DATA_DIR   = path.join(__dirname, "../../data");
@@ -72,6 +73,7 @@ const DEPLOY_FILE= path.join(DATA_DIR, "deployment-runs.json");
 
 let _store   = null;
 let _writing = false;
+let _dirty   = false;
 
 function _load() {
     if (_store) return _store;
@@ -81,17 +83,27 @@ function _load() {
     return _store;
 }
 
+// Same dropped-write bug found and fixed in engineeringPipelineCoordinator.cjs
+// and missionOrchestrator.cjs (FINAL-JARVIS-DREAM-CERTIFICATION.md P1): a
+// _persist() call arriving while a previous write was still in flight was
+// silently dropped, not queued — the deploy run's final terminal status
+// could be lost the same way a pipeline run's was.
 function _persist() {
+    _dirty = true;
     if (_writing) return;
     _writing = true;
-    setImmediate(() => {
+    const _flush = () => {
+        _dirty = false;
         const tmp = DEPLOY_FILE + ".tmp";
         fs.writeFile(tmp, JSON.stringify({ ..._store, savedAt: new Date().toISOString() }, null, 2), "utf8", err => {
-            _writing = false;
-            if (!err) fs.rename(tmp, DEPLOY_FILE, () => {});
-            else logger.warn(`[DeployCoord] save error: ${err.message}`);
+            if (err) logger.warn(`[DeployCoord] save error: ${err.message}`);
+            fs.rename(tmp, DEPLOY_FILE, () => {
+                if (_dirty) { setImmediate(_flush); }
+                else { _writing = false; }
+            });
         });
-    });
+    };
+    setImmediate(_flush);
 }
 
 // ── ID helpers ─────────────────────────────────────────────────────────────────
@@ -189,6 +201,18 @@ function _buildRun(spec, opts = {}) {
     const now = new Date().toISOString();
     const deployId = _did();
 
+    // requireApproval is a FLOOR set by the target profile, not a default a
+    // caller can lower — the production profile's requireApproval:true
+    // ("always requires operator sign-off", line ~144) previously could be
+    // silently overridden to false via spec.requireApproval/opts.
+    // requireApproval from POST /deployment/run's req.body, defeating the
+    // one real execution-layer approval gate in the system. Callers may
+    // still raise the bar (require approval on dev/staging too) but can
+    // never lower it below what the target profile mandates. See
+    // 100-COMPANY-GAP-LIST.md P0 #2 / REALITY-AUDIT Part 8.
+    const requestedRequireApproval = spec.requireApproval ?? opts.requireApproval;
+    const requireApproval = targetProfile.requireApproval || !!requestedRequireApproval;
+
     return {
         deployId,
         goal:           spec.goal || `Deploy to ${targetProfile.label}`,
@@ -201,9 +225,8 @@ function _buildRun(spec, opts = {}) {
 
         status:          "pending",
         // _preApproved allows benchmark to pre-authorize without a separate API call
-        approvalStatus:  (spec._preApproved) ? "approved"
-                       : (opts.requireApproval ?? targetProfile.requireApproval) ? "pending" : "auto_approved",
-        requireApproval: spec.requireApproval ?? opts.requireApproval ?? targetProfile.requireApproval,
+        approvalStatus:  (spec._preApproved) ? "approved" : (requireApproval ? "pending" : "auto_approved"),
+        requireApproval,
         rollbackOnFail:  spec.rollbackOnFail  ?? opts.rollbackOnFail  ?? targetProfile.rollbackOnFail,
         healthThreshold: spec.healthThreshold ?? opts.healthThreshold ?? targetProfile.healthThreshold,
         verifyTimeoutMs: spec.verifyTimeoutMs ?? opts.verifyTimeoutMs ?? targetProfile.verifyTimeoutMs,
@@ -428,25 +451,71 @@ async function _executeDeployStage(run, stage) {
                 break;
             }
 
-            // Execute deployment via autonomousExecutionRuntime
-            // In a real system this would shell out to: npm run deploy, docker push, kubectl apply, etc.
-            // Here we call the existing `build_run` capability as the deploy primitive (CI/CD analogue),
-            // and record the deploy intent in missionMemory.
-            const aer = _aer();
-            if (aer) {
-                const rec = await aer.executeStage({
-                    stageId:     `deploy_${run.deployId}`,
-                    capability:  "build_run",   // build = deploy artifact creation
-                    input:       `deploy_target:${run.target} goal:${run.goal.slice(0, 80)}`,
-                    missionId:   run.missionId,
-                    maxAttempts: run.targetProfile.maxRetries || 2,
-                });
-                outputData = { deployRec: rec?.status, output: rec?.output };
-                ok = rec?.status === "completed";
-                if (!ok) stage.error = rec?.error || "Deploy execution failed";
+            // Real remote deploy (FINAL-JARVIS-DREAM-CERTIFICATION.md P1
+            // Deployment finding): this previously only ran `build_run`
+            // (a local build/verification step) and called that "deploy" —
+            // confirmed by this exact comment before the fix, admitting
+            // "in a real system this would shell out to... here we call
+            // build_run as the deploy primitive." Searched for an existing
+            // implementation first, per the mission's own rule, rather than
+            // inventing a new SSH mechanism: dop2Deployment.cjs already has
+            // a real, working ssh-execution helper (sshExec, gated on
+            // VPS_HOST/SSH_HOST/DEPLOY_HOST — the same env vars its own
+            // read-only readiness checks already use), just never wired to
+            // an actual deploy action. Reused as-is.
+            //
+            // Real remote deploy only fires when those env vars are
+            // genuinely configured; otherwise this honestly falls back to
+            // the pre-existing build_run local-verification path rather
+            // than claiming a remote deploy happened with nothing
+            // configured to receive it.
+            const dop2 = _dop2();
+            const hasVpsTarget = !!(process.env.VPS_HOST || process.env.SSH_HOST || process.env.DEPLOY_HOST);
+
+            if (dop2 && hasVpsTarget && (run.target === "production" || run.target === "staging" || run.targetProfile?.vpsDeploy)) {
+                const appDir = process.env.APP_DIR || "/opt/jarvis-os";
+                const steps  = [];
+
+                const pull = dop2.sshExec(`cd "${appDir}" && git fetch --all && git reset --hard origin/main`, 30_000);
+                steps.push({ step: "git_pull", ok: pull.ok, out: (pull.out || "").slice(0, 300) });
+
+                if (pull.ok) {
+                    const install = dop2.sshExec(`cd "${appDir}" && npm install --omit=dev --no-audit --no-fund`, 120_000);
+                    steps.push({ step: "npm_install", ok: install.ok, out: (install.out || "").slice(0, 300) });
+
+                    if (install.ok) {
+                        const restart = dop2.sshExec(`cd "${appDir}" && pm2 restart jarvis-os || pm2 start ecosystem.config.cjs`, 30_000);
+                        steps.push({ step: "pm2_restart", ok: restart.ok, out: (restart.out || "").slice(0, 300) });
+                    }
+                }
+
+                ok = steps.length > 0 && steps.every(s => s.ok);
+                outputData = { mode: "remote_ssh", appDir, steps };
+                if (!ok) {
+                    const failedStep = steps.find(s => !s.ok);
+                    stage.error = `Remote deploy failed at ${failedStep?.step || "unknown"}: ${failedStep?.out || "no output"}`;
+                }
             } else {
-                // Graceful no-op when runtime unavailable (test/benchmark context)
-                outputData = { deployRec: "skipped_no_runtime" };
+                // Execute deployment via autonomousExecutionRuntime — no VPS
+                // target configured, so this honestly runs the local
+                // build/verification step rather than fabricating a remote
+                // deploy with nowhere real to send it.
+                const aer = _aer();
+                if (aer) {
+                    const rec = await aer.executeStage({
+                        stageId:     `deploy_${run.deployId}`,
+                        capability:  "build_run",   // build = deploy artifact creation
+                        input:       `deploy_target:${run.target} goal:${run.goal.slice(0, 80)}`,
+                        missionId:   run.missionId,
+                        maxAttempts: run.targetProfile.maxRetries || 2,
+                    });
+                    outputData = { mode: "local_build_only", deployRec: rec?.status, output: rec?.output, note: hasVpsTarget ? undefined : "No VPS_HOST/SSH_HOST/DEPLOY_HOST configured — ran local build verification only, did not deploy anywhere remote." };
+                    ok = rec?.status === "completed";
+                    if (!ok) stage.error = rec?.error || "Deploy execution failed";
+                } else {
+                    // Graceful no-op when runtime unavailable (test/benchmark context)
+                    outputData = { deployRec: "skipped_no_runtime" };
+                }
             }
             break;
         }

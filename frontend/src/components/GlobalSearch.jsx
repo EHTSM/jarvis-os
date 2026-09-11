@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './GlobalSearch.css';
+import { clickableProps } from "../hooks/useClickableProps";
+import { overlayProps } from "../hooks/useClickableProps";
 
 const BACKEND = process.env.REACT_APP_API_URL || '';
 const isElectron = () => !!window.electronAPI?.isElectron;
@@ -36,7 +38,6 @@ const NAV_ROUTES = [
   { tab: "guardrails",    label: "Guardrails",               icon: "◻" },
   { tab: "recommend",     label: "Recommendation Center",    icon: "✦" },
   { tab: "executivedash", label: "Executive Dashboard",      icon: "◉" },
-  { tab: "memory",        label: "Memory OS",                icon: "◎" },
   { tab: "intel",         label: "Intelligence Panel",       icon: "◈" },
   { tab: "selfimprove",   label: "Self-Improvement Engine",  icon: "⬡" },
   { tab: "agents",        label: "Agent OS",                 icon: "🤖" },
@@ -49,7 +50,6 @@ const NAV_ROUTES = [
   { tab: "orchestrator",  label: "Orchestrator",             icon: "◎" },
   { tab: "operations",    label: "Operations",               icon: "◉" },
   { tab: "runtime",       label: "Runtime Execution",        icon: "⬡" },
-  { tab: "autonomy",      label: "Autonomous Company",       icon: "◎" },
   { tab: "autonomouswf",  label: "Autonomous Workflows",     icon: "⚡" },
   { tab: "autonomyscore", label: "Autonomy Score",           icon: "◉" },
   { tab: "seo",           label: "SEO Engine",               icon: "◇" },
@@ -57,8 +57,6 @@ const NAV_ROUTES = [
   { tab: "social",        label: "Social Hub",               icon: "◉" },
   { tab: "email",         label: "Email Marketing",          icon: "◻" },
   { tab: "team",          label: "Team Workspace",           icon: "◈" },
-  { tab: "ecrm",          label: "Enterprise CRM",           icon: "◻" },
-  { tab: "knowledge",     label: "Knowledge Base",           icon: "◇" },
   { tab: "settings",      label: "Settings",                 icon: "◈" },
   { tab: "billing",       label: "Billing",                  icon: "◇" },
   { tab: "help",          label: "Help & Guides",            icon: "◎" },
@@ -176,10 +174,8 @@ function ResultItem({ item, active, onSelect, q }) {
   const icon = item.icon || cat.icon;
 
   return (
-    <div
-      ref={ref}
-      className={`gs-result${active ? ' gs-result--active' : ''}`}
-      onClick={() => onSelect(item)}
+    <div ref={ref}
+      className={`gs-result${active ? ' gs-result--active' : ''}`} {...clickableProps(() => onSelect(item))}
     >
       <span className="gs-result__icon">{icon}</span>
       <div className="gs-result__text">
@@ -228,7 +224,7 @@ function ClipboardHistory({ onClose }) {
 
   useEffect(() => {
     if (isElectron()) {
-      api()?.clipboardGetHistory().then(h => { setHistory(h || []); setLoading(false); });
+      api()?.clipboardGetHistory().then(r => { setHistory(r?.history || []); setLoading(false); });
     } else {
       setLoading(false);
     }
@@ -252,7 +248,7 @@ function ClipboardHistory({ onClose }) {
       ) : (
         <div className="clipboard-history__list">
           {history.map((text, i) => (
-            <div key={i} className="clipboard-item" onClick={() => paste(text)} title="Click to copy">
+            <div key={i} className="clipboard-item" {...clickableProps(() => paste(text))} title="Click to copy">
               <span className="clipboard-item__text">{text}</span>
               <span className="clipboard-item__idx">#{i + 1}</span>
             </div>
@@ -482,7 +478,7 @@ export default function GlobalSearch({ open, onClose, onAction, recentMissions =
   const flatForCursor = results;
 
   return (
-    <div className="gs-backdrop" onClick={onClose}>
+    <div className="gs-backdrop" {...overlayProps(onClose)}>
       <div className="gs-modal" onClick={e => e.stopPropagation()}>
         <div className="gs-input-row">
           <span className="gs-search-icon">⌕</span>

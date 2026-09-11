@@ -25,7 +25,7 @@ const TABS = [
 
 function ScoreBadge({ value, max = 100, label }) {
   const pct  = Math.round((value / max) * 100);
-  const color = pct >= 80 ? "#22c55e" : pct >= 60 ? "#f59e0b" : "#ef4444";
+  const color = pct >= 80 ? "var(--success)" : pct >= 60 ? "var(--warning)" : "var(--danger)";
   return (
     <div className="fop-score-badge">
       <div className="fop-score-ring" style={{ "--pct": pct, "--color": color }}>
@@ -38,7 +38,7 @@ function ScoreBadge({ value, max = 100, label }) {
 
 function Bar({ value, max = 100, color }) {
   const pct  = Math.min(100, Math.round((value / max) * 100));
-  const c    = color || (pct >= 80 ? "#22c55e" : pct >= 60 ? "#f59e0b" : "#ef4444");
+  const c    = color || (pct >= 80 ? "var(--success)" : pct >= 60 ? "var(--warning)" : "var(--danger)");
   return (
     <div className="fop-bar-track">
       <div className="fop-bar-fill" style={{ width: `${pct}%`, background: c }} />
@@ -47,7 +47,7 @@ function Bar({ value, max = 100, color }) {
 }
 
 function SevDot({ sev }) {
-  const c = sev === "critical" ? "#ef4444" : sev === "high" ? "#f97316" : sev === "medium" ? "#f59e0b" : "#888";
+  const c = sev === "critical" ? "var(--danger)" : sev === "high" ? "#f97316" : sev === "medium" ? "var(--warning)" : "#888";
   return <span className="fop-sev-dot" style={{ background: c }} />;
 }
 
@@ -432,7 +432,7 @@ function PerfPanel() {
         {[...list].reverse().map(p => (
           <div key={p.id} className={`fop-perf-row ${p.acceptable ? "" : "slow"}`}>
             <span className="fop-perf-action">{p.action}</span>
-            <span className="fop-perf-ms" style={{ color: p.acceptable ? "#22c55e" : "#ef4444" }}>{p.ms}ms</span>
+            <span className="fop-perf-ms" style={{ color: p.acceptable ? "var(--success)" : "var(--danger)" }}>{p.ms}ms</span>
             {p.feature && <span className="fop-chip fop-chip-sm">{p.feature}</span>}
             {!p.acceptable && <span className="fop-chip red fop-chip-sm">slow</span>}
             <span className="fop-ts">{p.ts?.slice(11, 16)}</span>
@@ -678,7 +678,7 @@ function FrictionPanel() {
           <div key={f.id} className="fop-friction-row">
             <div className="fop-friction-rank">#{i + 1}</div>
             <div className="fop-friction-score" style={{
-              color: f.score >= 8 ? "#ef4444" : f.score >= 6 ? "#f59e0b" : "#22c55e"
+              color: f.score >= 8 ? "var(--danger)" : f.score >= 6 ? "var(--warning)" : "var(--success)"
             }}>{f.score}/10</div>
             <div style={{ flex: 1 }}>
               <div className="fop-friction-text">{f.text}</div>
@@ -768,8 +768,8 @@ function ShipPanel() {
 
   if (!data) return <div className="fop-loading">Loading…</div>;
 
-  const recColor = data.recommendation === "GO" ? "#22c55e" :
-                   data.recommendation === "CONDITIONAL GO" ? "#f59e0b" : "#ef4444";
+  const recColor = data.recommendation === "GO" ? "var(--success)" :
+                   data.recommendation === "CONDITIONAL GO" ? "var(--warning)" : "var(--danger)";
 
   return (
     <div>
@@ -809,7 +809,7 @@ function ShipPanel() {
       )}
 
       {(data.blockers || []).length === 0 && (
-        <div className="fop-empty" style={{ padding: "20px 0", color: "#22c55e" }}>
+        <div className="fop-empty" style={{ padding: "20px 0", color: "var(--success)" }}>
           No blockers. Keep building.
         </div>
       )}

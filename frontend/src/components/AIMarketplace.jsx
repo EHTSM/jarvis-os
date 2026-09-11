@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./AIMarketplace.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -11,14 +12,14 @@ const CAP_ICONS = {
 };
 
 const CAP_COLORS = {
-  chat:       "#7c6fff", code:      "#06b6d4", vision:    "#f59e0b",
-  image:      "#f43f5e", video:     "#8b5cf6", voice:     "#10b981",
+  chat:       "var(--accent)", code:      "#06b6d4", vision:    "var(--warning)",
+  image:      "#f43f5e", video:     "#8b5cf6", voice:     "var(--success)",
   browser:    "#3b82f6", reasoning: "#a855f7", embeddings:"#0ea5e9",
   speech:     "#84cc16", music:     "#ec4899", animation: "#f97316", "3d": "#14b8a6",
 };
 
 function CapBadge({ cap, size = "sm" }) {
-  const color = CAP_COLORS[cap] || "#64748b";
+  const color = CAP_COLORS[cap] || "var(--text-dim)";
   const icon  = CAP_ICONS[cap]  || "◈";
   return (
     <span className={`am-cap-badge am-cap-badge--${size}`} style={{ background: `${color}1a`, color, borderColor: `${color}40` }}>
@@ -30,7 +31,7 @@ function CapBadge({ cap, size = "sm" }) {
 function QualityBar({ value, color }) {
   return (
     <div className="am-quality-wrap">
-      <div className="am-quality-bar" style={{ width: `${Math.round(value * 100)}%`, background: color || "#7c6fff" }} />
+      <div className="am-quality-bar" style={{ width: `${Math.round(value * 100)}%`, background: color || "var(--accent)" }} />
       <span className="am-quality-val">{Math.round(value * 100)}</span>
     </div>
   );
@@ -38,19 +39,19 @@ function QualityBar({ value, color }) {
 
 function LatencyDot({ cls }) {
   const colors = { fast: "#4ade80", medium: "#f59e0b", slow: "#f87171" };
-  return <span className="am-latency-dot" style={{ background: colors[cls] || "#64748b" }} title={cls} />;
+  return <span className="am-latency-dot" style={{ background: colors[cls] || "var(--text-dim)" }} title={cls} />;
 }
 
 function CostChip({ cost }) {
   const label = cost === 0 ? "Free" : cost < 0.001 ? `$${(cost * 1000).toFixed(2)}/M` : `$${cost.toFixed(3)}/1K`;
-  const color = cost === 0 ? "#4ade80" : cost < 0.002 ? "#06b6d4" : cost < 0.01 ? "#f59e0b" : "#f87171";
+  const color = cost === 0 ? "#4ade80" : cost < 0.002 ? "#06b6d4" : cost < 0.01 ? "var(--warning)" : "#f87171";
   return <span className="am-cost-chip" style={{ color }}>{label}</span>;
 }
 
 function ProviderCard({ provider, selectedCap }) {
   const cap = provider.capabilities?.[selectedCap];
   if (!cap) return null;
-  const color = CAP_COLORS[selectedCap] || "#7c6fff";
+  const color = CAP_COLORS[selectedCap] || "var(--accent)";
   return (
     <div className="am-provider-card" style={{ "--cap-color": color }}>
       <div className="am-pcard-header">
@@ -76,13 +77,13 @@ function ProviderCard({ provider, selectedCap }) {
 }
 
 function CapabilitySection({ item, onSelect, selected }) {
-  const color  = CAP_COLORS[item.capability] || "#7c6fff";
+  const color  = CAP_COLORS[item.capability] || "var(--accent)";
   const icon   = CAP_ICONS[item.capability]  || "◈";
   const active = selected === item.capability;
 
   return (
     <div className={`am-cap-section${active ? " am-cap-section--active" : ""}`}
-         onClick={() => onSelect(active ? null : item.capability)}
+         {...clickableProps(() => onSelect(active ? null : item.capability))}
          style={{ "--cap-color": color }}>
       <div className="am-cap-header">
         <span className="am-cap-icon">{icon}</span>
@@ -240,7 +241,7 @@ export default function AIMarketplace() {
         <div className="am-panel">
           <div className="am-featured-grid">
             {Object.entries(featured).map(([cap, m]) => m && (
-              <div key={cap} className="am-featured-card" style={{ "--cap-color": CAP_COLORS[cap] || "#7c6fff" }}>
+              <div key={cap} className="am-featured-card" style={{ "--cap-color": CAP_COLORS[cap] || "var(--accent)" }}>
                 <div className="am-feat-cap"><CapBadge cap={cap} size="md" /></div>
                 <div className="am-feat-provider">{m.providerName}</div>
                 <div className="am-feat-model">{m.modelId}</div>

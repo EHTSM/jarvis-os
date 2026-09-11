@@ -12,7 +12,14 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "../../data/eos");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/eos/). When set,
+// redirects to an isolated per-process subdirectory so tests/runtime/eos-v6.test.cjs stops
+// writing real records into production data/eos/ (Mission 97/98 defect class).
+const DATA_DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `eos.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/eos");
 const FILES = {
   state:    path.join(DATA_DIR, "state.json"),
   kpis:     path.join(DATA_DIR, "kpis.json"),
@@ -497,7 +504,23 @@ function syncOrgStatus() {
   // Engineering
   try { const d = _engSt()?.getDashboard(); ctx.orgStatus.engineering = { workItems: d?.workItems?.total, velocity: d?.kpis?.velocity || 0 }; } catch {}
   // Business
-  try { const d = _bizSt()?.getDashboard(); ctx.orgStatus.business = { mrr: d?.revenue?.mrr, winRate: d?.pipeline?.winRate, deals: d?.pipeline?.total }; } catch {}
+  //
+  // businessOrgState.getDashboard() already discloses dataIntegrity — how many
+  // of its deals came from businessOrg.cjs's autonomous demo tick (fictional
+  // company names, Math.random() values) versus real customer activity — but
+  // this executive summary previously read only d?.revenue?.mrr and dropped
+  // that disclosure entirely. Measured on the live store: 211 of 1,079 deals
+  // (19.6%) feeding this MRR figure were synthetic, with zero indication of
+  // that at the executive layer — a founder reading /eos/v6/dashboard had no
+  // way to know part of "business.mrr" was demo data. Pass the disclosure
+  // through instead of discarding it; the number itself is unchanged.
+  try {
+    const d = _bizSt()?.getDashboard();
+    ctx.orgStatus.business = {
+      mrr: d?.revenue?.mrr, winRate: d?.pipeline?.winRate, deals: d?.pipeline?.total,
+      dataIntegrity: d?.dataIntegrity || null,
+    };
+  } catch {}
   // Knowledge
   try { const d = _akoSt()?.getDashboard(); ctx.orgStatus.knowledge = { items: d?.knowledge?.total, validated: d?.knowledge?.validated, playbooks: d?.playbooks?.total }; } catch {}
   // Evolution
@@ -577,33 +600,54 @@ function getGlobalHealth() {
     const d = _engSt()?.getDashboard() || {};
     const blockers = (d.blockers?.active || 0);
     health.orgs.engineering = { blockers, velocity: d.kpis?.velocity || 0, score: Math.max(0, 100 - blockers * 10) };
-  } catch { health.orgs.engineering = { score: 50 }; }
+  } catch { health.orgs.engineering = { score: 50, unavailable: true }; }
   // Business
   try {
     const d = _bizSt()?.getDashboard() || {};
-    const winRate = d.pipeline?.winRate || 0;
-    health.orgs.business = { winRate, mrr: d.revenue?.mrr || 0, score: Math.round(winRate * 100) };
-  } catch { health.orgs.business = { score: 50 }; }
+    // Executive OS Numeric Integrity Certification: businessOrgState.cjs's
+    // getDashboard() already computes winRate as a real 0-100 percentage
+    // integer (Math.round(won/closed * 100) at businessOrgState.cjs:349),
+    // unlike knowledge's `ratio` and evolution's `keepRate` just above/below
+    // this block, which are genuine 0-1 fractions requiring the `* 100`
+    // scale-up. This line was multiplying an already-scaled percentage by
+    // 100 again (e.g. winRate:95 -> score:9500), silently corrupting both
+    // this org's own reported score and the overall health.score average
+    // that sums all 5 org scores below — the outer Math.min(100, ...) clamp
+    // on the final aggregate masked the symptom by always reporting a
+    // deceptively perfect 100 whenever any deal had closed, rather than
+    // surfacing the real, lower health score other orgs' real problems
+    // (e.g. engineering blockers) should have produced.
+    health.orgs.business = { winRate: d.pipeline?.winRate || 0, mrr: d.revenue?.mrr || 0, score: Math.min(100, d.pipeline?.winRate || 0) };
+  } catch { health.orgs.business = { score: 50, unavailable: true }; }
   // Knowledge
   try {
     const d = _akoSt()?.getDashboard() || {};
     const ratio = d.knowledge?.total > 0 ? (d.knowledge?.validated || 0) / d.knowledge?.total : 1;
     health.orgs.knowledge = { ratio, total: d.knowledge?.total || 0, score: Math.round(ratio * 100) };
-  } catch { health.orgs.knowledge = { score: 50 }; }
+  } catch { health.orgs.knowledge = { score: 50, unavailable: true }; }
   // Evolution
   try {
     const d = _aeoSt()?.getDashboard() || {};
     const keepRate = d.evolutions?.total > 0 ? (d.evolutions?.kept || 0) / d.evolutions?.total : 1;
     health.orgs.evolution = { keepRate, total: d.evolutions?.total || 0, score: Math.round(keepRate * 100) };
-  } catch { health.orgs.evolution = { score: 50 }; }
+  } catch { health.orgs.evolution = { score: 50, unavailable: true }; }
   // Runtime / Agents
   try {
     const agents = _sup()?.listAgents?.() || [];
     const running = agents.filter(a => a.status === "running").length;
     health.agents = { total: agents.length, running, score: agents.length > 0 ? Math.round((running / agents.length) * 100) : 100 };
-  } catch { health.agents = { score: 50 }; }
+  } catch { health.agents = { score: 50, unavailable: true }; }
   // Active risks
   health.risks = _s().risks.filter(r => r.status === "active");
+  // Any source that threw is flagged `unavailable: true` above (instead of
+  // silently reporting the same score:50 a genuinely medium-health source
+  // would produce — confirmed live: forcing engineering unavailable still
+  // produced a plausible-looking overall score of 85 with no indication
+  // anything had failed). Surface that at the top level so a caller can
+  // distinguish "computed from real data" from "one or more sources down".
+  health.unavailableSources = Object.entries(health.orgs)
+    .filter(([, o]) => o.unavailable).map(([name]) => name)
+    .concat(health.agents.unavailable ? ["agents"] : []);
   // Compute overall score
   const scores = Object.values(health.orgs).map(o => o.score || 50);
   if (health.agents.score) scores.push(health.agents.score);

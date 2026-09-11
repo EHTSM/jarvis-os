@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Mission 57 (2026-08-27): Android 12+ (API 31+) backup/transfer scoping.
+
+  mobile/src/api.js stores the JARVIS session JWT (Mission 45/56) in the
+  WebView's localStorage, which Capacitor's BridgeActivity backs with the
+  standard Android WebView data directory ("app_webview/") under the app's
+  private storage. android:allowBackup="true" (AndroidManifest.xml) makes
+  app data eligible for Android's cloud backup and device-to-device
+  transfer by default — Mission 55's audit found no exclusion existed,
+  meaning the session token was eligible for inclusion in both.
+
+  Excludes exactly the WebView storage directory from both cloud backup and
+  device transfer, mirroring the app's own targetSdkVersion=34 default of
+  blocking cleartext traffic: an explicit, documented choice rather than an
+  accidental gap. Nothing else in this app writes local device state
+  (confirmed in Mission 55 — no SharedPreferences-based storage exists),
+  so no other exclusion is needed.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <exclude domain="sharedpref" path="."/>
+        <exclude domain="file" path="app_webview/"/>
+    </cloud-backup>
+    <device-transfer>
+        <exclude domain="sharedpref" path="."/>
+        <exclude domain="file" path="app_webview/"/>
+    </device-transfer>
+</data-extraction-rules>

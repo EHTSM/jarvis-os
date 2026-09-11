@@ -34,7 +34,10 @@ function wrap(fn) {
 
 router.post("/business/x/reasoning/analyze", wrap(async (req, res) => {
   const { context, revenueData, dealsData, campaignData } = req.body;
-  const r = await _bre()?.analyze?.(context, { revenueData, dealsData, campaignData });
+  // Mission 51: crmService.getStats(orgId) supports scoping — thread the
+  // caller's server-resolved org (req.org, set by requireOrgMember above)
+  // through so this reasoning pass only sees this org's lead/revenue data.
+  const r = await _bre()?.analyze?.(context, { revenueData, dealsData, campaignData, orgId: req.org.id });
   if (!r?.ok) return err(res, r?.error || "analyze failed");
   ok(res, { analysis: r.analysis });
 }));
@@ -46,7 +49,7 @@ router.get("/business/x/reasoning/:id", wrap(async (req, res) => {
 }));
 
 router.get("/business/x/reasoning", wrap(async (req, res) => {
-  const limit = parseInt(req.query.limit) || 50;
+  const limit = Math.max(1, parseInt(req.query.limit) || 50);
   const r = _bre()?.listAnalyses?.({ limit });
   ok(res, r);
 }));
@@ -77,7 +80,7 @@ router.get("/business/x/quality", wrap(async (req, res) => {
 }));
 
 router.get("/business/x/quality/history/:context", wrap(async (req, res) => {
-  const limit = parseInt(req.query.limit) || 10;
+  const limit = Math.max(1, parseInt(req.query.limit) || 10);
   const r = _bqe()?.getHistory?.(req.params.context, limit);
   ok(res, r);
 }));
@@ -196,7 +199,7 @@ router.get("/business/x/evolution/debt/:context", wrap(async (req, res) => {
 }));
 
 router.get("/business/x/evolution/trend/:context", wrap(async (req, res) => {
-  const limit = parseInt(req.query.limit) || 10;
+  const limit = Math.max(1, parseInt(req.query.limit) || 10);
   const r = _bee()?.getQualityTrend?.(req.params.context, { limit });
   ok(res, r);
 }));

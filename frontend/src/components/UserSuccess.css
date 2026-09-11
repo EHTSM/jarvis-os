@@ -1,18 +1,18 @@
 /* CO3 First User Success Program — UserSuccess.css */
 :root {
-  --us-bg:      #0d0d11;
-  --us-surface: #141418;
-  --us-border:  #1e1e28;
-  --us-text:    #e0e0e8;
-  --us-muted:   #888;
-  --us-accent:  #06b6d4;
-  --us-green:   #22c55e;
-  --us-teal:    #4ecdc4;
-  --us-yellow:  #f59e0b;
-  --us-red:     #ef4444;
-  --us-orange:  #f97316;
-  --us-blue:    #60a5fa;
-  --us-purple:  #a78bfa;
+  --us-bg: var(--bg);
+  --us-surface: var(--surface);
+  --us-border: var(--border);
+  --us-text: var(--text);
+  --us-muted: var(--text-dim);
+  --us-accent: var(--accent);
+  --us-green: var(--success);
+  --us-teal: var(--accent2);
+  --us-yellow: var(--warning);
+  --us-red: var(--danger);
+  --us-orange: var(--warning);
+  --us-blue: var(--info);
+  --us-purple: var(--accent);
 }
 
 .us-root { background: var(--us-bg); color: var(--us-text); min-height: 100%; font-family: "Inter", system-ui, sans-serif; font-size: 13px; }
@@ -62,7 +62,7 @@
 .us-section-hdr   { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .us-section-title { font-size: 13px; font-weight: 700; color: var(--us-text); flex: 1; }
 
-.us-btn { background: var(--us-accent); border: none; border-radius: 5px; color: #fff; cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
+.us-btn { background: var(--us-accent); border: none; border-radius: 5px; color: var(--on-info); cursor: pointer; padding: 6px 14px; font-size: 12px; font-weight: 600; white-space: nowrap; transition: opacity 0.15s; }
 .us-btn:hover    { opacity: 0.85; }
 .us-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .us-btn-sm { background: rgba(255,255,255,.06); border: 1px solid var(--us-border); border-radius: 4px; color: var(--us-muted); cursor: pointer; padding: 3px 8px; font-size: 11px; font-weight: 500; white-space: nowrap; transition: all 0.15s; }
@@ -85,7 +85,7 @@
 .us-textarea { resize: vertical; min-height: 70px; width: 100%; box-sizing: border-box; display: block; margin-top: 8px; }
 .us-label  { font-size: 11px; color: var(--us-muted); white-space: nowrap; }
 
-.us-toast { background: rgba(6,182,212,.18); border: 1px solid rgba(6,182,212,.4); border-radius: 5px; color: var(--us-accent); font-size: 11px; padding: 4px 10px; font-weight: 600; }
+.us-toast { background: rgba(6,182,212,.12); border: 1px solid rgba(6,182,212,.4); border-radius: 5px; color: var(--us-accent); font-size: 11px; padding: 4px 10px; font-weight: 600; }
 
 .us-overall { display: flex; align-items: center; gap: 16px; margin-bottom: 14px; }
 .us-overall-score { font-size: 42px; font-weight: 800; line-height: 1; }

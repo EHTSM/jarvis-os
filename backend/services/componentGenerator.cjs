@@ -55,10 +55,10 @@ Return JSON only (no prose before or after):
 
   try {
     const raw = await ai.callAI(prompt, { maxTokens: 1500 });
-    const jsonMatch = raw.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return { ok: false, error: "AI did not return JSON" };
+    const extracted = ai.extractJSON(raw);
+    if (!extracted.ok) return { ok: false, error: extracted.error };
 
-    const parsed = JSON.parse(jsonMatch[0]);
+    const parsed = extracted.data;
     _ensureDir();
 
     const slug = new Date().toISOString().replace(/[:.]/g, "-");

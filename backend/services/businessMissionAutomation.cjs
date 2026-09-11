@@ -45,6 +45,82 @@ function _fail(msg, nonRetriable = false) { return { success: false, error: msg,
 // ── ID helpers ────────────────────────────────────────────────────────────────
 function _sid() { return `bstep_${Date.now()}_${crypto.randomBytes(2).toString("hex")}`; }
 
+// ── AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16) ──────────────────────
+// Root cause of "Cannot read properties of undefined (reading 'name')" on
+// every business-automation step, for every caller, unconditionally:
+// autonomousExecutionRuntime.cjs's real registered-capability contract
+// (_runAttempt, confirmed by direct source read) delivers
+// { input, missionId, stageId, agentId, policy, executionId } to a
+// capability's handler — `input` is the RAW, UNPARSED string the caller
+// passed to executeStage({input: ...}), truncated to 500 chars by
+// _mkRecord's own rec.input = (opts.input||"").slice(0,500). There is no
+// `entity` field on this object at all, ever — every capability below was
+// written assuming a structured { entity, entityType, ... } ctx that
+// executeStage's real contract never provides.
+//
+// Every REAL capability consumer of this exact runtime (engineeringCapabilities.cjs,
+// 27+ handlers) already correctly treats ctx.input as a plain string — this
+// file was the sole outlier. A second, compounding defect: even a small,
+// realistic real lead record's JSON.stringify(ctx) already exceeds 500
+// characters (measured: 537 for a typical lead), so the truncated
+// rec.input would corrupt to invalid JSON before parsing was even
+// attempted — re-parsing rec.input, even correctly, would still fail for
+// almost every real entity.
+//
+// Fixed WITHOUT touching autonomousExecutionRuntime.cjs's shared contract
+// (no redesign, no new engine — reuses the exact registerCapability
+// mechanism every capability already goes through): a local, in-process
+// side-map keyed by stageId holds the REAL, untruncated ctx for the
+// lifetime of one execution. Each capability's handler registered into the
+// runtime is wrapped at registration time — the wrapper receives the
+// runtime's real, truncated ctx, looks up the untruncated original by
+// ctx.stageId, and calls the real business handler with THAT instead. The
+// side-map entry lives for the full lifetime of ONE executeStage() call —
+// which internally retries the same stageId up to policy.maxRetries times
+// on failure (confirmed by direct read of autonomousExecutionRuntime.cjs's
+// executeStage loop: same rec.stageId reused across every attempt). The
+// entry is only cleaned up once by the caller (runTemplate/runStep, below)
+// after executeStage() itself fully resolves — NOT per-attempt inside the
+// handler — otherwise a real failure on attempt 1 (e.g. a genuine cross-org
+// rejection) would correctly be recorded, but attempt 2's retry would find
+// the stash already gone and report a misleading "no business context"
+// error instead of retrying the real failure. (Found and fixed within this
+// same recovery pass — an early version of this fix deleted the stash in
+// the handler's own finally block and was caught by exactly this scenario
+// during live cross-tenant verification.) Entries older than 5 minutes are
+// pruned defensively in case a caller's own cleanup is skipped (e.g. an
+// uncaught exception in runTemplate/runStep itself).
+const _CTX_TTL_MS = 5 * 60_000;
+const _ctxByStageId = new Map(); // stageId -> { ctx, ts }
+
+function _stashCtx(stageId, ctx) {
+    _ctxByStageId.set(stageId, { ctx, ts: Date.now() });
+    // Defensive prune — bounds memory even if a caller never cleans up.
+    if (_ctxByStageId.size > 500) {
+        const cutoff = Date.now() - _CTX_TTL_MS;
+        for (const [k, v] of _ctxByStageId) if (v.ts < cutoff) _ctxByStageId.delete(k);
+    }
+}
+
+function _releaseCtx(stageId) {
+    _ctxByStageId.delete(stageId);
+}
+
+function _wrapHandler(realHandler) {
+    return async (runtimeCtx) => {
+        const stashed = _ctxByStageId.get(runtimeCtx.stageId);
+        // Fallback: if the stash is somehow missing (e.g. a caller invoked the
+        // capability directly through the runtime, bypassing runTemplate/
+        // runStep entirely), fail honestly instead of crashing on `entity`
+        // being undefined — matches this codebase's own "never fake success,
+        // surface the real reason" discipline.
+        if (!stashed) {
+            return _fail(`No business context found for stageId ${runtimeCtx.stageId} — capability invoked outside runTemplate/runStep`, true);
+        }
+        return realHandler({ ...stashed.ctx, executionId: runtimeCtx.executionId, agentId: runtimeCtx.agentId, policy: runtimeCtx.policy });
+    };
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // WORKFLOW TEMPLATES
 // Each template is: { id, entityType, name, description, steps[] }
@@ -282,15 +358,34 @@ const CAPABILITIES = [
         handler: async (ctx) => {
             const { entity } = ctx;
             // Dedup + ensure lead exists in businessDataService
-            try {
-                const bds = _bds();
-                if (bds && entity.id) {
-                    // Already created by route — just confirm and score
-                    const score = _scoreEntity(entity);
-                    bds.updateLead(entity.id, { score, lastAutomationStep: "ingest_lead" });
-                    return _ok(`Lead ingested: ${entity.name || entity.phone || entity.email} (score: ${score})`, [{ type: "lead_record", entityId: entity.id }]);
-                }
-            } catch {}
+            const bds = _bds();
+            if (bds && entity.id) {
+                // Already created by route — just confirm and score
+                const score = _scoreEntity(entity);
+                // OOPLIX V1 MASTER AUDIT (2026-08-16): entity.orgId, now
+                // threaded through from the route (business.js's
+                // /business/automation/run|step), is passed to every
+                // businessDataService call in this file so the org-scope
+                // check already built into _update/_get/_remove actually
+                // runs — previously this was called with no orgId at
+                // all, meaning any authenticated caller could target any
+                // org's real lead ID with no cross-tenant check.
+                //
+                // AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16): this
+                // call was wrapped in try{}catch{} that fell through to a
+                // generic "Lead processed" success message on ANY failure —
+                // including the cross-org 404 the orgId fix above now
+                // correctly throws. Before this recovery pass that swallow
+                // was unreachable in practice (the pre-existing runtime
+                // crash meant this line never actually ran with real data),
+                // so it never surfaced as a live fake-success bug until the
+                // crash itself was fixed. Now that real execution reaches
+                // here, a real failure (including a rejected cross-org
+                // write) must be reported honestly, not silently
+                // reinterpreted as success.
+                bds.updateLead(entity.id, { score, lastAutomationStep: "ingest_lead" }, entity.orgId);
+                return _ok(`Lead ingested: ${entity.name || entity.phone || entity.email} (score: ${score})`, [{ type: "lead_record", entityId: entity.id }]);
+            }
             return _ok(`Lead processed: ${entity.name || entity.phone || "unknown"}`);
         },
     },
@@ -301,8 +396,11 @@ const CAPABILITIES = [
         handler: async (ctx) => {
             const { entity } = ctx;
             const channel = entity.phone ? "whatsapp/sms" : entity.email ? "email" : "manual";
-            // Update CRM status
-            try { _bds()?.updateLead(entity.id, { status: "contacted", contactedAt: new Date().toISOString() }); } catch {}
+            // Update CRM status. AUTONOMOUS EXECUTION RUNTIME RECOVERY
+            // (2026-08-16): no longer silently swallowed — see ingest_lead's
+            // comment above for why this matters now that real execution
+            // actually reaches this line.
+            _bds()?.updateLead(entity.id, { status: "contacted", contactedAt: new Date().toISOString() }, entity.orgId);
             return _ok(`Outreach queued via ${channel}: ${entity.name || entity.phone || entity.email}`);
         },
     },
@@ -314,14 +412,14 @@ const CAPABILITIES = [
             const { entity } = ctx;
             const score = entity.score || _scoreEntity(entity);
             const qualified = score >= 40;
-            try {
-                const bds = _bds();
-                if (entity.id && bds) {
-                    qualified
-                        ? bds.qualifyLead(entity.id, { score, qualifyReason: "ICP score threshold met" })
-                        : bds.updateLead(entity.id, { status: "disqualified", score, disqualifyReason: "ICP score below threshold" });
-                }
-            } catch {}
+            // AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16): no longer
+            // silently swallowed — see ingest_lead's comment above.
+            const bds = _bds();
+            if (entity.id && bds) {
+                qualified
+                    ? bds.qualifyLead(entity.id, { score, qualifyReason: "ICP score threshold met" }, entity.orgId)
+                    : bds.updateLead(entity.id, { status: "disqualified", score, disqualifyReason: "ICP score below threshold" }, entity.orgId);
+            }
             return _ok(`Lead ${qualified ? "QUALIFIED" : "DISQUALIFIED"} — score: ${score}/100`, [{ type: "qualification", qualified, score }]);
         },
     },
@@ -418,11 +516,17 @@ const CAPABILITIES = [
         handler: async (ctx) => {
             const { entity, missionId } = ctx;
             const won = entity.stage === "closed-won" || entity.won;
+            // AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16): the real
+            // CRM mutation (closeWon/closeLost) is no longer silently
+            // swallowed — see ingest_lead's comment above. The mission-
+            // memory decision note below remains best-effort (non-critical
+            // bookkeeping, distinct from the actual business mutation being
+            // reported to the caller).
+            if (entity.id) {
+                won ? _bds()?.closeWon(entity.id, { closedBy: "automation" }, entity.orgId)
+                    : _bds()?.closeLost(entity.id, entity.lostReason || "Not specified", entity.orgId);
+            }
             try {
-                if (entity.id) {
-                    won ? _bds()?.closeWon(entity.id, { closedBy: "automation" })
-                        : _bds()?.closeLost(entity.id, entity.lostReason || "Not specified");
-                }
                 _mem()?.recordDecision(missionId, {
                     type:        won ? "deal_won" : "deal_lost",
                     description: won ? "Deal closed — won" : "Deal closed — lost",
@@ -439,21 +543,22 @@ const CAPABILITIES = [
         description: "Update CRM pipeline stage and record revenue",
         handler: async (ctx) => {
             const { entity, missionId } = ctx;
-            try {
-                if (entity.id && entity.stage) {
-                    _bds()?.advanceStage?.(entity.id, entity.stage);
-                }
-                if (entity.stage === "closed-won" && entity.value) {
-                    _bds()?.recordRevenue({
-                        amount:      entity.value,
-                        currency:    entity.currency || "USD",
-                        type:        "deal",
-                        source:      "automation",
-                        description: `Closed deal: ${entity.name || entity.title}`,
-                        oppId:       entity.id,
-                    });
-                }
-            } catch {}
+            // AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16): no longer
+            // silently swallowed — see ingest_lead's comment above.
+            if (entity.id && entity.stage) {
+                _bds()?.advanceStage?.(entity.id, entity.stage, entity.orgId);
+            }
+            if (entity.stage === "closed-won" && entity.value) {
+                _bds()?.recordRevenue({
+                    amount:      entity.value,
+                    currency:    entity.currency || "USD",
+                    type:        "deal",
+                    source:      "automation",
+                    description: `Closed deal: ${entity.name || entity.title}`,
+                    oppId:       entity.id,
+                    orgId:       entity.orgId,
+                });
+            }
             return _ok(`Pipeline updated — stage: ${entity.stage || "unknown"}`);
         },
     },
@@ -502,11 +607,11 @@ const CAPABILITIES = [
         description: "Record content publish event",
         handler: async (ctx) => {
             const { entity } = ctx;
-            try {
-                if (entity.id) {
-                    _bds()?.recordCampaignEvent?.(entity.campaignId || entity.id, { type: "conversion", value: 1 });
-                }
-            } catch {}
+            // AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16): no longer
+            // silently swallowed — see ingest_lead's comment above.
+            if (entity.id) {
+                _bds()?.recordCampaignEvent?.(entity.campaignId || entity.id, { type: "conversion", value: 1 }, entity.orgId);
+            }
             return _ok(`Content published: ${entity.title || entity.id}`);
         },
     },
@@ -516,9 +621,9 @@ const CAPABILITIES = [
         description: "Record publish event in campaign metrics",
         handler: async (ctx) => {
             const { entity } = ctx;
-            try {
-                if (entity.campaignId) _bds()?.recordCampaignEvent(entity.campaignId, { type: "impression", value: 1 });
-            } catch {}
+            // AUTONOMOUS EXECUTION RUNTIME RECOVERY (2026-08-16): no longer
+            // silently swallowed — see ingest_lead's comment above.
+            if (entity.campaignId) _bds()?.recordCampaignEvent(entity.campaignId, { type: "impression", value: 1 }, entity.orgId);
             return _ok("Campaign event recorded");
         },
     },
@@ -700,7 +805,11 @@ function init() {
     }
     let registered = 0;
     for (const cap of CAPABILITIES) {
-        try { rt.registerCapability(cap); registered++; } catch {}
+        // Wrap each real handler so it receives the untruncated, real ctx
+        // (via the stageId side-map above) instead of the runtime's raw,
+        // 500-char-truncated input string — see the recovery comment above
+        // _stashCtx/_wrapHandler for the full root-cause explanation.
+        try { rt.registerCapability({ ...cap, handler: _wrapHandler(cap.handler) }); registered++; } catch {}
     }
     _initialised = true;
     logger.info(`[BizAutomation] Registered ${registered} business capabilities into execution runtime`);
@@ -742,14 +851,19 @@ async function runTemplate(entityType, entity, opts = {}) {
             continue;
         }
 
+        const stageId = _sid();
         const ctx = {
             entity,
             entityType,
             missionId,
+            stageId,
             stepName: step.name,
             input:    step.description,
             meta:     { templateId: template.id, ...opts.meta },
         };
+        // Stash the real, untruncated ctx for _wrapHandler to recover by
+        // stageId — see the recovery comment above _stashCtx/_wrapHandler.
+        _stashCtx(stageId, ctx);
 
         // Each step goes through executeStage → registered capability handler
         let execResult;
@@ -758,11 +872,15 @@ async function runTemplate(entityType, entity, opts = {}) {
                 capability: step.capability,
                 input:      JSON.stringify(ctx),
                 missionId,
-                stageId:    _sid(),
+                stageId,
                 policy:     step.policy || {},
             });
         } catch (err) {
             execResult = { status: "failed", error: err.message };
+        } finally {
+            // executeStage has now fully resolved (including all internal
+            // retry attempts for this stageId) — safe to release the stash.
+            _releaseCtx(stageId);
         }
 
         const stepOutcome = {
@@ -832,14 +950,25 @@ async function runStep(entityType, stepName, entity, missionId) {
     const rt = _rt();
     if (!rt) throw new Error("autonomousExecutionRuntime unavailable");
 
-    const ctx = { entity, entityType, missionId, stepName, input: step.description, meta: {} };
-    const result = await rt.executeStage({
-        capability: step.capability,
-        input:      JSON.stringify(ctx),
-        missionId,
-        stageId:    _sid(),
-        policy:     step.policy || {},
-    });
+    const stageId = _sid();
+    const ctx = { entity, entityType, missionId, stageId, stepName, input: step.description, meta: {} };
+    // Stash the real, untruncated ctx for _wrapHandler to recover by
+    // stageId — see the recovery comment above _stashCtx/_wrapHandler.
+    _stashCtx(stageId, ctx);
+    let result;
+    try {
+        result = await rt.executeStage({
+            capability: step.capability,
+            input:      JSON.stringify(ctx),
+            missionId,
+            stageId,
+            policy:     step.policy || {},
+        });
+    } finally {
+        // executeStage has now fully resolved (including all internal
+        // retry attempts for this stageId) — safe to release the stash.
+        _releaseCtx(stageId);
+    }
 
     return { step: stepName, capability: step.capability, ...result };
 }

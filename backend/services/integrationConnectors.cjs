@@ -30,6 +30,7 @@ const path   = require("path");
 const https  = require("https");
 const http   = require("http");
 const crypto = require("crypto");
+const logger = require("../utils/logger");
 
 const DATA_FILE = path.join(__dirname, "../../data/integration-connectors.json");
 
@@ -95,28 +96,41 @@ const _localAi  = () => _try(() => require("./localAiRuntime.cjs"));
 const _prov     = () => _try(() => require("./providerManager.cjs"));
 
 // ── HTTP probe helper ─────────────────────────────────────────────────────────
-function _probe(url, headersObj = {}, ms = 6000) {
+// method/body added for probes that need a real POST (e.g. Qwen's DashScope
+// endpoint has no GET /models, so its liveness probe is a minimal real chat
+// completion — same technique aiService.js's own _healthCheck already uses
+// for Qwen). latencyMs is now measured around the whole request/response
+// cycle and returned on every result — healthAIProvider() previously
+// hardcoded latencyMs: null because this function never measured it.
+function _probe(url, headersObj = {}, ms = 6000, method = "GET", body = null) {
   return new Promise(resolve => {
+    const t0 = Date.now();
     try {
       const u   = new URL(url);
       const mod = u.protocol === "http:" ? http : https;
+      const payload = body ? JSON.stringify(body) : null;
       const req = mod.request(
         { hostname: u.hostname, port: u.port || (u.protocol === "https:" ? 443 : 80),
-          path: u.pathname + u.search, method: "GET",
-          headers: { "User-Agent": "ooplix/3.0", ...headersObj } },
+          path: u.pathname + u.search, method,
+          headers: {
+            "User-Agent": "ooplix/3.0", ...headersObj,
+            ...(payload ? { "Content-Type": "application/json", "Content-Length": Buffer.byteLength(payload) } : {}),
+          } },
         res => {
-          let body = "";
-          res.on("data", d => { body += d; });
+          let resBody = "";
+          res.on("data", d => { resBody += d; });
           res.on("end", () => {
-            try { resolve({ ok: res.statusCode < 400, status: res.statusCode, body: JSON.parse(body) }); }
-            catch { resolve({ ok: res.statusCode < 400, status: res.statusCode, body }); }
+            const latencyMs = Date.now() - t0;
+            try { resolve({ ok: res.statusCode < 400, status: res.statusCode, body: JSON.parse(resBody), latencyMs }); }
+            catch { resolve({ ok: res.statusCode < 400, status: res.statusCode, body: resBody, latencyMs }); }
           });
         }
       );
-      req.setTimeout(ms, () => { req.destroy(); resolve({ ok: false, status: 0, error: "timeout" }); });
-      req.on("error", e => resolve({ ok: false, status: 0, error: e.message }));
+      req.setTimeout(ms, () => { req.destroy(); resolve({ ok: false, status: 0, error: "timeout", latencyMs: Date.now() - t0 }); });
+      req.on("error", e => resolve({ ok: false, status: 0, error: e.message, latencyMs: Date.now() - t0 }));
+      if (payload) req.write(payload);
       req.end();
-    } catch (e) { resolve({ ok: false, status: 0, error: e.message }); }
+    } catch (e) { resolve({ ok: false, status: 0, error: e.message, latencyMs: Date.now() - t0 }); }
   });
 }
 
@@ -163,6 +177,8 @@ const AI_PROVIDERS = {
   nvidia:     { label: "NVIDIA NIM",    baseUrl: "https://integrate.api.nvidia.com/v1",    modelsPath: "/models",  envKey: "NVIDIA_API_KEY",      authHeader: k => `Bearer ${k}` },
   ollama:     { label: "Ollama (Local)",baseUrl: null,                                       modelsPath: null,       envKey: null,                  authHeader: null },
   lmstudio:   { label: "LM Studio",     baseUrl: null,                                       modelsPath: null,       envKey: null,                  authHeader: null },
+  grok:       { label: "Grok (x.ai)",   baseUrl: "https://api.x.ai/v1",                     modelsPath: "/models",  envKey: "GROK_API_KEY",        authHeader: k => `Bearer ${k}` },
+  qwen:       { label: "Qwen (DashScope)", baseUrl: null,                                    modelsPath: null,       envKey: "DASHSCOPE_API_KEY",   authHeader: null },
 };
 
 async function connectAIProvider(providerId) {
@@ -195,7 +211,7 @@ async function connectAIProvider(providerId) {
     return _record("ai:gemini", "A", def.label,
       r.ok ? "CONNECTED" : "READY",
       r.ok ? `Gemini API reachable — model: ${model}` : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
-      creds, r.ok ? { model } : {}
+      creds, { ...(r.ok ? { model } : {}), latencyMs: r.latencyMs }
     );
   }
 
@@ -208,7 +224,28 @@ async function connectAIProvider(providerId) {
     return _record("ai:anthropic", "A", def.label,
       r.ok ? "CONNECTED" : "READY",
       r.ok ? "Anthropic API reachable" : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
-      creds
+      creds, { latencyMs: r.latencyMs }
+    );
+  }
+
+  // Qwen (Alibaba DashScope) — no GET /models on the compatible-mode endpoint,
+  // so the liveness probe is a real minimal chat completion instead (same
+  // technique aiService.js's own _healthCheck uses for this provider).
+  if (providerId === "qwen") {
+    const key = _env("DASHSCOPE_API_KEY");
+    const creds = _creds(["DASHSCOPE_API_KEY"]);
+    if (!key) return _record("ai:qwen", "A", def.label, "MISSING", "DASHSCOPE_API_KEY not set", creds);
+    const region = (_env("QWEN_REGION") || "intl").toLowerCase();
+    const url = region === "cn"
+      ? "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+      : "https://dashscope-intl.aliyuncs.com/compatible-mode/v1/chat/completions";
+    const model = _env("QWEN_MODEL") || "qwen-plus";
+    const r = await _probe(url, { Authorization: `Bearer ${key}` }, 6000, "POST",
+      { model, messages: [{ role: "user", content: "hi" }], max_tokens: 1 });
+    return _record("ai:qwen", "A", def.label,
+      r.ok ? "CONNECTED" : "READY",
+      r.ok ? `Qwen API reachable — model: ${model}` : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
+      creds, { ...(r.ok ? { model } : {}), latencyMs: r.latencyMs }
     );
   }
 
@@ -223,23 +260,36 @@ async function connectAIProvider(providerId) {
   return _record(`ai:${providerId}`, "A", def.label,
     r.ok ? "CONNECTED" : "READY",
     r.ok ? `${def.label} API reachable` : `Probe failed: HTTP ${r.status} ${r.error || ""}`,
-    creds
+    creds, { latencyMs: r.latencyMs }
   );
 }
 
 async function healthAIProvider(providerId) {
-  // For already-connected providers, reuse aiService health check
+  // For already-connected providers, reuse aiService health check. aiService's
+  // own _healthCheck doesn't measure latency either, so latencyMs is timed
+  // here around the call — previously hardcoded to null regardless of which
+  // path ran, meaning /vault/health and the connector dashboard never showed
+  // real AI provider latency at all.
+  const t0 = Date.now();
   const ai = _ai();
-  if (ai && ["groq", "openrouter", "openai", "claude", "gemini", "ollama"].includes(providerId)) {
+  // providerId here is integrationConnectors.cjs's naming ("anthropic"), but
+  // aiService.js's getAIStatus() reports it as "claude" — this array is
+  // checked against integrationConnectors' own ids, so it must list
+  // "anthropic", not "claude" (the previous version listed "claude" here,
+  // which can never equal providerId==="anthropic" — Anthropic health checks
+  // always silently fell through to the slower re-probe fallback below
+  // instead of reusing aiService's already-computed status).
+  if (ai && ["groq", "openrouter", "openai", "anthropic", "gemini", "ollama", "grok", "qwen"].includes(providerId)) {
     const status = await ai.getAIStatus().catch(() => null);
     const prov = status?.providers?.find(p => p.id === (providerId === "anthropic" ? "claude" : providerId));
     if (prov) {
-      return { ok: prov.health?.ok ?? false, latencyMs: null, detail: prov.health?.reason || "ok", provider: providerId };
+      return { ok: prov.health?.ok ?? false, latencyMs: Date.now() - t0, detail: prov.health?.reason || "ok", provider: providerId };
     }
   }
-  // Fallback: re-probe
+  // Fallback: re-probe (connectAIProvider's own probe already measures and
+  // stores latencyMs in metrics — surface that instead of re-timing here).
   const rec = await connectAIProvider(providerId);
-  return { ok: rec.status === "CONNECTED", detail: rec.detail, provider: providerId };
+  return { ok: rec.status === "CONNECTED", detail: rec.detail, latencyMs: rec.metrics?.latencyMs ?? (Date.now() - t0), provider: providerId };
 }
 
 async function scanAllAIProviders() {
@@ -421,7 +471,7 @@ async function connectRazorpay() {
 
   // Razorpay API v1 — Basic Auth with key:secret
   const auth = Buffer.from(`${key}:${secret}`).toString("base64");
-  const r    = await _probe("https://api.razorpay.com/v1/payment-links?count=1",
+  const r    = await _probe("https://api.razorpay.com/v1/payment_links?count=1",
     { Authorization: `Basic ${auth}`, "Content-Type": "application/json" });
   const webhookOk = !!whs;
   return _record("pay:razorpay", "D", "Razorpay",
@@ -688,10 +738,54 @@ async function connectSlack() {
   );
 }
 
+async function connectTeams() {
+  // Microsoft Teams messaging rides the same Microsoft Graph OAuth token as
+  // Microsoft 365 (Phase H) — Teams is a Graph-API surface, not a separate
+  // identity provider, so this reuses connectMicrosoft365's exact token
+  // resolution (oauthIntegrationLayer first, MS_GRAPH_TOKEN/
+  // MICROSOFT_GRAPH_TOKEN env fallback) rather than a second OAuth path.
+  // TEAMS_WEBHOOK_URL (an Incoming Webhook connector URL) is supported as a
+  // send-only fallback for orgs that just want channel notifications
+  // without granting full Graph delegated permissions.
+  const clientId   = _env("MICROSOFT_CLIENT_ID");
+  const webhookUrl = _env("TEAMS_WEBHOOK_URL");
+  const creds      = _creds(["MICROSOFT_CLIENT_ID", "MICROSOFT_CLIENT_SECRET"], ["TEAMS_WEBHOOK_URL"]);
+
+  let token = null;
+  const oauthLayer = _oauth();
+  if (oauthLayer) {
+    try {
+      const conns = oauthLayer.listConnections().filter(c => c.provider === "microsoft");
+      if (conns.length > 0) {
+        const rec = await oauthLayer.getToken("microsoft", conns[0].userId);
+        token = rec?.access_token || null;
+      }
+    } catch { /* fall through */ }
+  }
+  if (!token) token = _env("MS_GRAPH_TOKEN") || _env("MICROSOFT_GRAPH_TOKEN");
+
+  if (!token) {
+    if (webhookUrl) return _record("msg:teams", "F", "Microsoft Teams", "PARTIAL",
+      "Webhook URL set but no Graph token — limited to webhook channel posts only", creds);
+    if (!clientId) return _record("msg:teams", "F", "Microsoft Teams", "READY",
+      "MICROSOFT_CLIENT_ID not set and TEAMS_WEBHOOK_URL not set", creds);
+    return _record("msg:teams", "F", "Microsoft Teams", "PARTIAL",
+      "OAuth app configured — no authorized user yet (waiting for OAuth) and TEAMS_WEBHOOK_URL not set", creds);
+  }
+
+  const r = await _probe("https://graph.microsoft.com/v1.0/me/joinedTeams", { Authorization: `Bearer ${token}` });
+  const teamCount = r.body?.value?.length;
+  return _record("msg:teams", "F", "Microsoft Teams",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Authenticated — member of ${teamCount ?? 0} team(s)` : `Token invalid/expired: HTTP ${r.status}`,
+    creds, r.ok ? { teamCount } : {}
+  );
+}
+
 async function scanAllMessagingProviders() {
   return Promise.all([
     connectWhatsApp(), connectTelegram(), connectTwilio(),
-    connectDiscord(), connectSlack()
+    connectDiscord(), connectSlack(), connectTeams()
   ]);
 }
 
@@ -720,8 +814,17 @@ async function connectGitHubAuth() {
   const creds        = _creds(["GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET"], ["GITHUB_REDIRECT_URI"]);
   if (!clientId || !clientSecret) return _record("auth:github", "G", "GitHub OAuth", "READY",
     "GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET not set", creds);
-  return _record("auth:github", "G", "GitHub OAuth", "CONNECTED",
-    `GitHub OAuth app configured — client: ${clientId}`, creds);
+  // GitHub's OAuth endpoints (authorize, device/code) do not validate
+  // client_id server-side without a live user consent redirect — both a
+  // real and a fabricated client_id return the same HTTP status from every
+  // unauthenticated endpoint GitHub exposes. There is no genuine way to
+  // verify this credential without a real OAuth flow, so this reports
+  // PARTIAL (configured, unverified) rather than fabricating a CONNECTED
+  // status the way this connector previously did from env-var presence
+  // alone. See 100-COMPANY-GAP-LIST.md P0 #6.
+  return _record("auth:github", "G", "GitHub OAuth", "PARTIAL",
+    `GitHub OAuth app configured (client: ${clientId}) but unverifiable without a live consent redirect — GitHub exposes no unauthenticated endpoint that distinguishes a valid client_id from an invalid one`,
+    creds);
 }
 
 async function connectMicrosoftAuth() {
@@ -763,16 +866,39 @@ async function connectAppleAuth() {
   const creds    = _creds(["APPLE_TEAM_ID", "APPLE_CLIENT_ID", "APPLE_KEY_ID", "APPLE_PRIVATE_KEY"]);
   if (!teamId || !clientId || !keyId) return _record("auth:apple", "G", "Apple Sign In", "READY",
     "APPLE_TEAM_ID, APPLE_CLIENT_ID, APPLE_KEY_ID not set", creds);
-  return _record("auth:apple", "G", "Apple Sign In", "CONNECTED",
-    `Apple Sign In configured — team: ${teamId}, client: ${clientId}`, creds);
+  // Apple publishes a real OIDC discovery document — same verification
+  // depth as the Google/Microsoft/LinkedIn auth checks above, instead of
+  // reporting CONNECTED from env-var presence alone (previous behavior;
+  // see 100-COMPANY-GAP-LIST.md P0 #6). This confirms Apple's Sign-In
+  // infrastructure is reachable, not that this specific client_id/key is
+  // registered — full verification requires a live consent flow.
+  const r = await _probe("https://appleid.apple.com/.well-known/openid-configuration");
+  return _record("auth:apple", "G", "Apple Sign In",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Apple Sign In configured — team: ${teamId}, client: ${clientId}`
+         : `Apple discovery endpoint unreachable: HTTP ${r.status || r.error}`,
+    creds);
 }
 
 async function connectDiscordAuth() {
   const clientId  = _env("DISCORD_CLIENT_ID");
   const creds     = _creds(["DISCORD_CLIENT_ID", "DISCORD_CLIENT_SECRET"], ["DISCORD_REDIRECT_URI"]);
   if (!clientId) return _record("auth:discord", "G", "Discord OAuth", "READY", "DISCORD_CLIENT_ID not set", creds);
-  return _record("auth:discord", "G", "Discord OAuth", "CONNECTED",
-    `Discord OAuth configured — client: ${clientId}`, creds);
+  // Discord's authorize endpoint genuinely discriminates (empirically
+  // verified): a well-formed numeric client_id returns HTTP 302
+  // (redirect to consent), a malformed one returns HTTP 400 — unlike
+  // GitHub's equivalent endpoints, which return the same status
+  // regardless. This is real verification, not env-var-presence-only
+  // (previous behavior; see 100-COMPANY-GAP-LIST.md P0 #6).
+  const r = await _probe(
+    `https://discord.com/api/oauth2/authorize?client_id=${encodeURIComponent(clientId)}&response_type=code&redirect_uri=${encodeURIComponent(_env("DISCORD_REDIRECT_URI") || "https://example.com")}&scope=identify`
+  );
+  const verified = r.status === 302;
+  return _record("auth:discord", "G", "Discord OAuth",
+    verified ? "CONNECTED" : "PARTIAL",
+    verified ? `Discord OAuth configured — client: ${clientId}`
+             : `Discord rejected client_id format: HTTP ${r.status || r.error}`,
+    creds);
 }
 
 async function scanAllAuthProviders() {
@@ -858,8 +984,49 @@ async function connectDropbox() {
   );
 }
 
+async function connectNotion() {
+  // Notion's own OAuth is already registered as a consumer-auth provider
+  // in oauthIntegrationLayer.cjs (Phase G re-exports NOTION_CLIENT_ID/
+  // SECRET/REDIRECT_URI) — this reuses that token store rather than a
+  // second Notion OAuth client. NOTION_API_KEY (an internal integration
+  // token) is the direct-token fallback for orgs that provisioned Notion
+  // access without the OAuth flow.
+  const directToken = _env("NOTION_API_KEY");
+  const clientId     = _env("NOTION_CLIENT_ID");
+  const creds = _creds(["NOTION_API_KEY"], ["NOTION_CLIENT_ID", "NOTION_CLIENT_SECRET"]);
+
+  let token = directToken;
+  if (!token) {
+    const oauthLayer = _oauth();
+    if (oauthLayer) {
+      try {
+        const conns = oauthLayer.listConnections().filter(c => c.provider === "notion");
+        if (conns.length > 0) {
+          const rec = await oauthLayer.getToken("notion", conns[0].userId);
+          token = rec?.access_token || null;
+        }
+      } catch { /* fall through */ }
+    }
+  }
+
+  if (!token) {
+    if (!clientId) return _record("prod:notion", "H", "Notion", "READY",
+      "NOTION_API_KEY not set and NOTION_CLIENT_ID not set", creds);
+    return _record("prod:notion", "H", "Notion", "PARTIAL",
+      "OAuth app configured — no authorized user yet and NOTION_API_KEY not set", creds);
+  }
+
+  const r = await _probe("https://api.notion.com/v1/users/me",
+    { Authorization: `Bearer ${token}`, "Notion-Version": "2022-06-28" });
+  return _record("prod:notion", "H", "Notion",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Authenticated as ${r.body?.name || r.body?.bot?.owner?.type || "integration"}` : `Token invalid: HTTP ${r.status}`,
+    creds
+  );
+}
+
 async function scanAllProductivityProviders() {
-  return Promise.all([connectGoogleWorkspace(), connectMicrosoft365(), connectDropbox()]);
+  return Promise.all([connectGoogleWorkspace(), connectMicrosoft365(), connectDropbox(), connectNotion()]);
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
@@ -970,11 +1137,23 @@ async function connectZapier() {
   const creds      = _creds(["ZAPIER_WEBHOOK_URL"]);
   if (!webhookUrl) return _record("auto:zapier", "K", "Zapier", "READY",
     "ZAPIER_WEBHOOK_URL not set — create a Catch Hook Zap and paste the URL", creds);
-  // Zapier webhooks are fire-and-forget; validate URL format only
-  const isValid = webhookUrl.startsWith("https://hooks.zapier.com/");
+  const isValidFormat = webhookUrl.startsWith("https://hooks.zapier.com/");
+  if (!isValidFormat) return _record("auto:zapier", "K", "Zapier", "PARTIAL",
+    `Webhook URL format unexpected: ${webhookUrl}`, creds);
+  // Zapier catch-hooks accept any well-formed /hooks/catch/{id}/{hook}/ path
+  // with HTTP 200 whether or not that specific hook is real/active — this
+  // is a genuine Zapier platform limitation (fire-and-forget by design), so
+  // a network call cannot fully confirm the Zap is live, only that the
+  // path is well-formed and the domain is reachable. This still catches
+  // real failures a format check alone misses (typos in the numeric
+  // segments return HTTP 404), so it is real network verification, not a
+  // fabricated CONNECTED from format-checking alone (previous behavior;
+  // see 100-COMPANY-GAP-LIST.md P0 #6).
+  const r = await _probe(webhookUrl, {}, 6000, "POST", { ping: true, source: "jarvis-connector-healthcheck" });
   return _record("auto:zapier", "K", "Zapier",
-    isValid ? "CONNECTED" : "PARTIAL",
-    isValid ? `Zapier webhook configured: ${webhookUrl.slice(0, 60)}…` : `Webhook URL format unexpected: ${webhookUrl}`,
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Zapier webhook reachable: ${webhookUrl.slice(0, 60)}… (note: Zapier cannot confirm the Zap is active, only that the endpoint responds)`
+         : `Zapier webhook unreachable: HTTP ${r.status || r.error}`,
     creds
   );
 }
@@ -1094,6 +1273,58 @@ async function scanAllMonitoringProviders() {
 }
 
 // ══════════════════════════════════════════════════════════════════════════════
+// PHASE M — Project Management (Jira / Linear)
+// ══════════════════════════════════════════════════════════════════════════════
+// New phase — none of A-L cover issue-tracker/project-management APIs, so
+// this is a genuinely new category rather than a fit into an existing one.
+// Follows the exact same connect<Name>() -> _record() shape as every other
+// phase; credentials resolve through the same vault-first/_env() chain.
+
+async function connectJira() {
+  // Jira Cloud uses HTTP Basic auth with an API token (not OAuth by
+  // default for server-to-server integrations) — email + token, per
+  // Atlassian's documented API-token auth scheme.
+  const host  = _env("JIRA_HOST");           // e.g. "yourteam.atlassian.net"
+  const email = _env("JIRA_EMAIL");
+  const token = _env("JIRA_API_TOKEN");
+  const creds = _creds(["JIRA_HOST", "JIRA_EMAIL", "JIRA_API_TOKEN"]);
+  if (!host || !email || !token) return _record("issue:jira", "M", "Jira", "READY",
+    "JIRA_HOST, JIRA_EMAIL, and JIRA_API_TOKEN not fully set", creds);
+
+  const auth = Buffer.from(`${email}:${token}`).toString("base64");
+  const r = await _probe(`https://${host}/rest/api/3/myself`, { Authorization: `Basic ${auth}` });
+  return _record("issue:jira", "M", "Jira",
+    r.ok ? "CONNECTED" : "PARTIAL",
+    r.ok ? `Authenticated as ${r.body?.displayName || email} on ${host}` : `Auth failed: HTTP ${r.status}`,
+    creds, r.ok ? { host, displayName: r.body?.displayName } : {}
+  );
+}
+
+async function connectLinear() {
+  // Linear's API is GraphQL-only — a minimal `viewer { id name }` query
+  // doubles as both the liveness probe and the identity check, same role
+  // connectGitHub's REST /user call plays for GitHub.
+  const apiKey = _env("LINEAR_API_KEY");
+  const creds  = _creds(["LINEAR_API_KEY"]);
+  if (!apiKey) return _record("issue:linear", "M", "Linear", "READY", "LINEAR_API_KEY not set", creds);
+
+  const r = await _probe("https://api.linear.app/graphql",
+    { Authorization: apiKey, "Content-Type": "application/json" },
+    6000, "POST", { query: "{ viewer { id name } }" });
+  const viewer = r.body?.data?.viewer;
+  const ok = r.ok && !!viewer;
+  return _record("issue:linear", "M", "Linear",
+    ok ? "CONNECTED" : "PARTIAL",
+    ok ? `Authenticated as ${viewer.name}` : `Auth failed: HTTP ${r.status}${r.body?.errors ? " — " + r.body.errors[0]?.message : ""}`,
+    creds, ok ? { name: viewer.name } : {}
+  );
+}
+
+async function scanAllProjectManagementProviders() {
+  return Promise.all([connectJira(), connectLinear()]);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
 // UNIVERSAL OPERATIONS — apply to any connector by ID
 // ══════════════════════════════════════════════════════════════════════════════
 
@@ -1105,15 +1336,27 @@ async function reconnect(connectorId) {
     "git":      { github: connectGitHub, gitlab: connectGitLab, bitbucket: connectBitbucket },
     "infra":    { hostinger: connectHostinger, cloudflare: connectCloudflare, firebase: connectFirebase, supabase: connectSupabase, aws: connectAWS, r2: connectCloudflareR2 },
     "pay":      { razorpay: connectRazorpay, stripe: connectStripe, paddle: connectPaddle, lemonsqueezy: connectLemonSqueezy },
-    "msg":      { whatsapp: connectWhatsApp, telegram: connectTelegram, twilio: connectTwilio, discord: connectDiscord, slack: connectSlack },
+    "msg":      { whatsapp: connectWhatsApp, telegram: connectTelegram, twilio: connectTwilio, discord: connectDiscord, slack: connectSlack, teams: connectTeams },
     "auth":     { google: connectGoogleAuth, github: connectGitHubAuth, microsoft: connectMicrosoftAuth, linkedin: connectLinkedInAuth, apple: connectAppleAuth, discord: connectDiscordAuth },
-    "prod":     { google_workspace: connectGoogleWorkspace, m365: connectMicrosoft365, dropbox: connectDropbox },
+    "prod":     { google_workspace: connectGoogleWorkspace, m365: connectMicrosoft365, dropbox: connectDropbox, notion: connectNotion },
     "commerce": { shopify: connectShopify, woocommerce: connectWooCommerce, wordpress: connectWordPress },
     "creative": { figma: connectFigma, canva: connectCanva },
     "auto":     { zapier: connectZapier, make: connectMake, n8n: connectN8N },
     "monitor":  { sentry: connectSentry, datadog: connectDatadog, uptime: connectUptimeMonitor },
+    "issue":    { jira: connectJira, linear: connectLinear },
   };
   if (phase === "ai") return connectAIProvider(id);
+  // 100-Company Credential Activation mission — real gap found: the
+  // "email" phase was entirely absent from this routing map, even though
+  // connectEmailProviders() is a real, existing function — reconnect()
+  // (and getHealth(), which calls it) threw "Unknown connector" for
+  // every email:* id. connectEmailProviders() probes ALL configured
+  // email providers together in one real call (it has no per-provider
+  // entry point — that's its actual, honest granularity, not something
+  // to fake here), so every email:* connectorId routes to it; its own
+  // internal _record() calls already persist the correct per-provider
+  // (email:resend / email:sendgrid / etc.) status.
+  if (phase === "email") { await connectEmailProviders(); return getStatus(connectorId); }
   const group = fns[phase];
   if (!group || !group[id]) throw new Error(`Unknown connector: ${connectorId}`);
   return group[id]();
@@ -1134,6 +1377,106 @@ async function getHealth(connectorId) {
     wasOnline:   prev?.status === "CONNECTED",
     changed:     prev?.status !== rec.status,
   };
+}
+
+// ── Universal Composition Engine Phase 7: richer status vocabulary ────────
+// The connector runtime's real, unchanged status vocabulary is
+// CONNECTED | READY | PARTIAL | MISSING | NOT_APPLICABLE (see _record()
+// above — 177+ existing call sites, never renamed for the reasons
+// documented in AGENT-SKILL-CONNECTOR-MATRIX.md Phase 5). This is an
+// additive DERIVED mapping onto the mission's requested richer vocabulary
+// (NOT_CONFIGURED/NEEDS_CREDENTIALS/CONFIGURED_UNVERIFIED/VERIFYING/
+// CONNECTED_VERIFIED/DEGRADED/AUTH_FAILED/UNREACHABLE) for composition-
+// engine consumers — it derives from the SAME real probe/credential data
+// already recorded, never hand-authored per connector, so none of the 62
+// existing connector functions needed to change.
+function _mapLegacyStatus(rec) {
+  if (!rec) return "NOT_CONFIGURED";
+  const missing = rec.credentials?.missing || [];
+  if (rec.status === "CONNECTED") return "CONNECTED_VERIFIED";
+  if (rec.status === "PARTIAL") {
+    // Credentials present but the live probe failed — distinguish a real
+    // network/auth failure (AUTH_FAILED/UNREACHABLE) from a by-design
+    // partial check using the same lastError text the real probe recorded.
+    const err = (rec.lastError || rec.detail || "").toLowerCase();
+    // 100-Company Credential Activation mission — real bug found: a bare
+    // `err.includes("auth")` substring check false-positives on the word
+    // "OAuth" itself (e.g. auth:github's genuine, honest "OAuth app
+    // configured... but unverifiable without a live consent redirect"
+    // detail message contains "OAuth", misclassifying a
+    // structurally-fine-but-unverifiable config as AUTH_FAILED — which
+    // implies a rejected credential, not merely an unverifiable one).
+    // Requires a real auth-failure signal (unauthorized/auth failed/
+    // authentication failed/invalid credential/invalid key/invalid
+    // token) instead of the bare substring.
+    if (err.includes("401") || err.includes("403") || err.includes("unauthorized") || /\bauth(entication)?\s+(failed|error|rejected)\b|\binvalid\s+(credential|key|token)\b/.test(err)) return "AUTH_FAILED";
+    if (err.includes("timeout") || err.includes("econnrefused") || err.includes("enotfound")) return "UNREACHABLE";
+    return "CONFIGURED_UNVERIFIED";
+  }
+  if (rec.status === "READY") return missing.length > 0 ? "NEEDS_CREDENTIALS" : "CONFIGURED_UNVERIFIED";
+  // "MISSING" is used for two genuinely different situations that this
+  // mapping previously conflated (100-Company Missing Capability Build-
+  // Out, Phase 5 connector audit — confirmed by direct code read):
+  //   1. A real adapter exists (real base URL, real auth header
+  //      construction, real probe call) but its required credential env
+  //      var isn't set — e.g. ai:deepseek/ai:anthropic/ai:gemini/ai:qwen
+  //      and the other AI-provider probes at integrationConnectors.cjs's
+  //      `if (!key) return _record(..., "MISSING", ...)` lines. This is
+  //      genuinely NEEDS_CREDENTIALS (the same status "READY" already
+  //      gets for git:github's identical "token not set" case) — the
+  //      credentials.required array is non-empty precisely when this is
+  //      the situation.
+  //   2. No real adapter/service module exists at all (infra:aws/infra:r2
+  //      when storageService is unavailable, monitor:sentry when
+  //      sentryService is unavailable, or a genuinely unknown providerId)
+  //      — these call _creds([]) with an EMPTY required array, since
+  //      there is no credential to even ask for. This case correctly
+  //      stays NOT_IMPLEMENTED.
+  if (rec.status === "MISSING") return (rec.credentials?.required?.length > 0) ? "NEEDS_CREDENTIALS" : "NOT_IMPLEMENTED";
+  if (rec.status === "NOT_APPLICABLE") return "NOT_CONFIGURED";
+  return "NOT_CONFIGURED";
+}
+
+// Real capabilities/scopes per connector — declarative metadata only
+// (what actions each connector's real functions above actually perform),
+// not new execution logic. Connectors not listed here have no declared
+// capability metadata yet (returns an empty array, never fabricated).
+const CONNECTOR_CAPABILITIES = {
+  "git:github":       { capabilities: ["read_repo", "list_issues", "create_issue", "create_pr"], scopes: ["repo"] },
+  "pay:razorpay":      { capabilities: ["create_payment_link", "list_payment_links"], scopes: ["payments"] },
+  "pay:stripe":        { capabilities: ["create_checkout_session", "list_charges"], scopes: ["payments"] },
+  "msg:whatsapp":      { capabilities: ["send_message", "receive_webhook"], scopes: ["messaging"] },
+  "msg:telegram":      { capabilities: ["send_message", "get_updates"], scopes: ["messaging"] },
+  "msg:slack":         { capabilities: ["post_message", "read_channel"], scopes: ["messaging"] },
+  "auth:github":       { capabilities: ["oauth_login"], scopes: ["auth"] },
+  "auth:google":       { capabilities: ["oauth_login"], scopes: ["auth"] },
+};
+
+function getConnectorCapabilities(connectorId) {
+  return CONNECTOR_CAPABILITIES[connectorId] || { capabilities: [], scopes: [] };
+}
+
+/**
+ * Returns a connector's status using the composition-engine's richer
+ * vocabulary, derived from the same real record getStatus() returns.
+ */
+function getCompositionStatus(connectorId) {
+  const rec = getStatus(connectorId);
+  const caps = getConnectorCapabilities(connectorId);
+  return {
+    connectorId,
+    status: _mapLegacyStatus(rec),
+    legacyStatus: rec?.status || "NOT_APPLICABLE",
+    capabilities: caps.capabilities,
+    scopes: caps.scopes,
+    lastCheck: rec?.lastCheck || null,
+    lastError: rec?.lastError || null,
+  };
+}
+
+function getAllCompositionStatus() {
+  const state = _load();
+  return Object.keys(state.connectors).map(id => getCompositionStatus(id));
 }
 
 function getStatus(connectorId) {
@@ -1204,7 +1547,7 @@ function detectFailures() {
 
 async function runFullScan() {
   const t0 = Date.now();
-  const [ai, git, infra, pay, email, msg, auth, prod, commerce, creative, auto, monitor] = await Promise.all([
+  const [ai, git, infra, pay, email, msg, auth, prod, commerce, creative, auto, monitor, issue] = await Promise.all([
     scanAllAIProviders(),
     scanAllGitProviders(),
     scanAllInfraProviders(),
@@ -1217,9 +1560,10 @@ async function runFullScan() {
     scanAllCreativeProviders(),
     scanAllAutomationProviders(),
     scanAllMonitoringProviders(),
+    scanAllProjectManagementProviders(),
   ]);
 
-  const all     = [...ai, ...git, ...infra, ...pay, ...email, ...msg, ...auth, ...prod, ...commerce, ...creative, ...auto, ...monitor];
+  const all     = [...ai, ...git, ...infra, ...pay, ...email, ...msg, ...auth, ...prod, ...commerce, ...creative, ...auto, ...monitor, ...issue];
   const counts  = { CONNECTED: 0, READY: 0, PARTIAL: 0, MISSING: 0, NOT_APPLICABLE: 0 };
   all.forEach(r => { if (counts[r.status] !== undefined) counts[r.status]++; });
 
@@ -1252,27 +1596,81 @@ function getScanSummary() {
   };
 }
 
+// ══════════════════════════════════════════════════════════════════════════════
+// CONTINUOUS HEALTH MONITOR — V7 Phase 3
+// ══════════════════════════════════════════════════════════════════════════════
+// Survey confirmed runFullScan() (real: 13 category scanners, real HTTP
+// probes to live providers with a 6s per-probe timeout, persists to
+// data/integration-connectors.json) existed only as a route-triggered
+// action (/integrations/scan) — connector health had zero background
+// monitoring, so a credential expiring or a provider going down between
+// operator visits produced no signal until someone happened to load the
+// dashboard. 4h interval, not more frequent: each tick performs real
+// external HTTP calls against every configured provider (GitHub, Stripe,
+// etc.) — hourly+ would be needless load on those APIs for a founder-
+// facing status page, matching the same conservative cadence
+// secretRotationAutomation already uses (24h) for a similar concern.
+function _obsHealth() { try { return require("./observabilityEngine.cjs"); } catch { return null; } }
+
+let _healthScheduleHandle = null;
+
+async function _monitorTick() {
+  try {
+    const result = await runFullScan();
+    const obs = _obsHealth();
+    if (obs) {
+      obs.recordMetric("connectors.scan.score", result.score);
+      obs.recordMetric("connectors.scan.connected", result.counts.CONNECTED || 0);
+      obs.recordMetric("connectors.scan.missing", result.counts.MISSING || 0);
+      obs.recordMetric("connectors.scan.failures", result.failures.length);
+    }
+    if (result.failures.length > 0) {
+      logger.warn(`[ConnectorMonitor] tick: score=${result.score}% ${result.failures.length} connector(s) need attention: ${result.failures.map(f => f.connectorId).join(", ")}`);
+    } else {
+      logger.info(`[ConnectorMonitor] tick: score=${result.score}% all ${result.total} connectors healthy or not-applicable`);
+    }
+  } catch (err) {
+    logger.error("[ConnectorMonitor] scheduled scan error:", err.message);
+  }
+}
+
+function startHealthMonitor(intervalMs = 4 * 60 * 60 * 1000) {
+  if (_healthScheduleHandle) return _healthScheduleHandle;
+  _healthScheduleHandle = setInterval(_monitorTick, intervalMs);
+  if (typeof _healthScheduleHandle.unref === "function") _healthScheduleHandle.unref();
+  logger.info(`[ConnectorMonitor] Continuous health monitor started (${Math.round(intervalMs / 3_600_000)}h interval).`);
+  return _healthScheduleHandle;
+}
+
 module.exports = {
   // Phase scanners
   scanAllAIProviders, scanAllGitProviders, scanAllInfraProviders,
   scanAllPaymentProviders, connectEmailProviders, scanAllMessagingProviders,
   scanAllAuthProviders, scanAllProductivityProviders, scanAllCommerceProviders,
   scanAllCreativeProviders, scanAllAutomationProviders, scanAllMonitoringProviders,
+  scanAllProjectManagementProviders,
   // Individual connectors
   connectAIProvider, healthAIProvider,
   connectGitHub, connectGitLab, connectBitbucket,
   connectHostinger, connectCloudflare, connectFirebase, connectSupabase, connectAWS, connectCloudflareR2,
   connectRazorpay, connectStripe, connectPaddle, connectLemonSqueezy,
-  connectWhatsApp, connectTelegram, connectTwilio, connectDiscord, connectSlack,
+  connectWhatsApp, connectTelegram, connectTwilio, connectDiscord, connectSlack, connectTeams,
   connectGoogleAuth, connectGitHubAuth, connectMicrosoftAuth, connectLinkedInAuth, connectAppleAuth, connectDiscordAuth,
-  connectGoogleWorkspace, connectMicrosoft365, connectDropbox,
+  connectGoogleWorkspace, connectMicrosoft365, connectDropbox, connectNotion,
   connectShopify, connectWooCommerce, connectWordPress,
   connectFigma, connectCanva,
   connectZapier, connectMake, connectN8N,
   connectSentry, connectDatadog, connectUptimeMonitor,
+  connectJira, connectLinear,
   // Universal operations
   reconnect, getHealth, getStatus, getAllStatus, getMetrics,
   rotateCredentialsGuide, detectFailures,
   // Full scan
   runFullScan, getScanSummary,
+  // Continuous health monitor (V7 Phase 3)
+  startHealthMonitor,
+  // Universal Composition Engine Phase 7 — richer status vocabulary,
+  // derived from the same real records above (additive, no connector
+  // function above was modified)
+  getCompositionStatus, getAllCompositionStatus, getConnectorCapabilities,
 };

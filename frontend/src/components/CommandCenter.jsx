@@ -15,6 +15,13 @@ import {
   dispatchTask,
 } from "../runtimeApi";
 import {
+  getRevenueDashboard,
+  getConnectorHealth,
+  getDeploymentActive,
+  getDeploymentStats,
+} from "../founderHomeApi";
+import { getTwinDashboard } from "../twinApi";
+import {
   FadeUp,
   StaggerList,
   StaggerItem,
@@ -85,6 +92,17 @@ const STATE_LABEL = {
   paused:   "PAUSED",
   idle:     "IDLE",
 };
+
+// A rejected fetch is a real backend failure — it must never render identically
+// to "no data yet." Shared distinct error state for CommandCenter panels.
+function CmdPanelError({ error, onRetry }) {
+  return (
+    <div className="cmd-panel-error">
+      <span className="cmd-panel-error-text">Couldn't load this data{error ? ` — ${error}` : ""}.</span>
+      <button className="cmd-panel-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HealthPulseBar
@@ -249,6 +267,7 @@ function ExecRow({ item, isNew }) {
 function MissionFeed({ opsData, online }) {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [newIds,  setNewIds]  = useState(new Set());
   const prevIds = useRef(new Set());
 
@@ -258,8 +277,17 @@ function MissionFeed({ opsData, online }) {
       getUnifiedQueue(),
     ]);
 
-    const histItems  = hist.value?.history  || hist.value?.items  || hist.value  || [];
-    const queueItems = queue.value?.queue   || queue.value?.items || queue.value || [];
+    // Both calls failing means the feed genuinely can't load — a rejected
+    // promise must not be silently treated as "no missions yet."
+    if (hist.status === "rejected" && queue.status === "rejected") {
+      setError(hist.reason?.message || queue.reason?.message || "Failed to load mission feed");
+      setLoading(false);
+      return;
+    }
+    setError(null);
+
+    const histItems  = hist.status  === "fulfilled" ? (hist.value?.history  || hist.value?.items  || hist.value  || []) : [];
+    const queueItems = queue.status === "fulfilled" ? (queue.value?.queue   || queue.value?.items || queue.value || []) : [];
 
     const seen = new Set();
     const merged = [
@@ -330,6 +358,10 @@ function MissionFeed({ opsData, online }) {
         ))}
       </div>
     );
+  }
+
+  if (error) {
+    return <CmdPanelError error={error} onRetry={load} />;
   }
 
   if (allItems.length === 0) {
@@ -414,18 +446,25 @@ function AgentCard({ agent }) {
 function ActiveAgents({ opsData }) {
   const [agents,  setAgents]  = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
 
   const load = useCallback(async () => {
-    const res = await getUnifiedQueue();
-    const raw = res?.queue || res?.items || res?.running || res || [];
-    const active = (Array.isArray(raw) ? raw : [])
-      .filter(a => {
-        const s = (a.status || a.state || "").toLowerCase();
-        return s === "running" || s === "active" || s === "thinking" || s === "llm";
-      })
-      .slice(0, 8);
-    setAgents(active);
-    setLoading(false);
+    try {
+      const res = await getUnifiedQueue();
+      const raw = res?.queue || res?.items || res?.running || res || [];
+      const active = (Array.isArray(raw) ? raw : [])
+        .filter(a => {
+          const s = (a.status || a.state || "").toLowerCase();
+          return s === "running" || s === "active" || s === "thinking" || s === "llm";
+        })
+        .slice(0, 8);
+      setAgents(active);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load agents");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -459,6 +498,10 @@ function ActiveAgents({ opsData }) {
     );
   }
 
+  if (error) {
+    return <CmdPanelError error={error} onRetry={load} />;
+  }
+
   if (displayed.length === 0) {
     return (
       <div className="cmd-agents-empty">
@@ -487,17 +530,29 @@ function ActiveAgents({ opsData }) {
 function EngineeringTimeline({ opsData }) {
   const [events, setEvents]     = useState([]);
   const [hovered, setHovered]   = useState(null);
+  // Mission 58: fetchEvents had no try/catch at all — a rejected
+  // getRuntimeHistory() promise was an unhandled rejection, and the
+  // timeline silently showed only its static placeholder dots forever,
+  // indistinguishable from a genuinely quiet 60 minutes (Mission 43B
+  // finding). Same CmdPanelError pattern this file already uses elsewhere.
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchEvents = async () => {
+  const load = useCallback(async () => {
+    try {
       const r = await getRuntimeHistory(60);
       const items = r?.history || r?.items || r || [];
       setEvents(Array.isArray(items) ? items.slice(0, 40) : []);
-    };
-    fetchEvents();
-    const id = setInterval(() => { if (!document.hidden) fetchEvents(); }, 15000);
-    return () => clearInterval(id);
+      setError(null);
+    } catch (e) {
+      setError(e?.message || "Could not load engineering timeline.");
+    }
   }, []);
+
+  useEffect(() => {
+    load();
+    const id = setInterval(() => { if (!document.hidden) load(); }, 15000);
+    return () => clearInterval(id);
+  }, [load]);
 
   const now    = Date.now();
   const WINDOW = 60 * 60 * 1000; // 60 min
@@ -522,6 +577,7 @@ function EngineeringTimeline({ opsData }) {
         <span className="mono-sm text-faint">Last 60 min</span>
       </div>
 
+      {error ? <CmdPanelError error={error} onRetry={load} /> : null}
       <div className="cmd-timeline-body">
         <div className="cmd-timeline-track">
           <div className="cmd-timeline-rail" />
@@ -599,6 +655,11 @@ function ApprovalCard({ item, onDecide }) {
     setExiting(decision);
     try {
       await onDecide(item.id || item.itemId, decision, item.queueType || "patch");
+    } catch {
+      // onDecide throws when the backend rejected the decision (see
+      // handleDecide in ApprovalQueue) — the item stays in the pending list,
+      // so cancel the exit animation that was optimistically started above.
+      setExiting(null);
     } finally {
       setBusy(null);
     }
@@ -686,16 +747,31 @@ function ApprovalCard({ item, onDecide }) {
   );
 }
 
-function ApprovalQueue({ onNavigate }) {
+export function ApprovalQueue({ onNavigate }) {
   const [items,   setItems]   = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [decided, setDecided] = useState(new Set());
 
   const load = useCallback(async () => {
-    const res = await getApprovalQueue();
-    const raw = res?.queue || res?.items || res?.approvals || res || [];
-    setItems(Array.isArray(raw) ? raw : []);
-    setLoading(false);
+    try {
+      const res = await getApprovalQueue();
+      // getApprovalQueue() never throws — it catches internally and resolves
+      // {success:false, error} on a real backend failure. Without this check,
+      // that shape fell through to `res || []` (an object, not an array),
+      // Array.isArray(raw) was false, and the queue silently rendered as
+      // "Queue clear" — hiding a real outage on the panel that exists
+      // specifically to surface risk. Same bug class fixed across BusinessOS
+      // (Mission 24) and DevOps emergency controls (Mission 25).
+      if (res?.success === false) throw new Error(res.error || "Failed to load approvals");
+      const raw = res?.queue || res?.items || res?.approvals || res || [];
+      setItems(Array.isArray(raw) ? raw : []);
+      setError(null);
+    } catch (e) {
+      setError(e.message || "Failed to load approvals");
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -705,7 +781,14 @@ function ApprovalQueue({ onNavigate }) {
   }, [load]);
 
   const handleDecide = useCallback(async (id, decision, queueType) => {
-    await decideApprovalItem(id, decision, queueType);
+    // decideApprovalItem() never throws — it catches internally and resolves
+    // {success:false, error} on a real backend failure. Without this check,
+    // the item was optimistically marked "decided" (removed from the
+    // pending list) regardless of whether the backend actually recorded the
+    // approve/reject — an operator could believe they rejected a risky
+    // agent action while the backend never received it.
+    const res = await decideApprovalItem(id, decision, queueType);
+    if (res?.success === false) throw new Error(res.error || `Failed to ${decision}`);
     setDecided(prev => new Set([...prev, id]));
     setTimeout(load, 800);
   }, [load]);
@@ -728,7 +811,7 @@ function ApprovalQueue({ onNavigate }) {
             {count}
           </motion.span>
         )}
-        {count > 3 && (
+        {count > 0 && (
           <button className="cmd-panel-link" onClick={() => onNavigate?.("recommend")}>
             View all →
           </button>
@@ -741,6 +824,8 @@ function ApprovalQueue({ onNavigate }) {
             <div key={i} className="skeleton skeleton--card" style={{ height: 100, marginBottom: 8, borderRadius: 10 }} />
           ))}
         </div>
+      ) : error ? (
+        <CmdPanelError error={error} onRetry={load} />
       ) : pending.length === 0 ? (
         <div className="cmd-approval-empty">
           <span className="cmd-approval-empty-icon">✓</span>
@@ -907,11 +992,11 @@ const EVT_TYPE_COLOR = {
   'collaboration:action': '#a78bfa',
   'collaboration:message': '#60a5fa',
   'lifecycle:stage:start': '#fbbf24',
-  'lifecycle:stage:complete': '#22c55e',
-  'lifecycle:stage:failed':  '#ef4444',
-  'mission:started':    '#22c55e',
-  'mission:completed':  '#22c55e',
-  'mission:failed':     '#ef4444',
+  'lifecycle:stage:complete': 'var(--success)',
+  'lifecycle:stage:failed':  'var(--danger)',
+  'mission:started':    'var(--success)',
+  'mission:completed':  'var(--success)',
+  'mission:failed':     'var(--danger)',
   'telemetry':          '#374151',
   'heartbeat':          '#1f2937',
 };
@@ -954,7 +1039,7 @@ function LiveActivityStream() {
           </div>
         )}
         {events.map((evt, i) => {
-          const color = EVT_TYPE_COLOR[evt.type] || '#64748b';
+          const color = EVT_TYPE_COLOR[evt.type] || 'var(--text-dim)';
           return (
             <div key={i} style={{ display: 'flex', gap: 6, padding: '2px 0', borderBottom: '1px solid rgba(255,255,255,0.03)', alignItems: 'flex-start' }}>
               <span style={{ color: '#374151', flexShrink: 0 }}>
@@ -990,15 +1075,33 @@ const LC_STAGE_COLORS = {
 function MissionTimelineStrip() {
   const [missions, setMissions] = useState([]);
   const [stages,   setStages]   = useState({});
+  const [error,    setError]    = useState(null);
 
   const load = useCallback(async () => {
     try {
-      const res = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/missions', { credentials: 'include' })).json();
+      // C.2 (C2-01): this used to be fetch(...).json() with no status check.
+      // /p27/missions answers 401 {"error":"Unauthorized"} on an expired
+      // session — that body parses fine, res.missions is undefined so the list
+      // became [], and setError(null) then CLEARED the error. The user saw a
+      // truthful-looking "no active missions" while actually being logged out.
+      // Same defect class as the A.11.8 Marketplace 402-rendered-as-0 finding:
+      // an authorization failure must never present as a successful empty state.
+      const r = await fetch((process.env.REACT_APP_API_URL || '') + '/p27/missions', { credentials: 'include' });
+      if (!r.ok) {
+        setMissions([]);
+        setError(r.status === 401 || r.status === 403
+          ? 'Your session has expired or you lack access to missions. Please sign in again.'
+          : `Could not load missions (HTTP ${r.status}).`);
+        return;
+      }
+      const res = await r.json();
       const list = res.missions || res.data || (Array.isArray(res) ? res : []);
       const active = list.filter(m => m.status === 'running' || m.status === 'active' || m.status === 'planned').slice(0, 6);
       setMissions(active);
+      setError(null);
 
-      // Fetch lifecycle stage for each active mission
+      // Fetch lifecycle stage for each active mission (secondary enrichment —
+      // a single stage lookup failing shouldn't block the mission list itself)
       const stageMap = {};
       await Promise.allSettled(
         active.map(m =>
@@ -1009,7 +1112,11 @@ function MissionTimelineStrip() {
         )
       );
       setStages(stageMap);
-    } catch {}
+    } catch (e) {
+      // The mission list itself failed to load — this is a real backend error,
+      // not "no active missions."
+      setError(e.message || "Failed to load mission timeline");
+    }
   }, []);
 
   useEffect(() => {
@@ -1017,6 +1124,8 @@ function MissionTimelineStrip() {
     const t = setInterval(() => { if (!document.hidden) load(); }, 10000);
     return () => clearInterval(t);
   }, [load]);
+
+  if (error) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!missions.length) return (
     <div style={{ color: 'var(--text-dim)', fontSize: 11, padding: '10px 0', textAlign: 'center' }}>No active missions</div>
@@ -1026,7 +1135,7 @@ function MissionTimelineStrip() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
       {missions.map(m => {
         const stage = stages[m.id];
-        const color = stage ? (LC_STAGE_COLORS[stage.stage] || '#6b7280') : '#374151';
+        const color = stage ? (LC_STAGE_COLORS[stage.stage] || 'var(--text-dim)') : '#374151';
         const pct   = stage?.progressPct ?? (m.metrics?.progress ?? 0);
         return (
           <div key={m.id} style={{ padding: '6px 8px', background: 'rgba(255,255,255,0.03)', borderRadius: 5, border: '1px solid rgba(255,255,255,0.06)' }}>
@@ -1059,10 +1168,10 @@ function QueueOverview({ opsData }) {
   const queue = opsData?.queue || {};
   const counts = queue.counts || {};
   const items = [
-    { label: 'Pending',   value: counts.pending  ?? '—', color: '#f59e0b' },
-    { label: 'Running',   value: counts.running  ?? '—', color: '#22c55e' },
-    { label: 'Done',      value: counts.done     ?? '—', color: '#6b7280' },
-    { label: 'Failed',    value: counts.failed   ?? '—', color: '#ef4444' },
+    { label: 'Pending',   value: counts.pending  ?? '—', color: 'var(--warning)' },
+    { label: 'Running',   value: counts.running  ?? '—', color: 'var(--success)' },
+    { label: 'Done',      value: counts.done     ?? '—', color: 'var(--text-dim)' },
+    { label: 'Failed',    value: counts.failed   ?? '—', color: 'var(--danger)' },
   ];
 
   return (
@@ -1074,9 +1183,277 @@ function QueueOverview({ opsData }) {
         </div>
       ))}
       {queue.oldestPendingMins > 0 && (
-        <div style={{ gridColumn: '1 / -1', fontSize: 10, color: queue.oldestPendingMins > 30 ? '#ef4444' : '#f59e0b', textAlign: 'center', marginTop: 2 }}>
+        <div style={{ gridColumn: '1 / -1', fontSize: 10, color: queue.oldestPendingMins > 30 ? 'var(--danger)' : 'var(--warning)', textAlign: 'center', marginTop: 2 }}>
           Oldest pending: {queue.oldestPendingMins}m
         </div>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: RevenuePulse — MRR/ARR/subscriptions from /revenue/dashboard.
+// operator-only endpoint — 403 for non-operator roles renders nothing (not an error).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function RevenuePulse({ onNavigate }) {
+  const [data, setData] = useState(null);
+  const [forbidden, setForbidden] = useState(false);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const r = await getRevenueDashboard();
+    if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
+    if (r?.ok !== false) { setData(r.dashboard); setError(null); }
+    else { setError(r.error || "Failed to load revenue data"); }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => { if (!cancelled) await load(); };
+    run();
+    const t = setInterval(() => { if (!document.hidden) run(); }, 60000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, [load]);
+
+  if (forbidden) return null;
+
+  // A genuine fetch failure must say so distinctly — not claim to still be loading.
+  if (error && !data) return <CmdPanelError error={error} onRetry={load} />;
+
+  if (!data) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading revenue…</div>
+  );
+
+  const fmtINR = (n) => `₹${Math.round(n || 0).toLocaleString('en-IN')}`;
+  const items = [
+    { label: 'MRR',        value: fmtINR(data.mrr),   color: 'var(--success)' },
+    { label: 'ARR',        value: fmtINR(data.arr),   color: 'var(--accent2)' },
+    { label: 'Paid',       value: data.paidCount ?? '—',  color: 'var(--accent)' },
+    { label: 'Trials',     value: data.trialCount ?? '—', color: 'var(--warning)' },
+    { label: 'Churn',      value: `${data.churnRate ?? 0}%`, color: (data.churnRate ?? 0) > 5 ? 'var(--danger)' : 'var(--text-dim)' },
+    { label: 'Avg LTV',    value: fmtINR(data.ltv),  color: 'var(--info)' },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        {items.map(item => (
+          <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '7px 8px', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: item.color, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>{item.value}</div>
+            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</div>
+          </div>
+        ))}
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('billing')}>
+          Full revenue center →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: FounderTwinPulse — Digital Twin trust/decisions from /twin/dashboard.
+// V6 Phase 6 recovery: this backend (POST-Ω Sprint P6, digitalTwinEngine.cjs)
+// was fully built with zero frontend consumers until this widget.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function FounderTwinPulse({ onNavigate }) {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const r = await getTwinDashboard();
+    if (r?.status === 401 || r?.status === 403) { setError(null); setData({ forbidden: true }); return; }
+    if (r?.ok !== false) { setData(r); setError(null); }
+    else { setError(r.error || "Failed to load Digital Twin data"); }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => { if (!cancelled) await load(); };
+    run();
+    const t = setInterval(() => { if (!document.hidden) run(); }, 60000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, [load]);
+
+  if (data?.forbidden) return null;
+  if (error && !data) return <CmdPanelError error={error} onRetry={load} />;
+  if (!data) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading twin…</div>
+  );
+
+  const items = [
+    { label: 'Trust Score',   value: `${data.trustScore ?? 0}`,       color: 'var(--accent)' },
+    { label: 'Accuracy',      value: `${data.accuracy ?? 0}%`,        color: 'var(--success)' },
+    { label: 'Decisions',     value: data.totalDecisions ?? '—',      color: 'var(--accent2)' },
+    { label: 'Auto-Resolved', value: data.autoResolved ?? '—',        color: 'var(--info)' },
+    { label: 'Escalated',     value: data.founderRequired ?? '—',     color: 'var(--warning)' },
+    { label: 'Min Saved',     value: data.minutesSaved ?? '—',        color: 'var(--text-dim)' },
+  ];
+
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        {items.map(item => (
+          <div key={item.label} style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '7px 8px', border: '1px solid rgba(255,255,255,0.06)', textAlign: 'center' }}>
+            <div style={{ fontSize: 14, fontWeight: 800, color: item.color, fontFamily: 'monospace', whiteSpace: 'nowrap' }}>{item.value}</div>
+            <div style={{ fontSize: 9, color: 'var(--text-dim)', marginTop: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.label}</div>
+          </div>
+        ))}
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('twin')}>
+          Full twin console →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: ConnectorHealthPulse — secret/credential health from /vault/health.
+// operator-only endpoint — 403 for non-operator roles renders nothing (not an error).
+// ─────────────────────────────────────────────────────────────────────────────
+
+function ConnectorHealthPulse({ onNavigate }) {
+  const [health, setHealth] = useState(null);
+  const [forbidden, setForbidden] = useState(false);
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const r = await getConnectorHealth();
+    if (r?.status === 401 || r?.status === 403) { setForbidden(true); return; }
+    if (r?.ok !== false) { setHealth(r); setError(null); }
+    else { setError(r.error || "Failed to load connector health"); }
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const run = async () => { if (!cancelled) await load(); };
+    run();
+    const t = setInterval(() => { if (!document.hidden) run(); }, 60000);
+    return () => { cancelled = true; clearInterval(t); };
+  }, [load]);
+
+  if (forbidden) return null;
+
+  // A genuine fetch failure must say so distinctly — not claim to still be loading.
+  if (error && !health) return <CmdPanelError error={error} onRetry={load} />;
+
+  if (!health) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading connector health…</div>
+  );
+
+  const score    = health.score ?? 100;
+  const scoreColor = score >= 90 ? 'var(--success)' : score >= 70 ? 'var(--warning)' : 'var(--danger)';
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8 }}>
+        <div style={{ fontSize: 22, fontWeight: 800, color: scoreColor, fontFamily: 'monospace' }}>{score}</div>
+        <div style={{ fontSize: 10, color: 'var(--text-dim)' }}>
+          Vault health score<br />
+          <span className="mono-sm">{health.totalSecrets ?? 0} credentials tracked</span>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
+        <div style={{ background: 'rgba(82,214,138,0.08)', border: '1px solid rgba(82,214,138,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--success)', fontFamily: 'monospace' }}>{health.ok ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>OK</div>
+        </div>
+        <div style={{ background: 'rgba(240,180,41,0.08)', border: '1px solid rgba(240,180,41,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--warning)', fontFamily: 'monospace' }}>{health.expiring ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Expiring</div>
+        </div>
+        <div style={{ background: 'rgba(245,91,91,0.08)', border: '1px solid rgba(245,91,91,0.2)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--danger)', fontFamily: 'monospace' }}>{health.overdue ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Overdue</div>
+        </div>
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('integrations')}>
+          Connector Center →
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Founder Home: DeploymentPulse — active deploys + stats from /deployment/*.
+// ─────────────────────────────────────────────────────────────────────────────
+
+function DeploymentPulse({ onNavigate }) {
+  const [active, setActive] = useState([]);
+  const [stats, setStats]   = useState(null);
+  const [forbidden, setForbidden] = useState(false);
+  // Mission 58: a non-401 failure (e.g. a real 500) previously never set
+  // `stats`, so the component stayed on "Loading deployments…" forever — a
+  // silent stuck-loading state, not an honest error (Mission 43B finding).
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    const [a, s] = await Promise.all([getDeploymentActive(), getDeploymentStats()]);
+    if (a?.status === 401 || s?.status === 401) { setForbidden(true); return; }
+    if (a?.ok === false && s?.ok === false) {
+      setError(a.error || s.error || "Could not load deployment data.");
+      return;
+    }
+    setError(null);
+    if (a?.ok !== false) setActive(a.deployments || []);
+    if (s?.ok !== false) setStats(s.stats || null);
+  }, []);
+
+  useEffect(() => {
+    load();
+    const t = setInterval(() => { if (!document.hidden) load(); }, 20000);
+    return () => clearInterval(t);
+  }, [load]);
+
+  if (forbidden) return null;
+
+  if (error && !stats) return <CmdPanelError error={error} onRetry={load} />;
+
+  if (!stats) return (
+    <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '10px 0' }}>Loading deployments…</div>
+  );
+
+  return (
+    <div>
+      {active.length > 0 ? (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 8 }}>
+          {active.slice(0, 4).map((d, i) => (
+            <div key={d.id || i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
+              <PulseDot status="running" size={6} />
+              <span style={{ flex: 1, fontSize: 11, color: 'var(--text)' }}>{d.target || d.id}</span>
+              <span style={{ fontSize: 9, color: 'var(--text-dim)' }}>{d.stage || d.status}</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div style={{ fontSize: 11, color: 'var(--success)', textAlign: 'center', padding: '4px 0 8px' }}>No active deployments</div>
+      )}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6 }}>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--success)', fontFamily: 'monospace' }}>{stats.completed ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Completed</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--danger)', fontFamily: 'monospace' }}>{stats.failed ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Failed</div>
+        </div>
+        <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 5, padding: '5px 6px', textAlign: 'center' }}>
+          <div style={{ fontSize: 14, fontWeight: 800, color: 'var(--warning)', fontFamily: 'monospace' }}>{stats.rolledBack ?? 0}</div>
+          <div style={{ fontSize: 9, color: 'var(--text-dim)', textTransform: 'uppercase' }}>Rolled Back</div>
+        </div>
+      </div>
+      {onNavigate && (
+        <button className="cmd-panel-link" style={{ marginTop: 8, width: '100%', textAlign: 'right' }} onClick={() => onNavigate('devops')}>
+          Deployments →
+        </button>
       )}
     </div>
   );
@@ -1088,19 +1465,44 @@ function QueueOverview({ opsData }) {
 
 function ProviderHealth() {
   const [providers, setProviders] = useState([]);
+  // Mission 58: catch {} was fully empty, no error state — a genuine
+  // failure to reach /p27/ai/providers was indistinguishable from "no
+  // providers configured" (Mission 43B finding).
+  const [error, setError] = useState(null);
+
+  const load = useCallback(async () => {
+    try {
+      const r = await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' });
+      // Mission 65: same defect class as the /p27/missions fix above — an
+      // auth failure (401/403) or any non-2xx response can still return a
+      // parseable JSON error body. Calling .json() unconditionally and
+      // trusting its shape (r.providers || ...) silently produced an
+      // empty provider list while setError(null) cleared any prior error,
+      // presenting a genuine auth/server failure as "No provider data"
+      // instead of surfacing it.
+      if (!r.ok) {
+        setProviders([]);
+        setError(r.status === 401 || r.status === 403
+          ? 'Your session has expired or you lack access to provider status. Please sign in again.'
+          : `Could not load AI provider status (HTTP ${r.status}).`);
+        return;
+      }
+      const res = await r.json();
+      const list = res.providers || (Array.isArray(res) ? res : []);
+      setProviders(list.slice(0, 6));
+      setError(null);
+    } catch (e) {
+      setError(e?.message || "Could not load AI provider status.");
+    }
+  }, []);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const r = await (await fetch((process.env.REACT_APP_API_URL || '') + '/p27/ai/providers', { credentials: 'include' })).json();
-        const list = r.providers || (Array.isArray(r) ? r : []);
-        setProviders(list.slice(0, 6));
-      } catch {}
-    };
     load();
     const t = setInterval(() => { if (!document.hidden) load(); }, 30000);
     return () => clearInterval(t);
-  }, []);
+  }, [load]);
+
+  if (error) return <CmdPanelError error={error} onRetry={load} />;
 
   if (!providers.length) return (
     <div style={{ fontSize: 11, color: 'var(--text-dim)', textAlign: 'center', padding: '8px 0' }}>No provider data</div>
@@ -1110,7 +1512,7 @@ function ProviderHealth() {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
       {providers.map((p, i) => {
         const ok    = p.status === 'active' || p.status === 'healthy' || p.available === true;
-        const color = ok ? '#22c55e' : p.status === 'degraded' ? '#eab308' : '#ef4444';
+        const color = ok ? 'var(--success)' : p.status === 'degraded' ? '#eab308' : 'var(--danger)';
         return (
           <div key={p.id || p.name || i} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '4px 0', borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
             <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, flexShrink: 0 }} />
@@ -1134,12 +1536,12 @@ function ProviderHealth() {
 function RuntimeAlerts({ opsData }) {
   const warnings = opsData?.warnings || [];
   if (!warnings.length) return (
-    <div style={{ fontSize: 11, color: '#22c55e', textAlign: 'center', padding: '6px 0' }}>All systems operational</div>
+    <div style={{ fontSize: 11, color: 'var(--success)', textAlign: 'center', padding: '6px 0' }}>All systems operational</div>
   );
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
       {warnings.slice(0, 5).map((w, i) => {
-        const color = w.level === 'critical' ? '#ef4444' : w.level === 'warn' ? '#f59e0b' : '#6b7280';
+        const color = w.level === 'critical' ? 'var(--danger)' : w.level === 'warn' ? 'var(--warning)' : 'var(--text-dim)';
         return (
           <div key={i} style={{ display: 'flex', gap: 8, alignItems: 'flex-start', padding: '5px 8px', background: color + '0d', border: `1px solid ${color}33`, borderRadius: 4 }}>
             <span style={{ fontSize: 9, fontWeight: 800, color, flexShrink: 0, marginTop: 1 }}>{w.level?.toUpperCase()}</span>
@@ -1165,7 +1567,13 @@ function SystemHealth({ opsData, online }) {
   const ref = useRef(null);
 
   useEffect(() => {
-    getSystemHealthReport().then(r => { if (r) setReport(r); });
+    // Mission 58: no .catch() — a rejected promise was an unhandled
+    // rejection (Mission 43B finding). The Health Score section is a
+    // non-critical enhancement over the row-based health display below,
+    // which is derived from opsData and unaffected by this failing — so a
+    // silent no-op (score section just doesn't appear) is the correct,
+    // proportionate fix here, not a full CmdPanelError state.
+    getSystemHealthReport().then(r => { if (r) setReport(r); }).catch(() => {});
   }, []);
 
   // Trigger stagger animation on first render
@@ -1375,12 +1783,16 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         transition={{ ...transition.enter, delay: 0.09 }}
       >
         {[
-          { icon: "✦", label: "New Mission",  tab: "execution"    },
-          { icon: "◎", label: "AI Chat",      tab: "jarvisbrain"  },
-          { icon: "⌥", label: "Analytics",    tab: "analytics"    },
-          { icon: "⬡", label: "Automation",   tab: "autonomouswf" },
-          { icon: "◈", label: "Contacts",     tab: "crm"          },
-          { icon: "₹", label: "Payments",     tab: "billing"      },
+          { icon: "✦", label: "New Mission",  tab: "mission"          },
+          // A.5 finding (see CustomerDashboard.jsx for full writeup):
+          // "AI Chat" must route to "chat" (Chat.jsx's real message
+          // input), not "jarvisbrain" (a read-only monitoring dashboard
+          // with zero <input>/<textarea> anywhere on the page).
+          { icon: "◎", label: "AI Chat",      tab: "chat"             },
+          { icon: "⌥", label: "Analytics",    tab: "analyticscenter"  },
+          { icon: "⬡", label: "Automation",   tab: "workflowautomation" },
+          { icon: "◈", label: "CRM",          tab: "business"         },
+          { icon: "₹", label: "Payments",     tab: "payments"         },
         ].map(({ icon, label, tab }) => (
           <button
             key={tab}
@@ -1391,6 +1803,51 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
             <span className="cmd-qa-label">{label}</span>
           </button>
         ))}
+      </motion.div>
+
+      {/* ── Founder KPI strip: Revenue / Connector Health / Deployment ── */}
+      <motion.div
+        className="cmd-founder-strip"
+        initial={{ opacity: 0, y: 6 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ ...transition.enter, delay: 0.11 }}
+        style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, padding: '0 16px 12px' }}
+      >
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Revenue</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <RevenuePulse onNavigate={onNavigate} />
+          </div>
+        </section>
+
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Connector Health</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <ConnectorHealthPulse onNavigate={onNavigate} />
+          </div>
+        </section>
+
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Deployment Status</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <DeploymentPulse onNavigate={onNavigate} />
+          </div>
+        </section>
+
+        <section className="cmd-panel">
+          <div className="cmd-panel-header">
+            <span className="section-label">Digital Twin</span>
+          </div>
+          <div style={{ padding: '10px 12px' }}>
+            <FounderTwinPulse onNavigate={onNavigate} />
+          </div>
+        </section>
       </motion.div>
 
       {/* ── 3-column cockpit layout ───────────────────────────────── */}
@@ -1491,8 +1948,11 @@ export default function CommandCenter({ stats, opsData, online, onNavigate, bill
         </motion.section>
 
         {/* ── Mission Templates ──── */}
+        {/* B19.5: this carried cmd-col-dispatch, the same grid area as the
+            Command Dispatch panel below, so the two stacked on top of each
+            other. Moved to its own area. */}
         <motion.section
-          className="cmd-panel cmd-col-dispatch"
+          className="cmd-panel cmd-col-templates"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ ...transition.enter, delay: 0.28 }}

@@ -6,6 +6,7 @@
  */
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import "./GitBlame.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -59,10 +60,8 @@ function BlameGutter({ blameData, lineCount, activeCommit, onCommitClick }) {
         const showLabel = hash && hash !== prev;
 
         return (
-          <div
-            key={lineNum}
-            className={`git-blame-gutter__row${isActive ? " git-blame-gutter__row--active" : ""}`}
-            onClick={() => hash && onCommitClick(hash, commits[hash])}
+          <div key={lineNum}
+            className={`git-blame-gutter__row${isActive ? " git-blame-gutter__row--active" : ""}`} {...clickableProps(() => hash && onCommitClick(hash, commits[hash]))}
             title={commit ? `${commit.summary}\n${commit.author} — ${timeAgo(commit.time)}` : ""}
           >
             {showLabel && commit ? (

@@ -1,16 +1,16 @@
 /* G3 Distribution Engine — DistributionOS.css */
 :root {
-  --do-bg:       #0d0d11;
-  --do-surface:  #141418;
-  --do-border:   #1e1e28;
-  --do-text:     #e0e0e8;
-  --do-muted:    #888;
-  --do-accent:   #7c6fff;
-  --do-green:    #22c55e;
-  --do-teal:     #4ecdc4;
-  --do-yellow:   #f59e0b;
-  --do-red:      #ef4444;
-  --do-purple:   #a78bfa;
+  --do-bg: var(--bg);
+  --do-surface: var(--surface);
+  --do-border: var(--border);
+  --do-text: var(--text);
+  --do-muted: var(--text-dim);
+  --do-accent: var(--accent);
+  --do-green: var(--success);
+  --do-teal: var(--accent2);
+  --do-yellow: var(--warning);
+  --do-red: var(--danger);
+  --do-purple: var(--accent);
 }
 
 .do-root {
@@ -280,7 +280,7 @@
   background:  var(--do-accent);
   border:      none;
   border-radius: 5px;
-  color:       #fff;
+  color: var(--on-accent);
   cursor:      pointer;
   padding:     6px 14px;
   font-size:   12px;

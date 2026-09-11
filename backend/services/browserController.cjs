@@ -26,6 +26,22 @@ const _nl   = () => _try(() => require("./nlBrowser.cjs"));
 const _cap  = () => _try(() => require("./visualCaptureService.cjs"));
 const _hitl = () => _try(() => require("./humanInTheLoop.cjs"));
 const _le   = () => _try(() => require("./continuousLearningEngine.cjs"));
+// Real Playwright action primitives (navigate/click/typeText/screenshot/
+// etc., agents/browser/actionEngine.cjs) — executeWorkflow() below
+// previously parsed an intent into a step plan via nlBrowser.cjs and
+// returned it without ever running a single step against a real page;
+// this closes that gap using the same real actions already driving
+// openTab()/inspectPage() above, not a new execution path.
+const _ae   = () => _try(() => require("../../agents/browser/actionEngine.cjs"));
+// Real Playwright session (agents/browser/browserSession.cjs) — the same
+// service visualCaptureService.cjs already drives for real screenshot
+// capture (confirmed live in the Universal Brand/JARVIS Dream audits).
+// openTab/closeTab/inspectPage below previously only wrote JSON bookkeeping
+// records with a fabricated tabId and never opened a real browser — this
+// wires the existing real session manager in instead of building a second,
+// parallel browser runtime.
+const _session = () => _try(() => require("../../agents/browser/browserSession.cjs"));
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `bc_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`; }
@@ -58,10 +74,32 @@ function selectBrowser(preferredBrowser = null) {
 
 // ── openTab ───────────────────────────────────────────────────────────────────
 
-function openTab({ url, browser = null, profileId = null } = {}) {
+async function openTab({ url, browser = null, profileId = null } = {}) {
   if (!url) return { ok: false, error: "url required" };
+
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
+
+  const session = _session();
+  if (!session) return { ok: false, error: "browserSession (Playwright) unavailable" };
+
+  if (!session.isRunning()) {
+    const launched = await session.launch({ headless: true });
+    if (!launched.ok) return { ok: false, error: `Browser launch failed: ${launched.error}` };
+  }
+
+  const page = await session.newPage();
+  if (!page.ok) return { ok: false, error: page.error };
+
+  try {
+    await page.page.goto(url, { waitUntil: "domcontentloaded", timeout: 20_000 });
+  } catch (e) {
+    await session.closePage(page.pageId).catch(() => {});
+    return { ok: false, error: `Navigation failed: ${e.message}` };
+  }
+
   const d = _load();
-  const tabId = _id();
+  const tabId = page.pageId;   // real Playwright pageId, not a fabricated id
   const browserResult = selectBrowser(browser);
 
   const tab = {
@@ -73,7 +111,7 @@ function openTab({ url, browser = null, profileId = null } = {}) {
     status:     "open",
     openedAt:   _ts(),
     closedAt:   null,
-    title:      null,
+    title:      await page.page.title().catch(() => ""),
   };
 
   // Register with browserSessionManager
@@ -88,15 +126,19 @@ function openTab({ url, browser = null, profileId = null } = {}) {
   if (d.history.length > 200) d.history = d.history.slice(-200);
   _save(d);
 
-  return { ok: true, tabId, url, browser: tab.browserName };
+  return { ok: true, tabId, url, browser: tab.browserName, title: tab.title };
 }
 
 // ── closeTab ──────────────────────────────────────────────────────────────────
 
-function closeTab(tabId) {
+async function closeTab(tabId) {
   const d = _load();
   const tab = d.sessions[tabId];
   if (!tab) return { ok: false, error: "tab not found" };
+
+  const session = _session();
+  if (session) await session.closePage(tabId).catch(() => {});
+
   tab.status   = "closed";
   tab.closedAt = _ts();
   d.stats.closedTabs++;
@@ -128,13 +170,38 @@ function listTabs({ status } = {}) {
 
 // ── inspectPage (NL-powered page understanding) ───────────────────────────────
 
-function inspectPage(tabId, query = "") {
+async function inspectPage(tabId, query = "") {
   const d = _load();
   const tab = d.sessions[tabId];
   if (!tab) return { ok: false, error: "tab not found" };
-  d.history.push({ event: "inspect_page", tabId, query, ts: _ts() });
+
+  const session = _session();
+  const page    = session?.getPage?.(tabId);
+  if (!page) {
+    d.history.push({ event: "inspect_page", tabId, query, ts: _ts(), ok: false });
+    _save(d);
+    return { ok: false, tabId, url: tab.url, query, error: "no active Playwright page for this tab (closed or session restarted)" };
+  }
+
+  let title, url, text;
+  try {
+    title = await page.title();
+    url   = page.url();
+    // Visible-text snapshot — a real (if simple) answer to "what's on this
+    // page," matching the query-in/summary-out contract this function
+    // already advertised. For selector-targeted element inspection, use
+    // liveDesignInspector.cjs's inspectElement({pageId, selector}), which
+    // already exists for that narrower, real use case — not duplicated here.
+    text = await page.evaluate(() => document.body?.innerText?.slice(0, 2000) || "");
+  } catch (e) {
+    d.history.push({ event: "inspect_page", tabId, query, ts: _ts(), ok: false });
+    _save(d);
+    return { ok: false, tabId, error: `inspection failed: ${e.message}` };
+  }
+
+  d.history.push({ event: "inspect_page", tabId, query, ts: _ts(), ok: true });
   _save(d);
-  return { ok: true, tabId, url: tab.url, query, note: "Page inspection requires active Playwright session" };
+  return { ok: true, tabId, url, title, query, text };
 }
 
 // ── captureScreenshot ────────────────────────────────────────────────────────
@@ -146,7 +213,14 @@ async function captureScreenshot(tabId, opts = {}) {
   d.stats.screenshots++;
   _save(d);
   try {
-    const result = await cap.captureViewport?.(opts) || await cap.captureDesktop?.(opts);
+    // Screenshot the ALREADY-OPEN, tracked tab (captureFromPage reuses the
+    // real page by pageId) instead of always spawning an unrelated new one
+    // via captureViewport, which previously happened regardless of tabId.
+    const result = tabId
+      ? await cap.captureFromPage?.({ pageId: tabId, ...opts })
+      : (await cap.captureViewport?.(opts) || await cap.captureDesktop?.(opts));
+    if (!result) return { ok: false, tabId, error: "capture unavailable" };
+    if (result.ok === false) return { ok: false, tabId, error: result.error };
     return { ok: true, tabId, ...result };
   } catch (e) {
     return { ok: false, error: e.message };
@@ -161,8 +235,13 @@ async function executeWorkflow(intent, { tabId, context = {}, skipDangerCheck = 
   const nlSvc = _nl();
   if (!nlSvc) return { ok: false, error: "nlBrowser unavailable" };
 
-  // Parse intent to steps
-  const parsed = nlSvc.parse?.(intent) || nlSvc.matchKnownFlow?.(intent);
+  // Parse intent to steps. Real bug fix: nlSvc.parse() is async but was
+  // never awaited here — `nlSvc.parse?.(intent) || nlSvc.matchKnownFlow?.(intent)`
+  // always short-circuited on the truthy (unresolved) Promise parse()
+  // returns, so matchKnownFlow's known-flow fast path was unreachable and
+  // parsed.steps was always undefined regardless of what nlBrowser would
+  // have actually produced — every workflow ran with an empty step list.
+  const parsed = await nlSvc.parse?.(intent) || nlSvc.matchKnownFlow?.(intent) || { steps: [] };
   const danger = nlSvc.detectDanger?.(intent) || { isDangerous: false };
 
   // Gate dangerous workflows through HITL
@@ -186,13 +265,88 @@ async function executeWorkflow(intent, { tabId, context = {}, skipDangerCheck = 
   if (d.history.length > 200) d.history = d.history.slice(-200);
   _save(d);
 
+  // Real execution — previously this function only ever returned the
+  // parsed step PLAN without running a single step, regardless of
+  // whether a tabId/real page was available. A tabId is required to
+  // actually execute (there is no page to act on otherwise); without one
+  // this still returns the plan, same as before, but now honestly
+  // labeled "planned" rather than implying execution happened.
+  const steps = parsed?.steps || [];
+  let stepResults = null;
+  let executed = false;
+  if (tabId && steps.length) {
+    const session = _session();
+    const page = session?.getPage?.(tabId);
+    const ae = _ae();
+    if (page && ae) {
+      stepResults = await _runSteps(ae, page, steps);
+      executed = true;
+    }
+  }
+
   _le()?.createLesson?.({
     type: "browser_workflow", title: `Browser: ${intent}`, source: "browserController",
     confidence: 0.85, tags: ["browser", "workflow", "automation"],
-    data: { intent, parsed, tabId },
+    data: { intent, parsed, tabId, executed },
   });
 
-  return { ok: true, intent, steps: parsed?.steps || [], danger, tabId, executedAt: _ts() };
+  const allStepsOk = executed && stepResults.length > 0 && stepResults.every(r => r.ok !== false);
+  return {
+    ok: executed ? allStepsOk : true,
+    intent, steps, danger, tabId, executedAt: _ts(),
+    status: executed ? (allStepsOk ? "executed" : "executed_with_errors") : "planned",
+    stepResults,
+  };
+}
+
+// ── _runSteps — dispatch a parsed step plan onto real Playwright actions ──────
+// Step action vocabulary matches nlBrowser.cjs's own AI prompt template
+// exactly (buildPrompt()'s "Available actions:" line + its known-flow
+// library) rather than a guessed subset — every action nlBrowser can
+// produce has a real actionEngine.cjs function backing it here.
+async function _runSteps(ae, page, steps) {
+  const results = [];
+  for (const step of steps) {
+    try {
+      let r;
+      switch (step.action) {
+        case "navigate":
+          r = await ae.navigate(page, step.url); break;
+        case "click":
+          r = await ae.click(page, step.selector); break;
+        case "type":
+          r = await ae.typeText(page, step.selector, step.text ?? step.value ?? ""); break;
+        case "fillForm":
+          r = await ae.fillForm(page, step.selector, step.text ?? step.value ?? ""); break;
+        case "screenshot":
+          r = await ae.screenshot(page, { fullPage: !!step.fullPage }); break;
+        case "scroll":
+          r = await ae.scrollDown(page, step.pixels || 500); break;
+        case "pressKey":
+          r = await ae.pressKey(page, step.key); break;
+        case "selectOption":
+          r = await ae.selectOption(page, step.selector, step.value); break;
+        case "waitForElement":
+          r = await ae.waitForElement(page, step.selector, { timeout: step.timeout }); break;
+        case "waitForNavigation":
+          r = await ae.waitForNavigation(page, { timeout: step.timeout }); break;
+        case "getText":
+          r = await ae.getText(page, step.selector); break;
+        case "getUrl":
+          r = { ok: true, action: "getUrl", url: ae.getUrl(page), ts: new Date().toISOString() }; break;
+        case "hoverElement":
+          r = await ae.hoverElement(page, step.selector); break;
+        default:
+          r = { ok: false, action: step.action || "unknown", error: `unsupported step action: ${step.action}` };
+      }
+      results.push({ step, ...r });
+      if (!r.ok && step.stopOnFail !== false) break;
+    } catch (e) {
+      results.push({ step, ok: false, error: e.message });
+      break;
+    }
+  }
+  return results;
 }
 
 // ── authenticate (session-aware auth via browserSessionManager) ───────────────
@@ -217,15 +371,85 @@ function authenticate({ profileId, service, credentials = {} } = {}) {
 
 // ── downloadFile ────────────────────────────────────────────────────────────
 
-function downloadFile({ url, destination, browser = null } = {}) {
-  const { execSync } = require("child_process");
-  const dest = destination || require("path").join(require("os").homedir(), "Downloads", `download_${Date.now()}`);
-  try {
-    execSync(`curl -L -o "${dest}" "${url}"`, { timeout: 60000, stdio: "ignore" });
-    return { ok: true, url, destination: dest, downloadedAt: _ts() };
-  } catch (e) {
-    return { ok: false, url, error: e.message };
+// Browser Controller Command-Injection & Download Safety Audit (2026-08-20):
+// this used to build a shell command string via template-literal
+// interpolation (`curl -L -o "${dest}" "${url}"`) and run it through
+// execSync — both `url` and `destination` came straight from req.body with
+// zero escaping. Live-reproduced, in isolation, non-destructively: a url of
+// `http://x"; touch /tmp/PROOF; echo "` broke out of the intended argument
+// and ran an arbitrary second shell command; the identical injection also
+// worked via `destination`. Separately, `destination` had no containment
+// check at all — `/tmp/sandbox/../../etc_passwd_copy_test` resolved
+// (confirmed live) to a path one level outside the intended directory,
+// proving arbitrary-path write. Separately again, unlike every other real
+// navigation entry point in this file (openTab already calls
+// assertSafeNavigationTarget), `downloadFile` had no SSRF guard — nothing
+// stopped `url` from pointing at 169.254.169.254 or an internal service.
+// Fixed with 3 independent, minimal changes, no new framework:
+//   1. spawn(shell:false) with an argument array instead of a shell
+//      string — the same principle backend/core/safe-exec.js already
+//      establishes, applied directly here since safe-exec.js itself
+//      hard-blocks "curl" and restricts cwd to the project root, neither
+//      of which fits this function's real job (downloading to an
+//      arbitrary user-chosen destination, typically ~/Downloads).
+//   2. assertSafeNavigationTarget(url) — the exact SSRF guard already
+//      shared by every other real navigation path in this codebase
+//      (backend/utils/urlSafety.cjs), reused as-is.
+//   3. destination containment — resolved and required to stay inside the
+//      same ~/Downloads directory this function's own prior default
+//      already implied, closing the arbitrary-path-write vector. A
+//      caller-supplied destination outside that directory is rejected,
+//      not silently redirected.
+async function downloadFile({ url, destination } = {}) {
+  if (!url) return { ok: false, error: "url required" };
+
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, url, error: `unsafe download target: ${safety.reason}` };
+
+  const downloadsDir = path.join(require("os").homedir(), "Downloads");
+  const dest = path.resolve(destination || path.join(downloadsDir, `download_${Date.now()}`));
+  if (!dest.startsWith(downloadsDir + path.sep) && dest !== downloadsDir) {
+    return { ok: false, url, error: `destination must stay within ${downloadsDir}` };
   }
+  // Mission 60A: headless/server environments (this repo's own CI runner,
+  // and any real headless Linux deployment) do not have a ~/Downloads
+  // directory by default — curl -o then fails with exit 23
+  // (CURLE_WRITE_ERROR), a local write failure indistinguishable from a
+  // real bug in the caller's eyes. Containment above already constrains
+  // `dest` to inside downloadsDir; creating that one directory if missing
+  // is not a new destination, just ensuring the already-validated target
+  // is actually writable, matching the mkdirSync-before-write pattern this
+  // codebase's other data-file writers already use (e.g.
+  // legalDocumentEngine.cjs's _save(), accountService.js's _save()).
+  fs.mkdirSync(downloadsDir, { recursive: true });
+
+  const { spawn } = require("child_process");
+  return new Promise((resolve) => {
+    let settled = false;
+    const child = spawn("curl", ["-L", "--max-redirs", "5", "-o", dest, "--", url], {
+      shell: false,
+      stdio: "ignore",
+    });
+    const timer = setTimeout(() => {
+      if (settled) return;
+      settled = true;
+      try { process.kill(-child.pid, "SIGKILL"); } catch { try { child.kill("SIGKILL"); } catch {} }
+      resolve({ ok: false, url, error: "download timed out after 60000ms" });
+    }, 60_000);
+    child.on("close", (code) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (code === 0) resolve({ ok: true, url, destination: dest, downloadedAt: _ts() });
+      else resolve({ ok: false, url, error: `curl exited with code ${code}` });
+    });
+    child.on("error", (e) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      resolve({ ok: false, url, error: e.message });
+    });
+  });
 }
 
 // ── stats ───────────────────────────────────────────────────────────────────

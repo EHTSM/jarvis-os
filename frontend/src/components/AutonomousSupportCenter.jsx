@@ -72,7 +72,7 @@ export default function AutonomousSupportCenter({ onNavigate }) {
           { label:"Escalated",           value:escalated,              color:"var(--warning)" },
           { label:"SLA compliance",      value:`${Math.round(slaMet/TICKETS.length*100)}%`, color:"var(--success)" },
           { label:"KB articles",         value:KB_ARTICLES.length,     color:"var(--accent)"  },
-          { label:"KB views (MTD)",      value:kbTotal.toLocaleString("en-IN"), color:"#7c6fff" },
+          { label:"KB views (MTD)",      value:kbTotal.toLocaleString("en-IN"), color:"var(--accent)" },
         ].map(s=>(
           <div key={s.label} className="asc-summary-tile">
             <span className="asc-sv" style={{color:s.color}}>{s.value}</span>

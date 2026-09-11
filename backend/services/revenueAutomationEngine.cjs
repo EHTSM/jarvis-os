@@ -74,10 +74,25 @@ async function _executeAction(action, params, opts) {
 
   try {
     if (action === "prepare_invoice") {
-      const result = _rev()?.generateInvoice?.(params?.accountId || "auto", {
-        amount: params?.amount || 999,
-        plan:   params?.plan   || "starter",
-        period: params?.period || "monthly",
+      // Accounting Ecosystem mission: generateInvoice(opts) takes a single
+      // options object (opts.accountId, opts.amount, ...) — this call site
+      // previously passed accountId as a separate first positional argument
+      // plus an options object as a second argument. generateInvoice only
+      // declares one parameter, so JS silently dropped the second argument;
+      // opts became the bare accountId STRING, meaning opts.accountId was
+      // always undefined inside generateInvoice. Live effect: every
+      // automated prepare_invoice call created a real invoice record
+      // attributed to accountId: undefined (via billing.getRecord(undefined)
+      // creating/reading a bogus trial record), silently ignored the real
+      // amount/plan/period the caller supplied (all fell back to
+      // plan.priceMonthly off that bogus trial record), and still reported
+      // {ok:true} — a real false-success on a real financial write. Fixed to
+      // pass the single opts object generateInvoice actually expects.
+      const result = _rev()?.generateInvoice?.({
+        accountId: params?.accountId || "auto",
+        amount:    params?.amount || 999,
+        plan:      params?.plan   || "starter",
+        period:    params?.period || "monthly",
       });
       return { ok: true, result };
     }
@@ -88,10 +103,16 @@ async function _executeAction(action, params, opts) {
     }
 
     if (action === "win_back_campaign") {
-      const result = _rev()?.createWinBackCampaign?.(params?.accountId || "auto", {
-        template: params?.template || "standard",
-        discount: 40,
-      });
+      // createWinBackCampaign(accountId, templateId) takes templateId as a
+      // plain string matched against WINBACK_TEMPLATES' real ids
+      // ("wbt_1"/"wbt_2"/"wbt_3") — this call site previously passed an
+      // object ({template, discount}), which never strictly-equals any
+      // template's string id, so tmpl silently always fell back to
+      // WINBACK_TEMPLATES[0] regardless of what the caller requested (the
+      // caller's own "standard" default wasn't a real template id either).
+      // Fixed to pass the real template id string generateInvoice's sibling
+      // function actually expects.
+      const result = _rev()?.createWinBackCampaign?.(params?.accountId || "auto", params?.templateId || "wbt_1");
       return { ok: true, result };
     }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./CommercialBenchmark.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 
@@ -7,7 +8,7 @@ function ScoreRing({ score, size = 120 }) {
   const radius = 48;
   const circumference = 2 * Math.PI * radius;
   const dash = (score / 100) * circumference;
-  const color = score >= 75 ? "#4ade80" : score >= 50 ? "#f59e0b" : "#f87171";
+  const color = score >= 75 ? "#4ade80" : score >= 50 ? "var(--warning)" : "#f87171";
   return (
     <svg width={size} height={size} viewBox="0 0 120 120" className="cb-score-ring">
       <circle cx="60" cy="60" r={radius} fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="10" />
@@ -18,7 +19,7 @@ function ScoreRing({ score, size = 120 }) {
         style={{ transition: "stroke-dasharray 0.8s ease" }}
       />
       <text x="60" y="56" textAnchor="middle" fill={color} fontSize="24" fontWeight="800">{score}</text>
-      <text x="60" y="72" textAnchor="middle" fill="#64748b" fontSize="10">/100</text>
+      <text x="60" y="72" textAnchor="middle" fill="var(--text-dim)" fontSize="10">/100</text>
     </svg>
   );
 }
@@ -86,7 +87,7 @@ function PLTable({ summary }) {
       </div>
       <div className="cb-pl-row">
         <span>Margin Status</span>
-        <span style={{ color: summary.profit?.marginStatus === "healthy" ? "#4ade80" : summary.profit?.marginStatus === "watch" ? "#f59e0b" : "#f87171" }}>
+        <span style={{ color: summary.profit?.marginStatus === "healthy" ? "#4ade80" : summary.profit?.marginStatus === "watch" ? "var(--warning)" : "#f87171" }}>
           {summary.profit?.marginStatus ?? "--"}
         </span>
       </div>
@@ -116,7 +117,7 @@ export default function CommercialBenchmark() {
   useEffect(() => { run(); }, [run]);
 
   const readiness = data?.commercialReadiness;
-  const readinessColor = readiness === "ready" ? "#4ade80" : readiness === "developing" ? "#f59e0b" : "#f87171";
+  const readinessColor = readiness === "ready" ? "#4ade80" : readiness === "developing" ? "var(--warning)" : "#f87171";
   const readinessLabel = { ready: "Commercially Ready", developing: "Developing", pre_commercial: "Pre-Commercial" }[readiness] || "—";
 
   return (
@@ -146,7 +147,7 @@ export default function CommercialBenchmark() {
             </div>
           </div>
 
-          <div className="cb-section-hdr" onClick={() => setExpanded(e => !e)}>
+          <div className="cb-section-hdr" {...clickableProps(() => setExpanded(e => !e))}>
             <span>Benchmark Checks</span>
             <span className="cb-chevron">{expanded ? "▲" : "▼"}</span>
           </div>

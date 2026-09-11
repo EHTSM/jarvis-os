@@ -5,6 +5,7 @@ import { getBillingStatus } from "./billingApi";
 import { checkHealth, getStats, getOpsData } from "./telemetryApi";
 import { sendMessage } from "./api";
 import { emergencyStop, emergencyResume } from "./runtimeApi";
+import { _fetch } from "./_client";
 // ── Eagerly-loaded: critical path + shell UI ────────────────────────────────
 import TrialBanner        from "./components/TrialBanner.jsx";
 import UpgradeModal       from "./components/UpgradeModal.jsx";
@@ -15,10 +16,16 @@ import OperatorConsole    from "./components/operator/OperatorConsole.jsx";
 import LoginPage          from "./components/auth/LoginPage.jsx";
 import SignupPage         from "./components/auth/SignupPage.jsx";
 import ForgotPassword     from "./components/auth/ForgotPassword.jsx";
+import ResetPasswordPage  from "./components/auth/ResetPasswordPage.jsx";
+import VerifyEmailPage    from "./components/auth/VerifyEmailPage.jsx";
+import AcceptInvitePage   from "./components/auth/AcceptInvitePage.jsx";
 import Chat, { MODELS }  from "./components/Chat.jsx";
 import Dashboard          from "./components/Dashboard.jsx";
 import CommandCenter      from "./components/CommandCenter.jsx";
+import CustomerDashboard  from "./components/CustomerDashboard.jsx";
+import CustomerFirstRunWizard, { shouldShowCustomerFirstRun } from "./components/CustomerFirstRunWizard.jsx";
 import CompanyFooter      from "./components/legal/CompanyFooter.jsx";
+import ThemeToggle, { initTheme } from "./components/ThemeToggle.jsx";
 // Non-critical paths — lazy-split from main bundle
 const LandingPage        = lazy(() => import("./components/LandingPage.jsx"));
 const WelcomeFlow        = lazy(() => import("./components/WelcomeFlow.jsx"));
@@ -46,10 +53,10 @@ const SuccessCenter            = lazy(() => import("./components/SuccessCenter.j
 const HelpHub                  = lazy(() => import("./components/HelpHub.jsx"));
 const PartnerProgram           = lazy(() => import("./components/PartnerProgram.jsx"));
 const TeamWorkspace            = lazy(() => import("./components/TeamWorkspace.jsx"));
-const EnterpriseCRM            = lazy(() => import("./components/EnterpriseCRM.jsx"));
 const WorkspaceSettings        = lazy(() => import("./components/WorkspaceSettings.jsx"));
 const KnowledgeCenter          = lazy(() => import("./components/KnowledgeCenter.jsx"));
 const IntegrationCenter        = lazy(() => import("./components/IntegrationCenter.jsx"));
+const ConnectorSetupWizard     = lazy(() => import("./components/ConnectorSetupWizard.jsx"));
 const EngineeringCenter        = lazy(() => import("./components/EngineeringCenter.jsx"));
 const EngineeringWorkspace     = lazy(() => import("./components/EngineeringWorkspace.jsx"));
 const IntelligencePanel        = lazy(() => import("./components/IntelligencePanel.jsx"));
@@ -59,26 +66,61 @@ const RecommendationCenter     = lazy(() => import("./components/RecommendationC
 const ExecutionCenter          = lazy(() => import("./components/ExecutionCenter.jsx"));
 const ReliabilityCenter        = lazy(() => import("./components/ReliabilityCenter.jsx"));
 const DevOpsCenterV2           = lazy(() => import("./components/DevOpsCenterV2.jsx"));
+const MobilePlatformCenter     = lazy(() => import("./components/MobilePlatformCenter.jsx"));
+const FounderTwinConsole       = lazy(() => import("./components/FounderTwinConsole.jsx"));
+const LegalOSCenter            = lazy(() => import("./components/LegalOSCenter.jsx"));
+const CustomerSuccessCenter    = lazy(() => import("./components/CustomerSuccessCenter.jsx"));
+// A.8.3 recovery: LaunchPlatform.jsx (Dashboard/Onboarding/Workspaces/Docs/
+// Academy/Referral/Success/Feedback+Roadmap voting/Readiness/Benchmark/
+// reports) was already fully built, wired to real routes (launchPlatform.js)
+// and real data (data/feedback.json), but only ever mounted inside
+// ElectronWorkspace.jsx — which is a documented pure passthrough in web mode
+// (`if (!isElectron()) return children`), so it never rendered in the actual
+// web app. Recovering it here as a real, reachable tab — no new component,
+// no new route, same file already used by the Electron build.
+const LaunchPlatform           = lazy(() => import("./components/LaunchPlatform.jsx"));
+// A.8.3 recovery: productPlannerEngine.cjs + productReleaseEngine.cjs
+// (/product-factory/*) and engineeringOrgState.cjs (/engorg/v2/*) were both
+// fully built with real persisted data but had zero frontend consumers —
+// same situation as customer-org before CustomerSuccessCenter.jsx recovered
+// it. ProductOSCenter.jsx is a new minimal panel (no new backend, no new
+// storage) exposing product plans/roadmaps/releases and objectives/epics/
+// work items/blockers via their existing real routes.
+const ProductOSCenter          = lazy(() => import("./components/ProductOSCenter.jsx"));
+const DailyPlanningConsole     = lazy(() => import("./components/DailyPlanningConsole.jsx"));
+const FounderAssistant         = lazy(() => import("./components/FounderAssistant.jsx"));
 const SelfHealingCenter        = lazy(() => import("./components/SelfHealingCenter.jsx"));
+// Production Completion Week: RuntimeObserverPanel is a real, working
+// dashboard (polls /runtime/observer/status|events|statistics|sources|health
+// every 10s) that was only reachable inside ElectronWorkspace's Electron-only
+// bottom panel — web-mode users had no way to see it at all. Reusing the
+// exact same component here, not duplicating it.
+const RuntimeObserverPanel     = lazy(() => import("./components/RuntimeObserverPanel.jsx"));
+// V6-V10 Production Realization: executiveOrg/enterpriseOrg/ecosystemOrg/
+// civilizationOrg/autonomousOrg (backend/routes/{executive,enterprise,
+// ecosystem,civilization,autonomous}Org.js) are real, self-ticking backend
+// infrastructure confirmed this session, previously with zero frontend
+// surface. One reusable component (OrgLevelStatus.jsx), parameterized by
+// level below, instead of 5 near-duplicate dashboard files.
+const OrgLevelStatus           = lazy(() => import("./components/OrgLevelStatus.jsx"));
 const AgentRegistryCenter      = lazy(() => import("./components/AgentRegistryCenter.jsx"));
 const TaskRouterCenter         = lazy(() => import("./components/TaskRouterCenter.jsx"));
 const SharedMemoryCenter       = lazy(() => import("./components/SharedMemoryCenter.jsx"));
 const OperationsCenter         = lazy(() => import("./components/OperationsCenter.jsx"));
 const AgentCollaborationCenter = lazy(() => import("./components/AgentCollaborationCenter.jsx"));
 const ToolFabricCenter         = lazy(() => import("./components/ToolFabricCenter.jsx"));
-const AutonomousCompanyCenter  = lazy(() => import("./components/AutonomousCompanyCenter.jsx"));
+const CompanyFactoryCenter     = lazy(() => import("./components/CompanyFactoryCenter.jsx"));
+const CreativeStudio           = lazy(() => import("./components/CreativeStudio.jsx"));
+const WorkflowAutomationCenter = lazy(() => import("./components/WorkflowAutomationCenter.jsx"));
+const AnalyticsCenter          = lazy(() => import("./components/AnalyticsCenter.jsx"));
+const ReferralEngine           = lazy(() => import("./components/ReferralEngine.jsx"));
+const OrgAdminCenter           = lazy(() => import("./components/OrgAdminCenter.jsx"));
 const ExecutionOrchestratorCenter = lazy(() => import("./components/ExecutionOrchestratorCenter.jsx"));
-const DataOwnershipCenter      = lazy(() => import("./components/DataOwnershipCenter.jsx"));
 const SupportCenter            = lazy(() => import("./components/SupportCenter.jsx"));
 const TrustComplianceCenter    = lazy(() => import("./components/TrustComplianceCenter.jsx"));
-const DisasterRecoveryCenter   = lazy(() => import("./components/DisasterRecoveryCenter.jsx"));
-const MobilePlatformCenter     = lazy(() => import("./components/MobilePlatformCenter.jsx"));
-const CommunityCenter          = lazy(() => import("./components/CommunityCenter.jsx"));
 const MarketplaceCenter        = lazy(() => import("./components/MarketplaceCenter.jsx"));
 const AICostCenter             = lazy(() => import("./components/AICostCenter.jsx"));
-const AutonomousRevenueCenter  = lazy(() => import("./components/AutonomousRevenueCenter.jsx"));
-const AutonomousMarketingCenter = lazy(() => import("./components/AutonomousMarketingCenter.jsx"));
-const AutonomousSupportCenter  = lazy(() => import("./components/AutonomousSupportCenter.jsx"));
+const AIUsageDashboard         = lazy(() => import("./components/AIUsageDashboard.jsx"));
 const OoplixRunsOoplixCenter   = lazy(() => import("./components/OoplixRunsOoplixCenter.jsx"));
 const AutonomousAgentDashboard = lazy(() => import("./components/AutonomousAgentDashboard.jsx"));
 const AgentFactoryCenter       = lazy(() => import("./components/AgentFactoryCenter.jsx"));
@@ -86,7 +128,6 @@ const MemoryIntelligenceCenter = lazy(() => import("./components/MemoryIntellige
 const SelfImprovementCenter    = lazy(() => import("./components/SelfImprovementCenter.jsx"));
 const JarvisBrainCenter        = lazy(() => import("./components/JarvisBrainCenter.jsx"));
 const ExecutionConnectorCenter = lazy(() => import("./components/ExecutionConnectorCenter.jsx"));
-const AutonomousWorkflowCenter = lazy(() => import("./components/AutonomousWorkflowCenter.jsx"));
 const AgentActionCenter        = lazy(() => import("./components/AgentActionCenter.jsx"));
 const AutonomyScoreCenter      = lazy(() => import("./components/AutonomyScoreCenter.jsx"));
 const GlobalActivityFeed       = lazy(() => import("./components/GlobalActivityFeed.jsx"));
@@ -100,22 +141,41 @@ const AgentOSV2                = lazy(() => import("./components/AgentOSV2.jsx")
 const MemoryOSV2               = lazy(() => import("./components/MemoryOSV2.jsx"));
 const WorkflowOSV2             = lazy(() => import("./components/WorkflowOSV2.jsx"));
 const DeveloperCopilotV2       = lazy(() => import("./components/DeveloperCopilotV2.jsx"));
-const GrowthOSV2               = lazy(() => import("./components/GrowthOSV2.jsx"));
-const PersonalOS               = lazy(() => import("./components/PersonalOS.jsx"));
+// GrowthOS/ContentSEO/DistributionOS (Module 9) — real, backend-wired G1/G2/G3
+// marketing suites. Replace the removed GrowthOSV2, a fake localStorage-only
+// wrapper that never called /growth, /content, or /distrib.
+const GrowthOS                 = lazy(() => import("./components/GrowthOS.jsx"));
+const ContentSEO               = lazy(() => import("./components/ContentSEO.jsx"));
+const DistributionOS           = lazy(() => import("./components/DistributionOS.jsx"));
 const BusinessOS               = lazy(() => import("./components/BusinessOS.jsx"));
-const DeveloperOS              = lazy(() => import("./components/DeveloperOS.jsx"));
-const EnterpriseOS             = lazy(() => import("./components/EnterpriseOS.jsx"));
 const CapabilitiesOverview     = lazy(() => import("./components/CapabilitiesOverview.jsx"));
 const MissionControlV1         = lazy(() => import("./components/MissionControlV1.jsx"));
 const ExecutiveDashboard       = lazy(() => import("./components/ExecutiveDashboard.jsx"));
 const DevHUD                   = lazy(() => import("./components/DevHUD.jsx"));
 const EndOfDayReview           = lazy(() => import("./components/EndOfDayReview.jsx"));
+// AI Command Center (Module 3) — previously fully built but never wired into
+// nav. operator-os/MissionControl.jsx is NOT excluded — ElectronWorkspace.jsx
+// renders it directly (isElectron() only) as the Operator OS home dashboard,
+// independent of the tab system below. Clicking its "Missions" tile calls
+// onNavigate("mission"), which routes back into this tab's MissionControlV1
+// (the drill-down detail view). In web mode, ElectronWorkspace is a pure
+// passthrough (`if (!isElectron()) return children`), so only MissionControlV1
+// ever renders there. Not a duplicate — two intentionally distinct
+// granularities (Electron home dashboard vs. mission detail view).
+const OperatorCommandLayer     = lazy(() => import("./components/operator-os/OperatorCommandLayer.jsx"));
+const ExecutiveLoop            = lazy(() => import("./components/operator-os/ExecutiveLoop.jsx"));
+const IntelligenceOverlay      = lazy(() => import("./components/operator-os/IntelligenceOverlay.jsx"));
+const LiveAgentCollaboration   = lazy(() => import("./components/operator-os/LiveAgentCollaboration.jsx"));
 import WorkspaceSwitcher        from "./components/WorkspaceSwitcher.jsx";
+import OrgSwitcher              from "./components/OrgSwitcher.jsx";
+import { usePinnedTabs }        from "./components/WorkspacePersonalization.jsx";
 import Tooltip                  from "./components/Tooltip.jsx";
 import { useKeyboardShortcuts } from "./hooks/useKeyboardShortcuts.js";
 import { AuthProvider, useAuth } from "./contexts/AuthContext.jsx";
+import { startPersonalNotifications, stopPersonalNotifications } from "./personalNotifications";
 import { useElectronEvent } from "./hooks/useElectron.js";
 import "./App.css";
+import { clickableProps } from "./hooks/useClickableProps";
 
 // Web: 5 primary tabs — secondary modules in "More" overflow
 // Primary nav — what a new customer needs immediately
@@ -128,104 +188,174 @@ const TABS = [
   { id: "more",     label: "More ▾"     },
 ];
 
+// Founder Journey Final Polish (A.4.3) finding: "lead"/"leads"/"lead
+// capture" — words a founder actually searches for — returned 0 matches in
+// the More-menu search, because "Contacts" (the real CRM/lead-pipeline
+// feature) lives in the always-visible TABS bar, which MoreMenu's search
+// never looks at (only MORE_TABS is searched). The button is one click away
+// but invisible to search. Additive-only: aliases here don't touch TABS'
+// own rendering, only give MoreMenu.filtered() something to match against.
+const PRIMARY_TAB_ALIASES = {
+  clients:  "lead leads lead capture client sales",
+  payments: "invoice invoicing",
+};
+
 // Power-user overflow — all secondary modules, grouped by domain
 const MORE_TABS = [
   // ── Account & Setup
-  { id: "success",    label: "Getting Started",    group: "Account"      },
-  { id: "billing",    label: "Billing",            group: "Account"      },
-  { id: "settings",   label: "Settings",           group: "Account"      },
-  { id: "help",       label: "Help & Guides",      group: "Account"      },
-  { id: "betachecklist", label: "Beta Checklist",  group: "Account"      },
-  { id: "overview",   label: "Overview",           group: "Account"      },
+  { id: "success",    label: "Getting Started",    group: "Account", alias: "onboarding setup start tutorial walkthrough first steps welcome guide" },
+  { id: "billing",    label: "Billing",            group: "Account", alias: "finance" },
+  // A.13 benchmark recovery: Settings hosts many real sub-surfaces (API
+  // Tokens, Audit Log, Policies, Sessions, Devices, Compliance, Governance)
+  // that were undiscoverable by their own names — searching "api token",
+  // "webhook" or "audit" returned zero hits even though each exists. Alias
+  // only; no new UI, no new backend.
+  { id: "settings",   label: "Settings",           group: "Account", alias: "notification notifications api token tokens webhook audit log policy policies session sessions device devices compliance governance security sso scim" },
+  { id: "help",       label: "Help & Guides",      group: "Account", alias: "shortcut shortcuts keyboard" },
+  { id: "betachecklist", label: "Beta Checklist",  group: "Account", alias: "launch readiness release checklist pre launch" },
+  { id: "overview",   label: "Overview",           group: "Account", alias: "capabilities what can ooplix do features feature list modules index" },
   // ── Operations
-  { id: "activity",   label: "History",            group: "Operations"   },
-  { id: "reports",    label: "Reports",            group: "Operations"   },
-  { id: "mission",    label: "Mission Control",    group: "Operations"   },
-  { id: "runtime",    label: "Runtime Console",    group: "Operations"   },
-  { id: "execution",  label: "Execution",          group: "Operations"   },
-  { id: "operations", label: "Operations",         group: "Operations"   },
-  { id: "orchestrator",label:"Orchestrator",       group: "Operations"   },
-  { id: "reliability",label: "Reliability",        group: "Operations"   },
-  { id: "globalactivity", label:"Global Activity", group: "Operations"   },
-  { id: "systemhealth",   label:"System Health",   group: "Operations"   },
+  { id: "workflowautomation", label: "Workflow Automation", group: "Operations", alias: "rule rules trigger triggers zapier recipe automation builder" },
+  { id: "analyticscenter", label: "Analytics",       group: "Operations", alias: "kpi kpis" },
+  { id: "activity",   label: "History",            group: "Operations", alias: "logs" },
+  { id: "reports",    label: "Reports",            group: "Operations", alias: "report export summary weekly monthly business review pdf" },
+  { id: "mission",    label: "Mission Control",    group: "Operations", alias: "mission missions goal goals objective task board progress" },
+  { id: "runtime",    label: "Runtime Console",    group: "Operations", alias: "runtime console queue dispatch worker workers job jobs process background" },
+  { id: "execution",  label: "Execution",          group: "Operations", alias: "execute run steps evidence plan progress" },
+  { id: "operations", label: "Operations",         group: "Operations", alias: "ops daily operations control center command" },
+  { id: "orchestrator",label:"Orchestrator",       group: "Operations", alias: "orchestration coordinate schedule pipeline sequence" },
+  { id: "reliability",label: "Reliability",        group: "Operations", alias: "incident alert monitoring" },
+  { id: "globalactivity", label:"Global Activity", group: "Operations", alias: "activity feed events stream timeline whats happening recent" },
+  { id: "systemhealth",   label:"System Health",   group: "Operations", alias: "health status uptime diagnostics server health system status" },
+  { id: "mobile",         label:"Mobile Platform", group: "Operations", alias: "mobile android ios app phone tablet device" },
+  // A.10.1 finding: EndOfDayReview.jsx (real component — today's missions,
+  // lessons learned, closing suggestions, all from real fetches) and its
+  // trigger (setTab("eod") already special-cased above to open the modal
+  // instead of switching tabs) both existed, fully wired, but "eod" was
+  // referenced nowhere else in the entire frontend — no button, no palette
+  // entry, no keyboard shortcut. A founder had no way to ever open it.
+  // setTab already handles the "eod" id correctly; this entry is the only
+  // missing piece — an entrypoint, not new architecture.
+  { id: "eod",            label:"End of Day Review", group: "Operations", alias: "shutdown close day daily summary wrap up end my day" },
   // ── AI & Agents
-  { id: "agents",     label: "Agents",             group: "AI & Agents"  },
-  { id: "agentruntime", label: "Agent Runtime",    group: "AI & Agents"  },
-  { id: "agentfactory", label:"Agent Factory",     group: "AI & Agents"  },
-  { id: "agentactions", label:"Agent Actions",     group: "AI & Agents"  },
-  { id: "collab",     label: "Collaboration",      group: "AI & Agents"  },
-  { id: "taskrouter", label: "Task Router",        group: "AI & Agents"  },
-  { id: "registry",   label: "Registry",           group: "AI & Agents"  },
-  { id: "toolfabric", label: "Tool Fabric",        group: "AI & Agents"  },
-  { id: "autonomy",   label: "Autonomous Co",      group: "AI & Agents"  },
-  { id: "autonomouswf",label:"Auto Workflows",     group: "AI & Agents"  },
-  { id: "autonomyscore", label:"Autonomy Score",   group: "AI & Agents"  },
+  { id: "agents",     label: "Agents",             group: "AI & Agents", alias: "ai agent bot assistant worker digital employee staff" },
+  { id: "agentruntime", label: "Agent Runtime",    group: "AI & Agents", alias: "agent runtime supervisor lifecycle long running agent process" },
+  { id: "agentfactory", label:"Agent Factory",     group: "AI & Agents", alias: "create agent new agent build agent agent builder template" },
+  { id: "agentactions", label:"Agent Actions",     group: "AI & Agents", alias: "agent action approve action pending action review action" },
+  { id: "collab",     label: "Collaboration",      group: "AI & Agents", alias: "handoff multi agent teamwork delegate delegation together" },
+  { id: "taskrouter", label: "Task Router",        group: "AI & Agents", alias: "routing assign task dispatch route work distribution" },
+  { id: "registry",   label: "Registry",           group: "AI & Agents", alias: "agent registry catalogue catalog available agents list of agents" },
+  { id: "toolfabric", label: "Tool Fabric",        group: "AI & Agents", alias: "tools tooling capability agent tools integrations fabric" },
+  { id: "autonomouswf",label:"Auto Workflows",     group: "AI & Agents", alias: "autonomous workflow automatic workflow self running workflow" },
+  { id: "autonomyscore", label:"Autonomy Score",   group: "AI & Agents", alias: "autonomy independence score how autonomous maturity" },
+  { id: "agentcollab", label:"Live Agent Roster",  group: "AI & Agents", alias: "live agents active agents who is working roster online agents" },
   // ── Intelligence
-  { id: "intel",      label: "Intelligence",       group: "Intelligence" },
-  { id: "predict",    label: "Prediction",         group: "Intelligence" },
-  { id: "recommend",  label: "Recommendations",    group: "Intelligence" },
-  { id: "guardrails", label: "Guardrails",         group: "Intelligence" },
-  { id: "memory",     label: "Memory",             group: "Intelligence" },
-  { id: "sharedmem",  label: "Memory Fabric",      group: "Intelligence" },
-  { id: "memoryintel",label:"Memory Intel",        group: "Intelligence" },
-  { id: "knowledge",  label: "Knowledge",          group: "Intelligence" },
-  { id: "selfimprove",label:"Self-Improve",        group: "Intelligence" },
-  { id: "jarvisbrain",label:"Jarvis Brain",        group: "Intelligence" },
+  { id: "intel",      label: "Intelligence",       group: "Intelligence", alias: "insight insights correlation pattern patterns trend trends analysis" },
+  { id: "predict",    label: "Prediction",         group: "Intelligence", alias: "forecast predict projection what will happen risk prediction" },
+  { id: "recommend",  label: "Recommendations",    group: "Intelligence", alias: "recommendation suggest suggestion advice next best action what should i do" },
+  { id: "guardrails", label: "Guardrails",         group: "Intelligence", alias: "guardrail limit limits safety constraint boundary policy ai safety" },
+  { id: "nlconsole",  label: "Command Console",    group: "Intelligence", alias: "natural language command prompt ask tell instruct operator console" },
+  { id: "execloop",   label: "Executive Loop",     group: "Intelligence", alias: "executive decision loop ceo brief leadership cadence" },
+  { id: "inteloverlay", label:"Reasoning & Risk",  group: "Intelligence", alias: "reasoning why explanation rationale risk overlay decision trace" },
+  { id: "sharedmem",  label: "Memory Fabric",      group: "Intelligence", alias: "shared memory fabric cross agent memory context store" },
+  { id: "memoryintel",label:"Memory Intel",        group: "Intelligence", alias: "memory intelligence recall similarity what do you remember" },
+  { id: "memory",     label: "Memory OS",          group: "Intelligence", alias: "memory remember history context long term memory notes" },
+  { id: "knowledge",  label: "Knowledge Base",     group: "Intelligence", alias: "knowledge kb docs wiki article faq documentation graph" },
+  { id: "selfimprove",label:"Self-Improve",        group: "Intelligence", alias: "self improvement learning evolution optimise optimize improve" },
+  { id: "jarvisbrain",label:"Jarvis Brain",        group: "Intelligence", alias: "brain jarvis central intelligence core reasoning" },
+  { id: "twin",       label: "Digital Twin",       group: "Intelligence", alias: "twin founder twin my preferences decision style approve like me" },
+  { id: "planning",   label: "Daily Planning",     group: "Intelligence", alias: "plan my day agenda schedule today todo daily plan calendar" },
+  { id: "assistant",  label: "Founder Assistant",  group: "Intelligence", alias: "assistant chat ask jarvis help me personal assistant" },
   // ── Engineering
-  { id: "engineering",label: "Engineering",        group: "Engineering"  },
-  { id: "workspace",  label: "Eng Workspace",      group: "Engineering"  },
-  { id: "copilot",    label: "Copilot",            group: "Engineering"  },
-  { id: "devops",     label: "DevOps",             group: "Engineering"  },
-  { id: "selfhealing",label: "Self-Healing",       group: "Engineering"  },
-  { id: "developer",  label: "Developer OS",       group: "Engineering"  },
-  { id: "execconnector", label:"Exec Connectors",  group: "Engineering"  },
+  { id: "engineering",label: "Engineering",        group: "Engineering", alias: "engineering dev development software build code intelligence" },
+  { id: "workspace",  label: "Eng Workspace",      group: "Engineering", alias: "workspace editor ide file explorer code editor project files" },
+  // A.8.3 recovery — see ProductOSCenter's lazy import above.
+  { id: "productos",  label: "Product OS",         group: "Engineering", alias: "prd roadmap requirements backlog epic epics milestone feature request product planning task hierarchy dependency dependencies release planning objectives work items" },
+  { id: "copilot",    label: "Copilot",            group: "Engineering", alias: "review debug test ci github pipeline commit repository project code review" },
+  { id: "devops",     label: "DevOps",             group: "Engineering", alias: "docker deploy deployment rollback blue green canary" },
+  { id: "selfhealing",label: "Self-Healing",       group: "Engineering", alias: "self healing auto fix recovery repair resilience auto repair" },
+  { id: "observer",   label: "Runtime Observer",   group: "Engineering", alias: "observability monitoring git logs" },
+  // ── Org Levels (L4, V6-V10) — read-only status views over real, self-ticking
+  // backend infrastructure (backend/routes/{autonomousKnowledgeOrg,executive,
+  // enterprise,ecosystem,civilization,autonomous}Org.js), each rendering
+  // OrgLevelStatus with a different `level` prop rather than separate components.
+  { id: "orglevel-ako",  label: "Knowledge Org (L4)",   group: "Org Levels", alias: "knowledge org level 4 l4 ako autonomous knowledge" },
+  { id: "orglevel-eos",  label: "Executive OS (L6)",    group: "Org Levels", alias: "executive os level 6 l6 eos executive org" },
+  { id: "orglevel-ent",  label: "Enterprise OS (L7)",   group: "Org Levels", alias: "enterprise os level 7 l7 ent enterprise org divisions" },
+  { id: "orglevel-eco",  label: "Ecosystem OS (L8)",    group: "Org Levels", alias: "ecosystem os level 8 l8 eco multi tenant marketplace org" },
+  { id: "orglevel-civ",  label: "Civilization OS (L9)", group: "Org Levels", alias: "civilization os level 9 l9 civ federation council" },
+  { id: "orglevel-auto", label: "Autonomous OS (L10)",  group: "Org Levels", alias: "autonomous os level 10 l10 auto ooda autonomous civilization" },
+  { id: "execconnector", label:"Exec Connectors",  group: "Engineering", alias: "execution connector adapter bridge external execution link" },
   // ── Growth & Revenue
-  { id: "seo",        label: "SEO",                group: "Growth"       },
-  { id: "content",    label: "Content",            group: "Growth"       },
-  { id: "social",     label: "Social",             group: "Growth"       },
-  { id: "email",      label: "Email",              group: "Growth"       },
-  { id: "referral",   label: "Referral",           group: "Growth"       },
-  { id: "partners",   label: "Partners",           group: "Growth"       },
-  { id: "launch",     label: "Launch",             group: "Growth"       },
-  { id: "autorevenue",  label:"Auto Revenue",      group: "Growth"       },
-  { id: "automarketing",label:"Auto Marketing",    group: "Growth"       },
-  { id: "autosupport",  label:"Auto Support",      group: "Growth"       },
-  { id: "aicost",     label: "AI Costs",           group: "Growth"       },
+  { id: "creative",   label: "Creative Studio",    group: "Growth", alias: "brand brand kit" },
+  { id: "growth",     label: "Growth",             group: "Growth", alias: "marketing campaign email sms push broadcast audience segment newsletter whatsapp message messaging chat outreach" },
+  // B.22 founder-stress finding: a founder searching "campaign" — the single
+  // most natural word for this work — matched ONLY "growth", even though both
+  // of these surfaces run campaigns (contentseo has a content calendar and
+  // article campaigns; distribution has /distrib/campaigns and publish jobs).
+  // Measured live in the real More-menu search. Alias-only, same mechanism as
+  // the C.1 vocabulary recovery: no new UI, no renamed labels, no new routes.
+  { id: "contentseo", label: "Content & SEO",      group: "Growth", alias: "website forms landing page docs documentation doc blog article keyword calendar campaign content campaign editorial" },
+  { id: "distribution",label:"Distribution",       group: "Growth", alias: "publish publishing social post channel influencer community launch campaign distribution campaign broadcast" },
+  { id: "referral",   label: "Referral Engine",    group: "Growth", alias: "referral affiliate invite reward advocacy word of mouth" },
+  { id: "partners",   label: "Partners",           group: "Growth", alias: "partner partnership reseller channel agency alliance" },
+  { id: "aicost",     label: "AI Costs",           group: "Growth", alias: "ai cost spend token cost llm cost budget credits pricing" },
+  { id: "aiusage",    label: "AI Orchestration",   group: "Growth", alias: "ai usage provider model router llm openai anthropic orchestration" },
   // ── Enterprise & Platform
-  { id: "personal",   label: "Personal OS",        group: "Enterprise"   },
-  { id: "business",   label: "Business OS",        group: "Enterprise"   },
-  { id: "enterprise", label: "Enterprise OS",      group: "Enterprise"   },
-  { id: "team",       label: "Team",               group: "Enterprise"   },
-  { id: "ecrm",       label: "Enterprise CRM",     group: "Enterprise"   },
-  { id: "integrations",label:"Integrations",       group: "Enterprise"   },
-  { id: "mobile",     label: "Mobile",             group: "Enterprise"   },
-  { id: "marketplace",label: "Marketplace",        group: "Enterprise"   },
-  { id: "community",  label: "Community",          group: "Enterprise"   },
-  { id: "trustcompliance",label:"Trust",           group: "Enterprise"   },
-  { id: "disasterrecovery",label:"Recovery",       group: "Enterprise"   },
-  { id: "supportos",  label: "Support",            group: "Enterprise"   },
-  { id: "dataowner",  label: "Data",               group: "Enterprise"   },
-  { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise"   },
-  { id: "executivedash",label:"Executive Dash",    group: "Enterprise"   },
+  { id: "business",   label: "CRM",                group: "Enterprise", alias: "deal deals opportunity account customer" },
+  { id: "companies",  label: "Companies",          group: "Enterprise", alias: "business company" },
+  { id: "team",       label: "Team",               group: "Enterprise", alias: "invite employee" },
+  { id: "integrations",label:"Integrations",       group: "Enterprise", alias: "gitlab github bitbucket webhook api connector oauth developer platform" },
+  { id: "marketplace",label: "Marketplace",        group: "Enterprise", alias: "marketplace plugin plugins extension extensions app store catalog install" },
+  { id: "trustcompliance",label:"Trust",           group: "Enterprise", alias: "trust compliance gdpr soc2 certification data ownership privacy" },
+  { id: "legalos",    label: "Legal OS",           group: "Enterprise", alias: "legal contract agreement nda terms policy document drafting" },
+  { id: "supportos",  label: "Support",            group: "Enterprise", alias: "ticket tickets helpdesk help desk inbox escalation" },
+  { id: "customersuccess", label: "Customer Success", group: "Enterprise", alias: "churn retention health score onboarding csm" },
+  { id: "oroplix",    label: "Ooplix Runs Ooplix", group: "Enterprise", alias: "dogfood self hosted ooplix on ooplix internal usage self operating" },
+  { id: "executivedash",label:"Executive Dash",    group: "Enterprise", alias: "executive dashboard ceo overview board leadership summary kpi" },
+  { id: "orgadmin",   label: "Organization",       group: "Enterprise", alias: "organization org department departments role roles permission permissions member members hierarchy" },
+  // A.8.3 recovery — see LaunchPlatform's lazy import above for why this
+  // wasn't reachable before. alias covers the PM-vocabulary search terms
+  // Phase A.8.2 confirmed had zero hits anywhere in the app.
+  { id: "launchplatform", label: "Launch Platform", group: "Enterprise", alias: "feedback roadmap feature request vote prd release readiness onboarding academy" },
 ];
+
+// ── Tab metadata lookup — powers breadcrumbs + recent pages ─────────
+// Single source of truth: TABS ∪ MORE_TABS. No separate label registry to drift.
+const _TAB_META = new Map([...TABS, ...MORE_TABS].map(t => [t.id, t]));
+function tabMeta(id) {
+  return _TAB_META.get(id) || { id, label: id, group: null };
+}
 
 // ── Context detection ─────────────────────────────────────────────
 // desktop=1 query param → Electron shell; skip landing + onboarding
 // app.* hostname         → SaaS web app;  skip marketing landing page
-function _isDesktopShell() {
+// Exported (alongside _initialScreen below) so the deep-link/onboarding
+// routing priority can be unit-tested without mounting the full App tree.
+export function _isDesktopShell() {
   try {
     return new URLSearchParams(window.location.search).get("desktop") === "1";
   } catch { return false; }
 }
 
-function _isSaasApp() {
+export function _isSaasApp() {
   try {
     return window.location.hostname.startsWith("app.");
   } catch { return false; }
 }
 
 // ── Determine initial screen from localStorage ───────────────────
-function _initialScreen() {
+export function _initialScreen() {
+  // Emailed deep links (password reset / email verification) take priority
+  // over every other screen — they carry a one-time token in the query
+  // string and must render regardless of onboarding/auth state.
+  try {
+    const path = window.location.pathname;
+    if (path === "/reset-password") return "reset-password";
+    if (path === "/verify-email")   return "verify-email";
+    if (path === "/accept-invite")  return "accept-invite";
+  } catch { /* SSR-safe no-op */ }
+
   // Electron desktop: go straight to cockpit — no marketing screens
   if (_isDesktopShell()) return "app";
   // SaaS domain (app.ooplix.com): skip public landing, require onboarding if new
@@ -245,7 +375,7 @@ function _loadProfile() {
 }
 
 // ── More ▾ dropdown with live search + grouped sections ──────────────────────
-function MoreMenu({ currentTab, onSelect }) {
+function MoreMenu({ currentTab, onSelect, pinned, onTogglePin }) {
   const [query,   setQuery]   = React.useState('');
   const [cursor,  setCursor]  = React.useState(0);
   const inputRef  = React.useRef(null);
@@ -256,8 +386,33 @@ function MoreMenu({ currentTab, onSelect }) {
 
   const filtered = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return q ? MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q)) : MORE_TABS;
+    if (!q) return MORE_TABS;
+    // Workflow Simplification Certification finding: a founder searching
+    // the single most natural term for an entire category — "marketing"
+    // (0 matches; the real module is labeled "Growth"), "finance" (0
+    // matches; the real module is labeled "Billing") — got nothing, despite
+    // real, substantial functionality existing under a less obvious name.
+    // `alias` is an additive, invisible synonym field (no label/group
+    // renamed, no risk to existing muscle memory) checked alongside the
+    // visible label/group text.
+    const moreMatches = MORE_TABS.filter(m => m.label.toLowerCase().includes(q) || m.group?.toLowerCase().includes(q) || m.alias?.toLowerCase().includes(q));
+    // A.4.3 finding (see PRIMARY_TAB_ALIASES above): the always-visible
+    // TABS bar (Contacts/Payments/Pipeline/AI) is invisible to this search,
+    // so a founder searching "lead" got nothing despite Contacts being
+    // exactly that feature one click away. Surfaced here, tagged with its
+    // own group so it reads as a quick-access shortcut, not an overflow
+    // module — TABS' own rendering in the main bar is untouched.
+    const primaryMatches = TABS.filter(t => t.id !== "more").filter(t => {
+      const alias = PRIMARY_TAB_ALIASES[t.id] || "";
+      return t.label.toLowerCase().includes(q) || alias.toLowerCase().includes(q);
+    }).map(t => ({ ...t, group: "Quick Access" }));
+    return [...primaryMatches, ...moreMatches];
   }, [query]);
+
+  const pinnedItems = React.useMemo(
+    () => MORE_TABS.filter(m => pinned?.includes(m.id)),
+    [pinned]
+  );
 
   // Build grouped structure for display
   const grouped = React.useMemo(() => {
@@ -275,6 +430,35 @@ function MoreMenu({ currentTab, onSelect }) {
     const item = listRef.current?.querySelectorAll('.tab-more-item')[idx];
     item?.scrollIntoView({ block: 'nearest' });
   }, []);
+
+  const renderItem = (m, idx, { hideGroup = false } = {}) => (
+    <button
+      key={m.id}
+      className={`tab-more-item${currentTab === m.id ? " active" : ""}${idx === cursor ? " focused" : ""}`}
+      role="menuitem"
+      aria-current={currentTab === m.id ? "page" : undefined}
+      onMouseEnter={() => idx >= 0 && setCursor(idx)}
+      onClick={() => onSelect(m.id)}
+      onContextMenu={(e) => { e.preventDefault(); onTogglePin?.(m.id); }}
+      title="Right-click to pin/unpin"
+    >
+      <span className="tab-more-item-label">{m.label}</span>
+      {m.group && !hideGroup && <span className="tab-more-item-group">{m.group}</span>}
+      {/* B19.3: had role="button" + aria-label but no tabIndex and no key
+          handler, so the pin control was announced as a button yet could not
+          be reached or activated from the keyboard. clickableProps supplies
+          both, and carries the existing label through. */}
+      <span
+        className={`tab-more-item-pin${pinned?.includes(m.id) ? " tab-more-item-pin--active" : ""}`}
+        {...clickableProps(
+          (e) => { e.stopPropagation(); onTogglePin?.(m.id); },
+          { label: pinned?.includes(m.id) ? `Unpin ${m.label}` : `Pin ${m.label}` },
+        )}
+      >
+        {pinned?.includes(m.id) ? "📌" : "📍"}
+      </span>
+    </button>
+  );
 
   return (
     <div className="tab-more-menu" role="menu">
@@ -309,45 +493,111 @@ function MoreMenu({ currentTab, onSelect }) {
         {filtered.length === 0 && (
           <div className="tab-more-empty">No modules match "{query}"</div>
         )}
+        {!query.trim() && pinnedItems.length > 0 && (
+          <div className="tab-more-group tab-more-group--pinned">
+            <div className="tab-more-group-label">📌 Pinned</div>
+            {pinnedItems.map((m) => renderItem(m, -1, { hideGroup: true }))}
+          </div>
+        )}
         {query.trim() ? (
           // Flat list when searching
-          filtered.map((m, i) => (
-            <button
-              key={m.id}
-              className={`tab-more-item${currentTab === m.id ? " active" : ""}${i === cursor ? " focused" : ""}`}
-              role="menuitem"
-              aria-current={currentTab === m.id ? "page" : undefined}
-              onMouseEnter={() => setCursor(i)}
-              onClick={() => onSelect(m.id)}
-            >
-              {m.label}
-              {m.group && <span className="tab-more-item-group">{m.group}</span>}
-            </button>
-          ))
+          filtered.map((m, i) => renderItem(m, i))
         ) : (
           // Grouped sections when not searching
           Object.entries(grouped).map(([group, items]) => (
             <div key={group} className="tab-more-group">
               <div className="tab-more-group-label">{group}</div>
-              {items.map((m) => {
-                const flatIdx = filtered.indexOf(m);
-                return (
-                  <button
-                    key={m.id}
-                    className={`tab-more-item${currentTab === m.id ? " active" : ""}${flatIdx === cursor ? " focused" : ""}`}
-                    role="menuitem"
-                    aria-current={currentTab === m.id ? "page" : undefined}
-                    onMouseEnter={() => setCursor(flatIdx)}
-                    onClick={() => onSelect(m.id)}
-                  >
-                    {m.label}
-                  </button>
-                );
-              })}
+              {items.map((m) => renderItem(m, filtered.indexOf(m), { hideGroup: true }))}
             </div>
           ))
         )}
       </div>
+    </div>
+  );
+}
+
+// ── Breadcrumbs — Home / Group / Current page, driven by tabMeta() ──
+function Breadcrumbs({ tabId, onNavigate }) {
+  const meta = tabMeta(tabId);
+  if (tabId === "home") return null; // no breadcrumb needed on the landing tab itself
+
+  return (
+    <nav className="breadcrumbs" aria-label="Breadcrumb">
+      <button className="breadcrumb-item breadcrumb-item--link" onClick={() => onNavigate("home")}>
+        Dashboard
+      </button>
+      {meta.group && (
+        <>
+          <span className="breadcrumb-sep" aria-hidden="true">›</span>
+          <span className="breadcrumb-item breadcrumb-item--group">{meta.group}</span>
+        </>
+      )}
+      <span className="breadcrumb-sep" aria-hidden="true">›</span>
+      <span className="breadcrumb-item breadcrumb-item--current" aria-current="page">{meta.label}</span>
+    </nav>
+  );
+}
+
+// ── Recent Pages — reads the same tabHistory ref the back/forward arrows use ──
+function RecentPagesMenu({ historyRef, currentTab, onSelect }) {
+  const [open, setOpen] = React.useState(false);
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  // Most-recent-first, de-duplicated, excluding the current tab, capped to 8
+  const recent = React.useMemo(() => {
+    if (!open) return [];
+    const seen = new Set([currentTab]);
+    const out = [];
+    for (let i = historyRef.current.length - 1; i >= 0 && out.length < 8; i--) {
+      const id = historyRef.current[i];
+      if (seen.has(id)) continue;
+      seen.add(id);
+      out.push(id);
+    }
+    return out;
+  }, [open, currentTab, historyRef]);
+
+  return (
+    <div className="recent-pages" ref={ref}>
+      <Tooltip label="Recent pages" placement="bottom">
+        <button
+          className="topbar-nav-arrow"
+          onClick={() => setOpen(o => !o)}
+          aria-haspopup="true"
+          aria-expanded={open}
+          aria-label="Recent pages"
+        >⏱</button>
+      </Tooltip>
+      {open && (
+        <div className="recent-pages-dropdown">
+          <div className="recent-pages-header">Recent Pages</div>
+          {recent.length === 0 ? (
+            <div className="tab-more-empty">No recent pages yet</div>
+          ) : (
+            recent.map(id => {
+              const meta = tabMeta(id);
+              return (
+                <button
+                  key={id}
+                  className="tab-more-item"
+                  role="menuitem"
+                  onClick={() => { onSelect(id); setOpen(false); }}
+                >
+                  <span className="tab-more-item-label">{meta.label}</span>
+                  {meta.group && <span className="tab-more-item-group">{meta.group}</span>}
+                </button>
+              );
+            })
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -393,6 +643,11 @@ export default function App() {
   return <AuthProvider><AppInner /></AuthProvider>;
 }
 
+// Applied at module load (before first paint), same pattern as
+// _isDesktopShell()/_isSaasApp() below — avoids a dark→light flash that a
+// useEffect-based apply would cause.
+initTheme();
+
 const _IS_DESKTOP = _isDesktopShell();
 const _IS_SAAS    = _isSaasApp();
 const _PRODUCT   = _IS_DESKTOP ? "desktop" : _IS_SAAS ? "saas" : "public";
@@ -407,8 +662,38 @@ const DESKTOP_TABS = [
 ];
 
 function AppInner() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, logout } = useAuth();
+
+  // V6 Phase 8 (Personal JARVIS): overdue-task / pending-decision native
+  // notifications — desktop-only (Electron), only once authenticated since
+  // /planning/agenda requires a session.
+  useEffect(() => {
+    if (user) startPersonalNotifications();
+    else stopPersonalNotifications();
+    return () => stopPersonalNotifications();
+  }, [user]);
+
   const [screen,   setScreen]   = useState(_initialScreen);
+
+  // A.6 business-owner-journey finding: _initialScreen() decides landing vs
+  // onboarding vs app purely from localStorage ("jarvis_started",
+  // "jarvis_biz_profile") before any auth check has run — those flags are
+  // per-browser and never synced to the account server-side. A genuinely
+  // authenticated returning user on a new browser/device (or with cleared
+  // storage) landed back on the onboarding wizard instead of their
+  // dashboard, confirmed live: real signup, real login, fresh browser
+  // context, reload → "Quick setup Step 1 of 3" despite zero auth failures.
+  // Once the async /auth/me check (already in flight via AuthProvider)
+  // resolves to a real user, correct course to "app" — reusing the same
+  // setScreen("app") escape hatch LoginPage's onSuccess already uses below,
+  // not a new mechanism. Only overrides landing/onboarding; explicit
+  // deep-link screens (reset-password etc.) and mid-flow screens
+  // (signup/login) are left alone.
+  useEffect(() => {
+    if (authLoading || !user) return;
+    setScreen(s => (s === "landing" || s === "onboarding") ? "app" : s);
+  }, [authLoading, user]);
+
   const [messages, setMessages] = useState(() => [{
     id: 1, role: "jarvis",
     text: _welcomeMessage(_loadProfile()),
@@ -446,6 +731,7 @@ function AppInner() {
   }, []);
   const [moreOpen,    setMoreOpen]    = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const { pinned: pinnedTabIds, toggle: togglePinnedTab } = usePinnedTabs();
   const [chatModel,   setChatModel]   = useState(() => {
     try { return localStorage.getItem("ooplix_chat_model") || "auto"; } catch { return "auto"; }
   });
@@ -485,6 +771,8 @@ function AppInner() {
 
   const endRef   = useRef(null);
   const inputRef = useRef(null);
+  const wasOnlineRef     = useRef(false);
+  const connectedOnceRef = useRef(false); // only announce "Connected to Ooplix." once per session
 
   const push = useCallback((role, text) => {
     setMessages(prev => [...prev, {
@@ -522,24 +810,38 @@ function AppInner() {
   }, [screen, user]);
 
   // ── Health + data polling (only when in app screen) ───────────────
+  // wasOnline/connectedOnce live in refs (not effect-local closure vars) so
+  // they survive this effect re-running whenever `user` changes identity —
+  // which happens several times during a real signup/onboarding flow (each
+  // getAuthStatus()-driven setUser() call produces a new object reference).
+  // Effect-local vars used to reset to wasOnline=false/connectedOnce=false
+  // on every one of those re-runs, so a single real signup session could
+  // fire "Connected to Ooplix." 2-3 times in a row — refs fix that without
+  // changing the effect's actual polling behavior at all.
   useEffect(() => {
     if (screen !== "app") return;
-    let wasOnline    = false;
-    let connectedOnce = false; // only announce connected once per session
 
     const poll = async () => {
       const healthy = await checkHealth();
-      if (!wasOnline && healthy && !connectedOnce) {
+      if (!wasOnlineRef.current && healthy && !connectedOnceRef.current) {
         push("system", "Connected to Ooplix.");
-        connectedOnce = true;
+        connectedOnceRef.current = true;
       }
-      if (wasOnline && !healthy) push("system", "Connection lost — reconnecting…");
-      // Re-arm so next reconnect after a drop also announces
-      if (!healthy) connectedOnce = false;
-      wasOnline = healthy;
+      if (wasOnlineRef.current && !healthy) push("system", "Connection lost — reconnecting…");
+      wasOnlineRef.current = healthy;
       setOnline(healthy);
 
-      if (healthy) {
+      // /stats and /ops are operator-only (platform-wide founder data —
+      // CRM lead stats, revenue, system metrics — gated server-side by
+      // ops.js's operatorOnly, "a regular customer must never reach
+      // these"). Every non-operator account was polling both every 8s for
+      // the whole session and getting a 403 each time — silently swallowed
+      // (getStats/getOpsData catch and return null), so nothing visibly
+      // broke, but it was constant, avoidable console noise and wasted
+      // requests for the product's primary audience (founders, role
+      // "user"). Scope the poll to operators, matching the same
+      // user?.role === "operator" gate CommandCenter/home-tab already use.
+      if (healthy && user?.role === "operator") {
         const [st, ops] = await Promise.allSettled([getStats(), getOpsData()]);
         setStats(st.value   ?? null);
         setOpsData(ops.value ?? null);
@@ -549,7 +851,7 @@ function AppInner() {
     poll();
     const id = setInterval(() => { if (!document.hidden) poll(); }, 8000);
     return () => clearInterval(id);
-  }, [screen, push]);
+  }, [screen, push, user]);
 
   // ── Auto-scroll ───────────────────────────────────────────────────
   useEffect(() => {
@@ -705,8 +1007,22 @@ function AppInner() {
     }]);
     track.trialStarted();
     localStorage.setItem("jarvis_just_onboarded", "1");
+    _consumePendingInvite();
     setScreen("app");
     setTab("home");
+  };
+
+  // Consumes a workspace-invite token stashed by the accept-invite screen
+  // before the user was routed to signup/login (see screen === "accept-invite"
+  // above) — fires once, after the user has a real session, so the invite
+  // link's promise ("click this to join") is actually kept regardless of
+  // whether the user needed to sign up or just log in first.
+  const _consumePendingInvite = () => {
+    let token = null;
+    try { token = sessionStorage.getItem("jarvis_pending_invite_token"); } catch { return; }
+    if (!token) return;
+    try { sessionStorage.removeItem("jarvis_pending_invite_token"); } catch { /* no-op */ }
+    _fetch("/workspace/accept-invite", { method: "POST", body: JSON.stringify({ token }) }).catch(() => {});
   };
 
   // ── First-launch hint (dismissible, shown once after onboarding) ──
@@ -718,6 +1034,32 @@ function AppInner() {
     setShowFirstLaunchHint(false);
   }, []);
 
+  // ── Customer first-run wizard (Module 6) ──────────────────────────
+  // A real multi-step wizard for regular customers — distinct from the
+  // thin dismissible hint above and from FirstRunSetup.jsx (operator-only,
+  // covers risk levels/dry-run/runtime health, none of which apply here).
+  // Shown once per account (own localStorage key), never for operators.
+  // user is not resolved on first render (authLoading), so this is derived
+  // reactively rather than computed once in a useState initializer.
+  //
+  // Founder Journey Certification finding: neither this condition nor
+  // shouldShowCustomerFirstRun() excluded the desktop shell, so on
+  // ?desktop=1 both this wizard AND WelcomeFlow.jsx (the desktop-specific
+  // equivalent — project picker + coding-mission quick actions, gated on
+  // _IS_DESKTOP, see its own file header) were simultaneously eligible for
+  // the exact same brand-new signup. Reproduced directly: both wizards'
+  // "Welcome to Ooplix" cards raced to mount, and the second one's
+  // backdrop blocked clicks meant for the first — a real, confusing
+  // stacked-onboarding experience, not just a test artifact. WelcomeFlow
+  // already covers desktop's "get oriented" need with desktop-appropriate
+  // content (this wizard's CRM/team-invite/connectors steps don't fit the
+  // immediate desktop-shell context); excluding this one on desktop,
+  // matching the exact !_IS_DESKTOP precedent already used one screen
+  // below for showFirstLaunchHint.
+  const [firstRunDismissed, setFirstRunDismissed] = useState(false);
+  const showCustomerFirstRun = !authLoading && !!user && user.role !== "operator"
+    && !_IS_DESKTOP && !firstRunDismissed && shouldShowCustomerFirstRun();
+
   // ── Legal page overlay ────────────────────────────────────────────
   // null = no legal page; string = which page is open
   const [legalPage, setLegalPage] = useState(null);
@@ -728,7 +1070,14 @@ function AppInner() {
   const _screenFallback = <div style={{display:"flex",alignItems:"center",justifyContent:"center",height:"100vh",background:"#0a0a0a"}}><div className="sk-row sk-row--w75" style={{width:180,margin:"0 auto"}} /></div>;
   if (screen === "pricing")    return <Suspense fallback={_screenFallback}><PricingPage onBack={() => setScreen("landing")} onStart={handleStart} /></Suspense>;
   if (screen === "landing")    return <Suspense fallback={_screenFallback}><LandingPage onStart={handleStart} onLogin={handleLogin} onLegal={openLegal} onPricing={() => setScreen("pricing")} /></Suspense>;
-  if (screen === "onboarding") return <Suspense fallback={_screenFallback}><Onboarding onComplete={handleOnboardingComplete} /></Suspense>;
+  // A.6 finding: a real, successful sign-out (screen resets to
+  // "onboarding" because jarvis_started stays "1" from any prior visit,
+  // and the auth-correction effect above only fires for a truthy user)
+  // left a signed-out visitor stuck on this wizard with no way back to
+  // login — reproduced live: real account, real sign out, reload →
+  // "Quick setup Step 1 of 3", no login link anywhere. onLogin reuses the
+  // same handleLogin already passed to LandingPage below, not a new screen.
+  if (screen === "onboarding") return <Suspense fallback={_screenFallback}><Onboarding onComplete={handleOnboardingComplete} onLogin={handleLogin} /></Suspense>;
 
   // ── Signup screen (reached after Onboarding, or from Login "Create account") ──
   if (screen === "signup") {
@@ -738,6 +1087,46 @@ function AppInner() {
           onSuccess={handleSignupComplete}
           onLogin={() => setScreen("login")}
           onLegal={openLegal}
+        />
+      </div>
+    );
+  }
+
+  // ── Emailed deep links (reset-password / verify-email) ────────────────────
+  // These must render before any auth-gate/onboarding check — a signed-out
+  // user clicking an emailed link has no session yet, and a signed-in user
+  // verifying a second email address shouldn't be redirected into the app.
+  if (screen === "reset-password") {
+    return (
+      <div className="app-auth-gate">
+        <ResetPasswordPage onDone={() => { window.history.replaceState({}, "", "/"); setScreen("login"); }} />
+      </div>
+    );
+  }
+  if (screen === "verify-email") {
+    return (
+      <div className="app-auth-gate">
+        <VerifyEmailPage onDone={() => { window.history.replaceState({}, "", "/"); setScreen(user ? "app" : "login"); }} />
+      </div>
+    );
+  }
+  if (screen === "accept-invite") {
+    // Stash the token before leaving this screen for signup/login — those
+    // flows clear the URL's query string, so the token would otherwise be
+    // lost and the user would land in the app without ever having joined
+    // the workspace they clicked the invite link for.
+    const stashInviteToken = () => {
+      try {
+        const t = new URLSearchParams(window.location.search).get("token");
+        if (t) sessionStorage.setItem("jarvis_pending_invite_token", t);
+      } catch { /* no-op */ }
+    };
+    return (
+      <div className="app-auth-gate">
+        <AcceptInvitePage
+          onDone={() => { window.history.replaceState({}, "", "/"); setScreen(user ? "app" : "login"); }}
+          onSignup={() => { stashInviteToken(); window.history.replaceState({}, "", "/"); setScreen("signup"); }}
+          onLogin={() => { stashInviteToken(); window.history.replaceState({}, "", "/"); setScreen("login"); }}
         />
       </div>
     );
@@ -757,7 +1146,7 @@ function AppInner() {
     return (
       <div className="app-auth-gate">
         <LoginPage
-          onSuccess={() => setScreen("app")}
+          onSuccess={() => { _consumePendingInvite(); setScreen("app"); }}
           onSignup={() => setScreen("signup")}
           onForgot={() => setScreen("forgot")}
         />
@@ -782,7 +1171,7 @@ function AppInner() {
       return (
         <div className="app-auth-gate">
           <LoginPage
-            onSuccess={() => setScreen("app")}
+            onSuccess={() => { _consumePendingInvite(); setScreen("app"); }}
             onSignup={() => setScreen("signup")}
             onForgot={() => setScreen("forgot")}
           />
@@ -793,7 +1182,7 @@ function AppInner() {
     return (
       <div className="app-auth-gate">
         <SignupPage
-          onSuccess={() => setScreen("app")}
+          onSuccess={() => { _consumePendingInvite(); setScreen("app"); }}
           onLogin={() => setScreen("login")}
         />
       </div>
@@ -837,7 +1226,21 @@ function AppInner() {
           {showWelcome && (
             <WelcomeFlow
               onDismiss={(completed) => {
-                if (completed) { try { localStorage.setItem("ooplix_welcome_done", "1"); } catch {} }
+                // Real Productivity & Operator Experience Certification:
+                // this write was previously gated behind `completed`, so
+                // clicking "Skip setup" (WelcomeFlow.jsx calls
+                // onDismiss(false)) never persisted the dismissal.
+                // Reproduced directly: skip the wizard, it disappears;
+                // reload the page, the identical full-viewport overlay
+                // (position:fixed, z-index:1000, pointer-events:auto)
+                // reappears and blocks every click in the app — every
+                // time, forever, since a user who already chose "skip"
+                // has no other route to the completion branch that used
+                // to be the only path that persisted dismissal. Persist
+                // on every dismissal path; only the post-dismiss tour
+                // offer stays completion-gated (skipping setup shouldn't
+                // also force the separate guided tour to auto-open).
+                try { localStorage.setItem("ooplix_welcome_done", "1"); } catch {}
                 setShowWelcome(false);
                 if (completed) setTimeout(() => setShowTour(true), 400);
               }}
@@ -862,6 +1265,7 @@ function AppInner() {
                 setTab("chat");
                 if (text) setTimeout(() => handleSend(text), 150);
               }}
+              onSignOut={logout}
             />
           )}
         </AnimatePresence>
@@ -883,6 +1287,10 @@ function AppInner() {
           {(_IS_DESKTOP ? DESKTOP_TABS : TABS).map(t => {
             if (t.id === "more") {
               const secondaryActive = MORE_TABS.some(m => m.id === tab);
+              // B19.5: B19.2.3's clickable codemod wrapped this in clickableProps,
+              // giving a role="button" wrapper around a real <button> — WCAG 4.1.2
+              // nested-interactive, flagged by axe on 15 nodes. This div is a click
+              // CONTAINMENT wrapper, not a control; restored to its original handler.
               return (
                 <div key="more" className="tab-more-wrap" onClick={e => e.stopPropagation()}>
                   <button
@@ -897,6 +1305,8 @@ function AppInner() {
                     <MoreMenu
                       currentTab={tab}
                       onSelect={(id) => { setTab(id); setMoreOpen(false); }}
+                      pinned={pinnedTabIds}
+                      onTogglePin={togglePinnedTab}
                     />
                   )}
                 </div>
@@ -946,6 +1356,7 @@ function AppInner() {
               aria-label="Go forward"
             >›</button>
           </Tooltip>
+          <RecentPagesMenu historyRef={tabHistory} currentTab={tab} onSelect={setTab} />
           {(tab === "home" || tab === "runtime") && (
             opsData?.status === "critical" ? (
               <Tooltip label="Resume all executions" placement="bottom">
@@ -972,6 +1383,8 @@ function AppInner() {
             )
           )}
           <WorkspaceSwitcher onNavigate={setTab} />
+          <OrgSwitcher onNavigate={setTab} />
+          <ThemeToggle compact />
           <button
             className="palette-trigger"
             onClick={() => setPaletteOpen(true)}
@@ -982,12 +1395,18 @@ function AppInner() {
             <span>Search…</span>
             <kbd>⌘K</kbd>
           </button>
-          <div className="topbar-status" title={online ? "Runtime connected" : "Runtime offline"}>
+          <button
+            className="topbar-status"
+            onClick={() => setTab("systemhealth")}
+            title={online ? "Runtime connected — click to view system health" : "Runtime offline — click to view system health"}
+          >
             <span className={`online-dot${online ? "" : " online-dot--offline"}`} />
             <span>{online ? "Live" : "Offline"}</span>
-          </div>
+          </button>
         </div>
       </header>
+
+      <Breadcrumbs tabId={tab} onNavigate={setTab} />
 
       {/* Trial conversion banner — shown to trialing/expired users */}
       {!_IS_DESKTOP && billing?.status !== "active" && (
@@ -1003,6 +1422,13 @@ function AppInner() {
         <ConnectBar
           services={opsData?.services || {}}
           onSetupWhatsApp={() => setTab("clients")}
+        />
+      )}
+
+      {showCustomerFirstRun && (
+        <CustomerFirstRunWizard
+          onNavigate={setTab}
+          onComplete={() => setFirstRunDismissed(true)}
         />
       )}
 
@@ -1032,13 +1458,19 @@ function AppInner() {
         }}
       />
 
-      <main className="app-main" id="main-content" role="main">
+      {/* B19.5: the skip link updated the hash but focus stayed on <body>,
+          because a <main> is not focusable by default — keyboard users got no
+          actual skip (WCAG 2.4.1). tabindex="-1" makes it programmatically
+          focusable without adding a tab stop. */}
+      <main className="app-main" id="main-content" role="main" tabIndex={-1}>
         {/* key forces remount on tab change — triggers page-enter CSS animation */}
         <div key={tab} className="app-tab-pane motion-premium">
         <ErrorBoundary label={tab}>
         <Suspense fallback={<TabSkeleton />}>
         {tab === "mission"  && <MissionControlV1 onNavigate={setTab} />}
-        {tab === "home"     && (
+        {tab === "workflowautomation" && <WorkflowAutomationCenter />}
+        {tab === "analyticscenter" && <AnalyticsCenter />}
+        {tab === "home" && user?.role === "operator" && (
           <CommandCenter
             stats={stats}
             opsData={opsData}
@@ -1051,6 +1483,9 @@ function AppInner() {
               if (ops.value) setOpsData(ops.value);
             }}
           />
+        )}
+        {tab === "home" && user?.role !== "operator" && (
+          <CustomerDashboard onNavigate={setTab} />
         )}
         {tab === "chat" && (
           <Chat
@@ -1089,64 +1524,87 @@ function AppInner() {
           />
         )}
         {tab === "help"      && <HelpHub onNavigate={setTab} />}
-        {tab === "seo"       && <GrowthOSV2 onNavigate={setTab} initialTab="seo"      />}
-        {tab === "content"   && <GrowthOSV2 onNavigate={setTab} initialTab="content"   />}
-        {tab === "social"    && <GrowthOSV2 onNavigate={setTab} initialTab="social"    />}
-        {tab === "email"     && <GrowthOSV2 onNavigate={setTab} initialTab="email"     />}
-        {tab === "referral"  && <GrowthOSV2 onNavigate={setTab} initialTab="referral"  />}
+        {tab === "creative"  && <CreativeStudio />}
+        {tab === "growth"       && <GrowthOS />}
+        {tab === "contentseo"   && <ContentSEO />}
+        {tab === "distribution" && <DistributionOS />}
         {tab === "partners"  && <PartnerProgram onNavigate={setTab} />}
-        {tab === "launch"    && <GrowthOSV2 onNavigate={setTab} initialTab="launch"    />}
+        {tab === "referral"  && <ReferralEngine onNavigate={setTab} />}
         {tab === "billing"   && (
           <BillingDashboard onUpgrade={() => setUpgradeOpen(true)} />
         )}
-        {tab === "personal"  && <PersonalOS  onToast={addToast} />}
-        {tab === "business"  && <BusinessOS  onToast={addToast} />}
-        {tab === "developer" && <DeveloperOS onToast={addToast} />}
-        {tab === "enterprise" && <EnterpriseOS onToast={addToast} />}
+        {tab === "business"  && <BusinessOS  onToast={addToast} onNavigate={setTab} />}
         {tab === "team"      && <TeamWorkspace onNavigate={setTab} />}
-        {tab === "ecrm"      && <EnterpriseCRM onNavigate={setTab} />}
         {tab === "reports"   && <ReportsV2 onNavigate={setTab} online={online} />}
         {tab === "settings"      && <WorkspaceSettings  onNavigate={setTab} />}
         {tab === "knowledge"     && <KnowledgeCenter   onNavigate={setTab} />}
         {tab === "memory"        && <MemoryOSV2          onNavigate={setTab} />}
-        {tab === "integrations"  && <IntegrationCenter  onNavigate={setTab} />}
+        {tab === "integrations" && user?.role === "operator" && <IntegrationCenter  onNavigate={setTab} />}
+        {tab === "integrations" && user?.role !== "operator" && <ConnectorSetupWizard onToast={addToast} />}
         {tab === "agents"        && <AgentOSV2               onNavigate={setTab} online={online} />}
         {tab === "copilot"       && <DeveloperCopilotV2 onNavigate={setTab} />}
         {tab === "engineering"   && <EngineeringCenter      onNavigate={setTab} />}
         {tab === "workspace"     && <EngineeringWorkspace   onNavigate={setTab} />}
+        {tab === "productos"     && <ProductOSCenter                            />}
         {tab === "intel"         && <IntelligencePanel      onNavigate={setTab} />}
         {tab === "predict"       && <PredictionPanel        onNavigate={setTab} />}
         {tab === "guardrails"    && <GuardrailsDashboard    onNavigate={setTab} />}
         {tab === "recommend"     && <RecommendationCenter   onNavigate={setTab} />}
         {tab === "execution"     && <ExecutionCenter        onNavigate={setTab} />}
         {tab === "reliability"   && <ReliabilityCenter      onNavigate={setTab} />}
-        {tab === "devops"        && <DevOpsCenterV2         onNavigate={setTab} />}
+        {tab === "devops" && user?.role === "operator" && <DevOpsCenterV2 onNavigate={setTab} />}
+        {tab === "devops" && user?.role !== "operator" && (
+          // DevOpsCenterV2 unconditionally polls /ops, /metrics, and every
+          // /computer/docker/* route — all operatorOnly server-side (same
+          // route group as the fixed App.jsx /stats+/ops polling bug) —
+          // so any non-operator account landing on this tab fired a burst
+          // of silently-swallowed 403s. Docker container control and
+          // dependency-update infrastructure isn't meaningful founder-
+          // facing content, so this mirrors the "integrations" tab's own
+          // operator/non-operator branch above rather than inventing new UI.
+          <div className="app-tab-empty" style={{ padding: "48px 24px", textAlign: "center", color: "var(--text-dim)" }}>
+            <p>DevOps is available to organization operators.</p>
+          </div>
+        )}
+        {tab === "mobile"        && <MobilePlatformCenter   onNavigate={setTab} />}
+        {tab === "twin"          && <FounderTwinConsole                          />}
+        {tab === "customersuccess" && <CustomerSuccessCenter                     />}
+        {tab === "launchplatform" && <LaunchPlatform                             />}
+        {tab === "planning"      && <DailyPlanningConsole                        />}
+        {tab === "assistant"     && <FounderAssistant onNavigate={setTab}          />}
         {tab === "selfhealing"   && <SelfHealingCenter      onNavigate={setTab} />}
+        {tab === "observer"      && <RuntimeObserverPanel />}
+        {tab === "orglevel-ako"  && <OrgLevelStatus level="ako" />}
+        {tab === "orglevel-eos"  && <OrgLevelStatus level="eos" />}
+        {tab === "orglevel-ent"  && <OrgLevelStatus level="ent" />}
+        {tab === "orglevel-eco"  && <OrgLevelStatus level="eco" />}
+        {tab === "orglevel-civ"  && <OrgLevelStatus level="civ" />}
+        {tab === "orglevel-auto" && <OrgLevelStatus level="auto" />}
         {tab === "registry"      && <AgentRegistryCenter   onNavigate={setTab} />}
         {tab === "taskrouter"    && <TaskRouterCenter       onNavigate={setTab} />}
         {tab === "sharedmem"     && <SharedMemoryCenter     onNavigate={setTab} />}
         {tab === "operations"    && <OperationsCenter            onNavigate={setTab} />}
         {tab === "collab"        && <AgentCollaborationCenter    onNavigate={setTab} />}
         {tab === "toolfabric"    && <ToolFabricCenter            onNavigate={setTab} />}
-        {tab === "autonomy"      && <AutonomousCompanyCenter     onNavigate={setTab} />}
+        {tab === "companies"     && <CompanyFactoryCenter />}
+        {tab === "orgadmin"      && <OrgAdminCenter onToast={addToast} />}
         {tab === "orchestrator"      && <ExecutionOrchestratorCenter onNavigate={setTab} />}
-        {tab === "dataowner"         && <DataOwnershipCenter        onNavigate={setTab} />}
         {tab === "supportos"         && <SupportCenter              onNavigate={setTab} />}
         {tab === "trustcompliance"   && <TrustComplianceCenter      onNavigate={setTab} />}
-        {tab === "disasterrecovery"  && <DisasterRecoveryCenter     onNavigate={setTab} />}
-        {tab === "mobile"            && <MobilePlatformCenter       onNavigate={setTab} />}
-        {tab === "community"         && <CommunityCenter            onNavigate={setTab} />}
+        {tab === "legalos"           && <LegalOSCenter                                 />}
         {tab === "marketplace"       && <MarketplaceCenter          onNavigate={setTab} />}
         {tab === "aicost"            && <AICostCenter               onNavigate={setTab} />}
-        {tab === "autorevenue"       && <AutonomousRevenueCenter    onNavigate={setTab} />}
-        {tab === "automarketing"     && <AutonomousMarketingCenter  onNavigate={setTab} />}
-        {tab === "autosupport"       && <AutonomousSupportCenter    onNavigate={setTab} />}
+        {tab === "aiusage"           && <AIUsageDashboard />}
         {tab === "oroplix"           && <OoplixRunsOoplixCenter     onNavigate={setTab} />}
         {tab === "agentruntime"      && <AutonomousAgentDashboard />}
         {tab === "agentfactory"      && <AgentFactoryCenter         onNavigate={setTab} />}
         {tab === "memoryintel"       && <MemoryIntelligenceCenter   onNavigate={setTab} />}
         {tab === "selfimprove"       && <SelfImprovementCenter      onNavigate={setTab} />}
         {tab === "jarvisbrain"       && <JarvisBrainCenter          onNavigate={setTab} />}
+        {tab === "nlconsole"         && <OperatorCommandLayer />}
+        {tab === "execloop"          && <ExecutiveLoop />}
+        {tab === "inteloverlay"      && <IntelligenceOverlay />}
+        {tab === "agentcollab"       && <LiveAgentCollaboration />}
         {tab === "executivedash"     && <ExecutiveDashboard         onNavigate={setTab} />}
         {tab === "execconnector"     && <ExecutionConnectorCenter   onNavigate={setTab} />}
         {tab === "autonomouswf"      && <WorkflowOSV2               onNavigate={setTab} />}

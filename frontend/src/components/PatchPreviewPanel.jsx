@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import './PatchPreviewPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function post(path, body) {
   return _fetch(path, { method: 'POST', body: JSON.stringify(body) });
@@ -56,7 +57,7 @@ function DiffViewer({ patchSpecs, unifiedDiff }) {
       <div className="ppp-specs">
         {patchSpecs.map((spec, i) => (
           <div key={i} className={`ppp-spec ${spec.valid === false ? 'ppp-spec--invalid' : ''}`}>
-            <div className="ppp-spec__header" onClick={() => toggle(i)}>
+            <div className="ppp-spec__header" {...clickableProps(() => toggle(i))}>
               <span className="ppp-spec__arrow">{expanded[i] ? '▾' : '▸'}</span>
               <span className="ppp-spec__file">{spec.targetFile}</span>
               {spec.valid === false && <span className="ppp-spec__error">{spec.error}</span>}
@@ -157,7 +158,7 @@ function PatchHistory({ onUndo }) {
     try {
       const r = await post('/coding/undo-patch', { histId });
       if (r?.ok) { load(); onUndo?.(); }
-    } catch {}
+    } catch (e) { setError(e?.message || 'Could not undo the patch.'); }
   };
 
   if (loading) return <div className="ppp-history-empty">Loading…</div>;
@@ -235,8 +236,14 @@ export default function PatchPreviewPanel({
         confidence:   proposal?.confidence,
         riskLevel:    proposal?.riskLevel,
       });
-      if (r?.ok) onConvertToMission?.(r.mission);
-    } catch {} finally { setConverting(false); }
+      if (r?.ok) { onConvertToMission?.(r.mission); setError(null); }
+      // Mission 58: previously a failed conversion was a silent no-op —
+      // no false success, but zero feedback either (Mission 43B finding).
+      // Reuses this component's own `error` state/render, already used by
+      // the sibling handleApply mutation above.
+      else setError(r?.error || 'Could not convert to a mission.');
+    } catch (e) { setError(e?.message || 'Could not convert to a mission.'); }
+    finally { setConverting(false); }
   }, [converting, goal, proposal, onConvertToMission]);
 
   if (!proposal) return null;

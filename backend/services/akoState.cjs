@@ -16,7 +16,14 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "../../data/ako");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/ako/). When set,
+// redirects to an isolated per-process subdirectory so tests/runtime/*.test.cjs suites reaching
+// this layer stop writing real records into production data/ako/ (Mission 97/98 defect class).
+const DATA_DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `ako.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/ako");
 const FILES = {
   state:    path.join(DATA_DIR, "state.json"),
   kpis:     path.join(DATA_DIR, "kpis.json"),
@@ -166,8 +173,20 @@ function createItem({
   if (s.items.length > 5000) s.items.splice(0, s.items.length - 5000);
 
   // Index into semantic memory search
+  // Signature/tenant-isolation audit (2026-08-28): saveTypedMemory(type,
+  // data, opts) takes 3 args (semanticMemorySearch.cjs), not the 5 passed
+  // here. item.id landed in the `type` slot, so every call passed an
+  // "aki_..." string as a memory type — reliably throwing "Unknown memory
+  // type", silently swallowed by this try/catch. Reproduced live before
+  // this fix: this indexing call has never once succeeded for any AKO
+  // knowledge item. AKO's own `type` vocabulary (engineering/observation/
+  // etc., VALID_TYPES above) doesn't map onto saveTypedMemory's 4 fixed
+  // taxonomy types (failure/success/decision/knowledge), so this always
+  // indexes as "knowledge" (the taxonomy's only single-required-field
+  // type — `insight`) and preserves AKO's own type as a tag instead of
+  // forcing an incompatible taxonomy mapping.
   try {
-    _sm()?.saveTypedMemory(item.id, type, title, { content, source, confidence, tags }, deptId);
+    _sm()?.saveTypedMemory("knowledge", { insight: content, sourceType: type }, { confidence, tags: [...tags, `ako:${type}`, `source:${source}`] });
   } catch {}
   // Index into knowledge graph
   try {

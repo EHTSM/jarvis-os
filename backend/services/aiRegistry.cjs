@@ -31,9 +31,9 @@ const BUILTIN = {
     id: "groq", name: "Groq", type: "cloud",
     website: "https://groq.com",
     capabilities: {
-      chat:      { models: ["llama-3.3-70b-versatile","llama-3.1-8b-instant","mixtral-8x7b-32768"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.72, latencyClass: "fast" },
-      code:      { models: ["llama-3.3-70b-versatile"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.70, latencyClass: "fast" },
-      reasoning: { models: ["llama-3.3-70b-versatile"], costPer1k: 0.0002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.68, latencyClass: "fast" },
+      chat:      { models: ["openai/gpt-oss-120b","openai/gpt-oss-20b","groq/compound"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.72, latencyClass: "fast" },
+      code:      { models: ["openai/gpt-oss-120b"], costPer1k: 0.0001, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.70, latencyClass: "fast" },
+      reasoning: { models: ["openai/gpt-oss-120b"], costPer1k: 0.0002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.68, latencyClass: "fast" },
     },
   },
   openrouter: {
@@ -93,6 +93,75 @@ const BUILTIN = {
       code:      { models: ["codellama","deepseek-coder","qwen2.5-coder"], costPer1k: 0, contextWindow: 128000, maxOutput: 4096, streamable: true, quality: 0.68, latencyClass: "medium" },
       embeddings:{ models: ["nomic-embed-text","mxbai-embed-large"], costPer1k: 0, contextWindow: 8192, maxOutput: 768, streamable: false, quality: 0.72, latencyClass: "fast" },
       vision:    { models: ["llava","moondream"], costPer1k: 0, contextWindow: 4096, maxOutput: 2048, streamable: true, quality: 0.60, latencyClass: "slow" },
+    },
+  },
+  // ── Added for the AI Provider Orchestration mission — these 6 providers
+  // already had real, working adapters in aiService.js (_deepseek/_together/
+  // _fireworks/_cohere/_nvidia/_lmstudio) but no aiRegistry entry, so
+  // capability-based routing (bestFor/getByCapability) never considered them.
+  deepseek: {
+    id: "deepseek", name: "DeepSeek", type: "cloud",
+    website: "https://deepseek.com",
+    capabilities: {
+      chat:      { models: ["deepseek-chat"], costPer1k: 0.00014, contextWindow: 64000, maxOutput: 8192, streamable: true, quality: 0.86, latencyClass: "medium" },
+      code:      { models: ["deepseek-chat","deepseek-coder"], costPer1k: 0.00014, contextWindow: 64000, maxOutput: 8192, streamable: true, quality: 0.88, latencyClass: "medium" },
+      reasoning: { models: ["deepseek-reasoner"], costPer1k: 0.00055, contextWindow: 64000, maxOutput: 8192, streamable: true, quality: 0.90, latencyClass: "slow" },
+    },
+  },
+  together: {
+    id: "together", name: "Together AI", type: "cloud",
+    website: "https://together.ai",
+    capabilities: {
+      chat: { models: ["meta-llama/Llama-3-70b-chat-hf"], costPer1k: 0.0009, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.83, latencyClass: "medium" },
+      code: { models: ["meta-llama/Llama-3-70b-chat-hf"], costPer1k: 0.0009, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.80, latencyClass: "medium" },
+    },
+  },
+  fireworks: {
+    id: "fireworks", name: "Fireworks AI", type: "cloud",
+    website: "https://fireworks.ai",
+    capabilities: {
+      chat: { models: ["accounts/fireworks/models/llama-v3-70b-instruct"], costPer1k: 0.0009, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.82, latencyClass: "fast" },
+      code: { models: ["accounts/fireworks/models/llama-v3-70b-instruct"], costPer1k: 0.0009, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.79, latencyClass: "fast" },
+    },
+  },
+  cohere: {
+    id: "cohere", name: "Cohere", type: "cloud",
+    website: "https://cohere.com",
+    capabilities: {
+      chat:       { models: ["command-r-plus"], costPer1k: 0.0025, contextWindow: 128000, maxOutput: 4096, streamable: true, quality: 0.84, latencyClass: "medium" },
+      embeddings: { models: ["embed-english-v3.0"], costPer1k: 0.0001, contextWindow: 512, maxOutput: 1024, streamable: false, quality: 0.85, latencyClass: "fast" },
+    },
+  },
+  nvidia: {
+    id: "nvidia", name: "NVIDIA NIM", type: "cloud",
+    website: "https://build.nvidia.com",
+    capabilities: {
+      chat:      { models: ["meta/llama-3.1-70b-instruct"], costPer1k: 0, contextWindow: 128000, maxOutput: 4096, streamable: true, quality: 0.83, latencyClass: "medium" },
+      reasoning: { models: ["meta/llama-3.1-70b-instruct"], costPer1k: 0, contextWindow: 128000, maxOutput: 4096, streamable: true, quality: 0.83, latencyClass: "medium" },
+    },
+  },
+  lmstudio: {
+    id: "lmstudio", name: "LM Studio (Local)", type: "local",
+    website: "https://lmstudio.ai",
+    capabilities: {
+      chat: { models: ["local-model"], costPer1k: 0, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.65, latencyClass: "medium" },
+      code: { models: ["local-model"], costPer1k: 0, contextWindow: 8192, maxOutput: 4096, streamable: true, quality: 0.65, latencyClass: "medium" },
+    },
+  },
+  grok: {
+    id: "grok", name: "Grok (x.ai)", type: "cloud",
+    website: "https://x.ai",
+    capabilities: {
+      chat:      { models: ["grok-2-latest"], costPer1k: 0.002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.87, latencyClass: "medium" },
+      reasoning: { models: ["grok-2-latest"], costPer1k: 0.002, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.88, latencyClass: "medium" },
+    },
+  },
+  qwen: {
+    id: "qwen", name: "Qwen (Alibaba DashScope)", type: "cloud",
+    website: "https://dashscope.aliyun.com",
+    capabilities: {
+      chat: { models: ["qwen-plus"], costPer1k: 0.0004, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.83, latencyClass: "fast" },
+      code: { models: ["qwen-plus"], costPer1k: 0.0004, contextWindow: 131072, maxOutput: 8192, streamable: true, quality: 0.82, latencyClass: "fast" },
     },
   },
   stability: {

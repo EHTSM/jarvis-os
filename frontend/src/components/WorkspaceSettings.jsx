@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { track } from "../analytics";
+import { useAuth } from "../contexts/AuthContext";
 import { getSettingsStatus, saveWhatsAppCredentials } from "../settingsApi";
+import { getAllIntegrations } from "../connectorApi";
+import ThemeToggle from "./ThemeToggle.jsx";
 import { _fetch } from "../_client";
 import "./WorkspaceSettings.css";
 import { Toggle, FieldRow } from "./WorkspaceSettingsShared";
@@ -12,10 +15,10 @@ import { PluginsPanel, PluginHealthPanel, PluginDiagPanel } from "./WorkspaceSet
 import { ExecutivePanel, WorkspaceHealthPanel, AutomationROIPanel, AIUtilizationPanel, RuntimeCapacityPanel, EnterpriseReportsPanel } from "./WorkspaceSettingsK6";
 import { PolicyLibraryPanel, CompliancePanel, RiskMatrixPanel, GovernanceOverviewPanel, GovReportsPanel } from "./WorkspaceSettingsK4";
 import { SessionsPanel, DevicesPanel, AuditPanel, TokensPanel, PoliciesPanel } from "./WorkspaceSettingsK2";
+import { DesktopIntegrationsPanel } from "./WorkspaceSettingsDesktop";
 
 // ── Storage helpers ───────────────────────────────────────────────────
 const BRAND_KEY    = "ooplix_ws_branding";
-const SECURITY_KEY = "ooplix_ws_security";
 const NOTIF_KEY    = "ooplix_ws_notifications";
 
 function _load(key, fallback) {
@@ -24,14 +27,28 @@ function _load(key, fallback) {
 }
 function _save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
+// Branding has no backend — these settings are applied directly to the
+// live DOM (CSS custom properties + document.title) so "Save" has a real,
+// visible effect instead of silently writing to storage nothing else reads.
+function _applyBranding(brand) {
+  const root = document.documentElement.style;
+  if (brand.primaryColor) root.setProperty("--accent", brand.primaryColor);
+  if (brand.accentColor)  root.setProperty("--accent2", brand.accentColor);
+  document.title = brand.workspaceName ? `${brand.workspaceName} — Ooplix` : "Ooplix";
+}
+
 // ── Integration definitions ───────────────────────────────────────────
+// connectorId maps to the real integrationConnectors.cjs registry (checked
+// via getAllIntegrations()) — everything except WhatsApp used to hardcode
+// a fake status here (Razorpay always "Connected", the rest always "Not
+// connected") regardless of what was actually configured.
 const INTEGRATIONS = [
   {
     id:      "whatsapp",
     name:    "WhatsApp Business",
     icon:    "◉",
     color:   "#25d366",
-    status:  "check",
+    connectorId: null, // has its own dedicated real status check below (settingsStatus.whatsapp)
     desc:    "Automated follow-up sequences and outbound messaging.",
     setup:   "Connected via QR scan. Re-scan in Contacts tab to refresh session.",
   },
@@ -40,7 +57,7 @@ const INTEGRATIONS = [
     name:    "Razorpay",
     icon:    "◈",
     color:   "#3395ff",
-    status:  "check",
+    connectorId: "pay:razorpay",
     desc:    "Payment link generation and collection tracking.",
     setup:   "API key configured. Update in Contacts → Payment tab.",
   },
@@ -49,7 +66,7 @@ const INTEGRATIONS = [
     name:    "Gmail / Google Workspace",
     icon:    "✉",
     color:   "#ea4335",
-    status:  "disconnected",
+    connectorId: "prod:google_workspace",
     desc:    "Send emails and sync contacts from Google Contacts.",
     setup:   "Connect via OAuth. Requires Google account.",
   },
@@ -58,7 +75,7 @@ const INTEGRATIONS = [
     name:    "Slack",
     icon:    "◇",
     color:   "#4a154b",
-    status:  "disconnected",
+    connectorId: "msg:slack",
     desc:    "Post activity alerts and pipeline updates to a Slack channel.",
     setup:   "Add the Ooplix app to your Slack workspace.",
   },
@@ -67,7 +84,7 @@ const INTEGRATIONS = [
     name:    "Zapier",
     icon:    "⬟",
     color:   "#ff4a00",
-    status:  "disconnected",
+    connectorId: "auto:zapier",
     desc:    "Connect Ooplix to 5,000+ apps via Zapier webhooks.",
     setup:   "Use the Ooplix webhook URL in your Zap trigger.",
   },
@@ -76,7 +93,7 @@ const INTEGRATIONS = [
     name:    "Stripe",
     icon:    "◎",
     color:   "#635bff",
-    status:  "disconnected",
+    connectorId: "pay:stripe",
     desc:    "Accept international payments and subscriptions.",
     setup:   "Enter Stripe publishable key in billing settings.",
   },
@@ -84,21 +101,15 @@ const INTEGRATIONS = [
 
 
 export default function WorkspaceSettings({ onNavigate }) {
+  const { user } = useAuth();
   const [section, setSection] = useState("branding");
   const [brand, setBrand] = useState(() => _load(BRAND_KEY, {
     workspaceName: "My Workspace",
     businessName:  "",
     tagline:       "",
-    primaryColor:  "#7c6fff",
-    accentColor:   "#4ecdc4",
+    primaryColor:  "var(--accent)",
+    accentColor:   "var(--accent2)",
     logoUrl:       "",
-  }));
-  const [security, setSecurity] = useState(() => _load(SECURITY_KEY, {
-    twoFactor:        false,
-    sessionTimeout:   "24h",
-    ipAllowlist:      "",
-    auditLog:         true,
-    apiKeyVisible:    false,
   }));
   const [notifs, setNotifs] = useState(() => _load(NOTIF_KEY, {
     emailDigest:      true,
@@ -108,15 +119,34 @@ export default function WorkspaceSettings({ onNavigate }) {
     teamActivity:     true,
   }));
   const [toast,         setToast]        = useState(null);
-  const [apiKeyShown,   setApiKeyShown]   = useState(false);
   const [settingsStatus, setSettingsStatus] = useState(null);
+  const [connectorStatus, setConnectorStatus] = useState({}); // connectorId -> real status record
   const [waForm,        setWaForm]        = useState({ token: "", phoneId: "", verifyToken: "", apiVersion: "v18.0" });
   const [waSaving,      setWaSaving]      = useState(false);
 
   useEffect(() => {
     track.event("workspace_settings_viewed");
     getSettingsStatus().then(s => { if (s && !s.error) setSettingsStatus(s); });
-  }, []);
+    // Workflow Coverage Completion finding: GET /integrations is
+    // operatorOnly server-side — every non-operator founder who opened
+    // Settings (a universal, non-operator-gated destination every account
+    // visits) got a silent 403 here. connectorStatus only powers a
+    // "Connected"/"Not connected" badge (falls back to "Not connected" for
+    // everyone when empty — an honest, non-broken default), so gating the
+    // call itself is safe: operators still see live status, non-operators
+    // just don't fire a call they were never authorized to make. Matches
+    // the same fix already applied to App.jsx's stats/ops polling and the
+    // DevOps tab mount.
+    if (user?.role === "operator") {
+      getAllIntegrations().then(r => {
+        if (r?.ok && Array.isArray(r.connectors)) {
+          setConnectorStatus(Object.fromEntries(r.connectors.map(c => [c.id, c])));
+        }
+      });
+    }
+  }, [user]);
+
+  useEffect(() => { _applyBranding(brand); }, [brand]);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -129,10 +159,14 @@ export default function WorkspaceSettings({ onNavigate }) {
     track.event("ws_branding_saved");
   };
 
-  const saveSecurity = () => {
-    _save(SECURITY_KEY, security);
-    showToast("Security settings saved");
-    track.event("ws_security_saved");
+  const resetBrand = () => {
+    const defaults = {
+      workspaceName: "My Workspace", businessName: "", tagline: "",
+      primaryColor: "var(--accent)", accentColor: "var(--accent2)", logoUrl: "",
+    };
+    setBrand(defaults);
+    _save(BRAND_KEY, defaults);
+    showToast("Branding reset to defaults");
   };
 
   const saveNotifs = () => {
@@ -142,12 +176,11 @@ export default function WorkspaceSettings({ onNavigate }) {
 
   const handleIntegrationAction = (integ) => {
     if (integ.id === "whatsapp") return; // handled by dedicated form below
-    if (integ.status === "check") {
-      showToast(`${integ.name} is connected`);
-    } else {
-      showToast(`${integ.name} setup: ${integ.setup}`);
-    }
-    track.event("integration_action", { id: integ.id, status: integ.status });
+    // Real connect/manage flow already lives in the Connector Center
+    // (IntegrationCenter.jsx) — this used to only pop a toast with setup
+    // instructions and never actually connect anything.
+    track.event("integration_action", { id: integ.id, connectorId: integ.connectorId });
+    onNavigate?.("integrations");
   };
 
   const handleSaveWhatsApp = useCallback(async () => {
@@ -187,6 +220,7 @@ export default function WorkspaceSettings({ onNavigate }) {
             { id: "policies",      icon: "⬡", label: "Policies"      },
             { id: "sessions",      icon: "▷", label: "Sessions"      },
             { id: "devices",       icon: "◇", label: "Devices"       },
+            { id: "desktop",       icon: "🖥", label: "Desktop"       },
             { id: "tokens",        icon: "◎", label: "API Tokens"    },
             { id: "auditlog",      icon: "✦", label: "Audit Log"     },
             { id: "directory",     icon: "◈", label: "Team Directory" },
@@ -207,7 +241,7 @@ export default function WorkspaceSettings({ onNavigate }) {
             { id: "analytics",     icon: "◎", label: "Analytics"     },
             { id: "wshealth",      icon: "⬟", label: "WS Health"     },
             { id: "autoROI",       icon: "◉", label: "Automation ROI"},
-            { id: "aiutilization", icon: "▷", label: "AI Providers"  },
+            { id: "aiutilization", icon: "▷", label: "AI Usage"      },
             { id: "capacity",      icon: "◈", label: "Capacity"      },
             { id: "entreports",    icon: "✦", label: "Ent. Reports"  },
             { id: "plugins",       icon: "◎", label: "Plugins"       },
@@ -243,39 +277,60 @@ export default function WorkspaceSettings({ onNavigate }) {
           {section === "branding" && (
             <div className="ws-section">
               <h2 className="ws-section-title">Branding</h2>
-              <p className="ws-section-desc">Customise your workspace identity. These settings personalise your experience within Ooplix.</p>
+              <p className="ws-section-desc">
+                Local to this browser — there's no workspace branding backend yet, so these apply only on this
+                device. Workspace name and colors take effect immediately as you edit; business name, tagline,
+                and logo are saved for later use but nothing in the app displays them yet.
+              </p>
               <div className="ws-fields">
-                <FieldRow label="Workspace name" hint="Shown in the header and reports">
+                <FieldRow label="Theme" hint="Light or dark appearance for the whole app">
+                  <ThemeToggle />
+                </FieldRow>
+                <FieldRow label="Workspace name" hint="Applied to the browser tab title, live">
                   <input className="ws-input" value={brand.workspaceName}
                     onChange={e => setBrand(b => ({ ...b, workspaceName: e.target.value }))}
                     placeholder="My Workspace" />
                 </FieldRow>
-                <FieldRow label="Business name" hint="Shown in email footers and outreach">
+                <FieldRow label="Business name" hint="Saved for future use — not shown anywhere yet">
                   <input className="ws-input" value={brand.businessName}
                     onChange={e => setBrand(b => ({ ...b, businessName: e.target.value }))}
                     placeholder="Your Business Name" />
                 </FieldRow>
-                <FieldRow label="Tagline" hint="1-line description of what you do">
+                <FieldRow label="Tagline" hint="Saved for future use — not shown anywhere yet">
                   <input className="ws-input" value={brand.tagline}
                     onChange={e => setBrand(b => ({ ...b, tagline: e.target.value }))}
                     placeholder="E.g. Lead automation for consultants" />
                 </FieldRow>
-                <FieldRow label="Primary color" hint="Accent color for reports and exports">
+                <FieldRow label="Primary color" hint="Applied to the app's accent color, live">
                   <div className="ws-color-row">
-                    <input type="color" className="ws-color-input" value={brand.primaryColor}
+                    {/* B19.5: axe `label` (WCAG 4.1.2) — the FieldRow label is visual only and
+                        never associated, so the swatch had no accessible name. */}
+                    <input type="color" className="ws-color-input" aria-label="Primary color" value={brand.primaryColor}
                       onChange={e => setBrand(b => ({ ...b, primaryColor: e.target.value }))} />
                     <input className="ws-input ws-input--mono" value={brand.primaryColor}
                       onChange={e => setBrand(b => ({ ...b, primaryColor: e.target.value }))}
-                      placeholder="#7c6fff" />
+                      placeholder="var(--accent)" />
                   </div>
                 </FieldRow>
-                <FieldRow label="Logo URL" hint="Link to your logo image (optional)">
+                <FieldRow label="Secondary color" hint="Applied to the app's secondary accent, live">
+                  <div className="ws-color-row">
+                    <input type="color" className="ws-color-input" aria-label="Secondary color" value={brand.accentColor}
+                      onChange={e => setBrand(b => ({ ...b, accentColor: e.target.value }))} />
+                    <input className="ws-input ws-input--mono" value={brand.accentColor}
+                      onChange={e => setBrand(b => ({ ...b, accentColor: e.target.value }))}
+                      placeholder="var(--accent2)" />
+                  </div>
+                </FieldRow>
+                <FieldRow label="Logo URL" hint="Saved for future use — not shown anywhere yet">
                   <input className="ws-input" value={brand.logoUrl}
                     onChange={e => setBrand(b => ({ ...b, logoUrl: e.target.value }))}
                     placeholder="https://yoursite.com/logo.png" />
                 </FieldRow>
               </div>
-              <button className="ws-save-btn" onClick={saveBrand}>Save branding</button>
+              <div className="ws-billing-actions">
+                <button className="ws-save-btn" onClick={saveBrand}>Save branding</button>
+                <button className="ws-bill-secondary" onClick={resetBrand}>Reset to defaults</button>
+              </div>
             </div>
           )}
 
@@ -362,43 +417,17 @@ export default function WorkspaceSettings({ onNavigate }) {
           {section === "security" && (
             <div className="ws-section">
               <h2 className="ws-section-title">Security</h2>
-              <p className="ws-section-desc">Protect your workspace with authentication and access controls.</p>
+              <p className="ws-section-desc">
+                Session timeout, audit logging, and IP allowlisting are real, enforced settings — configure them
+                in <button className="ws-inline-link" onClick={() => setSection("policies")}>Policies</button>,
+                which this page used to duplicate without actually saving anything. API tokens for integrating
+                Ooplix with external tools live in <button className="ws-inline-link" onClick={() => setSection("tokens")}>API Tokens</button>.
+              </p>
               <div className="ws-fields">
-                <FieldRow label="Two-factor authentication" hint="Require 2FA for all team members">
-                  <Toggle checked={security.twoFactor}
-                    onChange={v => setSecurity(s => ({ ...s, twoFactor: v }))} />
-                </FieldRow>
-                <FieldRow label="Session timeout" hint="Auto-logout after inactivity">
-                  <select className="ws-select" value={security.sessionTimeout}
-                    onChange={e => setSecurity(s => ({ ...s, sessionTimeout: e.target.value }))}>
-                    <option value="1h">1 hour</option>
-                    <option value="8h">8 hours</option>
-                    <option value="24h">24 hours</option>
-                    <option value="7d">7 days</option>
-                    <option value="never">Never</option>
-                  </select>
-                </FieldRow>
-                <FieldRow label="Audit log" hint="Record all team actions (required for compliance)">
-                  <Toggle checked={security.auditLog}
-                    onChange={v => setSecurity(s => ({ ...s, auditLog: v }))} />
-                </FieldRow>
-                <FieldRow label="IP allowlist" hint="Restrict login to specific IP ranges (leave blank to allow all)">
-                  <input className="ws-input ws-input--mono" value={security.ipAllowlist}
-                    onChange={e => setSecurity(s => ({ ...s, ipAllowlist: e.target.value }))}
-                    placeholder="e.g. 192.168.1.0/24, 10.0.0.1" />
-                </FieldRow>
-                <FieldRow label="API key" hint="Use to integrate Ooplix with external tools">
-                  <div className="ws-api-key-row">
-                    <span className="ws-api-key-val ws-input--mono">
-                      {apiKeyShown ? "API key generation not configured — contact support" : "••••••••••••••••••••••••••••••••••"}
-                    </span>
-                    <button className="ws-api-toggle" onClick={() => setApiKeyShown(v => !v)}>
-                      {apiKeyShown ? "Hide" : "Show"}
-                    </button>
-                  </div>
+                <FieldRow label="Two-factor authentication" hint="Not available yet — login is single-password operator auth, no MFA enforcement exists in the backend">
+                  <span className="ws-badge ws-badge--dim">Not available</span>
                 </FieldRow>
               </div>
-              <button className="ws-save-btn" onClick={saveSecurity}>Save security settings</button>
               <div className="ws-security-note">
                 <span className="ws-sec-icon">⬟</span>
                 <span>For critical security events, contact <a className="ws-sec-link" href="mailto:security@ooplix.com">security@ooplix.com</a></span>
@@ -430,6 +459,17 @@ export default function WorkspaceSettings({ onNavigate }) {
               <h2 className="ws-section-title">Trusted Devices</h2>
               <p className="ws-section-desc">Devices that have accessed this workspace. Require device trust in Policies to enforce this list.</p>
               <DevicesPanel />
+            </div>
+          )}
+
+          {/* Desktop Integrations — recovered hidden capability: real Electron
+              IPC handlers (print-to-PDF, scanner hand-off, native save dialog,
+              folder sync) that had zero frontend caller. */}
+          {section === "desktop" && (
+            <div className="ws-section">
+              <h2 className="ws-section-title">Desktop Integrations</h2>
+              <p className="ws-section-desc">Native OS capabilities available in the Ooplix desktop app — printing, scanning, file export, and local folder sync.</p>
+              <DesktopIntegrationsPanel />
             </div>
           )}
 
@@ -611,7 +651,12 @@ export default function WorkspaceSettings({ onNavigate }) {
           {section === "aiutilization" && (
             <div className="ws-section">
               <h2 className="ws-section-title">AI Provider Utilization</h2>
-              <p className="ws-section-desc">Call counts, availability, and latency for all configured AI providers (Groq, OpenRouter, OpenAI, Claude, Gemini, Ollama).</p>
+              <p className="ws-section-desc">
+                Call counts, availability, and latency for all configured AI providers (Groq, OpenRouter, OpenAI,
+                Claude, Gemini, Ollama). To add, rotate, or remove a provider's API key, use{" "}
+                <button className="ws-inline-link" onClick={() => onNavigate && onNavigate("integrations")}>Connector Center</button>{" "}
+                — key management lives there, not here.
+              </p>
               <AIUtilizationPanel />
             </div>
           )}
@@ -717,7 +762,10 @@ export default function WorkspaceSettings({ onNavigate }) {
           {section === "notifications" && (
             <div className="ws-section">
               <h2 className="ws-section-title">Notifications</h2>
-              <p className="ws-section-desc">Choose what Ooplix notifies you about and how.</p>
+              <p className="ws-section-desc">
+                No notification-dispatch backend exists yet (no email/push sending gated on these flags) — your
+                choices are saved locally as a statement of intent for when that capability ships, not enforced today.
+              </p>
               <div className="ws-fields">
                 {[
                   { key: "emailDigest",   label: "Daily email digest",       hint: "Summary of activity sent each morning"            },
@@ -745,9 +793,21 @@ export default function WorkspaceSettings({ onNavigate }) {
               <p className="ws-section-desc">Connect Ooplix to the tools your business already uses.</p>
               <div className="ws-integrations-list">
                 {INTEGRATIONS.map(integ => {
+                  // A.6 fix: Razorpay's badge previously relied solely on
+                  // connectorStatus, which only ever populates for operator
+                  // accounts (see the operatorOnly-gated fetch above) — every
+                  // regular founder saw "Not connected" right next to the
+                  // static "API key configured..." setup text, a direct
+                  // self-contradiction, even when RAZORPAY_KEY_ID/SECRET were
+                  // genuinely set in .env. settingsStatus.razorpay.configured
+                  // comes from GET /settings/status (requireAuth only, same
+                  // non-operator-safe env check WhatsApp already uses below),
+                  // so it reflects real credential presence for every account.
                   const liveConnected = integ.id === "whatsapp"
                     ? settingsStatus?.whatsapp?.configured
-                    : integ.status === "check";
+                    : integ.id === "razorpay"
+                    ? (settingsStatus?.razorpay?.configured || connectorStatus[integ.connectorId]?.status === "CONNECTED")
+                    : connectorStatus[integ.connectorId]?.status === "CONNECTED";
                   return (
                     <div key={integ.id} className={`ws-integ-card${liveConnected ? " ws-integ-card--connected" : ""}`}>
                       <span className="ws-integ-icon" style={{ color: integ.color }}>{integ.icon}</span>

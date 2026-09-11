@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { track } from "../analytics";
 import "./AutonomousRevenueCenter.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const LEAD_AGENTS = [
   { id:"la1", name:"LinkedIn Prospector",     status:"running", leadsToday:14, leadsTotal:312,  successRate:"68%", lastRun:"2m ago",  model:"llama3:8b"       },
@@ -75,7 +76,7 @@ export default function AutonomousRevenueCenter({ onNavigate }) {
           { label:"Actions today",     value:actionsToday,                      color:"var(--accent)"  },
           { label:"Deals today",       value:dealsToday,                        color:"var(--warning)" },
           { label:"Pipeline value",    value:"₹74.9L",                          color:"var(--success)" },
-          { label:"Revenue (MTD)",     value:"₹8.8L",                           color:"#52d68a"        },
+          { label:"Revenue (MTD)",     value:"₹8.8L",                           color:"var(--success)"        },
         ].map(s=>(
           <div key={s.label} className="arc-summary-tile">
             <span className="arc-sv" style={{color:s.color}}>{s.value}</span>
@@ -100,7 +101,7 @@ export default function AutonomousRevenueCenter({ onNavigate }) {
                 {title:"Follow-Up Agents",  count:FOLLOWUP_AGENTS.length,   running:FOLLOWUP_AGENTS.filter(a=>a.status==="running").length,  metric:`${actionsToday} actions today`,color:"var(--accent)",  id:"followup"},
                 {title:"Conversion Agents", count:CONVERSION_AGENTS.length, running:CONVERSION_AGENTS.filter(a=>a.status==="running").length,metric:`${dealsToday} deals today`,   color:"var(--warning)", id:"conversion"},
               ].map(c=>(
-                <div key={c.id} className="arc-ov-card" onClick={()=>setSection(c.id)}>
+                <div key={c.id} className="arc-ov-card" {...clickableProps(()=>setSection(c.id))}>
                   <div className="arc-ov-card-top">
                     <span className="arc-ov-card-title">{c.title}</span>
                     <span className="arc-ov-running" style={{color:c.color}}>{c.running}/{c.count} running</span>

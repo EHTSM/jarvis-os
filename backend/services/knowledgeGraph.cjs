@@ -148,10 +148,36 @@ function addEdge(fromType, fromId, relation, toType, toId, opts = {}) {
     }
     const store = _readEdges();
 
-    // Deduplicate by (fromType, fromId, relation, toType, toId)
+    // Deduplicate by (fromType, fromId, relation, toType, toId).
+    //
+    // Phase B.12: this compared ids with === , which dedupes strings correctly
+    // but NEVER matches for a non-string id, because {a:1} === {a:1} is false
+    // (reference comparison). Every full reindex therefore appended a fresh
+    // copy of any edge whose id was not a primitive — an unbounded leak.
+    //
+    // Reproduced 3/3 live: POST /graph/index reported a constant
+    // indexed=1432 while totalEdges grew 1482 → 1483 → 1484 → 1485, exactly
+    // +1 per run. Auditing the store found precisely ONE duplicated logical
+    // edge, already at x5:
+    //     ("user", {"a":1}, "member_of", "org", "org_1786219169715_1")
+    // That non-string id is the malformed org member created during Phase B.4
+    // input-validation testing (POST /orgs/:orgId/members with
+    // accountId={"a":1}), recorded there as finding F5 — so this is the
+    // downstream consequence of that still-open input gap, not a second
+    // independent source of bad data.
+    //
+    // Compare by value so dedupe is total regardless of id type. Primitives
+    // take the fast identity path (unchanged behaviour for every well-formed
+    // edge); only non-primitives fall back to a stable serialisation.
+    const _same = (a, b) => {
+        if (a === b) return true;
+        if (a === null || b === null) return false;
+        if (typeof a !== "object" || typeof b !== "object") return false;
+        try { return JSON.stringify(a) === JSON.stringify(b); } catch { return false; }
+    };
     const exists = store.edges.find(e =>
-        e.fromType === fromType && e.fromId === fromId &&
-        e.relation === relation && e.toType === toType && e.toId === toId
+        _same(e.fromType, fromType) && _same(e.fromId, fromId) &&
+        e.relation === relation && _same(e.toType, toType) && _same(e.toId, toId)
     );
     if (exists) return exists;
 

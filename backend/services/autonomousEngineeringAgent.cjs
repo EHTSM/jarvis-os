@@ -94,10 +94,16 @@ function _amid() { return `aea_${Date.now()}_${crypto.randomBytes(3).toString('h
 
 // ── Mission skeleton ──────────────────────────────────────────────────────────
 
-function _newMission(planId, composerPlan) {
+function _newMission(planId, composerPlan, orgId = null) {
     return {
         agentMissionId: _amid(),
         planId,
+        // Mission 51 (2026-08-26): optional, defaults to shared — same
+        // pattern as missionMemory.cjs's own orgId field. null means a
+        // shared/operator-run agent mission (unchanged behavior, the
+        // majority of existing records); a real tenant-facing caller's
+        // orgId enables autonomousAgent.js's ownership check.
+        orgId:       typeof orgId === "string" && orgId ? orgId : null,
         goal:        composerPlan?.goal    || '',
         cwd:         composerPlan?.cwd     || process.cwd(),
         status:      'running',             // running | paused | completed | failed | cancelled
@@ -554,14 +560,14 @@ function _recordLesson(m, success, durationMs, smellDelta = 0) {
  * The pipeline runs async — this function resolves once the mission
  * reaches a terminal or paused state.
  */
-async function startMission(planId) {
+async function startMission(planId, orgId = null) {
     const composer = _composer();
     if (!composer) throw new Error("aiComposerEngine unavailable");
 
     const composerPlan = composer.getPlan(planId);
     if (!composerPlan) throw new Error(`composer plan ${planId} not found`);
 
-    const m = _newMission(planId, composerPlan);
+    const m = _newMission(planId, composerPlan, orgId);
     _saveMission(m);
     _updateStats('started');
 
@@ -648,8 +654,10 @@ async function retryMission(agentMissionId) {
     if (!['failed', 'cancelled'].includes(m.status)) {
         throw new Error(`can only retry failed or cancelled missions (current: ${m.status})`);
     }
-    // Delegate to startMission with same planId
-    return startMission(m.planId);
+    // Delegate to startMission with same planId, preserving the original
+    // mission's orgId (Mission 51) so a retry doesn't silently drop back to
+    // shared/unscoped.
+    return startMission(m.planId, m.orgId);
 }
 
 /**

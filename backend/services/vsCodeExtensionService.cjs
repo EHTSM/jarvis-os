@@ -9,6 +9,7 @@
 
 const https = require("https");
 const http  = require("http");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 // ── Provider dispatch ─────────────────────────────────────────────────────────
 
@@ -44,8 +45,22 @@ async function _openAiCompletion(messages, model, apiKey) {
     });
 }
 
+// SSRF & Outbound HTTP Security Audit (2026-08-22): ollamaUrl is a raw
+// customer-supplied value from POST /p24/vscode/{chat,explain,generate,
+// refactor,fix} (requireAuth-only) that was passed straight to a real
+// https/http.request with zero validation — a non-blind SSRF, since the
+// target's response body is echoed back to the caller via _extractReply().
+// The default ("http://localhost:11434", the operator's own machine) is
+// intentional and left unvalidated; only a customer-supplied override is
+// checked, reusing the same shared choke point already established for
+// the ODI browser-automation family (backend/utils/urlSafety.cjs).
 async function _ollamaCompletion(messages, model, ollamaUrl) {
-    const url  = new URL((ollamaUrl || "http://localhost:11434") + "/api/chat");
+    const target = ollamaUrl || "http://localhost:11434";
+    if (ollamaUrl) {
+        const safety = await assertSafeNavigationTarget(ollamaUrl);
+        if (!safety.safe) throw new Error(`ollamaUrl rejected: ${safety.reason}`);
+    }
+    const url  = new URL(target + "/api/chat");
     const body = JSON.stringify({ model: model || "llama3.2", messages, stream: false });
     return _httpPost(url.hostname, url.port || "11434", url.pathname, body, {});
 }
@@ -77,6 +92,19 @@ async function _aiCompletion({ provider = "openrouter", model, apiKey, ollamaUrl
 
 // ── HTTP helpers ──────────────────────────────────────────────────────────────
 
+// Timeout, Cancellation & Long-Running Operation Safety Audit (2026-08-16):
+// neither of these had any timeout — req.on("error", reject) only fires on
+// a connection-level failure (refused/reset/DNS), never on a server that
+// accepts the TCP connection but simply never replies, so a slow/hung AI
+// endpoint (these back the Editor facade's aiExplain/aiGenerate/aiFix)
+// hung the request forever. Fixed with the same req.setTimeout(ms, () =>
+// req.destroy(new Error(...))) pattern already established and correct
+// elsewhere in this codebase (gitHubEngineeringAgent.cjs,
+// operationsAlertingLayer.cjs) — req.destroy() with an Error argument
+// correctly triggers the existing req.on("error", reject) handler, so no
+// new error path is introduced.
+const HTTP_TIMEOUT_MS = 30_000;
+
 function _httpsPost(hostname, path, body, extraHeaders = {}) {
     return new Promise((resolve, reject) => {
         const req = https.request({
@@ -90,6 +118,7 @@ function _httpsPost(hostname, path, body, extraHeaders = {}) {
             res.on("end", () => { try { resolve(JSON.parse(raw)); } catch { resolve({ raw }); } });
         });
         req.on("error", reject);
+        req.setTimeout(HTTP_TIMEOUT_MS, () => req.destroy(new Error("Request timed out")));
         req.write(body);
         req.end();
     });
@@ -109,6 +138,7 @@ function _httpPost(hostname, port, path, body, extraHeaders = {}) {
             res.on("end", () => { try { resolve(JSON.parse(raw)); } catch { resolve({ raw }); } });
         });
         req.on("error", reject);
+        req.setTimeout(HTTP_TIMEOUT_MS, () => req.destroy(new Error("Request timed out")));
         req.write(body);
         req.end();
     });

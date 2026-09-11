@@ -8,6 +8,7 @@ import { track } from "../analytics";
 import { BASE_URL } from "../_client";
 import PageHeader from "./PageHeader";
 import WorkflowNav from "./WorkflowNav";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── fetch ─────────────────────────────────────────────────────────────
 
@@ -28,10 +29,10 @@ async function _post(path, body = {}) {
 // ── palette ───────────────────────────────────────────────────────────
 
 const C = {
-  ok: "#52d68a", warn: "#f0b429", fail: "#f55b5b", info: "#44a2ff",
-  muted: "#8994b0", text: "#c8cdd8", head: "#e6edf3",
-  patch: "#44d9ff", memory: "#7c6fff", knowledge: "#f0b429",
-  incident: "#f55b5b", execution: "#52d68a",
+  ok: "var(--success)", warn: "var(--warning)", fail: "var(--danger)", info: "#44a2ff",
+  muted: "var(--text-dim)", text: "var(--text)", head: "var(--text)",
+  patch: "#44d9ff", memory: "var(--accent)", knowledge: "var(--warning)",
+  incident: "var(--danger)", execution: "var(--success)",
 };
 
 function typeColor(t) {
@@ -43,7 +44,7 @@ function typeColor(t) {
 function statusColor(s) {
   return { ok: C.ok, success: C.ok, applied: C.ok, done: C.ok, pass: C.ok,
     failed: C.fail, fail: C.fail, error: C.fail, rolled_back: C.fail,
-    pending: C.warn, running: "#7c6fff", open: C.warn, acknowledged: C.info }[s] || C.muted;
+    pending: C.warn, running: "var(--accent)", open: C.warn, acknowledged: C.info }[s] || C.muted;
 }
 
 // ── micro components ──────────────────────────────────────────────────
@@ -81,7 +82,7 @@ function Skel({ w = "100%", h = 12 }) {
 
 function Row({ children, style, onClick }) {
   return (
-    <div onClick={onClick}
+    <div {...clickableProps(onClick)}
       style={{ display: "flex", gap: 8, alignItems: "flex-start", padding: "8px 12px",
         borderBottom: "1px solid rgba(255,255,255,0.05)",
         cursor: onClick ? "pointer" : undefined,
@@ -148,7 +149,7 @@ function TabSummary() {
     finally { setLoading(false); }
   }, []);
 
-  useEffect(() => { load(); track("intel_summary"); }, [load]);
+  useEffect(() => { load(); track.event("intel_summary"); }, [load]);
 
   if (loading) return <div style={{ padding: 20 }}><Skel w="60%" /><br/><Skel w="80%" /><br/><Skel w="50%" /></div>;
   if (err || !data) return <Empty title="Could not load summary" sub={err} />;
@@ -228,7 +229,7 @@ function TabSimilarFixes() {
       setResults(r);
     } catch { setResults(null); }
     finally { setLoading(false); }
-    track("intel_similar_fixes");
+    track.event("intel_similar_fixes");
   }
 
   useEffect(() => { search(); }, []); // load all on mount
@@ -294,7 +295,7 @@ function TabPatterns() {
     try { setData(await _get(`/runtime/intel/pattern-ranking?type=${view}`)); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_patterns");
+    track.event("intel_patterns");
   }, [view]);
 
   useEffect(() => { load(); }, [load]);
@@ -403,7 +404,7 @@ function TabRecommend() {
     try { setData(await _post("/runtime/intel/recommend-patch", { description: desc, filePath, limit: 10 })); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_recommend");
+    track.event("intel_recommend");
   }
 
   const recs = data?.recommendations || [];
@@ -482,7 +483,7 @@ function TabIncidentKB() {
     try { setData(await _get(`/runtime/intel/incident-kb?q=${encodeURIComponent(query)}&limit=20`)); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_incident_kb");
+    track.event("intel_incident_kb");
   }, [q]);
 
   useEffect(() => { load(""); }, []);
@@ -606,7 +607,7 @@ function TabSearch() {
     try { setData(await _get(`/runtime/intel/search?q=${encodeURIComponent(q)}&scope=${scope}&limit=30`)); }
     catch { setData(null); }
     finally { setLoading(false); }
-    track("intel_search");
+    track.event("intel_search");
   }
 
   const results = data?.results || [];
@@ -683,7 +684,7 @@ function TabCorrelate() {
     try { setData(await _get(`/runtime/intel/correlate?${qs}&limit=15`)); }
     catch (e) { setData({ error: e.message }); }
     finally { setLoading(false); }
-    track("intel_correlate");
+    track.event("intel_correlate");
   }
 
   const correlated    = data?.correlated     || [];
@@ -787,7 +788,7 @@ const TABS = [
 export default function IntelligencePanel({ onNavigate }) {
   const [tab, setTab] = useState("summary");
 
-  useEffect(() => { track("intelligence_panel_viewed"); }, []);
+  useEffect(() => { track.event("intelligence_panel_viewed"); }, []);
 
   return (
     <div style={{ minHeight: "100vh", background: "#0d1117", color: C.text, fontFamily: "system-ui, -apple-system, sans-serif" }}>

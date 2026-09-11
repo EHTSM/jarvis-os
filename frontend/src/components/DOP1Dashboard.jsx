@@ -1,8 +1,9 @@
 import React, { useState, useCallback, useEffect } from "react";
 import "./DOP1Dashboard.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const api = (path, opts = {}) =>
-  fetch(`/api${path}`, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
+  fetch(path, { credentials: "include", headers: { "Content-Type": "application/json" }, ...opts })
     .then(r => r.json());
 
 const MODULES = [
@@ -58,7 +59,7 @@ function ScoreRing({ score, size = 70, label = null }) {
         transform={`rotate(-90 ${size/2} ${size/2})`}/>
       <text x={size/2} y={size/2 + 5} textAnchor="middle" fill={color}
         fontSize={size * 0.22} fontWeight="bold">{score}%</text>
-      {label && <text x={size/2} y={size/2 + size*0.28} textAnchor="middle" fill="#64748b" fontSize={size*0.13}>{label}</text>}
+      {label && <text x={size/2} y={size/2 + size*0.28} textAnchor="middle" fill="var(--text-dim)" fontSize={size*0.13}>{label}</text>}
     </svg>
   );
 }
@@ -72,8 +73,7 @@ function CheckRow({ check }) {
   const [expanded, setExpanded] = useState(false);
   const icon = check.pass ? "✅" : (check.severity === "warning" ? "⚠️" : "❌");
   return (
-    <div className={`dop-check ${check.pass ? "pass" : check.severity === "warning" ? "warn" : "fail"}`}
-         onClick={() => setExpanded(!expanded)}>
+    <div className={`dop-check ${check.pass ? "pass" : check.severity === "warning" ? "warn" : "fail"}`} {...clickableProps(() => setExpanded(!expanded))}>
       <span className="dop-check-icon">{icon}</span>
       <div className="dop-check-body">
         <div className="dop-check-label">{check.label}</div>

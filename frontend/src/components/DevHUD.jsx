@@ -28,7 +28,7 @@ export default function DevHUD({ online, onNavigate }) {
     <div className="hud-bar">
       <button
         className="hud-item"
-        onClick={() => onNavigate?.("jarvisbrain")}
+        onClick={() => onNavigate?.("chat")}
         title="AI Chat"
       >
         <span className={`hud-dot${online ? " hud-dot--ok" : " hud-dot--off"}`} />
@@ -36,7 +36,14 @@ export default function DevHUD({ online, onNavigate }) {
       </button>
 
       {branch && (
-        <button className="hud-item" onClick={() => onNavigate?.("git")} title="Git">
+        // A.5 finding: this button showed a real git branch name (from a
+        // real /coding/context call) but navigated to tab id "git", which
+        // has no handler anywhere in App.jsx — a dead click. Real git
+        // branch/commit/merge UI (VisualGit.jsx) is genuinely
+        // Electron-desktop-only; in a web session the closest real
+        // destination with actual repo/commit/CI data is Copilot's
+        // Repository Intelligence tab.
+        <button className="hud-item" onClick={() => onNavigate?.("copilot")} title="Git">
           <span className="hud-icon">⎇</span>
           <span className="hud-label">
             {branch.length > 16 ? branch.slice(0, 14) + "…" : branch}

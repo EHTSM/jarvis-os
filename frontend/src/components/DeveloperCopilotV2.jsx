@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { useAuth } from "../contexts/AuthContext";
 import { track } from "../analytics";
 import { sendMessage, checkHealth } from "../api";
 import { checkHealth as getHealth, getOpsData, getMetrics } from "../telemetryApi";
@@ -14,6 +15,8 @@ import {
   getOAuthProviderStatus, listOAuthConnections, revokeOAuth, getOAuthUrl,
 } from "../phase21Api";
 import "./DeveloperCopilotV2.css";
+import SampleDataNotice from "./SampleDataNotice";
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Constants ─────────────────────────────────────────────────────────
 
@@ -72,24 +75,24 @@ const PERF_ENDPOINTS = [
 
 const SEED_TOOLS = [
   { id: "whatsapp", name: "WhatsApp",  icon: "💬", color: "#25d366", status: "active",  calls: 847, desc: "Send messages and follow-ups", errorRate: "0.2%" },
-  { id: "razorpay", name: "Razorpay",  icon: "💳", color: "#f0b429", status: "degraded",calls: 0,   desc: "Payment link generation",      errorRate: "—"    },
-  { id: "crm",      name: "CRM Query", icon: "◈",  color: "#7c6fff", status: "active",  calls: 312, desc: "Lead lookup and updates",      errorRate: "0.1%" },
-  { id: "jarvis",   name: "Jarvis AI", icon: "◎",  color: "#4ecdc4", status: "active",  calls: 1204,desc: "Natural language processing",  errorRate: "0.4%" },
-  { id: "queue",    name: "Task Queue",icon: "⬟",  color: "#52d68a", status: "active",  calls: 488, desc: "Task dispatch and scheduling", errorRate: "0.0%" },
-  { id: "memory",   name: "Memory",    icon: "◉",  color: "#8994b0", status: "active",  calls: 203, desc: "Context read/write",           errorRate: "0.0%" },
-  { id: "github",   name: "GitHub",    icon: "◉",  color: "#e6edf3", status: "active",  calls: 47,  desc: "Repo access, PRs, CI status",  errorRate: "0.4%" },
+  { id: "razorpay", name: "Razorpay",  icon: "💳", color: "var(--warning)", status: "degraded",calls: 0,   desc: "Payment link generation",      errorRate: "—"    },
+  { id: "crm",      name: "CRM Query", icon: "◈",  color: "var(--accent)", status: "active",  calls: 312, desc: "Lead lookup and updates",      errorRate: "0.1%" },
+  { id: "jarvis",   name: "Jarvis AI", icon: "◎",  color: "var(--accent2)", status: "active",  calls: 1204,desc: "Natural language processing",  errorRate: "0.4%" },
+  { id: "queue",    name: "Task Queue",icon: "⬟",  color: "var(--success)", status: "active",  calls: 488, desc: "Task dispatch and scheduling", errorRate: "0.0%" },
+  { id: "memory",   name: "Memory",    icon: "◉",  color: "var(--text-dim)", status: "active",  calls: 203, desc: "Context read/write",           errorRate: "0.0%" },
+  { id: "github",   name: "GitHub",    icon: "◉",  color: "var(--text)", status: "active",  calls: 47,  desc: "Repo access, PRs, CI status",  errorRate: "0.4%" },
   { id: "notion",   name: "Notion",    icon: "N",  color: "#ffffff", status: "active",  calls: 18,  desc: "Pages read/write, databases",  errorRate: "0.0%" },
 ];
 
 const INTEGRATIONS_CATALOG = [
-  { id: "github",      name: "GitHub",          icon: "◉",  color: "#e6edf3", category: "engineering",    desc: "Repository access, PR reviews, CI status",      connected: true,  detail: "Connected Jun 3",    permissions: ["read_repos","write_code","read_ci"]    },
+  { id: "github",      name: "GitHub",          icon: "◉",  color: "var(--text)", category: "engineering",    desc: "Repository access, PR reviews, CI status",      connected: true,  detail: "Connected Jun 3",    permissions: ["read_repos","write_code","read_ci"]    },
   { id: "whatsapp",    name: "WhatsApp Business",icon: "💬", color: "#25d366", category: "communication",  desc: "Send follow-ups and payment reminders",          connected: true,  detail: "Phone: +91-XXXXXXXXXX",  permissions: ["send_messages","read_status"]     },
-  { id: "razorpay",    name: "Razorpay",         icon: "💳", color: "#f0b429", category: "payments",       desc: "Payment link generation",                        connected: true,  detail: "Auth error — check API keys", degraded: true, permissions: []                                  },
+  { id: "razorpay",    name: "Razorpay",         icon: "💳", color: "var(--warning)", category: "payments",       desc: "Payment link generation",                        connected: true,  detail: "Auth error — check API keys", degraded: true, permissions: []                                  },
   { id: "firebase",    name: "Firebase",         icon: "🔥", color: "#ff9800", category: "infrastructure", desc: "Auth, Firestore, Analytics, FCM push",           connected: false, detail: null, permissions: [] },
   { id: "gmail",       name: "Gmail",            icon: "G",  color: "#ea4335", category: "communication",  desc: "Read and send email, manage contacts",           connected: false, detail: null, permissions: [] },
   { id: "gdrive",      name: "Google Drive",     icon: "▲",  color: "#fbbc04", category: "storage",        desc: "Files, docs, and reports",                       connected: false, detail: null, permissions: [] },
   { id: "slack",       name: "Slack",            icon: "#",  color: "#4a154b", category: "communication",  desc: "Post alerts and pipeline updates",               connected: false, detail: null, permissions: [] },
-  { id: "notion",      name: "Notion",           icon: "N",  color: "#dde2ec", category: "knowledge",      desc: "Pages, databases, and knowledge base",           connected: true,  detail: "Connected May 28",   permissions: ["read_pages","write_pages"] },
+  { id: "notion",      name: "Notion",           icon: "N",  color: "var(--text)", category: "knowledge",      desc: "Pages, databases, and knowledge base",           connected: true,  detail: "Connected May 28",   permissions: ["read_pages","write_pages"] },
   { id: "telegram",    name: "Telegram",         icon: "✈",  color: "#2ca5e0", category: "communication",  desc: "Bot messaging and notification channels",        connected: false, detail: null, permissions: [] },
   { id: "razorpay_x",  name: "RazorpayX",        icon: "💸", color: "#3395ff", category: "payments",       desc: "Payouts, current accounts, business banking",   connected: false, detail: null, permissions: [] },
 ];
@@ -248,13 +251,13 @@ const PIPELINE_STAGES = ["plan", "code", "patch", "apply", "test", "review", "de
 
 function StageChip({ name, stage }) {
   const ok   = stage?.ok;
-  const col  = ok === true ? "#52d68a" : ok === false ? "#f55b5b" : "#8994b0";
+  const col  = ok === true ? "var(--success)" : ok === false ? "var(--danger)" : "var(--text-dim)";
   const icon = ok === true ? "✓" : ok === false ? "✗" : "◌";
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, minWidth: 60 }}>
       <span style={{ fontSize: 16, color: col }}>{icon}</span>
       <span style={{ fontSize: 9, color: col, textTransform: "uppercase", letterSpacing: "0.05em" }}>{name}</span>
-      {stage?.error && <span style={{ fontSize: 8, color: "#f55b5b", maxWidth: 80, textAlign: "center", wordBreak: "break-word" }}>{stage.error.slice(0, 60)}</span>}
+      {stage?.error && <span style={{ fontSize: 8, color: "var(--danger)", maxWidth: 80, textAlign: "center", wordBreak: "break-word" }}>{stage.error.slice(0, 60)}</span>}
     </div>
   );
 }
@@ -280,7 +283,7 @@ function TabPipeline({ addToast }) {
       setResult(r);
       if (r.ok) addToast("Pipeline completed successfully", "success");
       else      addToast(`Pipeline stopped: ${r.summary || r.error || "see stages"}`, "error");
-      track("pipeline_run", { ok: r.ok });
+      track.event("pipeline_run", { ok: r.ok });
     } catch (e) {
       addToast(`Pipeline error: ${e.message}`, "error");
     } finally {
@@ -351,7 +354,7 @@ function TabPipeline({ addToast }) {
             border: `1px solid ${result.ok ? "rgba(82,214,138,0.2)" : "rgba(245,91,91,0.2)"}`,
             borderRadius: "6px 6px 0 0",
           }}>
-            <span style={{ fontWeight: 600, fontSize: 12, color: result.ok ? "#52d68a" : "#f55b5b" }}>
+            <span style={{ fontWeight: 600, fontSize: 12, color: result.ok ? "var(--success)" : "var(--danger)" }}>
               {result.ok ? "Pipeline complete" : "Pipeline stopped"}
             </span>
             <span style={{ fontSize: 11, color: "var(--dcv2-text2)" }}>{result.summary}</span>
@@ -376,7 +379,7 @@ function TabPipeline({ addToast }) {
           {result.patchId && (
             <div style={{ marginTop: 8, padding: "6px 12px", background: "rgba(68,162,255,0.06)", border: "1px solid rgba(68,162,255,0.2)", borderRadius: 4, fontSize: 11 }}>
               Patch ID: <code style={{ fontFamily: "monospace" }}>{result.patchId}</code>
-              {result.rolledBack && <span style={{ marginLeft: 10, color: "#f0b429" }}>rolled back</span>}
+              {result.rolledBack && <span style={{ marginLeft: 10, color: "var(--warning)" }}>rolled back</span>}
             </div>
           )}
         </div>
@@ -413,7 +416,7 @@ function TabBlueprint({ addToast }) {
       } else {
         addToast(`Blueprint failed: ${r.error || "unknown"}`, "error");
       }
-      track("blueprint_generate");
+      track.event("blueprint_generate");
     } catch (e) {
       addToast(`Error: ${e.message}`, "error");
     } finally {
@@ -432,7 +435,7 @@ function TabBlueprint({ addToast }) {
       const r = await runProject(goal);
       setBuildResult(r);
       addToast(r.success ? "Project run started" : `Build failed: ${r.error}`, r.success ? "success" : "error");
-      track("blueprint_build");
+      track.event("blueprint_build");
     } catch (e) {
       addToast(`Build error: ${e.message}`, "error");
     } finally {
@@ -480,7 +483,7 @@ function TabBlueprint({ addToast }) {
             style={{
               padding: "6px 20px", fontSize: 12, fontWeight: 600,
               background: "rgba(82,214,138,0.15)", borderColor: "rgba(82,214,138,0.4)",
-              color: "#52d68a", opacity: building ? 0.6 : 1,
+              color: "var(--success)", opacity: building ? 0.6 : 1,
             }}
           >
             {building ? "Building…" : "Build It"}
@@ -540,10 +543,10 @@ function TabBlueprint({ addToast }) {
           border: `1px solid ${buildResult.success ? "rgba(82,214,138,0.2)" : "rgba(245,91,91,0.2)"}`,
           borderRadius: 6, fontSize: 11,
         }}>
-          <div style={{ fontWeight: 600, marginBottom: 4, color: buildResult.success ? "#52d68a" : "#f55b5b" }}>
+          <div style={{ fontWeight: 600, marginBottom: 4, color: buildResult.success ? "var(--success)" : "var(--danger)" }}>
             {buildResult.success ? "Project runner started" : "Build failed"}
           </div>
-          {buildResult.error && <div style={{ color: "#f55b5b" }}>{buildResult.error}</div>}
+          {buildResult.error && <div style={{ color: "var(--danger)" }}>{buildResult.error}</div>}
           {buildResult.summary && <div style={{ color: "var(--dcv2-text2)" }}>{buildResult.summary}</div>}
         </div>
       )}
@@ -561,8 +564,9 @@ function TabBlueprint({ addToast }) {
 
 const LANG_COLORS = { "Node.js": "#68a063", React: "#61dafb", Capacitor: "#119eff", CJS: "#f7df1e", Terraform: "#7b42bc", Dart: "#00b4ab", Python: "#3572a5", Go: "#00add8" };
 
-function TabRepos({ addToast }) {
+export function TabRepos({ addToast }) {
   const [repos,        setRepos]        = useState(SEED_REPOS);
+  const [isSample,     setIsSample]     = useState(true);
   const [search,       setSearch]       = useState("");
   const [loading,      setLoading]      = useState(true);
   const [analyzing,    setAnalyzing]    = useState(null);
@@ -577,7 +581,7 @@ function TabRepos({ addToast }) {
   useEffect(() => {
     listIndexedRepos().then(r => {
       const arr = Array.isArray(r) ? r : (r?.repos || r?.items || []);
-      if (arr.length > 0) setRepos(arr);
+      if (arr.length > 0) { setRepos(arr); setIsSample(false); }
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
 
@@ -588,11 +592,12 @@ function TabRepos({ addToast }) {
 
   async function handleAnalyze(repo) {
     if (analyzing) return;
+    if (isSample) { addToast("Connect a real repository first", "info"); return; }
     setAnalyzing(repo.id);
     try {
       await sendMessage(`analyze repo ${repo.name}`, "code");
       addToast(`Analysis started for ${repo.name}`, "success");
-      track("repo_analyze", { name: repo.name });
+      track.event("repo_analyze", { name: repo.name });
     } catch (e) {
       addToast(`Analysis failed: ${e.message}`, "error");
     } finally {
@@ -609,7 +614,7 @@ function TabRepos({ addToast }) {
       const r = await semanticSearch(firstRepo?.id || "ooplix-backend", searchQ.trim());
       const hits = Array.isArray(r) ? r : (r?.results || r?.matches || []);
       setSearchResults({ query: searchQ, hits, mode: "semantic" });
-      track("repo_search", { q: searchQ, mode: "semantic" });
+      track.event("repo_search", { q: searchQ, mode: "semantic" });
     } catch {
       setSearchResults({ query: searchQ, hits: [], mode: "semantic" });
     } finally {
@@ -623,9 +628,15 @@ function TabRepos({ addToast }) {
     setSymResults(null);
     try {
       const r = await symbolSearch(symQ.trim());
+      // symbolSearch() never throws — it catches internally and resolves
+      // {success:false, error} on a real failure (this endpoint currently
+      // has no backend route at all — see Mission 31's contract audit), so
+      // this branch never saw it: hits fell through to [], and the UI
+      // showed "0 matches" indistinguishable from a genuine empty result.
+      if (r?.success === false) throw new Error(r.error || "Symbol search unavailable");
       const hits = r?.results || r?.matches || (Array.isArray(r) ? r : []);
       setSymResults({ query: symQ, hits });
-      track("repo_search", { q: symQ, mode: "symbol" });
+      track.event("repo_search", { q: symQ, mode: "symbol" });
     } catch (e) {
       setSymResults({ query: symQ, hits: [], error: e.message });
     } finally {
@@ -635,6 +646,7 @@ function TabRepos({ addToast }) {
 
   return (
     <div className="dcv2-repos-root">
+      {!loading && isSample && <SampleDataNotice label="illustrative repositories — connect a repo to see real indexed data" />}
       <div className="dcv2-repos-toolbar">
         <div className="dcv2-search-wrap">
           <span className="dcv2-search-icon">🔍</span>
@@ -719,7 +731,7 @@ function TabRepos({ addToast }) {
               <div className="dcv2-sem-results">
                 <p className="dcv2-sem-count">
                   {symResults.hits.length} match{symResults.hits.length !== 1 ? "es" : ""} for "{symResults.query}"
-                  {symResults.error && <span style={{ color: "#f0b429", marginLeft: 8 }}>{symResults.error}</span>}
+                  {symResults.error && <span style={{ color: "var(--warning)", marginLeft: 8 }}>{symResults.error}</span>}
                 </p>
                 {symResults.hits.length === 0 ? (
                   <p className="dcv2-sem-empty">Symbol not found in codebase.</p>
@@ -758,7 +770,7 @@ function TabRepos({ addToast }) {
       ) : (
         <div className="dcv2-repo-list">
           {filtered.map(repo => {
-            const lc = LANG_COLORS[repo.lang] || "#8994b0";
+            const lc = LANG_COLORS[repo.lang] || "var(--text-dim)";
             const hcls = HEALTH_CHIP[repo.health] || "dcv2-chip--warn";
             const ccls = CI_CHIP[repo.ci] || "dcv2-chip--error";
             return (
@@ -815,10 +827,10 @@ function TabRepos({ addToast }) {
 // ── Tab: Code Review ──────────────────────────────────────────────────
 
 const SEV_META = {
-  critical:   { label: "critical",   cls: "dcv2-sev--critical",  color: "#f55b5b" },
-  warning:    { label: "warning",    cls: "dcv2-sev--warning",   color: "#f0b429" },
-  suggestion: { label: "suggestion", cls: "dcv2-sev--suggestion",color: "#4ecdc4" },
-  ok:         { label: "ok",         cls: "dcv2-sev--ok",        color: "#52d68a" },
+  critical:   { label: "critical",   cls: "dcv2-sev--critical",  color: "var(--danger)" },
+  warning:    { label: "warning",    cls: "dcv2-sev--warning",   color: "var(--warning)" },
+  suggestion: { label: "suggestion", cls: "dcv2-sev--suggestion",color: "var(--accent2)" },
+  ok:         { label: "ok",         cls: "dcv2-sev--ok",        color: "var(--success)" },
 };
 
 function TabReview({ addToast }) {
@@ -849,7 +861,7 @@ function TabReview({ addToast }) {
         addToast("Review returned no findings", "info");
       }
       setPrInput("");
-      track("code_review_ai");
+      track.event("code_review_ai");
     } catch (e) {
       addToast(`Review failed: ${e.message}`, "error");
     } finally {
@@ -905,7 +917,7 @@ function TabReview({ addToast }) {
 
       <div className="dcv2-review-list">
         {filtered.length === 0 ? (
-          <div className="dcv2-empty"><span className="dcv2-empty-icon" style={{ color: "#52d68a" }}>✓</span><p className="dcv2-empty-title">No findings</p></div>
+          <div className="dcv2-empty"><span className="dcv2-empty-icon" style={{ color: "var(--success)" }}>✓</span><p className="dcv2-empty-title">No findings</p></div>
         ) : (
           filtered.map(r => {
             const sm = SEV_META[r.severity] || SEV_META.suggestion;
@@ -955,7 +967,7 @@ function TabArchitecture({ addToast }) {
     try {
       const r = await sendMessage(`architecture advisor: ${arcQ.trim()}`, "code");
       setArcAns(r?.reply || r?.output || "No response from advisor.");
-      track("arch_ask");
+      track.event("arch_ask");
     } catch (e) {
       setArcAns(`Error: ${e.message}`);
     } finally {
@@ -977,7 +989,7 @@ function TabArchitecture({ addToast }) {
 
       <div className="dcv2-arch-score">
         <div className="dcv2-score-ring">
-          <span className="dcv2-score-val" style={{ color: overallScore >= 80 ? "#52d68a" : overallScore >= 60 ? "#f0b429" : "#f55b5b" }}>{overallScore}</span>
+          <span className="dcv2-score-val" style={{ color: overallScore >= 80 ? "var(--success)" : overallScore >= 60 ? "var(--warning)" : "var(--danger)" }}>{overallScore}</span>
           <span className="dcv2-score-label">Health Score</span>
         </div>
         <div className="dcv2-score-breakdown">
@@ -992,7 +1004,7 @@ function TabArchitecture({ addToast }) {
             key={svc.name}
             className={`dcv2-arch-node${selected === svc.name ? " dcv2-arch-node--selected" : ""}`}
             style={{ borderColor: selected === svc.name ? H_COLORS[svc.health] + "50" : undefined }}
-            onClick={() => setSelected(v => v === svc.name ? null : svc.name)}
+            {...clickableProps(() => setSelected(v => v === svc.name ? null : svc.name))}
           >
             <div className="dcv2-an-top">
               <span className="dcv2-an-dot" style={{ background: H_COLORS[svc.health] }} />
@@ -1042,6 +1054,7 @@ function TabArchitecture({ addToast }) {
 // ── Tab: Engineering Health ───────────────────────────────────────────
 
 function TabHealth({ addToast }) {
+  const { user } = useAuth();
   const [health,   setHealth]   = useState(null);
   const [ops,      setOps]      = useState(null);
   const [metrics,  setMetrics]  = useState(null);
@@ -1049,12 +1062,16 @@ function TabHealth({ addToast }) {
   const [loading,  setLoading]  = useState(true);
   const [subTab,   setSubTab]   = useState("overview");
 
+  // Workflow Coverage Completion finding: /ops and /metrics are
+  // operatorOnly server-side. Any non-operator founder opening Copilot's
+  // Health tab fired a 403 on both.
+  const isOperator = user?.role === "operator";
   useEffect(() => {
     setLoading(true);
     Promise.all([
       getHealth().catch(() => null),
-      getOpsData().catch(() => null),
-      getMetrics().catch(() => null),
+      isOperator ? getOpsData().catch(() => null)  : Promise.resolve(null),
+      isOperator ? getMetrics().catch(() => null)  : Promise.resolve(null),
       getRuntimeHistory(20).catch(() => []),
     ]).then(([h, o, m, hist]) => {
       setHealth(h);
@@ -1063,7 +1080,7 @@ function TabHealth({ addToast }) {
       const arr = Array.isArray(hist) ? hist : (hist?.history || []);
       setHistory(arr.filter(i => i.status === "failed" || i.status === "error"));
     }).finally(() => setLoading(false));
-  }, []);
+  }, [isOperator]);
 
   const q = ops?.queue || {};
   const uptimeSecs = ops?.uptime ?? 0;
@@ -1092,7 +1109,7 @@ function TabHealth({ addToast }) {
             <div className="dcv2-kpi">
               <span className="dcv2-kpi-icon">⬡</span>
               <span className="dcv2-kpi-label">Uptime</span>
-              <span className="dcv2-kpi-val" style={{ color: "#52d68a" }}>{uptimeSecs > 0 ? `${uptimeH}h ${uptimeM}m` : "—"}</span>
+              <span className="dcv2-kpi-val" style={{ color: "var(--success)" }}>{uptimeSecs > 0 ? `${uptimeH}h ${uptimeM}m` : "—"}</span>
             </div>
             <div className="dcv2-kpi">
               <span className="dcv2-kpi-icon">◈</span>
@@ -1107,7 +1124,7 @@ function TabHealth({ addToast }) {
             <div className="dcv2-kpi">
               <span className="dcv2-kpi-icon">●</span>
               <span className="dcv2-kpi-label">Running</span>
-              <span className="dcv2-kpi-val" style={{ color: "#7c6fff" }}>{q.running ?? "—"}</span>
+              <span className="dcv2-kpi-val" style={{ color: "var(--accent)" }}>{q.running ?? "—"}</span>
             </div>
           </div>
 
@@ -1115,7 +1132,7 @@ function TabHealth({ addToast }) {
             <p className="dcv2-section-label">Services</p>
             {(loading ? SEED_SERVICES : services).map(svc => {
               const s = typeof svc === "string" ? { name: svc, status: "online" } : svc;
-              const sc = s.status === "online" || s.status === "active" ? "#52d68a" : s.status === "degraded" ? "#f0b429" : "#f55b5b";
+              const sc = s.status === "online" || s.status === "active" ? "var(--success)" : s.status === "degraded" ? "var(--warning)" : "var(--danger)";
               return (
                 <div key={s.name || s.key} className="dcv2-svc-row">
                   <span className="dcv2-svc-dot" style={{ background: sc }} />
@@ -1148,7 +1165,7 @@ function TabHealth({ addToast }) {
           <p className="dcv2-section-label">Endpoint Response Times (avg, last 1h)</p>
           {PERF_ENDPOINTS.map(ep => {
             const pct = Math.min(Math.round((ep.ms / ep.max) * 100), 100);
-            const color = ep.ms < 200 ? "#52d68a" : ep.ms < 600 ? "#f0b429" : "#f55b5b";
+            const color = ep.ms < 200 ? "var(--success)" : ep.ms < 600 ? "var(--warning)" : "var(--danger)";
             return (
               <div key={ep.path} className="dcv2-perf-row">
                 <span className="dcv2-perf-path">{ep.path}</span>
@@ -1182,9 +1199,9 @@ function TabHealth({ addToast }) {
             ].map(item => (
               <div key={item.title} className="dcv2-heal-card">
                 <div className="dcv2-heal-top">
-                  <span className="dcv2-heal-dot" style={{ color: item.status === "ACTIVE" ? "#52d68a" : "#f0b429" }}>●</span>
+                  <span className="dcv2-heal-dot" style={{ color: item.status === "ACTIVE" ? "var(--success)" : "var(--warning)" }}>●</span>
                   <span className="dcv2-heal-title">{item.title}</span>
-                  <span className="dcv2-heal-status" style={{ color: item.status === "ACTIVE" ? "#52d68a" : "#f0b429" }}>{item.status}</span>
+                  <span className="dcv2-heal-status" style={{ color: item.status === "ACTIVE" ? "var(--success)" : "var(--warning)" }}>{item.status}</span>
                 </div>
                 <p className="dcv2-heal-detail">{item.detail}</p>
                 <span className="dcv2-heal-stat">{item.stat}</span>
@@ -1263,7 +1280,7 @@ function TabIntegrations({ addToast, onNavigate }) {
       await revokeOAuth(intg.id);
       addToast(`${intg.name} disconnected`, "info");
       const updated = INTEGRATIONS_CATALOG.map(i => i.id === intg.id ? { ...i, connected: false } : i);
-      track("integration_revoke", { provider: intg.id });
+      track.event("integration_revoke", { provider: intg.id });
     } catch (e) { addToast(`Could not disconnect: ${e.message}`, "error"); }
     finally     { setRevoking(null); }
   }
@@ -1282,7 +1299,7 @@ function TabIntegrations({ addToast, onNavigate }) {
         {shown.map(intg => {
           const connected = _isConnected(intg);
           const degraded  = _isDegraded(intg);
-          const statusColor = degraded ? "#f0b429" : connected ? "#52d68a" : "#4a5470";
+          const statusColor = degraded ? "var(--warning)" : connected ? "var(--success)" : "#4a5470";
           const statusLabel = degraded ? "DEGRADED" : connected ? "CONNECTED" : "NOT CONNECTED";
 
           return (
@@ -1296,7 +1313,7 @@ function TabIntegrations({ addToast, onNavigate }) {
                 <span className="dcv2-ic-status" style={{ color: statusColor, background: statusColor + "15" }}>{statusLabel}</span>
               </div>
               <p className="dcv2-ic-desc">{intg.desc}</p>
-              {intg.detail && <p className="dcv2-ic-detail" style={{ color: degraded ? "#f0b429" : "#4a5470" }}>{intg.detail}</p>}
+              {intg.detail && <p className="dcv2-ic-detail" style={{ color: degraded ? "var(--warning)" : "#4a5470" }}>{intg.detail}</p>}
               <div className="dcv2-ic-actions">
                 {connected && !degraded && (
                   <>
@@ -1364,7 +1381,7 @@ function TabTools({ addToast }) {
       setHistory(prev => [entry, ...prev.slice(0, 9)]);
       setExecRes(entry);
       addToast(`Tool "${tool.name}" executed`, "success");
-      track("tool_execute", { toolId: tool.id });
+      track.event("tool_execute", { toolId: tool.id });
     } catch (e) {
       addToast(`Tool execution failed: ${e.message}`, "error");
       setExecRes({ tool: tool.name, input: execInput.trim(), result: `Error: ${e.message}`, ts: "—" });
@@ -1381,18 +1398,18 @@ function TabTools({ addToast }) {
           <span className="dcv2-tc-label">Total Tools</span>
         </div>
         <div className="dcv2-tools-count">
-          <span className="dcv2-tc-val" style={{ color: "#52d68a" }}>{activeCount}</span>
+          <span className="dcv2-tc-val" style={{ color: "var(--success)" }}>{activeCount}</span>
           <span className="dcv2-tc-label">Active</span>
         </div>
         <div className="dcv2-tools-count">
-          <span className="dcv2-tc-val" style={{ color: "#f0b429" }}>{displayTools.filter(t => t.status === "degraded").length}</span>
+          <span className="dcv2-tc-val" style={{ color: "var(--warning)" }}>{displayTools.filter(t => t.status === "degraded").length}</span>
           <span className="dcv2-tc-label">Degraded</span>
         </div>
       </div>
 
       <div className="dcv2-tool-grid">
         {displayTools.map(tool => {
-          const sc = tool.status === "active" ? "#52d68a" : tool.status === "degraded" ? "#f0b429" : "#4a5470";
+          const sc = tool.status === "active" ? "var(--success)" : tool.status === "degraded" ? "var(--warning)" : "#4a5470";
           return (
             <div
               key={tool.id}

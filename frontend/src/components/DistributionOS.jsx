@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./DistributionOS.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE  = process.env.REACT_APP_API_URL || "";
 const api   = (path, opts = {}) =>
@@ -46,7 +47,7 @@ function StatusDot({ status }) {
 
 function ScoreBar({ label, value, accent }) {
   const pct = Math.min(100, Math.max(0, value || 0));
-  const col = accent || (pct >= 80 ? "#22c55e" : pct >= 50 ? "#f59e0b" : "#ef4444");
+  const col = accent || (pct >= 80 ? "var(--success)" : pct >= 50 ? "var(--warning)" : "var(--danger)");
   return (
     <div className="do-score-row">
       <span className="do-score-label">{label}</span>
@@ -86,11 +87,11 @@ function ExecutivePanel() {
 
       <div className="do-channel-grid">
         {[
-          { label: "Traffic & Reach",  icon: "◎", color: "#7c6fff", stats: [`${(d.traffic?.totalReach||0).toLocaleString()} total reach`, `${(d.traffic?.totalClicks||0).toLocaleString()} clicks`, `${d.traffic?.publishJobs||0} publish jobs`, `Top: ${d.traffic?.topPlatform||"—"}`] },
-          { label: "Social Growth",    icon: "◉", color: "#22c55e", stats: [`${d.social?.posts||0} published posts`, `${(d.social?.totalEngagement||0).toLocaleString()} engagement`, `${d.social?.engagementRate}% rate`, `Virality ${d.social?.viralityScore}`] },
-          { label: "Community",        icon: "⬡", color: "#4ecdc4", stats: [`${d.community?.total||0} communities`, `${(d.community?.totalMembers||0).toLocaleString()} members`, `${(d.community?.activeMembers||0).toLocaleString()} active`, `Top: ${d.community?.topCommunity||"—"}`] },
-          { label: "Referrals",        icon: "⊞", color: "#f59e0b", stats: [`${d.referrals?.activeCampaigns||0} active campaigns`, `${d.referrals?.totalInvites||0} invites`, `${d.referrals?.conversions||0} conversions`, ""] },
-          { label: "Influencers",      icon: "◇", color: "#ef4444", stats: [`${d.influencers?.total||0} discovered`, `${d.influencers?.contacted||0} contacted`, `${d.influencers?.inConversation||0} in convo`, `${(d.influencers?.totalFollowers||0).toLocaleString()} total followers`] },
+          { label: "Traffic & Reach",  icon: "◎", color: "var(--accent)", stats: [`${(d.traffic?.totalReach||0).toLocaleString()} total reach`, `${(d.traffic?.totalClicks||0).toLocaleString()} clicks`, `${d.traffic?.publishJobs||0} publish jobs`, `Top: ${d.traffic?.topPlatform||"—"}`] },
+          { label: "Social Growth",    icon: "◉", color: "var(--success)", stats: [`${d.social?.posts||0} published posts`, `${(d.social?.totalEngagement||0).toLocaleString()} engagement`, `${d.social?.engagementRate}% rate`, `Virality ${d.social?.viralityScore}`] },
+          { label: "Community",        icon: "⬡", color: "var(--accent2)", stats: [`${d.community?.total||0} communities`, `${(d.community?.totalMembers||0).toLocaleString()} members`, `${(d.community?.activeMembers||0).toLocaleString()} active`, `Top: ${d.community?.topCommunity||"—"}`] },
+          { label: "Referrals",        icon: "⊞", color: "var(--warning)", stats: [`${d.referrals?.activeCampaigns||0} active campaigns`, `${d.referrals?.totalInvites||0} invites`, `${d.referrals?.conversions||0} conversions`, ""] },
+          { label: "Influencers",      icon: "◇", color: "var(--danger)", stats: [`${d.influencers?.total||0} discovered`, `${d.influencers?.contacted||0} contacted`, `${d.influencers?.inConversation||0} in convo`, `${(d.influencers?.totalFollowers||0).toLocaleString()} total followers`] },
           { label: "Launches",         icon: "◈", color: "#a78bfa", stats: [`${d.launches?.active||0} active`, `${d.launches?.launched||0} launched`, `${d.launches?.upcoming||0} upcoming`, ""] },
         ].map(({ label, icon, color, stats }) => (
           <div key={label} className="do-exec-card" style={{ borderTop: `2px solid ${color}` }}>
@@ -104,18 +105,18 @@ function ExecutivePanel() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
         <div className="do-card">
           <div className="do-card-title">Campaign Overview</div>
-          <div className="do-kv-row"><span className="do-kv-key">Active Campaigns</span><span className="do-kv-val" style={{ color: "#22c55e" }}>{d.campaigns?.live || 0}</span></div>
+          <div className="do-kv-row"><span className="do-kv-key">Active Campaigns</span><span className="do-kv-val" style={{ color: "var(--success)" }}>{d.campaigns?.live || 0}</span></div>
           <div className="do-kv-row"><span className="do-kv-key">Total Campaigns</span><span className="do-kv-val">{d.campaigns?.total || 0}</span></div>
           <div className="do-kv-row"><span className="do-kv-key">Campaign Reach</span><span className="do-kv-val">{(d.campaigns?.totalCampaignReach||0).toLocaleString()}</span></div>
         </div>
         <div className="do-card">
           <div className="do-card-title">Organic Growth (Content AI)</div>
           <div className="do-kv-row"><span className="do-kv-key">Top Performers</span><span className="do-kv-val">{d.organic?.topPerformers?.length || 0} tracked</span></div>
-          <div className="do-kv-row"><span className="do-kv-key">Republish Ready</span><span className="do-kv-val" style={{ color: "#f59e0b" }}>{d.organic?.republishReady || 0} pieces</span></div>
+          <div className="do-kv-row"><span className="do-kv-key">Republish Ready</span><span className="do-kv-val" style={{ color: "var(--warning)" }}>{d.organic?.republishReady || 0} pieces</span></div>
           {(d.organic?.topPerformers||[]).slice(0,2).map(p => (
             <div key={p.jobId} className="do-kv-row">
               <span className="do-kv-key">{p.title?.slice(0,24) || p.jobId}</span>
-              <span className="do-kv-val" style={{ color: "#7c6fff" }}>score {p.score}</span>
+              <span className="do-kv-val" style={{ color: "var(--accent)" }}>score {p.score}</span>
             </div>
           ))}
         </div>
@@ -190,8 +191,8 @@ function PublisherPanel() {
         <div>
           <div className="do-stats-grid" style={{ marginBottom: 10 }}>
             <StatCard label="Total"     value={list.length} />
-            <StatCard label="Published" value={list.filter(j => j.platforms?.every(p => p.status === "published")).length} accent="#22c55e" />
-            <StatCard label="Pending"   value={list.filter(j => j.approvalState === "pending").length} accent="#f59e0b" />
+            <StatCard label="Published" value={list.filter(j => j.platforms?.every(p => p.status === "published")).length} accent="var(--success)" />
+            <StatCard label="Pending"   value={list.filter(j => j.approvalState === "pending").length} accent="var(--warning)" />
             <StatCard label="Platforms" value={allPlatforms.length} />
           </div>
 
@@ -223,10 +224,10 @@ function PublisherPanel() {
                 </div>
                 <div style={{ display: "flex", gap: 6, flexDirection: "column", alignItems: "flex-end" }}>
                   {j.requireApproval && j.approvalState === "pending" && (
-                    <button className="do-btn-sm" style={{ color: "#f59e0b" }} onClick={() => approve(j.id)}>Approve</button>
+                    <button className="do-btn-sm" style={{ color: "var(--warning)" }} onClick={() => approve(j.id)}>Approve</button>
                   )}
                   {(j.approvalState === "approved" || !j.requireApproval) && j.platforms?.some(p => p.status === "queued") && (
-                    <button className="do-btn-sm" style={{ color: "#22c55e" }} onClick={() => publish(j.id)}>Publish All</button>
+                    <button className="do-btn-sm" style={{ color: "var(--success)" }} onClick={() => publish(j.id)}>Publish All</button>
                   )}
                   <Chip color={j.approvalState === "approved" ? "green" : "gray"}>{j.approvalState}</Chip>
                 </div>
@@ -302,7 +303,7 @@ function CampaignPanel() {
   };
 
   const list = camps?.campaigns || [];
-  const STATUS_COLOR = { live: "#22c55e", ready: "#4ecdc4", planning: "#888", completed: "#7c6fff", paused: "#f59e0b", cancelled: "#ef4444" };
+  const STATUS_COLOR = { live: "var(--success)", ready: "var(--accent2)", planning: "#888", completed: "var(--accent)", paused: "var(--warning)", cancelled: "var(--danger)" };
 
   return (
     <div>
@@ -342,9 +343,9 @@ function CampaignPanel() {
                 </div>
                 <div style={{ display: "flex", gap: 4, flexDirection: "column", alignItems: "flex-end" }}>
                   <Chip color={c.status === "live" ? "green" : c.status === "ready" ? "" : "gray"}>{c.status}</Chip>
-                  {c.approvalRequired && c.approvalState === "pending" && <button className="do-btn-sm" style={{ color: "#f59e0b" }} onClick={() => approve(c.id)}>Approve</button>}
-                  {c.status === "ready" && <button className="do-btn-sm" style={{ color: "#22c55e" }} onClick={() => launch(c.id)}>Launch</button>}
-                  {c.status === "planning" && !c.approvalRequired && <button className="do-btn-sm" style={{ color: "#22c55e" }} onClick={() => launch(c.id)}>Launch</button>}
+                  {c.approvalRequired && c.approvalState === "pending" && <button className="do-btn-sm" style={{ color: "var(--warning)" }} onClick={() => approve(c.id)}>Approve</button>}
+                  {c.status === "ready" && <button className="do-btn-sm" style={{ color: "var(--success)" }} onClick={() => launch(c.id)}>Launch</button>}
+                  {c.status === "planning" && !c.approvalRequired && <button className="do-btn-sm" style={{ color: "var(--success)" }} onClick={() => launch(c.id)}>Launch</button>}
                 </div>
               </div>
             ))}
@@ -413,7 +414,7 @@ function InfluencerPanel() {
   const list    = infls?.influencers || [];
   const intel   = infls?.intelligence;
   const TIERS   = ["nano","micro","macro","mega"];
-  const TIER_COLOR = { nano: "#888", micro: "#f59e0b", macro: "#7c6fff", mega: "#22c55e" };
+  const TIER_COLOR = { nano: "#888", micro: "var(--warning)", macro: "var(--accent)", mega: "var(--success)" };
   const STATUS_LABEL = { discovered: "discovered", contacted: "contacted", in_conversation: "talking", partner: "partner" };
 
   const filtered = filter === "all" ? list : list.filter(i => i.tier === filter || i.platform === filter || i.status === filter);
@@ -432,10 +433,10 @@ function InfluencerPanel() {
       {intel && (
         <div className="do-stats-grid" style={{ margin: "8px 0" }}>
           <StatCard label="Total"          value={intel.total} />
-          <StatCard label="Contacted"      value={intel.contacted}       accent="#f59e0b" />
-          <StatCard label="In Convo"       value={intel.inConversation}  accent="#22c55e" />
-          <StatCard label="Total Followers" value={`${((intel.totalFollowers||0)/1000).toFixed(0)}K`} accent="#7c6fff" />
-          <StatCard label="Follow-ups Due"  value={intel.followUpsDue}    accent="#ef4444" />
+          <StatCard label="Contacted"      value={intel.contacted}       accent="var(--warning)" />
+          <StatCard label="In Convo"       value={intel.inConversation}  accent="var(--success)" />
+          <StatCard label="Total Followers" value={`${((intel.totalFollowers||0)/1000).toFixed(0)}K`} accent="var(--accent)" />
+          <StatCard label="Follow-ups Due"  value={intel.followUpsDue}    accent="var(--danger)" />
         </div>
       )}
 
@@ -558,8 +559,8 @@ function CommunityPanel() {
       {stats && (
         <div className="do-stats-grid" style={{ margin: "8px 0" }}>
           <StatCard label="Communities"   value={stats.total} />
-          <StatCard label="Total Members" value={(stats.totalMembers||0).toLocaleString()} accent="#22c55e" />
-          <StatCard label="Active Members" value={(stats.totalActive||0).toLocaleString()} accent="#7c6fff" />
+          <StatCard label="Total Members" value={(stats.totalMembers||0).toLocaleString()} accent="var(--success)" />
+          <StatCard label="Active Members" value={(stats.totalActive||0).toLocaleString()} accent="var(--accent)" />
           <StatCard label="Top Community" value={stats.topCommunity?.name || "—"} />
         </div>
       )}
@@ -570,8 +571,8 @@ function CommunityPanel() {
             {list.length === 0 && <div className="do-empty">No communities. Add Discord, Telegram, Reddit, or GitHub Discussions to your hub.</div>}
             {list.map(c => (
               <div key={c.id}>
-                <div className="do-row" onClick={() => setActiveCom(activeCom?.id === c.id ? null : c)} style={{ cursor: "pointer" }}>
-                  <span style={{ fontSize: 14, color: "#7c6fff" }}>{PLATFORM_ICONS[c.platform] || "◎"}</span>
+                <div className="do-row" {...clickableProps(() => setActiveCom(activeCom?.id === c.id ? null : c))} style={{ cursor: "pointer" }}>
+                  <span style={{ fontSize: 14, color: "var(--accent)" }}>{PLATFORM_ICONS[c.platform] || "◎"}</span>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div className="do-row-name">{c.name}</div>
                     <div className="do-row-meta">{c.platform} · {(c.memberCount||0).toLocaleString()} members · {c.calendarEntries?.length||0} calendar · {c.workflows?.length||0} workflows</div>
@@ -689,8 +690,8 @@ function ReferralPanel() {
                 </div>
                 <div className="do-stats-mini">
                   <span>{c.stats?.totalInvites||0} invites</span>
-                  <span style={{ color: "#22c55e" }}>{c.stats?.conversions||0} converted</span>
-                  {c.stats?.fraudBlocked > 0 && <span style={{ color: "#ef4444" }}>{c.stats.fraudBlocked} blocked</span>}
+                  <span style={{ color: "var(--success)" }}>{c.stats?.conversions||0} converted</span>
+                  {c.stats?.fraudBlocked > 0 && <span style={{ color: "var(--danger)" }}>{c.stats.fraudBlocked} blocked</span>}
                 </div>
               </div>
               <Chip color="green">{c.status}</Chip>
@@ -784,7 +785,7 @@ function LaunchPanel() {
 
   const list = launches?.launches || [];
   const CHANNEL_ICONS = { website: "◎", email: "✉", social: "◉", community: "⬡", docs: "◻", release_notes: "◈", press: "✦", producthunt: "◇", appstore: "⬢" };
-  const STATUS_COLOR  = { planning: "#888", ready: "#4ecdc4", live: "#f59e0b", launched: "#22c55e", cancelled: "#ef4444" };
+  const STATUS_COLOR  = { planning: "#888", ready: "var(--accent2)", live: "var(--warning)", launched: "var(--success)", cancelled: "var(--danger)" };
 
   return (
     <div>
@@ -802,7 +803,7 @@ function LaunchPanel() {
           {list.length === 0 && <div className="do-empty">No launches. Coordinate your next product launch across website, email, social, community, docs, and press.</div>}
           {list.map(l => (
             <div key={l.id}>
-              <div className="do-row" onClick={() => setActive(active?.id === l.id ? null : l)} style={{ cursor: "pointer" }}>
+              <div className="do-row" {...clickableProps(() => setActive(active?.id === l.id ? null : l))} style={{ cursor: "pointer" }}>
                 <StatusDot status={l.status} />
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="do-row-name">{l.name} <span style={{ color: "#666" }}>{l.version}</span></div>
@@ -828,7 +829,7 @@ function LaunchPanel() {
                       >
                         <span>{CHANNEL_ICONS[ch.channel] || "◎"}</span>
                         <span>{ch.channel}</span>
-                        {ch.status === "done" && <span style={{ color: "#22c55e" }}>✓</span>}
+                        {ch.status === "done" && <span style={{ color: "var(--success)" }}>✓</span>}
                       </button>
                     ))}
                   </div>
@@ -838,7 +839,7 @@ function LaunchPanel() {
                     {l.checklistItems?.map(item => (
                       <label key={item.id} className="do-check-item">
                         <input type="checkbox" checked={item.done} onChange={e => tickChecklist(l.id, item.id, e.target.checked)} />
-                        <span style={{ color: item.done ? "#22c55e" : "#ccc" }}>{item.label}</span>
+                        <span style={{ color: item.done ? "var(--success)" : "#ccc" }}>{item.label}</span>
                       </label>
                     ))}
                   </div>
@@ -885,14 +886,14 @@ function AnalyticsPanel() {
       {a && (
         <>
           <div className="do-stats-grid" style={{ marginBottom: 12 }}>
-            <StatCard label="Total Reach"      value={(a.totalReach||0).toLocaleString()} accent="#7c6fff" />
-            <StatCard label="Total Engagement" value={(a.totalEngagement||0).toLocaleString()} accent="#22c55e" />
+            <StatCard label="Total Reach"      value={(a.totalReach||0).toLocaleString()} accent="var(--accent)" />
+            <StatCard label="Total Engagement" value={(a.totalEngagement||0).toLocaleString()} accent="var(--success)" />
             <StatCard label="Total Shares"     value={(a.totalShares||0).toLocaleString()} />
             <StatCard label="Total Clicks"     value={(a.totalClicks||0).toLocaleString()} />
-            <StatCard label="Engagement Rate"  value={`${a.engagementRate}%`} accent="#4ecdc4" />
-            <StatCard label="Virality Score"   value={`${a.viralityScore}/100`} accent="#f59e0b" />
+            <StatCard label="Engagement Rate"  value={`${a.engagementRate}%`} accent="var(--accent2)" />
+            <StatCard label="Virality Score"   value={`${a.viralityScore}/100`} accent="var(--warning)" />
             <StatCard label="Publish Jobs"     value={a.totalPublishJobs} />
-            <StatCard label="Top Platform"     value={a.topPlatform || "—"} accent="#22c55e" />
+            <StatCard label="Top Platform"     value={a.topPlatform || "—"} accent="var(--success)" />
           </div>
 
           <div className="do-sub-title">Platform Comparison</div>
@@ -932,7 +933,7 @@ function PerformancePanel() {
     reloadTop();
   };
 
-  const RECO_COLOR  = { republish: "#22c55e", repost_highlight: "#f59e0b", archive: "#666" };
+  const RECO_COLOR  = { republish: "var(--success)", repost_highlight: "var(--warning)", archive: "#666" };
 
   return (
     <div>
@@ -949,7 +950,7 @@ function PerformancePanel() {
             <div key={p.id} className="do-kv-row">
               <span className="do-rank">#{i+1}</span>
               <span className="do-kv-key">{p.title?.slice(0,30)||p.jobId}</span>
-              <span className="do-kv-val" style={{ color: p.score >= 60 ? "#22c55e" : "#f59e0b" }}>score {p.score}</span>
+              <span className="do-kv-val" style={{ color: p.score >= 60 ? "var(--success)" : "var(--warning)" }}>score {p.score}</span>
             </div>
           ))}
         </div>
@@ -996,7 +997,7 @@ function BenchmarkPanel() {
     setRunning(false);
   };
 
-  const READINESS_COLOR = { production_ready: "#22c55e", nearly_ready: "#f59e0b", needs_work: "#ef4444" };
+  const READINESS_COLOR = { production_ready: "var(--success)", nearly_ready: "var(--warning)", needs_work: "var(--danger)" };
 
   return (
     <div>
@@ -1010,16 +1011,16 @@ function BenchmarkPanel() {
         <>
           <div className="do-stats-grid" style={{ marginBottom: 16 }}>
             <StatCard label="Score"      value={`${result.score}%`}              accent={READINESS_COLOR[result.distributionReadiness]} />
-            <StatCard label="Passed"     value={`${result.passing}/${result.total}`} accent="#22c55e" />
+            <StatCard label="Passed"     value={`${result.passing}/${result.total}`} accent="var(--success)" />
             <StatCard label="Readiness"  value={result.distributionReadiness?.replace(/_/g," ")} accent={READINESS_COLOR[result.distributionReadiness]} />
-            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "#22c55e" : "#ef4444"} />
+            <StatCard label="Regression" value={result.regressionPass ? "PASS" : "FAIL"} accent={result.regressionPass ? "var(--success)" : "var(--danger)"} />
           </div>
           <div className="do-list">
             {(result.checks||[]).map(c => (
               <div key={c.id} className={`do-row${c.ok ? "" : " do-row-fail"}`}>
-                <span style={{ color: c.ok ? "#22c55e" : "#ef4444", fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
+                <span style={{ color: c.ok ? "var(--success)" : "var(--danger)", fontWeight: 700, flexShrink: 0 }}>{c.ok ? "✓" : "✗"}</span>
                 <span className="do-row-name" style={{ flex: 1 }}>{c.label}</span>
-                {c.error && <span className="do-row-meta" style={{ color: "#ef4444" }}>{c.error}</span>}
+                {c.error && <span className="do-row-meta" style={{ color: "var(--danger)" }}>{c.error}</span>}
                 <Chip color={c.ok ? "green" : "red"}>{c.ok ? "pass" : "fail"}</Chip>
               </div>
             ))}

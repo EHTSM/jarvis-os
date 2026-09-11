@@ -16,6 +16,7 @@
 
 const fs   = require("fs");
 const path = require("path");
+const { assertSafeNavigationTarget } = require("../utils/urlSafety.cjs");
 
 const QA_DIR = path.join(__dirname, "../../data/odi/vision-qa");
 function _ensureDir() { if (!fs.existsSync(QA_DIR)) fs.mkdirSync(QA_DIR, { recursive: true }); }
@@ -112,6 +113,8 @@ function _qaScript() {
 
 async function auditPage({ url } = {}) {
   if (!url) return { ok: false, error: "url required" };
+  const safety = await assertSafeNavigationTarget(url);
+  if (!safety.safe) return { ok: false, error: `unsafe navigation target: ${safety.reason}` };
 
   const session = _getSession();
   if (!session) return { ok: false, error: "Playwright not available" };

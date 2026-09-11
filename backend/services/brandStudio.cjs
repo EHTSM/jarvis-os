@@ -42,6 +42,7 @@ function createKit(opts = {}) {
     id,
     name:       opts.name       || "My Brand",
     accountId:  opts.accountId  || null,
+    orgId:      opts.orgId      || null,
     colors: {
       primary:    opts.colors?.primary   || "#7c6af7",
       secondary:  opts.colors?.secondary || "#a78bfa",
@@ -71,11 +72,18 @@ function createKit(opts = {}) {
 }
 
 function getKit(id)      { return _load().kits[id] || null; }
-function listKits(accountId) {
+function listKits(accountId, { orgId } = {}) {
   const store = _load();
   let   list  = Object.values(store.kits);
   if (accountId) list = list.filter(k => k.accountId === accountId);
+  if (orgId)     list = list.filter(k => k.orgId === orgId);
   return list.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
+function getKitForOrg(orgId) {
+  if (!orgId) return null;
+  const store = _load();
+  return Object.values(store.kits).find(k => k.orgId === orgId) || null;
 }
 
 function updateKit(id, patch) {
@@ -161,7 +169,7 @@ function getStats() {
 }
 
 module.exports = {
-  createKit, getKit, listKits, updateKit, deleteKit,
+  createKit, getKit, listKits, getKitForOrg, updateKit, deleteKit,
   updateBrandVoice, attachLogo, addTemplate,
   buildIdentityBrief, getStats,
   DEFAULT_VOICE,

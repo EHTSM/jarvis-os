@@ -424,16 +424,26 @@ function subscribeEnterpriseEvents() {
   try {
     const bus = _bus();
     if (!bus) return;
+    // Runtime Event Bus Reliability, Isolation & Backpressure Audit
+    // (2026-08-16): same fix as the other 5 workflow files — added a real
+    // evt.type check and moved destructuring to evt.payload.
+
     // Auto-audit when EOS pipeline completes
-    bus.subscribe("eos:pipeline:completed", data => {
+    bus.subscribe("ent_sub_eos_pipeline_completed", evt => {
+      if (evt.type !== "eos:pipeline:completed") return;
+      const data = evt.payload || {};
       try { _st().addAuditEntry({ entityId: data.goalId, entityType: "eos_pipeline", action: "completed", actor: "ent_audit", detail: JSON.stringify({ healthScore: data.healthScore }).slice(0,200) }); } catch {}
     });
     // Flag high-churn customers
-    bus.subscribe("enterprise:customer:created", data => {
+    bus.subscribe("ent_sub_enterprise_customer_created", evt => {
+      if (evt.type !== "enterprise:customer:created") return;
+      const data = evt.payload || {};
       try { _st().addAuditEntry({ entityId: data.id, entityType: "customer", action: "created", actor: "ent_customer", companyId: data.companyId }); } catch {}
     });
     // Track product stage changes
-    bus.subscribe("enterprise:product:stage", data => {
+    bus.subscribe("ent_sub_enterprise_product_stage", evt => {
+      if (evt.type !== "enterprise:product:stage") return;
+      const data = evt.payload || {};
       try { _st().addAuditEntry({ entityId: data.id, entityType: "product_stage", action: `${data.from}→${data.to}`, actor: "ent_product" }); } catch {}
     });
   } catch {}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { _fetch } from '../_client';
 import { useConfirm } from './ConfirmDialog';
 import './AutonomousAgentPanel.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 async function api(method, path, body) {
     return _fetch(path, { method, ...(body ? { body: JSON.stringify(body) } : {}) });
@@ -9,23 +10,23 @@ async function api(method, path, body) {
 
 // ── Stage meta ────────────────────────────────────────────────────────────────
 const STAGE_COLOR = {
-    analyze:         '#60a5fa', plan:    '#a78bfa', patch:   '#f59e0b',
-    apply:           '#f59e0b', build_test: '#10b981', commit: '#10b981',
-    learn:           '#10b981', complete:   '#10b981', repair_start: '#ef4444',
-    repair_exhausted:'#ef4444', fatal_error: '#ef4444', cancelled: '#6b7280',
-    paused:          '#6b7280', pause_requested: '#6b7280', resumed: '#a78bfa',
+    analyze:         '#60a5fa', plan:    '#a78bfa', patch:   'var(--warning)',
+    apply:           'var(--warning)', build_test: 'var(--success)', commit: 'var(--success)',
+    learn:           'var(--success)', complete:   'var(--success)', repair_start: 'var(--danger)',
+    repair_exhausted:'var(--danger)', fatal_error: 'var(--danger)', cancelled: 'var(--text-dim)',
+    paused:          'var(--text-dim)', pause_requested: 'var(--text-dim)', resumed: '#a78bfa',
 };
 
 const STATUS_META = {
-    running:   { color: '#10b981', label: 'Running'   },
-    paused:    { color: '#6b7280', label: 'Paused'    },
-    completed: { color: '#10b981', label: 'Completed' },
-    failed:    { color: '#ef4444', label: 'Failed'    },
-    cancelled: { color: '#6b7280', label: 'Cancelled' },
+    running:   { color: 'var(--success)', label: 'Running'   },
+    paused:    { color: 'var(--text-dim)', label: 'Paused'    },
+    completed: { color: 'var(--success)', label: 'Completed' },
+    failed:    { color: 'var(--danger)', label: 'Failed'    },
+    cancelled: { color: 'var(--text-dim)', label: 'Cancelled' },
 };
 
 function StatusBadge({ status }) {
-    const m = STATUS_META[status] || { color: '#6b7280', label: status || '?' };
+    const m = STATUS_META[status] || { color: 'var(--text-dim)', label: status || '?' };
     return <span className="aap-badge" style={{ color: m.color, borderColor: m.color }}>{m.label}</span>;
 }
 
@@ -206,7 +207,7 @@ function StageProgress({ currentStage, status }) {
 // ── Mission list item ─────────────────────────────────────────────────────────
 function MissionItem({ mission, active, onSelect }) {
     return (
-        <div className={`aap-item ${active ? 'aap-item--active' : ''}`} onClick={() => onSelect(mission.agentMissionId)}>
+        <div className={`aap-item ${active ? 'aap-item--active' : ''}`} {...clickableProps(() => onSelect(mission.agentMissionId))}>
             <div className="aap-item-head">
                 <StatusBadge status={mission.status} />
                 <span className="aap-item-goal">{mission.goal?.slice(0, 60)}</span>
@@ -229,14 +230,14 @@ function StatsPanel({ stats }) {
         <div className="aap-stats-grid">
             {[
                 { l: 'Total Missions',    v: stats.total,               c: '#d1d5db' },
-                { l: 'Completed',         v: stats.completed,           c: '#10b981' },
-                { l: 'Success Rate',      v: `${stats.successRate || 0}%`,     c: '#10b981' },
+                { l: 'Completed',         v: stats.completed,           c: 'var(--success)' },
+                { l: 'Success Rate',      v: `${stats.successRate || 0}%`,     c: 'var(--success)' },
                 { l: 'Autonomy %',        v: `${stats.autonomyPct || 0}%`,     c: '#60a5fa' },
-                { l: 'Repair Success',    v: `${stats.repairSuccessRate || 0}%`,c: '#f59e0b' },
-                { l: 'Avg Repairs/Run',   v: stats.avgRepairsPerMission || 0,  c: '#f59e0b' },
+                { l: 'Repair Success',    v: `${stats.repairSuccessRate || 0}%`,c: 'var(--warning)' },
+                { l: 'Avg Repairs/Run',   v: stats.avgRepairsPerMission || 0,  c: 'var(--warning)' },
                 { l: 'Avg Duration',      v: stats.avgDurationMs > 0 ? `${Math.round(stats.avgDurationMs/1000)}s` : '—', c: '#60a5fa' },
-                { l: 'Replace Cursor',    v: `${stats.replaceCursorScore || 0}/100`, c: '#f59e0b' },
-                { l: 'Build Ooplix',      v: `${stats.buildOoplixScore || 0}/100`,   c: '#10b981' },
+                { l: 'Replace Cursor',    v: `${stats.replaceCursorScore || 0}/100`, c: 'var(--warning)' },
+                { l: 'Build Ooplix',      v: `${stats.buildOoplixScore || 0}/100`,   c: 'var(--success)' },
             ].map(({ l, v, c }) => (
                 <div key={l} className="aap-stats-tile">
                     <div className="aap-stats-val" style={{ color: c }}>{v}</div>
@@ -258,15 +259,15 @@ function BenchmarkReport({ report, onClose }) {
             </div>
             <div className="aap-bench-kpis">
                 {[
-                    { l: 'Passed',         v: `${report.passed}/${report.total}`, c: '#10b981' },
-                    { l: 'Pass Rate',      v: `${report.passRate}%`,              c: '#10b981' },
+                    { l: 'Passed',         v: `${report.passed}/${report.total}`, c: 'var(--success)' },
+                    { l: 'Pass Rate',      v: `${report.passRate}%`,              c: 'var(--success)' },
                     { l: 'Autonomy %',     v: `${report.autonomyPct}%`,           c: '#60a5fa' },
-                    { l: 'Repair Success', v: `${report.repairSuccessRate}%`,     c: '#f59e0b' },
-                    { l: 'Avg Repairs',    v: report.avgRepairs,                  c: '#f59e0b' },
+                    { l: 'Repair Success', v: `${report.repairSuccessRate}%`,     c: 'var(--warning)' },
+                    { l: 'Avg Repairs',    v: report.avgRepairs,                  c: 'var(--warning)' },
                     { l: 'Avg Duration',   v: `${Math.round(report.avgDurationMs / 1000)}s`, c: '#60a5fa' },
                     { l: 'Avg Confidence', v: `${report.avgConfidence}%`,         c: '#d1d5db' },
-                    { l: 'Replace Cursor', v: `${report.replaceCursorScore}/100`, c: '#f59e0b' },
-                    { l: 'Build Ooplix',   v: `${report.buildOoplixScore}/100`,   c: '#10b981' },
+                    { l: 'Replace Cursor', v: `${report.replaceCursorScore}/100`, c: 'var(--warning)' },
+                    { l: 'Build Ooplix',   v: `${report.buildOoplixScore}/100`,   c: 'var(--success)' },
                 ].map(({ l, v, c }) => (
                     <div key={l} className="aap-bench-kpi">
                         <div className="aap-bench-kpi-val" style={{ color: c }}>{v}</div>
@@ -359,7 +360,8 @@ export default function AutonomousAgentPanel({ cwd }) {
         try {
             const r = await api('POST', `/autonomous/${selected.agentMissionId}/pause`);
             if (r?.ok) setSelected(r.mission);
-        } catch {}
+            // A.11.2: pause failure was invisible. setError() is this file's own mechanism.
+        } catch (e) { setError(e?.message || 'Could not pause the mission.'); }
     }, [selected]);
 
     const doResume = useCallback(async () => {
@@ -377,7 +379,7 @@ export default function AutonomousAgentPanel({ cwd }) {
         try {
             const r = await api('POST', `/autonomous/${selected.agentMissionId}/cancel`);
             if (r?.ok) { setSelected(r.mission); loadMissions(); }
-        } catch {}
+        } catch (e) { setError(e?.message || 'Could not cancel the mission.'); }
     }, [selected, loadMissions]);
 
     const doRetry = useCallback(async () => {

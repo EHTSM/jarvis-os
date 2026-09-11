@@ -1,17 +1,19 @@
 /* ── MissionControl (Operator OS) ── */
 :root {
-  --mc2-bg:        #0a0c10;
-  --mc2-surface:   #0f1117;
-  --mc2-border:    rgba(255,255,255,0.07);
-  --mc2-border-hi: rgba(255,255,255,0.12);
-  --mc2-green:     #22c55e;
-  --mc2-green-dim: rgba(34,197,94,0.12);
-  --mc2-yellow:    #eab308;
-  --mc2-red:       #ef4444;
-  --mc2-blue:      #3b82f6;
-  --mc2-text:      #e2e8f0;
-  --mc2-muted:     #64748b;
-  --mc2-dim:       #1e2130;
+  /* B19.2.2: private dark palette aliased onto the real tokens — --mc2-muted
+     (#64748b) measured 3.28:1 on --bg and the surface never themed. */
+  --mc2-bg:        var(--bg);
+  --mc2-surface:   var(--surface);
+  --mc2-border:    var(--border);
+  --mc2-border-hi: var(--border-strong);
+  --mc2-green:     var(--success);
+  --mc2-green-dim: var(--success-muted);
+  --mc2-yellow:    var(--warning);
+  --mc2-red:       var(--danger);
+  --mc2-blue:      var(--info);
+  --mc2-text:      var(--text);
+  --mc2-muted:     var(--text-dim);
+  --mc2-dim:       var(--text-faint);
 }
 
 /* ── Root ── */
@@ -555,14 +557,14 @@
 .mc2-welcome-steps { display: flex; flex-direction: column; gap: 10px; }
 .mc2-welcome-step {
   display: flex; gap: 12px; align-items: flex-start;
-  font-size: 12px; color: #a1a1aa; line-height: 1.5;
+  font-size: 12px; color: var(--text-dim); line-height: 1.5;
 }
 .mc2-welcome-step strong { color: #e4e4e7; }
-.mc2-welcome-step em { color: #60a5fa; font-style: normal; }
+.mc2-welcome-step em { color: var(--info); font-style: normal; }
 .mc2-welcome-num {
   width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
   background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.35);
-  color: #60a5fa; font-size: 11px; font-weight: 700;
+  color: var(--info); font-size: 11px; font-weight: 700;
   display: flex; align-items: center; justify-content: center; margin-top: 1px;
 }
 .mc2-welcome-step kbd {
@@ -570,7 +572,7 @@
   border-radius: 4px; padding: 1px 5px; font-size: 10px; font-family: inherit; color: #d4d4d8;
 }
 .mc2-welcome-inline-btn {
-  background: none; border: none; color: #60a5fa; cursor: pointer;
+  background: none; border: none; color: var(--info); cursor: pointer;
   font-size: 12px; font-family: inherit; padding: 0; text-decoration: underline;
 }
 .mc2-welcome-inline-btn:hover { color: #93c5fd; }
@@ -589,13 +591,13 @@
 }
 .mc2-stop-icon  { font-size: 32px; }
 .mc2-stop-title { font-size: 16px; font-weight: 700; color: #f9fafb; }
-.mc2-stop-body  { font-size: 13px; color: #9ca3af; text-align: center; line-height: 1.5; }
+.mc2-stop-body  { font-size: 13px; color: var(--text-dim); text-align: center; line-height: 1.5; }
 .mc2-stop-actions { display: flex; gap: 10px; margin-top: 4px; }
 .mc2-stop-btn {
   padding: 8px 20px; border-radius: 7px; font-size: 13px;
   font-family: inherit; cursor: pointer; border: 1px solid transparent; transition: background 0.12s;
 }
-.mc2-stop-btn--cancel  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: #9ca3af; }
+.mc2-stop-btn--cancel  { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: var(--text-dim); }
 .mc2-stop-btn--cancel:hover { background: rgba(255,255,255,0.1); }
-.mc2-stop-btn--confirm { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #f87171; }
+.mc2-stop-btn--confirm { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: var(--danger); }
 .mc2-stop-btn--confirm:hover { background: rgba(239,68,68,0.28); }

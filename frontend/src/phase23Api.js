@@ -52,7 +52,7 @@ export async function listReviews(params = {}) {
 export async function getReview(reviewId) {
   return _fetch(`/p23/review/${reviewId}`);
 }
-// ── 24 alias — code reviews are in p23 but DeveloperCopilotCenter imports from phase24Api ──
+// ── 24 alias — code reviews are in p23 but DeveloperCopilotV2 imports from phase24Api ──
 
 // ── 23C Release Engine ────────────────────────────────────────────────
 export async function listReleases(params = {}) {

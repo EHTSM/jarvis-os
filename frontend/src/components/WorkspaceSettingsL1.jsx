@@ -7,6 +7,18 @@ import { useConfirm } from "./ConfirmDialog";
 const HEALTH_COLOR = HEALTH_COLOR_SH;
 const DIAG_COLOR   = DIAG_COLOR_SH;
 
+// A real fetch failure is tracked as a distinct error state instead of
+// being silently discarded by `.catch(() => {})`, which previously made
+// "backend unreachable" look identical to a genuine empty list.
+function L1ErrorState({ error, onRetry }) {
+  return (
+    <div className="k2-error">
+      <span>Couldn't load this data — {error}.</span>
+      <button className="k2-error-retry" onClick={onRetry}>Retry</button>
+    </div>
+  );
+}
+
 function PluginsPanel() {
   const [plugins,   setPlugins]   = useState([]);
   const [loading,   setLoading]   = useState(true);
@@ -14,11 +26,12 @@ function PluginsPanel() {
   const [form,      setForm]      = useState({ id: "", name: "", version: "1.0.0", description: "", author: "", capabilities: "", category: "general" });
   const [saving,    setSaving]    = useState(false);
   const [err,       setErr]       = useState(null);
+  const [loadError, setLoadError] = useState(null);
   const [confirm, ConfirmUI]      = useConfirm();
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/plugins").then(r => setPlugins(r.plugins || [])).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setLoadError(null);
+    _fetch("/plugins").then(r => setPlugins(r.plugins || [])).catch(e => setLoadError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
 
@@ -42,19 +55,32 @@ function PluginsPanel() {
     finally { setSaving(false); }
   };
 
+  // Mission 58: both handlers previously swallowed a failure via
+  // .catch(() => {}) and called reload() unconditionally regardless of
+  // success — a failed toggle/uninstall was completely silent (Mission
+  // 43B finding). Reuses this file's own handleInstall setErr() pattern,
+  // and only reloads on genuine success (matching handleInstall's own
+  // "only advance state on success" shape).
   const toggle = async (p) => {
     const endpoint = p.enabled ? "/plugins/disable" : "/plugins/enable";
-    await _fetch(endpoint, { method: "POST", body: JSON.stringify({ pluginId: p.id }) }).catch(() => {});
-    reload();
+    try {
+      await _fetch(endpoint, { method: "POST", body: JSON.stringify({ pluginId: p.id }) });
+      setErr(null);
+      reload();
+    } catch (e) { setErr(e.message || "Could not update plugin state"); }
   };
 
   const uninstall = async (pluginId) => {
     if (!await confirm({ title: `Uninstall "${pluginId}"?`, message: 'This plugin will be removed. You can reinstall it at any time.', danger: true, confirmLabel: 'Uninstall' })) return;
-    await _fetch("/plugins/uninstall", { method: "POST", body: JSON.stringify({ pluginId }) }).catch(() => {});
-    reload();
+    try {
+      await _fetch("/plugins/uninstall", { method: "POST", body: JSON.stringify({ pluginId }) });
+      setErr(null);
+      reload();
+    } catch (e) { setErr(e.message || "Could not uninstall plugin"); }
   };
 
   if (loading) return <div className="k2-loading">Loading plugins…</div>;
+  if (loadError) return <L1ErrorState error={loadError} onRetry={reload} />;
 
   return (
     <div className="l1-panel">
@@ -110,7 +136,7 @@ function PluginsPanel() {
               </div>
               <div className="l1-plugin-actions">
                 <span className="l1-health-dot" style={{ background: HEALTH_COLOR[p.health?.status || "unknown"] }} title={p.health?.message || "unknown"} />
-                <span className="k2-badge" style={{ background: p.enabled ? "rgba(82,214,138,0.1)" : "var(--surface)", color: p.enabled ? "#52d68a" : "var(--text-faint)" }}>{p.enabled ? "enabled" : "disabled"}</span>
+                <span className="k2-badge" style={{ background: p.enabled ? "rgba(82,214,138,0.1)" : "var(--surface)", color: p.enabled ? "var(--success)" : "var(--text-faint)" }}>{p.enabled ? "enabled" : "disabled"}</span>
                 <button className="k5-toggle-btn" onClick={() => toggle(p)}>{p.enabled ? "Disable" : "Enable"}</button>
                 <button className="k2-revoke-btn" onClick={() => uninstall(p.id)}>Uninstall</button>
               </div>
@@ -125,11 +151,12 @@ function PluginsPanel() {
 function PluginHealthPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
   const [checking,setChecking]= useState(false);
 
   const reload = () => {
-    setLoading(true);
-    _fetch("/plugins/health").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
+    setLoading(true); setError(null);
+    _fetch("/plugins/health").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
   };
   useEffect(reload, []);
 
@@ -141,6 +168,7 @@ function PluginHealthPanel() {
   };
 
   if (loading) return <div className="k2-loading">Loading health…</div>;
+  if (error) return <L1ErrorState error={error} onRetry={reload} />;
   if (!data)   return <div className="k2-empty">No health data.</div>;
 
   const { summary, plugins } = data;
@@ -183,14 +211,17 @@ function PluginHealthPanel() {
 function PluginDiagPanel() {
   const [data,    setData]    = useState(null);
   const [loading, setLoading] = useState(true);
+  const [error,   setError]   = useState(null);
+  const [retryToken, setRetryToken] = useState(0);
   const [filter,  setFilter]  = useState("");
 
   useEffect(() => {
-    setLoading(true);
-    _fetch("/plugins/diagnostics").then(r => setData(r)).catch(() => {}).finally(() => setLoading(false));
-  }, []);
+    setLoading(true); setError(null);
+    _fetch("/plugins/diagnostics").then(r => setData(r)).catch(e => setError(e.message || "Failed to load")).finally(() => setLoading(false));
+  }, [retryToken]);
 
   if (loading) return <div className="k2-loading">Loading diagnostics…</div>;
+  if (error) return <L1ErrorState error={error} onRetry={() => setRetryToken(t => t + 1)} />;
   if (!data)   return <div className="k2-empty">No diagnostic data.</div>;
 
   const diagMap = data.diagnostics || {};

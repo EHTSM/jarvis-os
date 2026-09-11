@@ -16,6 +16,7 @@
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const metrics    = require("../services/launchMetrics.cjs");
 const onboarding = require("../services/onboardingEngine.cjs");
@@ -29,7 +30,7 @@ const creditEngine = require("../services/creditEngine.cjs");
 
 router.use("/launch", requireAuth);
 
-function _account(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _account(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req)    { return req.user?.plan || "trial"; }
 
 // ══════════════════════════════════════════════════════════════════
@@ -218,6 +219,18 @@ router.post("/launch/academy/enroll/:pathId", (req, res) => {
 router.post("/launch/academy/:pathId/module/:moduleId", (req, res) => {
   try {
     const result = academy.completeModule(_account(req), req.params.pathId, req.params.moduleId);
+    res.json({ ok: true, ...result });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// V6 Phase 6 (Category E: Education OS) — real AI-generated custom
+// learning path, merged into the existing catalogue (see academyEngine.cjs).
+router.post("/launch/academy/paths/generate", rateLimiter(15, 60_000, "academy-path-generate"), async (req, res) => {
+  try {
+    const { topic, level, moduleCount } = req.body || {};
+    if (!topic) return res.status(400).json({ error: "topic required" });
+    const result = await academy.generateCustomPath({ topic, level, moduleCount, createdBy: _account(req) });
+    if (!result.ok) return res.status(400).json({ error: result.error });
     res.json({ ok: true, ...result });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });

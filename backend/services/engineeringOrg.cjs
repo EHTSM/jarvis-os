@@ -60,24 +60,83 @@ function _mem()    { try { return require("./engineeringMemoryEngine.cjs");     
 // V2 workflow
 function _wf()     { try { return require("./engineeringOrgWorkflow.cjs");       } catch { return null; } }
 function _st()     { try { return require("./engineeringOrgState.cjs");          } catch { return null; } }
+function _guard()  { try { return require("./autonomousMissionGuard.cjs");       } catch { return null; } }
 
 // ── Shared helpers (mirrors patterns in agentRuntimeSupervisor) ───────────────
+
+// A.5.2 runtime-stability finding: same root cause as
+// agentRuntimeSupervisor.cjs's identically-named guard — objective strings
+// embedding a live count ("QA: 42 completed missions need verification" vs
+// "QA: 58...") were never recognized as duplicates. Digit runs normalized
+// to "#" before comparing.
+function _normalizeObjective(s) {
+  return (s || "").replace(/\d+/g, "#");
+}
 
 function _missionExists(objectivePrefix) {
   try {
     const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+    const target = _normalizeObjective(objectivePrefix?.slice(0, 50));
     return (all.missions || []).some(m =>
       (m.status === "active" || m.status === "pending" || m.status === "planned") &&
-      m.objective?.slice(0, 50) === objectivePrefix?.slice(0, 50)
+      _normalizeObjective(m.objective?.slice(0, 50)) === target
     );
   } catch { return false; }
 }
 
+// JARVIS INCIDENT REPAIR (Mission 83 — P0 autonomous feedback-loop fix):
+// _missionExists() above (this file's own digit-normalized dedup, from the
+// earlier A.5.2 runtime-stability fix) only ever compares non-terminal
+// missions with no cooldown window and no org scoping — a signal whose
+// mission had already gone terminal could be immediately re-created on the
+// very next tick. autonomousMissionGuard.cjs (shared with
+// agentRuntimeSupervisor.cjs — see that file's own header for the full
+// root-cause writeup) now runs AFTER _missionExists() has already had its
+// chance to reject an exact-shape duplicate, adding a cooldown window for
+// terminal missions and a bounded admission cap on total in-flight
+// autonomous missions. _missionExists()/_normalizeObjective() above are
+// left completely unchanged as an additional, narrower safety net — not
+// replaced, not weakened.
 function _mission(agentId, spec, s) {
   if (!spec.objective?.trim()) return null;
   if (_missionExists(spec.objective)) return null;
+
+  const guard = _guard();
+  const orgId = (typeof spec.orgId === "string" && spec.orgId) || (typeof spec.metadata?.orgId === "string" && spec.metadata.orgId) || null;
+
+  // Mission 88: admission decision and mission creation now run as ONE
+  // atomic unit under missionMemory's own cross-process lock (via the
+  // guard's admitAndCreateAutonomousMission()) — closing the TOCTOU race
+  // where two concurrent calls could each observe "allowed" against the
+  // same pre-write snapshot before either created a mission. See
+  // autonomousMissionGuard.cjs's own comment for the full invariant.
+  const createFn = (decision) => _orch()?.createManual({
+    ...spec,
+    goal: spec.objective,
+    metadata: {
+      ...(spec.metadata || {}),
+      autoCreatedBy: spec.metadata?.autoCreatedBy || agentId,
+      autonomous: true,
+      signalType: decision.signalType,
+      signalKey:  decision.signalKey,
+    },
+  });
+
+  const outcome = guard
+    ? guard.admitAndCreateAutonomousMission({ objective: spec.objective, autoCreatedBy: spec.metadata?.autoCreatedBy || agentId, orgId, createFn })
+    : { allowed: true, signalType: null, signalKey: null, mission: createFn({ signalType: null, signalKey: null }) };
+
+  if (!outcome.allowed) {
+    if (s) {
+      s.lastDecision   = `Deferred (${outcome.reason || "guard"}): ${spec.objective?.slice(0, 60)}`;
+      s.lastDecisionAt = new Date().toISOString();
+    }
+    try { _bus()?.emit(`agent:${agentId}:mission_deferred`, { reason: outcome.reason, signalType: outcome.signalType }); } catch {}
+    return null;
+  }
+
   try {
-    const m = _orch()?.createManual({ ...spec, goal: spec.objective });
+    const m = outcome.mission;
     if (m && s) {
       s.missionsCreated = (s.missionsCreated || 0) + 1;
       s.lastDecision    = `Created: ${spec.objective?.slice(0, 60)}`;
@@ -454,6 +513,9 @@ async function _mobileEngTick(s) {
 }
 
 // 8. Database Engineer — data file integrity, schema health, storage growth
+const _DB_TICK_FULL_SCAN_EVERY_N = 10; // full content validation every 10th tick (~40min at this persona's 240s interval)
+const _DB_TICK_SKIP_VALIDATION = new Set(["missions.json", "task-queue.json"]); // already validated on their own read/write paths
+
 async function _databaseEngTick(s) {
   _setObj(s, "Monitoring data integrity and storage health");
   let created = 0;
@@ -465,13 +527,23 @@ async function _databaseEngTick(s) {
     let totalSize = 0;
     let corruptedFiles = [];
     const jsonFiles = fs.readdirSync(dataDir).filter(f => f.endsWith(".json"));
+
+    // Cheap, every-tick: total size via stat only — no file content read.
     for (const f of jsonFiles) {
-      try {
-        const content = fs.readFileSync(path.join(dataDir, f), "utf8");
-        totalSize += content.length;
-        JSON.parse(content); // validation
-      } catch {
-        corruptedFiles.push(f);
+      try { totalSize += fs.statSync(path.join(dataDir, f)).size; } catch { /* file may have been removed mid-scan — skip */ }
+    }
+
+    // Expensive, periodic: full content read + parse validation.
+    s._dbTickCount = (s._dbTickCount || 0) + 1;
+    if (s._dbTickCount % _DB_TICK_FULL_SCAN_EVERY_N === 1) {
+      for (const f of jsonFiles) {
+        if (_DB_TICK_SKIP_VALIDATION.has(f)) continue;
+        try {
+          const content = fs.readFileSync(path.join(dataDir, f), "utf8");
+          JSON.parse(content); // validation
+        } catch {
+          corruptedFiles.push(f);
+        }
       }
     }
     if (corruptedFiles.length > 0) {
@@ -620,7 +692,8 @@ async function _qaEngTick(s) {
   let created = 0;
 
   try {
-    const all = _mm()?.listMissions({ limit: 300 }) || { missions: [] };
+    const mm = _mm();
+    const all = mm?.listMissions({ limit: 300 }) || { missions: [] };
     const recentCompleted = (all.missions || []).filter(m =>
       m.status === "completed" && !m.metadata?.qaVerified &&
       Date.now() - new Date(m.createdAt).getTime() < 7 * 24 * 3600_000
@@ -636,7 +709,19 @@ async function _qaEngTick(s) {
         ],
         metadata: { autoCreatedBy: s.id, domain: "qa", missionCount: recentCompleted.length },
       }, s);
-      if (m) created++;
+      if (m) {
+        created++;
+        // A.5.2 fix — same unclosed-loop pattern as agentRuntimeSupervisor.cjs's
+        // tester tick: mark the missions this check just counted so the same
+        // (growing) set isn't re-flagged and re-queued on every future tick.
+        for (const rc of recentCompleted) {
+          try {
+            mm.updateMission(rc.id, {
+              metadata: { ...(rc.metadata || {}), qaVerified: true, qaVerifiedAt: new Date().toISOString() },
+            });
+          } catch { /* one mission failing to update must not block the rest */ }
+        }
+      }
     }
 
     // Knowledge gaps (graph) = coverage gaps

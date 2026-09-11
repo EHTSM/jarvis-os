@@ -17,7 +17,7 @@
 
 const fs                   = require("fs");
 const path                 = require("path");
-const { execSync, spawn }  = require("child_process");
+const { execFileSync, spawn } = require("child_process");
 
 const ROOT   = path.join(__dirname, "../..");
 const DATA   = path.join(ROOT, "data", "terminal-controller.json");
@@ -41,17 +41,157 @@ function _save(d) {
   fs.writeFileSync(DATA, JSON.stringify(d, null, 2));
 }
 
-// ── SAFE COMMAND WHITELIST ────────────────────────────────────────────────────
-// Only allow commands that cannot destroy data without explicit force flags.
-const BLOCKED_PATTERNS = [
-  /rm\s+-rf\s+\/(?!tmp|private\/tmp)/,   // rm -rf / (allow tmp)
-  /mkfs\b/,
-  /dd\s+if=/,
-  /:\(\)\{.*\}/,                          // fork bomb
-];
+// ── SAFE COMMAND ALLOW-LIST ───────────────────────────────────────────────────
+// Security Hardening (Production Security Hardening mission): the previous
+// implementation ran ANY string via execSync()/spawn("sh",["-c",cmd]) with
+// the full process env inherited, gated only by a denylist of destructive
+// patterns (rm -rf /, mkfs, dd, fork bombs). That denylist does nothing
+// against command chaining/substitution/piping (`curl x|sh`, `; env`,
+// `$(cat /etc/passwd)`, reverse shells, etc.) — any authenticated user could
+// run arbitrary shell and read every secret in process.env. This replaces
+// free-form shell execution with a strict allow-list of known-safe binaries,
+// each invoked via execFileSync (argv array, no shell parsing at all — no
+// `;`, `|`, `&&`, `$()`, backticks, or redirection are ever interpreted) and
+// a minimal, explicitly-scoped environment (no ambient secrets).
+//
+// Only the small set of commands this engineering pipeline actually needs
+// (node/npm/git read-only + test/build scripts already defined in
+// package.json) are reachable. Anything else is rejected before exec.
+const ALLOWED_COMMANDS = {
+  "node":   { args: (rest) => _assertNodeArgs(rest) },
+  "npm":    { args: (rest) => _assertNpmArgs(rest) },
+  "git":    { args: (rest) => _assertGitArgs(rest) },
+  "sleep":  { args: (rest) => rest.length === 1 && /^\d{1,2}$/.test(rest[0]) },
+  "docker": { args: (rest) => _assertDockerArgs(rest) },
+};
+
+// node: --version, or running a single test file that resolves inside this
+// repo's tests/ directory (path traversal blocked via realpath containment
+// check) — matches runTests()'s only legitimate use of a bare `node <file>`.
+function _assertNodeArgs(rest) {
+  if (rest.length === 1 && rest[0] === "--version") return true;
+  if (rest.length === 1) return _isPathInsideTests(rest[0]);
+  return false;
+}
+function _isPathInsideTests(p) {
+  try {
+    const testsRoot = fs.realpathSync(path.join(ROOT, "tests"));
+    const target    = fs.realpathSync(path.resolve(ROOT, p));
+    return target === testsRoot || target.startsWith(testsRoot + path.sep);
+  } catch { return false; }
+}
+
+// npm: only the pre-defined scripts in this repo's package.json, plus
+// read-only introspection (--version, ls, list). No `npm install`/`exec`/
+// `run-script` with arbitrary script names, no `--` passthrough of extra
+// flags that could inject arbitrary commands via npm lifecycle hooks.
+const ALLOWED_NPM_SCRIPTS = new Set([
+  "test", "test:api", "test:runtime", "test:runtime:fast",
+  "test:stress", "test:stress:http", "test:burnin",
+  "build:frontend", "env:check", "security:no-raw-exec",
+]);
+function _assertNpmArgs(rest) {
+  if (rest.length === 1 && (rest[0] === "--version" || rest[0] === "-v")) return true;
+  if (rest.length === 2 && rest[0] === "run" && ALLOWED_NPM_SCRIPTS.has(rest[1])) return true;
+  return false;
+}
+
+// git: read-only status/log/diff introspection only. No commit/push/reset/
+// checkout/clean — those remain available only through the existing gated,
+// approval-checked git actions in engineeringCapabilities.cjs/editorController.cjs,
+// never through this generic terminal endpoint.
+const ALLOWED_GIT_SUBCOMMANDS = new Set(["status", "log", "diff", "show", "branch", "rev-parse"]);
+function _assertGitArgs(rest) {
+  if (!rest.length) return false;
+  if (!ALLOWED_GIT_SUBCOMMANDS.has(rest[0])) return false;
+  // Remaining args must be plain flags/refs — no shell metacharacters
+  // possible anyway (execFile does not invoke a shell), but keep the
+  // argument shape sane (short refs/paths, no absolute traversal).
+  return rest.slice(1).every(a => typeof a === "string" && a.length < 200 && !a.includes("\0"));
+}
+
+function _assertFlags(rest, allowed) {
+  return rest.length >= 1 && allowed.includes(rest[0]);
+}
+
+// docker (FINAL-JARVIS-DREAM-CERTIFICATION.md P2 finding): confirmed no
+// Docker execution capability exists anywhere in the codebase, and the
+// broader agents/terminalAgent.cjs's safe-exec.js sandbox deliberately
+// hard-blocks it outright (correct there — that path is a wide-open
+// general-purpose agent shell tool, not the place for a new
+// container-control surface). Adding it here instead, in this file's own
+// narrow, per-binary-allowlisted pattern, matching the same discipline
+// already applied to node/npm/git above:
+//   - Read-only introspection is unrestricted in scope (ps, images,
+//     inspect, logs, version, stats) — cannot mutate anything.
+//   - Lifecycle control (start/stop/restart/rm) is restricted to a single
+//     trailing container-name/id argument — no image pulls, no `run`
+//     (which could execute arbitrary attacker-supplied commands inside a
+//     new container with whatever mount/network flags accompany it — a
+//     real RCE-equivalent risk), no `exec` (same risk against a running
+//     container), no `build`, no `--privileged`/volume-mount flags of any
+//     kind. A name/id must also pass a strict format check (no shell
+//     metacharacters possible via execFileSync anyway, but keeping the
+//     shape sane matches _assertGitArgs's existing discipline).
+const DOCKER_READONLY_SUBCOMMANDS  = new Set(["ps", "images", "version", "info", "inspect", "logs", "stats", "top", "port"]);
+const DOCKER_LIFECYCLE_SUBCOMMANDS = new Set(["start", "stop", "restart"]);
+const _isSafeContainerRef = (s) => typeof s === "string" && s.length > 0 && s.length < 128 && /^[a-zA-Z0-9][a-zA-Z0-9_.-]*$/.test(s);
+
+function _assertDockerArgs(rest) {
+  if (!rest.length) return false;
+  const [sub, ...args] = rest;
+
+  if (sub === "ps") {
+    // Allow common read-only flags only.
+    return args.every(a => ["-a", "--all", "-q", "--quiet", "--no-trunc"].includes(a));
+  }
+  if (DOCKER_READONLY_SUBCOMMANDS.has(sub)) {
+    if (sub === "logs") {
+      // `docker logs [--tail N] <container>` — bounded tail, single real target.
+      if (args.length === 1) return _isSafeContainerRef(args[0]);
+      if (args.length === 3 && args[0] === "--tail" && /^\d{1,4}$/.test(args[1])) return _isSafeContainerRef(args[2]);
+      return false;
+    }
+    if (sub === "version" || sub === "info") return args.length === 0;
+    // inspect/stats/top/port/images: single container/image ref, or none
+    // (images with no args lists all — read-only either way).
+    return args.length === 0 || (args.length === 1 && _isSafeContainerRef(args[0]));
+  }
+
+  if (DOCKER_LIFECYCLE_SUBCOMMANDS.has(sub)) {
+    return args.length === 1 && _isSafeContainerRef(args[0]);
+  }
+
+  return false;   // build/run/exec/rm/rmi/pull/push/network/volume — all blocked
+}
+
+// Minimal environment for allow-listed commands: PATH (needed to locate the
+// binary) plus HOME/cwd-relevant basics. Explicitly excludes every other
+// process.env key, so no API key, JWT secret, DB credential, etc. is ever
+// visible to a spawned command or leakable via `env`/`printenv` (which
+// aren't allow-listed anyway, closing that avenue too).
+function _minimalEnv() {
+  return {
+    PATH: process.env.PATH || "/usr/bin:/bin:/usr/local/bin",
+    HOME: process.env.HOME || "",
+    NODE_ENV: process.env.NODE_ENV || "development",
+  };
+}
+
+// Parses a command string into [binary, ...args] the same way a shell would
+// split whitespace-separated tokens, WITHOUT invoking a shell — so quoting
+// tricks, `;`, `|`, `&&`, `$()`, backticks, and redirection are inert; they
+// just become literal argv tokens that fail the allow-list checks above.
+function _parseCommand(cmd) {
+  const tokens = String(cmd).trim().split(/\s+/).filter(Boolean);
+  return { bin: tokens[0] || "", rest: tokens.slice(1) };
+}
 
 function _isSafe(cmd) {
-  return !BLOCKED_PATTERNS.some(p => p.test(cmd));
+  const { bin, rest } = _parseCommand(cmd);
+  const spec = ALLOWED_COMMANDS[bin];
+  if (!spec) return false;
+  return !!spec.args(rest);
 }
 
 // ── execute ───────────────────────────────────────────────────────────────────
@@ -72,11 +212,12 @@ function execute(cmd, opts = {}) {
 
   const t0 = Date.now();
   try {
-    const out = execSync(cmd, {
+    const { bin, rest } = _parseCommand(cmd);
+    const out = execFileSync(bin, rest, {
       cwd,
       timeout,
       stdio: ["ignore","pipe","pipe"],
-      env: { ...process.env },
+      env: _minimalEnv(),
     }).toString();
 
     record.status   = "success";
@@ -121,6 +262,18 @@ function execute(cmd, opts = {}) {
 // Returns a cmdId; output lines are collected in the commands store.
 // For real streaming use the /computer/terminal/stream/:cmdId SSE endpoint.
 
+// Timeout, Cancellation & Long-Running Operation Safety Audit (2026-08-16):
+// this function's own sibling, execute() above, bounds its command via
+// execFileSync's real timeout option — but streamOutput() spawned the
+// identical allowlisted command (same _isSafe() check, same
+// ALLOWED_COMMANDS) with zero timeout and zero kill path anywhere in this
+// function. A hung streamed command (reachable live via the real, mounted
+// POST /computer/terminal/stream route) ran forever with no operator-visible
+// bound. Fixed with the same real timeout+process-group-kill pattern already
+// used by backend/core/safe-exec.js (this codebase's own established,
+// correct implementation for exactly this problem) — not a new mechanism.
+const STREAM_TIMEOUT_MS = 60_000;
+
 function streamOutput(cmd, opts = {}) {
   if (!cmd) return { ok: false, error: "command required" };
   if (!_isSafe(cmd)) return { ok: false, error: "Command blocked by safety policy" };
@@ -134,7 +287,24 @@ function streamOutput(cmd, opts = {}) {
   d.stats.executed++;
   _save(d);
 
-  const child = spawn("sh", ["-c", cmd], { cwd, stdio: ["ignore","pipe","pipe"], env: process.env });
+  const { bin, rest } = _parseCommand(cmd);
+  // detached: true (POSIX) lets the timeout kill the whole process group,
+  // not just the immediate child — matching safe-exec.js's own reasoning
+  // for why a plain child.kill() isn't enough for commands that themselves
+  // spawn children (e.g. npm scripts, shell pipelines).
+  const child = spawn(bin, rest, { cwd, stdio: ["ignore","pipe","pipe"], env: _minimalEnv(), detached: process.platform !== "win32" });
+
+  let settled = false;
+  const timer = setTimeout(() => {
+    if (settled) return;
+    try {
+      if (process.platform !== "win32") process.kill(-child.pid, "SIGKILL");
+      else child.kill("SIGKILL");
+    } catch {
+      try { child.kill("SIGKILL"); } catch { /* already dead */ }
+    }
+  }, opts.timeoutMs || STREAM_TIMEOUT_MS);
+  if (typeof timer.unref === "function") timer.unref();
 
   child.stdout.on("data", chunk => {
     const lines = chunk.toString().split("\n").filter(Boolean);
@@ -148,6 +318,9 @@ function streamOutput(cmd, opts = {}) {
   });
 
   child.on("close", code => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(timer);
     const d2 = _load();
     const r  = d2.commands[cmdId];
     if (r) {
@@ -155,6 +328,21 @@ function streamOutput(cmd, opts = {}) {
       r.exitCode  = code;
       r.completedAt = _ts();
       if (code === 0) d2.stats.succeeded++; else d2.stats.failed++;
+      _save(d2);
+    }
+  });
+
+  child.on("error", err => {
+    if (settled) return;
+    settled = true;
+    clearTimeout(timer);
+    const d2 = _load();
+    const r  = d2.commands[cmdId];
+    if (r) {
+      r.status      = "failed";
+      r.error       = err.message;
+      r.completedAt = _ts();
+      d2.stats.failed++;
       _save(d2);
     }
   });
@@ -214,7 +402,7 @@ function retry(cmdId, maxAttempts = 3) {
     lastResult = execute(r.cmd, { cwd: r.cwd, timeoutMs: 60000 });
     if (lastResult.ok) break;
     // Brief wait between retries (blocking — acceptable for short retries)
-    try { execSync("sleep 2", { timeout: 3000 }); } catch {}
+    try { execFileSync("sleep", ["2"], { timeout: 3000 }); } catch {}
   }
 
   if (lastResult?.ok) {
@@ -247,10 +435,12 @@ function recover(cmdId, opts = {}) {
     return { ok: true, cmdId, strategy, message: `Applied recovery strategy: ${strategy}` };
   }
 
-  // Fallback: re-run with npm install if missing module
+  // `npm install` is intentionally not in the terminal allow-list (arbitrary
+  // dependency installation at runtime is a supply-chain risk this endpoint
+  // must not auto-trigger) — surface the diagnosis instead of silently
+  // failing the allow-list check.
   if (r.error?.includes("Cannot find module")) {
-    const installResult = execute("npm install", { cwd: r.cwd, timeoutMs: 120000 });
-    if (installResult.ok) return retry(cmdId, 2);
+    return { ok: false, cmdId, error: "Missing module detected — run `npm install` manually; automatic dependency installation is disabled for security." };
   }
 
   return { ok: false, cmdId, error: "No recovery strategy available" };
@@ -262,9 +452,9 @@ function verify(context = "general") {
   const dv = _dv();
   if (!dv) {
     // Fallback: basic node/git checks
-    const nodeOk   = (() => { try { execSync("node --version", { timeout: 3000, stdio: "ignore" }); return true; } catch { return false; } })();
-    const gitOk    = (() => { try { execSync("git status", { cwd: ROOT, timeout: 3000, stdio: "ignore" }); return true; } catch { return false; } })();
-    const npmOk    = (() => { try { execSync("npm --version", { timeout: 3000, stdio: "ignore" }); return true; } catch { return false; } })();
+    const nodeOk   = (() => { try { execFileSync("node", ["--version"], { timeout: 3000, stdio: "ignore" }); return true; } catch { return false; } })();
+    const gitOk    = (() => { try { execFileSync("git", ["status"], { cwd: ROOT, timeout: 3000, stdio: "ignore" }); return true; } catch { return false; } })();
+    const npmOk    = (() => { try { execFileSync("npm", ["--version"], { timeout: 3000, stdio: "ignore" }); return true; } catch { return false; } })();
     const d = _load();
     d.stats.verified++;
     _save(d);
@@ -285,7 +475,7 @@ function verify(context = "general") {
 // ── runTests ─────────────────────────────────────────────────────────────────
 
 function runTests(testFile = null, opts = {}) {
-  const cmd = testFile ? `node "${testFile}"` : "npm test";
+  const cmd = testFile ? `node ${testFile}` : "npm run test:runtime";
   const result = execute(cmd, { timeoutMs: 120000, ...opts });
   const failures = detectFailures(result.output || result.error || "", result.exitCode ?? 1);
 

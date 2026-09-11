@@ -2,7 +2,11 @@
 .ctx-sidebar {
   width: 220px;
   flex-shrink: 0;
-  background: #08090e;
+  /* A.11.1: was #08090e — a hardcoded canvas that ignored the theme, the same
+     bypass class removed from GlobalActivityFeed in A.11 and across ~200 files
+     in B19.2.2/B19.2.3. This drawer renders on Execution, Reliability and
+     Jarvis Brain. */
+  background: var(--bg);
   border-left: 1px solid rgba(255, 255, 255, 0.06);
   display: flex;
   flex-direction: column;
@@ -24,13 +28,13 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 .ctx-refresh-btn {
   background: none;
   border: none;
-  color: #4a5470;
+  color: var(--text-faint);
   font-size: 14px;
   cursor: pointer;
   padding: 0 2px;
@@ -72,7 +76,7 @@
 .ctx-metric__lbl {
   display: block;
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
@@ -90,7 +94,7 @@
   flex-shrink: 0;
 }
 .ctx-dot--green { background: #22c55e; box-shadow: 0 0 4px #22c55e88; animation: ctx-pulse-anim 2s ease-in-out infinite; }
-.ctx-dot--red   { background: #ef4444; }
+.ctx-dot--red   { background: var(--danger); }
 @keyframes ctx-pulse-anim {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -98,7 +102,7 @@
 
 .ctx-pulse__label {
   font-size: 10px;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 /* Scrollable sections area */
@@ -138,12 +142,12 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 .ctx-section__arrow {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
 }
 
 .ctx-section__body {
@@ -153,7 +157,7 @@
 /* Loading / empty */
 .ctx-loading, .ctx-empty {
   font-size: 10px;
-  color: #374151;
+  color: var(--text-faint);
   font-style: italic;
   padding: 4px 2px;
   text-align: center;
@@ -201,7 +205,7 @@
 
 .ctx-mission-pct {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   flex-shrink: 0;
   width: 24px;
   text-align: right;
@@ -243,7 +247,7 @@
 
 .ctx-rec-text {
   font-size: 10px;
-  color: #94a3b8;
+  color: var(--text-dim);
   line-height: 1.4;
 }
 
@@ -258,7 +262,7 @@
 
 .ctx-dec-text {
   font-size: 10px;
-  color: #94a3b8;
+  color: var(--text-dim);
   line-height: 1.4;
   overflow: hidden;
   display: -webkit-box;
@@ -268,7 +272,7 @@
 
 .ctx-dec-conf {
   font-size: 9px;
-  color: #4a5470;
+  color: var(--text-faint);
   margin-top: 2px;
 }
 
@@ -290,7 +294,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 10px;
-  color: #64748b;
+  color: var(--text-dim);
   transition: border-color 0.15s, color 0.15s, background 0.15s;
   font-family: inherit;
 }
@@ -305,7 +309,7 @@
 .ctx-footer {
   padding: 5px 10px;
   font-size: 9px;
-  color: #1e2333;
+  color: var(--text-faint);
   text-align: right;
   border-top: 1px solid rgba(255, 255, 255, 0.04);
   flex-shrink: 0;

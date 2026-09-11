@@ -17,6 +17,20 @@ const LEDGER_FILE  = path.join(__dirname, "../../data/usage-ledger.ndjson");
 const BUFFER_MAX   = 2000; // in-memory ring
 
 // ── Provider cost table (USD per 1K tokens, input / output) ──────
+// Real published list pricing per provider's default model (see aiService.js's
+// _defaultModel() for the exact model each entry corresponds to). Previously
+// only 6 of aiService.js's 12 real provider adapters had a pricing entry here —
+// deepseek/together/fireworks/cohere/nvidia/lmstudio all silently fell through
+// to the generic { input: 0.002, output: 0.002 } placeholder in _estimateCost,
+// which both overstates local/cheap providers' cost and understates some paid
+// ones. Sourced from each provider's public pricing page (verified against the
+// models aiService.js's _defaultModel() actually requests):
+//   deepseek   — deepseek-chat:                     $0.14 / $0.28 per 1M tokens
+//   together   — meta-llama/Llama-3-70b-chat-hf:    $0.90 / $0.90 per 1M tokens
+//   fireworks  — llama-v3-70b-instruct:              $0.90 / $0.90 per 1M tokens
+//   cohere     — command-r-plus:                     $2.50 / $10.00 per 1M tokens
+//   nvidia NIM — meta/llama-3.1-70b-instruct (NIM):  $0.00 hosted preview tier at time of writing — see note below
+//   lmstudio   — local, no metered cost (same as ollama)
 const PROVIDER_COSTS = {
   groq:        { input: 0.0001,  output: 0.0001  },
   openrouter:  { input: 0.0008,  output: 0.0008  },
@@ -24,6 +38,21 @@ const PROVIDER_COSTS = {
   openai:      { input: 0.0015,  output: 0.006   },
   gemini:      { input: 0.00025, output: 0.0005  },
   ollama:      { input: 0,       output: 0        },
+  deepseek:    { input: 0.00014, output: 0.00028 },
+  together:    { input: 0.0009,  output: 0.0009  },
+  fireworks:   { input: 0.0009,  output: 0.0009  },
+  cohere:      { input: 0.0025,  output: 0.01    },
+  // NVIDIA NIM's hosted API is a free preview tier as of this writing (no
+  // published per-token price for build.nvidia.com-hosted inference) — priced
+  // at 0 rather than silently inheriting the generic placeholder, which would
+  // otherwise overstate cost for a genuinely free tier. Update this the day
+  // NVIDIA publishes metered pricing for hosted NIM inference.
+  nvidia:      { input: 0,       output: 0        },
+  lmstudio:    { input: 0,       output: 0        },
+  // grok-2-latest (x.ai):  $2.00 / $10.00 per 1M tokens (public pricing page)
+  grok:        { input: 0.002,   output: 0.01     },
+  // qwen-plus (Alibaba DashScope, international pricing): ~$0.40 / $1.20 per 1M tokens
+  qwen:        { input: 0.0004,  output: 0.0012   },
 };
 
 const _buffer = [];
@@ -55,6 +84,7 @@ function record(opts = {}) {
     id:               `um-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     ts:               new Date().toISOString(),
     accountId:        opts.accountId     || "unknown",
+    orgId:            opts.orgId         || null,
     workspaceId:      opts.workspaceId   || "default",
     missionId:        opts.missionId     || null,
     provider:         opts.provider      || "unknown",
@@ -86,6 +116,7 @@ function record(opts = {}) {
 function query(opts = {}) {
   let events = [..._buffer];
   if (opts.accountId)   events = events.filter(e => e.accountId   === opts.accountId);
+  if (opts.orgId)       events = events.filter(e => e.orgId       === opts.orgId);
   if (opts.workspaceId) events = events.filter(e => e.workspaceId === opts.workspaceId);
   if (opts.missionId)   events = events.filter(e => e.missionId   === opts.missionId);
   if (opts.provider)    events = events.filter(e => e.provider     === opts.provider);
@@ -94,11 +125,29 @@ function query(opts = {}) {
 }
 
 /**
+ * Same filters as query(), but reads the full on-disk ledger instead of the
+ * BUFFER_MAX in-memory ring — needed for org/workspace budget windows (e.g.
+ * "this org's spend this calendar month") that can span more requests than
+ * fit in the ring buffer. Use query() for fast/recent lookups, this for
+ * anything that must not silently under-count once traffic exceeds BUFFER_MAX.
+ */
+function queryFromLedger(opts = {}) {
+  let events = loadHistory(opts.maxScan || 50000);
+  if (opts.accountId)   events = events.filter(e => e.accountId   === opts.accountId);
+  if (opts.orgId)       events = events.filter(e => e.orgId       === opts.orgId);
+  if (opts.workspaceId) events = events.filter(e => e.workspaceId === opts.workspaceId);
+  if (opts.missionId)   events = events.filter(e => e.missionId   === opts.missionId);
+  if (opts.provider)    events = events.filter(e => e.provider     === opts.provider);
+  if (opts.since)       events = events.filter(e => new Date(e.ts) >= new Date(opts.since));
+  return opts.limit ? events.slice(0, opts.limit) : events;
+}
+
+/**
  * Aggregate cost by dimension.
- * dimension: "provider" | "accountId" | "workspaceId" | "missionId" | "model"
+ * dimension: "provider" | "accountId" | "orgId" | "workspaceId" | "missionId" | "model"
  */
 function aggregateCost(dimension = "provider", opts = {}) {
-  const events = query(opts);
+  const events = opts.fromLedger ? queryFromLedger(opts) : query(opts);
   const agg = {};
   for (const e of events) {
     const key = e[dimension] || "unknown";
@@ -113,10 +162,12 @@ function aggregateCost(dimension = "provider", opts = {}) {
 }
 
 /**
- * Summary statistics for a period.
+ * Summary statistics for a period. Pass { fromLedger: true } to scan the full
+ * on-disk ledger instead of the in-memory ring (see queryFromLedger) — needed
+ * for accurate org/workspace monthly totals once traffic exceeds BUFFER_MAX.
  */
 function summary(opts = {}) {
-  const events = query(opts);
+  const events = opts.fromLedger ? queryFromLedger(opts) : query(opts);
   const totalCostUsd = events.reduce((s, e) => s + e.estimatedCostUsd, 0);
   const totalTokens  = events.reduce((s, e) => s + e.totalTokens, 0);
   const totalCredits = events.reduce((s, e) => s + e.creditsConsumed, 0);
@@ -127,7 +178,13 @@ function summary(opts = {}) {
   return {
     totalRequests: events.length,
     totalTokens,
-    totalCostUsd:  parseFloat(totalCostUsd.toFixed(4)),
+    // 6 decimal places (not 4) — matches record()'s own per-event precision.
+    // At 4 places, cheap-provider costs (e.g. 2 Groq requests = $0.000002)
+    // silently round to $0.0000, which previously made orgBudgets.cjs's
+    // budget check always see $0 spend for exactly the providers a
+    // cost-conscious org would actually route to, letting a real cap
+    // requirement pass every check regardless of actual spend.
+    totalCostUsd:  parseFloat(totalCostUsd.toFixed(6)),
     totalCredits,
     errors,
     successRate:   events.length ? (1 - errors / events.length) : 1,
@@ -149,4 +206,4 @@ function loadHistory(limit = 1000) {
   } catch { return []; }
 }
 
-module.exports = { record, query, aggregateCost, summary, loadHistory, PROVIDER_COSTS };
+module.exports = { record, query, queryFromLedger, aggregateCost, summary, loadHistory, PROVIDER_COSTS };

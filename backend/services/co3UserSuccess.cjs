@@ -416,20 +416,76 @@ function createCSTicket(opts = {}) {
 function replyToTicket(id, opts = {}) {
   const s = _load();
   if (!s.csInbox?.[id]) throw new Error(`CS ticket not found: ${id}`);
+  // Support Ecosystem mission: this is a second, separate write path to the
+  // same ticket.status field updateTicket() already writes — but it never
+  // got the Phase B.15 enum-validation fix updateTicket() has. POST
+  // /co3/cs/:id/reply passes req.body straight through as opts, so
+  // {"body":"...", "status":"DROP_TABLE"} stored verbatim with a 200, the
+  // same reproduced consequence as the original bug: the ticket vanishes
+  // from getCSInbox()'s byStatus/slaBreach buckets since neither matches any
+  // real CS_TICKET_STATUS value. Validate against the same existing
+  // constants updateTicket() already uses — no new field, no new engine.
+  if (opts.status !== undefined && !CS_TICKET_STATUS.includes(opts.status)) {
+    const e = new Error(`Invalid status "${opts.status}". Choose: ${CS_TICKET_STATUS.join(", ")}`);
+    e.status = 400;
+    throw e;
+  }
   const ticket = s.csInbox[id];
   ticket.thread.push({ role: opts.role || "support", body: opts.body || "", ts: _ts() });
   ticket.status    = opts.status || ticket.status;
   ticket.updatedAt = _ts();
-  if (opts.status === "resolved" || opts.status === "closed") ticket.resolvedAt = _ts();
+  // Same resolvedAt-on-reopen consistency fix already applied to
+  // updateTicket() — whose own Phase B.15 comment assumed this function
+  // "already handles both" (set-on-resolve and clear-on-reopen), but this
+  // function only ever set resolvedAt on a terminal status and never
+  // cleared it on reopen, so that assumption was incorrect: a reply that
+  // reopens a ticket (moves it to a non-terminal status) left the earlier
+  // resolvedAt timestamp in place, understating avgResolutionHrs the same
+  // way the original bug did via the other write path.
+  if (opts.status === "resolved" || opts.status === "closed") {
+    ticket.resolvedAt = ticket.resolvedAt || _ts();
+  } else if (opts.status !== undefined) {
+    ticket.resolvedAt = null;
+  }
   _save(s);
   return ticket;
 }
 
-function updateTicket(id, update) {
+function updateTicket(id, update = {}) {
   const s = _load();
   if (!s.csInbox?.[id]) throw new Error(`CS ticket not found: ${id}`);
+
+  // Phase B.15: status/priority were written straight through with no check
+  // against the CS_TICKET_STATUS / CS_TICKET_PRIORITY enums this module already
+  // declares and exports. Reproduced live: PATCH {"status":"DROP_TABLE"} stored
+  // verbatim with HTTP 200, and getCSInbox() then reported total=3 while
+  // open+resolved=2 — the ticket vanished from every operational bucket and
+  // from slaBreach detection, so a support manager's backlog silently loses
+  // work. Validate against the existing constants; no new field, no new engine.
+  if (update.status !== undefined && !CS_TICKET_STATUS.includes(update.status)) {
+    const e = new Error(`Invalid status "${update.status}". Choose: ${CS_TICKET_STATUS.join(", ")}`);
+    e.status = 400;
+    throw e;
+  }
+  if (update.priority !== undefined && !CS_TICKET_PRIORITY.includes(update.priority)) {
+    const e = new Error(`Invalid priority "${update.priority}". Choose: ${CS_TICKET_PRIORITY.join(", ")}`);
+    e.status = 400;
+    throw e;
+  }
+
   s.csInbox[id] = { ...s.csInbox[id], ...update, updatedAt: _ts() };
-  if (update.status === "resolved") s.csInbox[id].resolvedAt = _ts();
+
+  // Phase B.15: resolvedAt was set on "resolved" but never cleared on reopen,
+  // and "closed" never set it at all (inconsistent with replyToTicket, which
+  // handles both). Reproduced: resolve → reopen left resolvedAt populated, so a
+  // reopened ticket still counted as resolved in avgResolutionHrs — understating
+  // real resolution time. Terminal states stamp it; reopening clears it.
+  if (update.status === "resolved" || update.status === "closed") {
+    s.csInbox[id].resolvedAt = s.csInbox[id].resolvedAt || _ts();
+  } else if (update.status !== undefined) {
+    s.csInbox[id].resolvedAt = null;
+  }
+
   _save(s);
   return s.csInbox[id];
 }
@@ -442,27 +498,39 @@ function getCSInbox(filter = {}) {
   if (filter.priority)  filtered = filtered.filter(t => t.priority  === filter.priority);
   if (filter.accountId) filtered = filtered.filter(t => t.accountId === filter.accountId);
 
+  // Cross-tenant analytics leak. `/co3/cs`'s route pins non-operators to
+  // filter.accountId = req.user.sub, and the `tickets` array returned above
+  // was already correctly scoped to that filter — but every summary field
+  // below (total/open/resolved/slaBreach/byStatus/byPriority/avgResolutionHrs)
+  // was computed over the RAW, unfiltered `tickets` array regardless. A
+  // non-operator's own single-ticket inbox reported the platform-wide
+  // total/slaBreach/status-priority breakdown. Reproduced live: an account
+  // with exactly 1 real ticket received `"total":9,"slaBreach":5,"byStatus":
+  // {"open":6,"closed":1,"resolved":1,"in_progress":1}` — every other
+  // tenant's ticket counted into numbers presented as this account's inbox
+  // summary. Compute the summary fields from `filtered` instead — when no
+  // scope filter is supplied (operator/internal aggregation callers), filtered
+  // still equals the full `tickets` array, so unscoped behaviour is unchanged.
   const byStatus   = {};
   const byPriority = {};
-  for (const t of tickets) {
+  for (const t of filtered) {
     byStatus[t.status]     = (byStatus[t.status]     || 0) + 1;
     byPriority[t.priority] = (byPriority[t.priority] || 0) + 1;
   }
 
-  const now = Date.now();
-  const slaBreach = tickets.filter(t => t.status !== "resolved" && t.status !== "closed"
+  const slaBreach = filtered.filter(t => t.status !== "resolved" && t.status !== "closed"
     && new Date(t.sla_target) < new Date()).length;
 
   return {
-    tickets:   filtered.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
-    total:     tickets.length,
-    open:      tickets.filter(t => t.status === "open").length,
-    resolved:  tickets.filter(t => t.status === "resolved").length,
+    tickets:   filtered.slice().sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)),
+    total:     filtered.length,
+    open:      filtered.filter(t => t.status === "open").length,
+    resolved:  filtered.filter(t => t.status === "resolved").length,
     slaBreach,
     byStatus,
     byPriority,
     avgResolutionHrs: (() => {
-      const res = tickets.filter(t => t.resolvedAt);
+      const res = filtered.filter(t => t.resolvedAt);
       if (!res.length) return null;
       const avg = res.reduce((s, t) => s + (new Date(t.resolvedAt) - new Date(t.createdAt)), 0) / res.length;
       return Math.round(avg / 3600_000 * 10) / 10;

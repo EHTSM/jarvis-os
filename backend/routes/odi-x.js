@@ -14,13 +14,17 @@
 
 const router = require("express").Router();
 
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// wired the pre-existing _try helper into these accessors (previously
+// defined but unused here) — see odi.js for the live-reproduced finding
+// this fix pattern closes.
 const _try = fn => { try { return fn(); } catch { return null; } };
-const vr  = () => require("../services/visualReasoningEngine.cjs");
-const dqe = () => require("../services/designQualityEngine.cjs");
-const dbe = () => require("../services/designBenchmarkEngine.cjs");
-const dpe = () => require("../services/designPredictionEngine.cjs");
-const dee = () => require("../services/designEvolutionEngine.cjs");
-const did = () => require("../services/designIntelligenceDashboard.cjs");
+const vr  = () => _try(() => require("../services/visualReasoningEngine.cjs"));
+const dqe = () => _try(() => require("../services/designQualityEngine.cjs"));
+const dbe = () => _try(() => require("../services/designBenchmarkEngine.cjs"));
+const dpe = () => _try(() => require("../services/designPredictionEngine.cjs"));
+const dee = () => _try(() => require("../services/designEvolutionEngine.cjs"));
+const did = () => _try(() => require("../services/designIntelligenceDashboard.cjs"));
 
 // ── Visual Reasoning Engine ───────────────────────────────────────────────────
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import "./LaunchPlatform.css";
+import { clickableProps } from "../hooks/useClickableProps";
 
 const BASE = process.env.REACT_APP_API_URL || "";
 const api  = (path, opts = {}) =>
@@ -146,7 +147,7 @@ function OnboardingPanel() {
       <p className="launch-section-title">What's your role?</p>
       <div className="role-grid">
         {roles.map(role => (
-          <div key={role.id} className="role-card" onClick={() => selectRole(role.id)}>
+          <div key={role.id} className="role-card" {...clickableProps(() => selectRole(role.id))}>
             <div className="role-icon">{role.icon}</div>
             <div className="role-label">{role.label}</div>
             <div className="role-desc">{role.welcome?.slice(0, 80)}…</div>
@@ -296,15 +297,38 @@ function AcademyPanel() {
   const [badges, setBadges]     = useState([]);
   const [progress, setProgress] = useState(null);
   const [view, setView]         = useState("paths");
+  const [genTopic, setGenTopic] = useState("");
+  const [genLevel, setGenLevel] = useState("beginner");
+  const [generating, setGenerating] = useState(false);
+  const [genError, setGenError] = useState(null);
+
+  const loadPaths = useCallback(() => {
+    api("/launch/academy/paths").then(r => { if (r.ok) { setPaths(r.paths || []); setBadges(r.badges || []); } });
+  }, []);
 
   useEffect(() => {
-    api("/launch/academy/paths").then(r => { if (r.ok) { setPaths(r.paths || []); setBadges(r.badges || []); } });
+    loadPaths();
     api("/launch/academy/progress").then(r => r.ok && setProgress(r.progress));
-  }, []);
+  }, [loadPaths]);
 
   const enroll = async (pathId) => {
     await post(`/launch/academy/enroll/${pathId}`, {});
     api("/launch/academy/progress").then(r => r.ok && setProgress(r.progress));
+  };
+
+  const generatePath = async (e) => {
+    e.preventDefault();
+    if (!genTopic.trim()) return;
+    setGenerating(true);
+    setGenError(null);
+    try {
+      const r = await post("/launch/academy/paths/generate", { topic: genTopic.trim(), level: genLevel });
+      if (!r.ok) { setGenError(r.error || "Generation failed"); return; }
+      setGenTopic("");
+      loadPaths();
+    } finally {
+      setGenerating(false);
+    }
   };
 
   const getPathProg = (pathId) => (progress?.paths || []).find(p => p.pathId === pathId);
@@ -320,6 +344,24 @@ function AcademyPanel() {
       </div>
 
       {view === "paths" && (
+        <>
+          <form onSubmit={generatePath} style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+            <input
+              placeholder="Generate a custom path — e.g. 'Kubernetes basics'"
+              value={genTopic}
+              onChange={e => setGenTopic(e.target.value)}
+              style={{ flex: 1, minWidth: 220 }}
+            />
+            <select value={genLevel} onChange={e => setGenLevel(e.target.value)}>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+            <button className="btn-primary" type="submit" disabled={generating || !genTopic.trim()}>
+              {generating ? "Generating…" : "Generate Path"}
+            </button>
+          </form>
+          {genError && <div style={{ color: "var(--danger)", fontSize: 12, marginBottom: 12 }}>⚠ {genError}</div>}
         <div className="path-list">
           {paths.map(p => {
             const prog = getPathProg(p.id);
@@ -336,7 +378,7 @@ function AcademyPanel() {
                 <div className="path-meta">
                   <span>{prog ? `${prog.done}/${prog.total} modules` : `${p.modules?.length || 0} modules · ~${p.estimatedHours}h`}</span>
                   {prog?.completed
-                    ? <span style={{ color: "#22c55e", fontSize: 11, fontWeight: 600 }}>✓ Complete</span>
+                    ? <span style={{ color: "var(--success)", fontSize: 11, fontWeight: 600 }}>✓ Complete</span>
                     : <button className="path-enroll-btn" disabled={!!prog} onClick={() => enroll(p.id)}>
                         {prog ? "In Progress" : "Enroll"}
                       </button>
@@ -346,6 +388,7 @@ function AcademyPanel() {
             );
           })}
         </div>
+        </>
       )}
 
       {view === "badges" && (
@@ -491,8 +534,8 @@ function CSTPanel() {
           <div className="launch-grid">
             <div className="launch-card"><h4>Total Accounts</h4><div className="val">{overview.totalAccounts}</div></div>
             <div className="launch-card"><h4>Avg Health</h4><div className="val">{overview.avgHealthScore}</div></div>
-            <div className="launch-card"><h4>High Risk</h4><div className="val" style={{ color: "#ef4444" }}>{overview.highRisk}</div></div>
-            <div className="launch-card"><h4>Healthy</h4><div className="val" style={{ color: "#22c55e" }}>{overview.healthy}</div></div>
+            <div className="launch-card"><h4>High Risk</h4><div className="val" style={{ color: "var(--danger)" }}>{overview.highRisk}</div></div>
+            <div className="launch-card"><h4>Healthy</h4><div className="val" style={{ color: "var(--success)" }}>{overview.healthy}</div></div>
           </div>
         </>
       )}
@@ -633,9 +676,9 @@ function ReadinessPanel() {
           <div className={`readiness-status ${report.status}`}>{statusLabel(report.status)}</div>
 
           <div className="launch-grid" style={{ marginBottom: 16 }}>
-            <div className="launch-card"><h4>Passing</h4><div className="val" style={{ color: "#22c55e" }}>{report.passing}</div><div className="sub">of {report.total}</div></div>
-            <div className="launch-card"><h4>Critical Fails</h4><div className="val" style={{ color: report.criticalFail ? "#ef4444" : "#22c55e" }}>{report.criticalFail}</div></div>
-            <div className="launch-card"><h4>Warnings</h4><div className="val" style={{ color: report.warningFail ? "#f59e0b" : "#22c55e" }}>{report.warningFail}</div></div>
+            <div className="launch-card"><h4>Passing</h4><div className="val" style={{ color: "var(--success)" }}>{report.passing}</div><div className="sub">of {report.total}</div></div>
+            <div className="launch-card"><h4>Critical Fails</h4><div className="val" style={{ color: report.criticalFail ? "var(--danger)" : "var(--success)" }}>{report.criticalFail}</div></div>
+            <div className="launch-card"><h4>Warnings</h4><div className="val" style={{ color: report.warningFail ? "var(--warning)" : "var(--success)" }}>{report.warningFail}</div></div>
           </div>
 
           <div className="check-list">
@@ -645,7 +688,7 @@ function ReadinessPanel() {
                 <div style={{ flex: 1 }}>
                   <div className="check-label">{c.label}</div>
                   <div className="check-detail">{c.detail}</div>
-                  {!c.pass && c.fix && <div className="check-detail" style={{ color: "#f59e0b" }}>Fix: {c.fix}</div>}
+                  {!c.pass && c.fix && <div className="check-detail" style={{ color: "var(--warning)" }}>Fix: {c.fix}</div>}
                 </div>
                 <span className={`check-sev ${c.severity}`}>{c.severity}</span>
               </div>
@@ -707,7 +750,7 @@ function BenchmarkPanel() {
         <>
           <div className="launch-grid" style={{ marginBottom: 16 }}>
             <div className="launch-card accent"><h4>Score</h4><div className="val">{result.score}%</div><div className="sub">{result.passing}/{result.total} checks</div></div>
-            <div className="launch-card"><h4>Regression</h4><div className="val">{result.regressionPass ? "PASS" : "FAIL"}</div><div className="sub" style={{ color: result.regressionPass ? "#22c55e" : "#ef4444" }}>{result.regressionPass ? "All checks pass" : "See issues below"}</div></div>
+            <div className="launch-card"><h4>Regression</h4><div className="val">{result.regressionPass ? "PASS" : "FAIL"}</div><div className="sub" style={{ color: result.regressionPass ? "var(--success)" : "var(--danger)" }}>{result.regressionPass ? "All checks pass" : "See issues below"}</div></div>
           </div>
 
           <div className="check-list" style={{ marginBottom: 20 }}>
@@ -771,7 +814,7 @@ function PCPReportPanel() {
     { id: "recommendation", label: "Verdict"     },
   ];
 
-  const sevColor = s => s === "critical" ? "#ef4444" : s === "warning" ? "#f59e0b" : "#888";
+  const sevColor = s => s === "critical" ? "var(--danger)" : s === "warning" ? "var(--warning)" : "#888";
 
   return (
     <div>
@@ -830,7 +873,7 @@ function PCPReportPanel() {
               </div>
               <div className="launch-card">
                 <h4>Critical Blockers</h4>
-                <div className="val" style={{ color: report.summary?.criticalBlockers > 0 ? "#ef4444" : "#22c55e" }}>
+                <div className="val" style={{ color: report.summary?.criticalBlockers > 0 ? "var(--danger)" : "var(--success)" }}>
                   {report.summary?.criticalBlockers}
                 </div>
                 <div className="sub">{report.summary?.recommendation}</div>
@@ -850,8 +893,8 @@ function PCPReportPanel() {
                   <div key={w.id} className={`check-row ${w.reachable ? "pass" : "fail"}`}>
                     <span className="check-icon">{w.reachable ? "✓" : "✗"}</span>
                     <span className="check-label">[{w.id}] {w.category} — {w.flow}</span>
-                    {w.interactions > 2 && <span style={{ marginLeft: "auto", fontSize: 10, color: "#f59e0b" }}>{w.interactions} interactions</span>}
-                    {w.friction && <span style={{ marginLeft: 8, fontSize: 10, color: "#f59e0b" }}>{w.friction}</span>}
+                    {w.interactions > 2 && <span style={{ marginLeft: "auto", fontSize: 10, color: "var(--warning)" }}>{w.interactions} interactions</span>}
+                    {w.friction && <span style={{ marginLeft: 8, fontSize: 10, color: "var(--warning)" }}>{w.friction}</span>}
                   </div>
                 ))}
               </div>
@@ -887,7 +930,7 @@ function PCPReportPanel() {
                 <div key={k} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <span style={{ width: 160, fontSize: 12, color: "#aaa", textTransform: "capitalize" }}>{k.replace(/([A-Z])/g, " $1")}</span>
                   <div style={{ flex: 1, background: "#1a1a24", borderRadius: 4, height: 8 }}>
-                    <div style={{ width: `${v}%`, background: v >= 80 ? "#22c55e" : v >= 60 ? "#f59e0b" : "#ef4444", height: "100%", borderRadius: 4 }} />
+                    <div style={{ width: `${v}%`, background: v >= 80 ? "var(--success)" : v >= 60 ? "var(--warning)" : "var(--danger)", height: "100%", borderRadius: 4 }} />
                   </div>
                   <span style={{ width: 40, fontSize: 12, textAlign: "right" }}>{v}%</span>
                 </div>
@@ -897,7 +940,7 @@ function PCPReportPanel() {
                 <div key={k} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                   <span style={{ width: 160, fontSize: 12, color: "#aaa", textTransform: "capitalize" }}>{k.replace(/([A-Z])/g, " $1")}</span>
                   <div style={{ flex: 1, background: "#1a1a24", borderRadius: 4, height: 8 }}>
-                    <div style={{ width: `${v}%`, background: v >= 80 ? "#22c55e" : v >= 60 ? "#f59e0b" : "#ef4444", height: "100%", borderRadius: 4 }} />
+                    <div style={{ width: `${v}%`, background: v >= 80 ? "var(--success)" : v >= 60 ? "var(--warning)" : "var(--danger)", height: "100%", borderRadius: 4 }} />
                   </div>
                   <span style={{ width: 40, fontSize: 12, textAlign: "right" }}>{v}%</span>
                 </div>
@@ -936,7 +979,7 @@ function PCPReportPanel() {
               <div className="check-list">
                 {(report.accessibilityAudit?.checks || []).map(c => (
                   <div key={c.id} className={`check-row ${c.status === "pass" ? "pass" : c.status === "fail" ? "fail" : ""}`}>
-                    <span className="check-icon" style={{ color: c.status === "pass" ? "#22c55e" : c.status === "fail" ? "#ef4444" : "#f59e0b" }}>
+                    <span className="check-icon" style={{ color: c.status === "pass" ? "var(--success)" : c.status === "fail" ? "var(--danger)" : "var(--warning)" }}>
                       {c.status === "pass" ? "✓" : c.status === "fail" ? "✗" : "~"}
                     </span>
                     <div>
@@ -955,8 +998,8 @@ function PCPReportPanel() {
                 padding: 20,
                 borderRadius: 8,
                 border: `2px solid ${
-                  report.launchRecommendation?.recommendation === "LAUNCH READY" ? "#22c55e" :
-                  report.launchRecommendation?.recommendation === "LAUNCH WITH WARNINGS" ? "#f59e0b" : "#ef4444"
+                  report.launchRecommendation?.recommendation === "LAUNCH READY" ? "var(--success)" :
+                  report.launchRecommendation?.recommendation === "LAUNCH WITH WARNINGS" ? "var(--warning)" : "var(--danger)"
                 }`,
                 marginBottom: 20,
               }}>
@@ -1005,8 +1048,8 @@ function PIPReportPanel() {
   };
 
   const STATUS_META = {
-    production_ready:       { label: "Production Ready",       color: "#22c55e", bg: "#0f2e1e" },
-    needs_credentials:      { label: "Needs Credentials",      color: "#f59e0b", bg: "#2e2a0f" },
+    production_ready:       { label: "Production Ready",       color: "var(--success)", bg: "#0f2e1e" },
+    needs_credentials:      { label: "Needs Credentials",      color: "var(--warning)", bg: "#2e2a0f" },
     needs_external_account: { label: "Needs External Account", color: "#7c6af7", bg: "#1e1a2e" },
     deferred_by_design:     { label: "Deferred by Design",     color: "#888",    bg: "#1a1a1a" },
   };
@@ -1095,13 +1138,13 @@ function OP1ReportPanel() {
   };
 
   const STATUS_COLOR = {
-    running: "#22c55e", configured: "#22c55e", passed: "#22c55e", current: "#22c55e", local_dev: "#7c6af7",
-    partial: "#f59e0b", stale: "#f59e0b", warning: "#f59e0b", configured_not_running: "#f59e0b",
-    not_installed: "#888", not_ready: "#ef4444", server_down: "#ef4444", incomplete: "#ef4444",
-    generated: "#22c55e", generated_with_warnings: "#f59e0b",
+    running: "var(--success)", configured: "var(--success)", passed: "var(--success)", current: "var(--success)", local_dev: "#7c6af7",
+    partial: "var(--warning)", stale: "var(--warning)", warning: "var(--warning)", configured_not_running: "var(--warning)",
+    not_installed: "#888", not_ready: "var(--danger)", server_down: "var(--danger)", incomplete: "var(--danger)",
+    generated: "var(--success)", generated_with_warnings: "var(--warning)",
   };
 
-  const VERDICT_COLOR = { "GO": "#22c55e", "CONDITIONAL GO": "#f59e0b", "NOT YET": "#ef4444" };
+  const VERDICT_COLOR = { "GO": "var(--success)", "CONDITIONAL GO": "var(--warning)", "NOT YET": "var(--danger)" };
   const verdict = report?.recommendation?.split(" — ")[0];
 
   return (
@@ -1159,7 +1202,7 @@ function OP1ReportPanel() {
                     <div style={{ fontSize: 11, color: "#888", paddingLeft: 2 }}>{task.detail}</div>
                     <div style={{ display: "flex", flexWrap: "wrap", gap: "4px 12px", paddingLeft: 2, marginTop: 2 }}>
                       {checks.map(([k, v]) => (
-                        <span key={k} style={{ fontSize: 10, color: v.ok === true ? "#22c55e" : v.ok === false ? "#ef4444" : "#888" }}>
+                        <span key={k} style={{ fontSize: 10, color: v.ok === true ? "var(--success)" : v.ok === false ? "var(--danger)" : "#888" }}>
                           {v.ok === true ? "✓" : v.ok === false ? "✗" : "—"} {k.replace(/_/g, " ")}
                           {v.detail ? ` (${v.detail})` : ""}
                         </span>
@@ -1200,7 +1243,7 @@ function OP2ReportPanel() {
   };
 
   const scoreColor = (pct) =>
-    pct >= 90 ? "#22c55e" : pct >= 70 ? "#f59e0b" : "#ef4444";
+    pct >= 90 ? "var(--success)" : pct >= 70 ? "var(--warning)" : "var(--danger)";
 
   return (
     <div>
@@ -1236,7 +1279,7 @@ function OP2ReportPanel() {
               <div
                 className="check-row"
                 style={{ cursor: "pointer", borderLeft: `3px solid ${scoreColor(dim.score.pct)}` }}
-                onClick={() => setExpanded(expanded === dim.dimension ? null : dim.dimension)}
+                {...clickableProps(() => setExpanded(expanded === dim.dimension ? null : dim.dimension))}
               >
                 <span className="check-label" style={{ flex: 1, display: "flex", alignItems: "center", gap: 8 }}>
                   <span>{DIM_ICONS[dim.dimension] || "◈"}</span>
@@ -1251,8 +1294,8 @@ function OP2ReportPanel() {
                 <div style={{ background: "#0d0d14", border: "1px solid #1e1e2e", borderTop: "none", padding: "8px 16px", borderRadius: "0 0 6px 6px" }}>
                   {Object.entries(dim.checks).map(([name, check]) => (
                     <div key={name} style={{ display: "flex", alignItems: "center", gap: 8, padding: "4px 0", borderBottom: "1px solid #111" }}>
-                      <span style={{ color: check.ok ? "#22c55e" : "#ef4444", fontSize: 13, width: 16 }}>{check.ok ? "✓" : "✗"}</span>
-                      <span style={{ flex: 1, fontSize: 12, color: check.ok ? "#ccc" : "#f59e0b" }}>{name}</span>
+                      <span style={{ color: check.ok ? "var(--success)" : "var(--danger)", fontSize: 13, width: 16 }}>{check.ok ? "✓" : "✗"}</span>
+                      <span style={{ flex: 1, fontSize: 12, color: check.ok ? "#ccc" : "var(--warning)" }}>{name}</span>
                       <span style={{ fontSize: 10, color: "#555" }}>w{check.weight}</span>
                     </div>
                   ))}
@@ -1263,10 +1306,10 @@ function OP2ReportPanel() {
 
           {report.topFailures.length > 0 && (
             <div style={{ marginTop: 16, padding: "12px 16px", background: "#1a0f0f", border: "1px solid #3a1a1a", borderRadius: 8 }}>
-              <div style={{ fontWeight: 600, color: "#f59e0b", marginBottom: 8, fontSize: 12 }}>Top items to fix</div>
+              <div style={{ fontWeight: 600, color: "var(--warning)", marginBottom: 8, fontSize: 12 }}>Top items to fix</div>
               {report.topFailures.map((f, i) => (
                 <div key={i} style={{ display: "flex", gap: 8, fontSize: 11, color: "#ccc", marginBottom: 4 }}>
-                  <span style={{ color: "#ef4444" }}>✗</span>
+                  <span style={{ color: "var(--danger)" }}>✗</span>
                   <span style={{ color: "#888" }}>{f.dimension}:</span>
                   <span>{f.name}</span>
                   <span style={{ color: "#555", marginLeft: "auto" }}>w{f.weight}</span>
@@ -1305,6 +1348,21 @@ export default function LaunchPlatform() {
 
   return (
     <div className="launch-platform">
+      {/* Phase A.11.7 — this was the only surface surveyed in this phase with
+          no page header of any kind: measured live, its pane contained no <h1>
+          or <h2> at all, so a founder arriving here saw a bare row of 14 tabs
+          with nothing naming the screen. Every sibling measured in this phase
+          (Support Center, Connectors, Referral Engine, Marketplace, Partner
+          Program) and the A.11.1–A.11.6 reference set (.oac-/.tw-/.ws-/.bd-/
+          .analytics-/.rv2-page-title) renders 22px/800/-0.3px/var(--text) with
+          a 13.5px var(--text-dim) subtitle. Values copied from that measured
+          baseline; the title is the destination's own existing name from
+          App.jsx's MORE_TABS entry, and the subtitle names the real sub-tabs
+          already rendered below. No redesign, no new component. */}
+      <div className="launch-header">
+        <h1 className="launch-title">Launch Platform</h1>
+        <p className="launch-subtitle">Beta metrics, onboarding, docs, academy, referrals, feedback, and launch readiness.</p>
+      </div>
       <div className="launch-tabs">
         {TABS.map(t => (
           <button key={t.id} className={`launch-tab${tab === t.id ? " active" : ""}`} onClick={() => setTab(t.id)}>

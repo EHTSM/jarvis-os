@@ -7,12 +7,27 @@
  */
 
 const router     = require("express").Router();
-const { requireAuth } = require("../middleware/authMiddleware");
+const { requireAuth, operatorOnly } = require("../middleware/authMiddleware");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const _t = fn => { try { return fn(); } catch { return null; } };
 const _os = () => _t(() => require("../services/founderIdentityOS.cjs"));
 
-router.use("/fdios", requireAuth);
+// Founder/Ops Authorization Cluster audit (2026-08-20): founderIdentityOS.cjs
+// has zero orgId/accountId concept anywhere (grep-confirmed) — it models a
+// single, hardcoded "founder:root" identity graph pulled from platform-wide
+// OAuth connections, integrationConnectors.cjs's global connector status,
+// and process.env.FOUNDER_EMAIL, not per-tenant data. requireAuth alone let
+// any signed-up customer read it. Live-reproduced with a fresh, ordinary
+// (role:"user") customer account: GET /fdios/identity returned the real
+// founder's connected-provider graph (GitHub OAuth, Razorpay, Groq,
+// Telegram, WhatsApp, real connection status/timestamps); GET
+// /fdios/credential-intelligence returned the real GitHub OAuth client ID,
+// credential expiry timing, and connector failure details. Same defect
+// class already fixed for founderAutomation.js's /founder/* and /bible/*
+// (identical reasoning: zero orgId, platform-internal, no genuine
+// multi-tenant use) — applying the identical operatorOnly fix here.
+router.use("/fdios", requireAuth, operatorOnly);
 
 // ── M1 Identity Graph ─────────────────────────────────────────────────────────
 // POST /fdios/identity/build — rebuild the full identity graph
@@ -125,8 +140,12 @@ router.post("/fdios/import", (req, res) => {
 });
 
 // ── M6 Secret Discovery Engine ────────────────────────────────────────────────
+// Both routes below do real filesystem/credential-surface scanning — rate
+// limited so an authenticated caller can't force repeated expensive scans.
+const _fdiosScanRL = rateLimiter(10, 60_000, "fdios-scan");
+
 // POST /fdios/secrets/scan — scan project files for exposed secrets (no values in report)
-router.post("/fdios/secrets/scan", async (req, res) => {
+router.post("/fdios/secrets/scan", _fdiosScanRL, async (req, res) => {
   try {
     const os = _os();
     if (!os) return res.status(503).json({ ok: false, error: "founderIdentityOS unavailable" });
@@ -138,7 +157,7 @@ router.post("/fdios/secrets/scan", async (req, res) => {
 
 // ── M7 Credential Intelligence ────────────────────────────────────────────────
 // POST /fdios/credential-intelligence/run — generate fresh credential intelligence report
-router.post("/fdios/credential-intelligence/run", async (req, res) => {
+router.post("/fdios/credential-intelligence/run", _fdiosScanRL, async (req, res) => {
   try {
     const os = _os();
     if (!os) return res.status(503).json({ ok: false, error: "founderIdentityOS unavailable" });

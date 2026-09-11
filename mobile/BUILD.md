@@ -50,7 +50,6 @@ service cloud.firestore {
 ```
 
 5. Go to **Project Settings** → **Your apps** → Add **Web app** → Copy config
-6. Go to **Service Accounts** → Generate new private key → save as JSON
 
 ---
 
@@ -74,13 +73,21 @@ REACT_APP_FIREBASE_APP_ID=1:123456789:web:abc123
 REACT_APP_VERSION=1.0.0
 ```
 
-Add to backend `.env` (for token verification):
-
-```env
-FIREBASE_SERVICE_ACCOUNT={"type":"service_account","project_id":"..."}
-```
-
-(Paste the full service account JSON as a single line)
+**Backend auth architecture (updated — the flow below has changed since this
+guide was first written):** the app exchanges its Firebase ID token for a
+JARVIS-signed session JWT once, via `POST /api/auth/firebase-session`
+(`backend/routes/auth.js`), then sends that JWT as `Authorization: Bearer` on
+every subsequent request (`mobile/src/api.js`) — not the raw Firebase ID
+token, and not a cookie (a Capacitor WebView's cross-origin cookie handling
+is unreliable). Server-side Firebase ID-token verification inside
+`firebase-session` is **optional and currently unwired**: `firebase-admin`
+is not a `package.json` dependency and `admin.initializeApp()` is never
+called anywhere in this backend, so in `NODE_ENV=production` that route
+returns `503 Firebase auth not configured` until an operator wires it (see
+Step 3); outside production it logs a warning and skips verification
+(accepts the claimed email as-is — dev-only). No `FIREBASE_SERVICE_ACCOUNT`
+env var exists anywhere in this codebase — that was this guide's own stale
+description of an approach that was never implemented this way.
 
 ---
 
@@ -91,12 +98,24 @@ cd mobile
 npm install
 ```
 
-Install Firebase Admin in backend:
+**Optional — wire real server-side Firebase ID-token verification:** the
+mobile-facing `/api/auth/firebase-session` route already has a real,
+working code path for this (`backend/routes/auth.js`'s `_firebaseAdmin()`),
+it is just unwired by default. To activate it:
 
 ```bash
 cd ..                      # back to project root
 npm install firebase-admin
 ```
+
+Then call `admin.initializeApp()` once at backend startup with real
+credentials (e.g. `GOOGLE_APPLICATION_CREDENTIALS` pointing at a service-
+account JSON file, Firebase Admin SDK's own standard mechanism — not a
+repo-specific env var). Until this is done, `firebase-session` trusts the
+caller-claimed email in development only, and hard-fails (503) in
+production rather than silently accepting an unverified identity — this is
+intentional fail-closed behavior per this repo's own security rules, not a
+bug to work around.
 
 ---
 
@@ -107,14 +126,22 @@ cd mobile
 npx cap add android
 ```
 
-This creates the `mobile/android/` directory with a full Android Studio project.
-
-Copy the reference configs:
-
-```bash
-# Replace the generated AndroidManifest with the Play-Store-safe version
-cp android-config/AndroidManifest.xml android/app/src/main/AndroidManifest.xml
-```
+This creates the `mobile/android/` directory with a full Android Studio
+project. **If this is a fresh `npx cap add android` run** (not this repo's
+already-configured `mobile/android/`, which has the fixes below applied
+directly to the live files), reconcile the generated files against the
+real, current production configuration rather than copying
+`android-config/AndroidManifest.xml` wholesale — that reference file itself
+predates several since-added production fixes and is missing real,
+required pieces of the live build (the `capacitor.build.gradle` apply, the
+`google-services.json` conditional, `namespace`, etc.). Compare field-by-
+field: `android:allowBackup`/`fullBackupContent`/`dataExtractionRules`
+(backup exclusion for the WebView-held session token — see
+`android/app/src/main/res/xml/backup_rules.xml` and
+`data_extraction_rules.xml`), `usesCleartextTraffic="false"`, and the
+`signingConfigs.release`/`minifyEnabled`/`shrinkResources` block in
+`android/app/build.gradle` (see Step 7 below — already wired in this
+repo's live file).
 
 ---
 
@@ -155,6 +182,12 @@ npm run cap:run            # detects connected device and deploys
 ---
 
 ## Step 7 — Generate release keystore
+
+`android/app/build.gradle`'s `signingConfigs.release` block (env-var-sourced,
+below) is already wired in this repo's live file — nothing to add there.
+This step only generates the actual keystore file, which is deliberately
+never committed to this repo (confirmed absent — `mobile/android-config/`
+holds only the reference config, not a real key).
 
 Run **once** — keep the keystore file safe (you need it for every future update):
 
@@ -270,9 +303,10 @@ No camera, microphone, location, contacts, or storage access required.
 |-------|-----|
 | `SDK location not found` | Set `ANDROID_HOME` env var, or create `android/local.properties` with `sdk.dir=/path/to/sdk` |
 | `Gradle sync failed` | File → Invalidate Caches → Restart in Android Studio |
-| `BUILD FAILED: minSdk` | Ensure `minSdkVersion 23` in `build.gradle` |
+| `BUILD FAILED: minSdk` | Ensure `minSdkVersion` in `android/variables.gradle` matches your target device (live value: 22) |
 | Firebase auth error | Check all `REACT_APP_FIREBASE_*` values in `.env` match your project |
-| Backend 401 on mobile | Set `FIREBASE_SERVICE_ACCOUNT` in backend `.env` |
+| Backend 401 on mobile | Confirm `POST /api/auth/firebase-session` is reachable and returning `{success:true, token}` — see Step 2's "Backend auth architecture" note; this is not fixed by any backend `.env` var, only by the mobile app actually calling this route after Firebase sign-in (already wired in `mobile/src/context/AuthContext.jsx`) |
+| `Keystore file ... not found for signing config 'release'` | Expected if `KEYSTORE_PATH`/`KEYSTORE_PASSWORD`/`KEY_ALIAS`/`KEY_PASSWORD` aren't set — see Step 7. `assembleDebug`/`bundleDebug` are unaffected and need no signing config. |
 | White screen on device | Check browser console via `chrome://inspect` — likely API URL is wrong |
 | `npx cap sync` fails | Run `npm run build` first, then `npx cap sync android` |
 
@@ -283,20 +317,31 @@ No camera, microphone, location, contacts, or storage access required.
 ```
 jarvis-os/
 ├── backend/                    Node.js API server (port 5050)
-│   ├── middleware/
-│   │   └── firebaseAuth.js     Firebase token verification
-│   ├── routes/jarvis.js        Updated with optionalAuth middleware
+│   ├── routes/auth.js          POST /api/auth/firebase-session (exchanges
+│   │                           the Firebase ID token for a JARVIS session
+│   │                           JWT — see Step 2's "Backend auth
+│   │                           architecture" note; no separate
+│   │                           firebaseAuth.js middleware exists)
+│   ├── routes/jarvis.js
 │   └── server.js
 ├── frontend/                   Web app (port 3000) — unchanged
 ├── electron/                   Desktop app — unchanged
-└── mobile/                     ← NEW Android app
+└── mobile/                     Android app (Capacitor)
     ├── .env.example            Environment template
     ├── capacitor.config.ts     Capacitor configuration
     ├── package.json
-    ├── android/                Generated by `npx cap add android`
+    ├── android/                Live Capacitor Android project — signing
+    │                           config, backup-exclusion rules (res/xml/),
+    │                           and manifest hardening already applied
+    │                           directly to these files (see Steps 4/7/8)
     ├── android-config/
-    │   ├── AndroidManifest.xml Play-Store-safe permissions
-    │   └── build.gradle.app    Release signing config
+    │   ├── AndroidManifest.xml Reference template only — the LIVE file at
+    │   │                       android/app/src/main/AndroidManifest.xml is
+    │   │                       authoritative; this template predates
+    │   │                       several since-added production fixes and
+    │   │                       should not be copied wholesale (see Step 4)
+    │   └── build.gradle.app    Reference template only — same caveat;
+    │                           android/app/build.gradle is authoritative
     ├── public/
     │   ├── index.html
     │   └── manifest.json

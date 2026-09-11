@@ -125,7 +125,7 @@
 .tb-dismiss {
   background: none;
   border: none;
-  color: rgba(255,255,255,0.50);
+  color: rgba(var(--fg-rgb), 0.62);
   font-size: 12px;
   cursor: pointer;
   padding: 4px 6px;
@@ -136,7 +136,7 @@
   flex-shrink: 0;
 }
 .tb-dismiss:hover {
-  color: rgba(255,255,255,0.85);
+  color: rgba(var(--fg-rgb), 0.92);
   background: rgba(255,255,255,0.08);
 }
 
@@ -154,7 +154,7 @@
 }
 .trial-banner--info .tb-dot    { background: var(--accent2); }
 .trial-banner--info .tb-label  { color: var(--accent2); }
-.trial-banner--info .tb-sub    { color: rgba(78,205,196,0.85); }
+.trial-banner--info .tb-sub    { color: rgba(78,205,196,0.95); }
 
 /* WARNING — amber */
 .trial-banner--warning {
@@ -166,7 +166,7 @@
 }
 .trial-banner--warning .tb-dot    { background: var(--warning); animation: pulse-dot 2s ease-in-out infinite; }
 .trial-banner--warning .tb-label  { color: var(--warning); }
-.trial-banner--warning .tb-sub    { color: rgba(240,180,41,0.82); }
+.trial-banner--warning .tb-sub    { color: rgba(240,180,41,0.95); }
 
 /* CRITICAL — red, pulsing dot */
 .trial-banner--critical {
@@ -182,7 +182,7 @@
   box-shadow: 0 0 0 0 var(--danger);
 }
 .trial-banner--critical .tb-label { color: var(--danger); }
-.trial-banner--critical .tb-sub   { color: rgba(245,91,91,0.82); }
+.trial-banner--critical .tb-sub   { color: rgba(245,91,91,0.95); }
 
 /* GRACE — red solid bar */
 .trial-banner--grace {
@@ -203,7 +203,7 @@
 }
 .trial-banner--blocked .tb-dot   { background: var(--danger); }
 .trial-banner--blocked .tb-label { color: var(--danger); }
-.trial-banner--blocked .tb-sub   { color: rgba(245,91,91,0.80); }
+.trial-banner--blocked .tb-sub   { color: rgba(245,91,91,0.95); }
 .trial-banner--blocked .tb-content { padding: 12px 28px; }
 
 /* ── Mobile ─────────────────────────────────────────────────────────── */

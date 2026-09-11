@@ -27,6 +27,7 @@ const _le   = () => _try(() => require("./continuousLearningEngine.cjs"));
 const _hitl = () => _try(() => require("./humanInTheLoop.cjs"));
 const _fwr  = () => _try(() => require("./founderWorkRegistry.cjs"));
 const _bus  = () => _try(() => require("../../agents/runtime/runtimeEventBus.cjs"));
+const _aer  = () => _try(() => require("./autonomousExecutionRuntime.cjs"));
 
 function _ts() { return new Date().toISOString(); }
 function _id() { return `rec_${Date.now()}_${Math.random().toString(36).slice(2, 5)}`; }
@@ -46,8 +47,28 @@ function _save(d) {
 function selectStrategy(failure) {
   const { stepType, error = "", attemptCount = 0, domain, stepIndex, totalSteps } = failure;
 
+  // JARVIS INCIDENT REPAIR (2026-09-03, P1-3): ENOENT is a missing
+  // file/path — a deterministic condition, not a race or a slow backend.
+  // This function used to lump it in with timeout/ECONNRESET/spawn as
+  // "transient", which contradicts how the rest of this codebase already
+  // classifies it: engineeringCapabilities.cjs marks ENOENT explicitly
+  // `nonRetriable: true`, and rootCauseAnalysisEngine.cjs lists it among
+  // its canonical DETERMINISTIC error classes. Retrying an operation whose
+  // target path genuinely does not exist changes nothing about the
+  // filesystem — it is guaranteed to fail identically again, so
+  // RETRY_IMMEDIATE for ENOENT was 1-2 guaranteed-failing retries wasted
+  // per real occurrence before eventually escalating anyway. Routed to
+  // ESCALATE instead — the same deterministic-failure path this codebase's
+  // other two ENOENT classifiers already use — so a founder gets a real
+  // decision point instead of the system silently burning retry budget.
+  // Genuinely transient errors (timeout/ETIMEDOUT/ECONNRESET/spawn — a slow
+  // backend, a dropped connection, a subprocess launch race) are unaffected.
+  if (/ENOENT/i.test(error)) {
+    return "ESCALATE";
+  }
+
   // Transient errors → retry
-  if (/timeout|ETIMEDOUT|ECONNRESET|ENOENT|spawn/i.test(error) && attemptCount < 2) {
+  if (/timeout|ETIMEDOUT|ECONNRESET|spawn/i.test(error) && attemptCount < 2) {
     return "RETRY_IMMEDIATE";
   }
 
@@ -82,6 +103,59 @@ function selectStrategy(failure) {
   }
 
   return "ESCALATE";
+}
+
+// ── Real rollback execution ───────────────────────────────────────────────────
+// Engineering Autonomous Completion mission — this used to only BUILD a
+// descriptive `rolledBackSteps` array (`{step, rollback}`, where `rollback`
+// is a plain string like "Undo: <step name>" from executionPlanner.cjs —
+// never an executable descriptor) and report "rolled_back_*" regardless of
+// whether anything was actually reverted.
+//
+// Real undo only exists for one substrate in this codebase: git (via
+// engineeringCapabilities.cjs's `rollback` capability, which now supports
+// a genuine `git revert`/`git checkout --` — see that file). Founder
+// workflow steps outside the engineering/docs domain (business, marketing,
+// CRM, etc.) have no git-backed state and no other real undo mechanism
+// anywhere in the codebase (executionPlanner's `step.rollback` is
+// documentation text, not a callable) — for those, this function reports
+// `reverted:false, reason:"no_real_rollback_mechanism"` honestly rather
+// than fabricating a success outcome.
+async function _executeRealRollback(stepsToRollback, domain) {
+  const results = [];
+  let anyReverted = false;
+
+  const isGitBacked = domain === "engineering" || domain === "docs";
+  if (!isGitBacked) {
+    for (const s of stepsToRollback) {
+      results.push({ step: s.name, rollback: s.rollback, reverted: false, reason: "no_real_rollback_mechanism_for_domain", domain });
+    }
+    return { results, anyReverted: false, summary: `domain "${domain}" has no git-backed state — nothing could be actually reverted (recorded honestly, not fabricated)` };
+  }
+
+  const aer = _aer();
+  if (!aer) {
+    for (const s of stepsToRollback) results.push({ step: s.name, rollback: s.rollback, reverted: false, reason: "autonomousExecutionRuntime_unavailable" });
+    return { results, anyReverted: false, summary: "execution runtime unavailable — rollback capability could not be invoked" };
+  }
+
+  for (const s of stepsToRollback) {
+    // A step may carry a real target from its own execution output (e.g. a
+    // targetFile it patched, or a commitHash it created) — check common
+    // shapes before falling back to unstage-only.
+    const targetFile   = s.output?.targetFile || s.targetFile || null;
+    const commitHash   = s.output?.commitHash  || s.commitHash  || null;
+    const input = commitHash ? `rollback:commit=${commitHash}` : targetFile ? `rollback:file=${targetFile}` : "";
+    try {
+      const r = await aer.executeStage({ stageId: `recovery_rollback_${Date.now()}_${Math.random().toString(36).slice(2,5)}`, capability: "rollback", input, maxAttempts: 1 });
+      const reverted = r.status === "completed";
+      if (reverted) anyReverted = true;
+      results.push({ step: s.name, rollback: s.rollback, reverted, target: commitHash || targetFile || "(unstage_only)", error: reverted ? null : r.error });
+    } catch (e) {
+      results.push({ step: s.name, rollback: s.rollback, reverted: false, error: e.message });
+    }
+  }
+  return { results, anyReverted, summary: `${results.filter(r => r.reverted).length}/${results.length} steps genuinely reverted via git` };
 }
 
 // ── Execute recovery ──────────────────────────────────────────────────────────
@@ -131,17 +205,19 @@ async function recover({ executionId, workflowId, plan, steps, failedStep, error
 
     case "PARTIAL_ROLLBACK": {
       const completedSteps = steps.filter(s => s.completed && s.rollback);
-      rec.notes   = `Partial rollback of ${completedSteps.length} completed steps`;
-      rec.rolledBackSteps = completedSteps.map(s => ({ step: s.name, rollback: s.rollback }));
-      rec.outcome = "rolled_back_partial";
+      const outcome = await _executeRealRollback(completedSteps, failure.domain);
+      rec.notes   = `Partial rollback of ${completedSteps.length} completed steps — ${outcome.summary}`;
+      rec.rolledBackSteps = outcome.results;
+      rec.outcome = outcome.anyReverted ? "rolled_back_partial" : "rollback_unavailable";
       break;
     }
 
     case "FULL_ROLLBACK": {
       const allRollback = steps.filter(s => s.rollback).reverse();
-      rec.notes   = `Full rollback of ${allRollback.length} steps`;
-      rec.rolledBackSteps = allRollback.map(s => ({ step: s.name, rollback: s.rollback }));
-      rec.outcome = "rolled_back_full";
+      const outcome = await _executeRealRollback(allRollback, failure.domain);
+      rec.notes   = `Full rollback of ${allRollback.length} steps — ${outcome.summary}`;
+      rec.rolledBackSteps = outcome.results;
+      rec.outcome = outcome.anyReverted ? "rolled_back_full" : "rollback_unavailable";
       break;
     }
 

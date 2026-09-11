@@ -340,7 +340,7 @@
 }
 .pv2-btn--primary {
   background: var(--accent, #7c6fff);
-  color: #fff;
+  color: var(--on-accent);
   border-color: var(--accent, #7c6fff);
 }
 .pv2-btn--primary:hover  { background: #9488ff; }

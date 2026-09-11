@@ -26,7 +26,14 @@
 const fs   = require("fs");
 const path = require("path");
 
-const DATA_DIR = path.join(__dirname, "../../data/ecosystem");
+// ERA-1 Reliability gap-closure (item #23 depth-completion): same JARVIS_TEST_DATA_SUFFIX
+// convention already used by missionMemory.cjs/agentInstanceRegistry.cjs/skillRegistry.cjs.
+// Additive only — unset resolves byte-identical to before (real data/ecosystem/). When set,
+// redirects to an isolated per-process subdirectory so tests/runtime/eco-v8.test.cjs stops
+// writing real records into production data/ecosystem/ (Mission 97/98 defect class).
+const DATA_DIR = process.env.JARVIS_TEST_DATA_SUFFIX
+  ? path.join(__dirname, "../../data", `ecosystem.${process.env.JARVIS_TEST_DATA_SUFFIX}`)
+  : path.join(__dirname, "../../data/ecosystem");
 const FILES = {
   state:     path.join(DATA_DIR, "state.json"),     // tenants, orgs, routing, permissions
   market:    path.join(DATA_DIR, "market.json"),    // marketplace listings: cap/agent/integration/api/plugin

@@ -256,7 +256,10 @@ test("createCompany fails without blueprintId or name", () => {
 });
 
 test("createCompany creates company record", () => {
-  const r = cle.createCompany({ blueprintId: _bp1.id, workspaceId: _ws1?.id, name: "TestSaaS", templateId: "saas" });
+  // creatorAccountId became required (backend/services/companyLifecycleEngine.cjs:130,
+  // real org-ownership hardening) after this test suite was last updated —
+  // pre-existing staleness, unrelated to companyWorkspaceBuilder.cjs.
+  const r = cle.createCompany({ blueprintId: _bp1.id, workspaceId: _ws1?.id, name: "TestSaaS", templateId: "saas", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error || "createCompany not ok");
   assert(r.company, "no company");
   assert(r.company.id, "no company id");
@@ -300,7 +303,7 @@ atest("advanceStage succeeds with force", async () => {
 });
 
 atest("advanceStage fails at final stage", async () => {
-  const c2 = cle.createCompany({ name: "FinalCo", templateId: "internal_tool" });
+  const c2 = cle.createCompany({ name: "FinalCo", templateId: "internal_tool", creatorAccountId: "test_p8_operator" });
   // Force through all stages
   let id = c2.company.id;
   for (let i = 0; i < 6; i++) await cle.advanceStage(id, { force: true });
@@ -377,7 +380,7 @@ atest("createCompany fails without idea or name", async () => {
 });
 
 atest("createCompany: SaaS via NL idea", async () => {
-  const r = await cf.createCompany({ idea: "Create a SaaS company", name: "SaaSCo Alpha" });
+  const r = await cf.createCompany({ idea: "Create a SaaS company", name: "SaaSCo Alpha", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error || "createCompany not ok");
   assert(r.status === "ready", `expected ready, got ${r.status}`);
   assert(r.companyId, "no companyId");
@@ -387,7 +390,7 @@ atest("createCompany: SaaS via NL idea", async () => {
 });
 
 atest("createCompany: pipeline runs all 13 steps", async () => {
-  const r = await cf.createCompany({ idea: "Build a marketplace", name: "MarketplaceCo" });
+  const r = await cf.createCompany({ idea: "Build a marketplace", name: "MarketplaceCo", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(Array.isArray(r.timeline), "no timeline");
   const steps = r.timeline.map(t => t.step);
@@ -400,32 +403,32 @@ atest("createCompany: pipeline runs all 13 steps", async () => {
 });
 
 atest("createCompany: Healthcare startup", async () => {
-  const r = await cf.createCompany({ idea: "HIPAA-compliant patient management system", name: "HealthVenture", skipApproval: true });
+  const r = await cf.createCompany({ idea: "HIPAA-compliant patient management system", name: "HealthVenture", skipApproval: true, creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(r.templateId === "healthcare", `expected healthcare, got ${r.templateId}`);
   assert(r.checklist.some(c => /hipaa/i.test(c.item)), "no HIPAA checklist item");
 });
 
 atest("createCompany: AI Agency", async () => {
-  const r = await cf.createCompany({ idea: "Create an AI agency", name: "AIAgency" });
+  const r = await cf.createCompany({ idea: "Create an AI agency", name: "AIAgency", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(r.templateId === "agency", `expected agency, got ${r.templateId}`);
 });
 
 atest("createCompany: Ecommerce store", async () => {
-  const r = await cf.createCompany({ idea: "Online ecommerce store", name: "ShopNow" });
+  const r = await cf.createCompany({ idea: "Online ecommerce store", name: "ShopNow", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(r.templateId === "ecommerce", `expected ecommerce, got ${r.templateId}`);
 });
 
 atest("createCompany: explicit templateId override", async () => {
-  const r = await cf.createCompany({ idea: "Something generic", name: "ERPCo", templateId: "erp", skipApproval: true });
+  const r = await cf.createCompany({ idea: "Something generic", name: "ERPCo", templateId: "erp", skipApproval: true, creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(r.templateId === "erp", `expected erp, got ${r.templateId}`);
 });
 
 atest("createCompany returns blueprint with missions", async () => {
-  const r = await cf.createCompany({ idea: "Internal tool for HR", name: "HRTool" });
+  const r = await cf.createCompany({ idea: "Internal tool for HR", name: "HRTool", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(r.blueprint, "no blueprint");
   assert(r.missionCount >= 10, `only ${r.missionCount} missions`);
@@ -433,7 +436,7 @@ atest("createCompany returns blueprint with missions", async () => {
 });
 
 atest("createCompany returns production checklist", async () => {
-  const r = await cf.createCompany({ idea: "SaaS billing platform", name: "BillFlow" });
+  const r = await cf.createCompany({ idea: "SaaS billing platform", name: "BillFlow", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(Array.isArray(r.checklist), "checklist not array");
   assert(r.checklist.length >= 16, `only ${r.checklist.length} checklist items`);
@@ -444,14 +447,14 @@ atest("createCompany returns production checklist", async () => {
 
 atest("createCompany records minutesSaved", async () => {
   const before = cf.getStats();
-  await cf.createCompany({ idea: "Build a learning management system", name: "LearnCo" });
+  await cf.createCompany({ idea: "Build a learning management system", name: "LearnCo", creatorAccountId: "test_p8_operator" });
   const after = cf.getStats();
   assert(after.minutesSaved > before.minutesSaved, "minutesSaved not updated");
   assert(after.totalCreated > before.totalCreated, "totalCreated not incremented");
 });
 
 atest("createCompany stores run in history", async () => {
-  const r = await cf.createCompany({ idea: "Marketplace for freelancers", name: "FreelanceHub" });
+  const r = await cf.createCompany({ idea: "Marketplace for freelancers", name: "FreelanceHub", creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   const run = cf.getRun(r.blueprint.id.replace("bp_","cf_")); // may not match exactly
   const runs = cf.listRuns({ limit: 5 });
@@ -460,7 +463,7 @@ atest("createCompany stores run in history", async () => {
 });
 
 atest("createCompany: company registered in lifecycle", async () => {
-  const r = await cf.createCompany({ idea: "ERP system for manufacturing", name: "MfgERP", skipApproval: true });
+  const r = await cf.createCompany({ idea: "ERP system for manufacturing", name: "MfgERP", skipApproval: true, creatorAccountId: "test_p8_operator" });
   assert(r.ok, r.error);
   assert(r.companyId, "no companyId");
   const c = cle.getCompany(r.companyId);
@@ -473,9 +476,9 @@ atest("createCompany: company registered in lifecycle", async () => {
 
 atest("E2E: parallel company creation", async () => {
   const results = await Promise.all([
-    cf.createCompany({ idea: "SaaS analytics tool", name: "AnalyticsCo" }),
-    cf.createCompany({ idea: "EdTech learning platform", name: "EduPlatform" }),
-    cf.createCompany({ idea: "AI product for developers", name: "DevAI", skipApproval: true }),
+    cf.createCompany({ idea: "SaaS analytics tool", name: "AnalyticsCo", creatorAccountId: "test_p8_operator" }),
+    cf.createCompany({ idea: "EdTech learning platform", name: "EduPlatform", creatorAccountId: "test_p8_operator" }),
+    cf.createCompany({ idea: "AI product for developers", name: "DevAI", skipApproval: true, creatorAccountId: "test_p8_operator" }),
   ]);
   const allOk = results.every(r => r.ok);
   assert(allOk, `some failed: ${results.filter(r => !r.ok).map(r => r.error).join(", ")}`);
@@ -483,9 +486,29 @@ atest("E2E: parallel company creation", async () => {
 });
 
 atest("getStats returns factory stats", async () => {
+  // Mission 60A-E: atest() schedules fn via Promise.resolve().then(fn) —
+  // every atest()'s fn body starts on its own microtask turn as soon as
+  // the PRECEDING atest's fn yields to its own first real await (which
+  // every createCompany()-based atest above does almost immediately).
+  // Promise.all(promises) at the bottom only waits for all of them to
+  // eventually settle — it does not sequence them. This atest was
+  // registered last but its own fn could (and, live-reproduced, does)
+  // execute and call cf.getStats() BEFORE any of the file's own earlier
+  // createCompany() calls have finished writing their stats.byTemplate
+  // entry — genuinely producing an empty byTemplate in an environment
+  // whose data/company-factory.json starts empty (gitignored data/, a
+  // fresh CI checkout), independent of companyFactory.cjs's own logic
+  // (which is correct — see the passing structural coverage elsewhere in
+  // this file). Fixed by awaiting a real company creation of this atest's
+  // own here, making its stats assertion self-sufficient rather than
+  // depending on unguaranteed sibling-atest completion ordering.
+  const seed = await cf.createCompany({ idea: "Mission 60A-E getStats race-fix seed company", name: "T60ASeedCo", skipApproval: true, creatorAccountId: "test_p8_operator" });
+  assert(seed.ok, seed.error);
+
   const stats = cf.getStats();
   assert(typeof stats === "object", "not object");
   assert(typeof stats.totalCreated === "number", "no totalCreated");
+  assert(stats.totalCreated > 0, "totalCreated must reflect at least this atest's own seeded company");
   assert(typeof stats.minutesSaved === "number", "no minutesSaved");
   assert(stats.byTemplate && Object.keys(stats.byTemplate).length > 0, "no byTemplate");
 });

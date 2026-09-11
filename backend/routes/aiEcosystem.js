@@ -54,10 +54,39 @@
  *
  * MODULE 10 – Commercial Benchmark (routing viability)
  *   GET  /ai-ecosystem/viability                    — routing viability check
+ *
+ * MODULE 11 – Org/Workspace AI Budgets
+ *   GET  /ai-ecosystem/budgets                       — all org + workspace budgets
+ *   GET  /ai-ecosystem/budgets/org/:orgId            — one org's budget + current spend
+ *   PUT  /ai-ecosystem/budgets/org/:orgId            — set org budget (org_owner only)
+ *   GET  /ai-ecosystem/budgets/workspace/:workspaceId — one workspace's budget + spend
+ *   PUT  /ai-ecosystem/budgets/workspace/:workspaceId — set workspace budget (org_owner only)
+ *   POST /ai-ecosystem/budgets/check                 — check {orgId, workspaceId} against budget
+ *
+ * MODULE 12 – AI Orchestrator (aiOrchestrator.cjs)
+ *   GET  /ai-ecosystem/orchestrator/health              — composite live+historical health, all providers
+ *   GET  /ai-ecosystem/orchestrator/health/:providerId   — single provider
+ *   POST /ai-ecosystem/orchestrator/chain                — preview the fallback chain for a capability/task
+ *   GET  /ai-ecosystem/orchestrator/recommend/:capability — ranked provider recommendations (capability fit + live health)
+ *   POST /ai-ecosystem/orchestrator/execute               — run a chat request through the full orchestrated path
+ *   POST /ai-ecosystem/orchestrator/execute/stream        — same, but Server-Sent Events token-by-token
+ *   GET  /ai-ecosystem/orchestrator/cache                 — response cache hit/miss stats
+ *   POST /ai-ecosystem/orchestrator/cache/clear           — clear the response cache
+ *
+ * MODULE 13 – Usage Analytics + Prompt History
+ *   GET  /ai-ecosystem/analytics/by-provider         — cost breakdown by provider
+ *   GET  /ai-ecosystem/analytics/by-workspace        — cost breakdown by workspace
+ *   GET  /ai-ecosystem/analytics/by-org              — cost breakdown by org
+ *   GET  /ai-ecosystem/analytics/me                  — caller's own cost report
+ *   GET  /ai-ecosystem/analytics/org/:orgId           — one org's cost + budget report (org_owner only)
+ *   GET  /ai-ecosystem/history/me                     — caller's own recent prompt/response history
+ *   GET  /ai-ecosystem/history/workspace/:workspaceId — a workspace's recent prompt/response history
  */
 
 const router = require("express").Router();
 const { requireAuth } = require("../middleware/authMiddleware");
+const { attachOrg, requireOrgPermission } = require("../middleware/orgMiddleware.cjs");
+const rateLimiter = require("../middleware/rateLimiter");
 
 const registry   = require("../services/aiRegistry.cjs");
 const capRouter  = require("../services/capabilityRouter.cjs");
@@ -74,7 +103,7 @@ const analytics  = require("../services/costAnalytics.cjs");
 
 router.use("/ai-ecosystem", requireAuth);
 
-function _accountId(req) { return req.user?.accountId || req.user?.id || "unknown"; }
+function _accountId(req) { return req.user?.sub || req.user?.accountId || req.user?.id || "unknown"; }
 function _plan(req) {
   try { return billing.checkAccess(_accountId(req)).plan || "trial"; } catch { return "trial"; }
 }
@@ -313,12 +342,26 @@ router.get("/ai-ecosystem/policies", (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.get("/ai-ecosystem/policies/:orgId", (req, res) => {
+// Phase A.1 Recertification finding: both routes below resolved/mutated an
+// org's AI policy by client-supplied :orgId with no ownership/membership
+// check beyond the barrel-level `router.use("/ai-ecosystem", requireAuth)`
+// — any authenticated user could read or overwrite any other org's AI
+// policy (provider allow/deny lists, per-request cost ceiling). Fixed with
+// the same attachOrg + requireOrgPermission("manage_billing") pattern
+// already used for the sibling budget routes in MODULE 11 below and the
+// analytics/org/:orgId route above — not a new authorization primitive.
+function _forwardPolicyOrgParam(req, res, next) {
+  req.body = req.body || {};
+  if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId;
+  return attachOrg(req, res, next);
+}
+
+router.get("/ai-ecosystem/policies/:orgId", _forwardPolicyOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
   try { res.json({ ok: true, policy: policies.getPolicy(req.params.orgId) }); }
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-router.put("/ai-ecosystem/policies/:orgId", (req, res) => {
+router.put("/ai-ecosystem/policies/:orgId", _forwardPolicyOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
   try {
     const p = policies.setPolicy(req.params.orgId, req.body || {});
     res.json({ ok: true, policy: p });
@@ -339,6 +382,181 @@ router.post("/ai-ecosystem/policies/filter", (req, res) => {
     const filtered = policies.filterCandidates(candidates, orgId || "default");
     res.json({ ok: true, original: candidates.length, filtered: filtered.length, candidates: filtered });
   } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 11: Org/Workspace AI Budgets (AI Provider Orchestration mission)
+// Monthly USD/request caps scoped to an org or workspace, enforced against
+// usageMetering's real cost ledger — distinct from enterprisePolicies'
+// per-request cost ceiling above and billingService's per-account plan
+// quota; a real cumulative spend cap neither of those covers.
+// Setting a budget requires org_owner (manage_billing) — reuses
+// organizationService's existing RBAC rather than leaving these open like
+// the policy routes above currently are.
+// ══════════════════════════════════════════════════════════════════
+
+const orgBudgets = require("../services/orgBudgets.cjs");
+
+router.get("/ai-ecosystem/budgets", (req, res) => {
+  try { res.json({ ok: true, ...orgBudgets.getAllBudgets() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// attachOrg resolves req.org from the X-Org-Id header or req.query/body.orgId
+// only — NOT from an :orgId route param — so it's forwarded into req.body
+// before delegating, same fix as workspace.js's member routes needed.
+function _forwardOrgParam(req, res, next) {
+  req.body = req.body || {};
+  if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId;
+  return attachOrg(req, res, next);
+}
+
+router.get("/ai-ecosystem/budgets/org/:orgId", _forwardOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
+  try { res.json({ ok: true, budget: orgBudgets.getOrgBudget(req.params.orgId) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.put("/ai-ecosystem/budgets/org/:orgId", _forwardOrgParam, requireOrgPermission("manage_billing"), (req, res) => {
+  try {
+    const { monthlyCapUsd, monthlyRequestCap, alertThresholdPct } = req.body || {};
+    const patch = {};
+    if (monthlyCapUsd !== undefined)     patch.monthlyCapUsd = monthlyCapUsd;
+    if (monthlyRequestCap !== undefined) patch.monthlyRequestCap = monthlyRequestCap;
+    if (alertThresholdPct !== undefined) patch.alertThresholdPct = alertThresholdPct;
+    res.json({ ok: true, budget: orgBudgets.setOrgBudget(req.params.orgId, patch) });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+// Phase A.1 Recertification finding: this read route had no org check at
+// all while its PUT sibling below did — any authenticated user could read
+// any other org's workspace AI spend/budget. Fixed with the identical
+// attachOrg + requireOrgPermission("manage_billing") pair the PUT already
+// uses (an orgId must still be supplied via header/query/body — workspaceId
+// alone doesn't tell requireOrgPermission which org's RBAC to check).
+router.get("/ai-ecosystem/budgets/workspace/:workspaceId", attachOrg, requireOrgPermission("manage_billing"), (req, res) => {
+  try { res.json({ ok: true, budget: orgBudgets.getWorkspaceBudget(req.params.workspaceId) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Workspace budgets are set by the owning org's owner — the request must
+// still carry an orgId (header/query/body) identifying WHICH org owns this
+// workspace, since workspaceId alone doesn't tell requireOrgPermission which
+// org's RBAC to check against.
+router.put("/ai-ecosystem/budgets/workspace/:workspaceId", attachOrg, requireOrgPermission("manage_billing"), (req, res) => {
+  try {
+    const { monthlyCapUsd, monthlyRequestCap, alertThresholdPct } = req.body || {};
+    const patch = {};
+    if (monthlyCapUsd !== undefined)     patch.monthlyCapUsd = monthlyCapUsd;
+    if (monthlyRequestCap !== undefined) patch.monthlyRequestCap = monthlyRequestCap;
+    if (alertThresholdPct !== undefined) patch.alertThresholdPct = alertThresholdPct;
+    res.json({ ok: true, budget: orgBudgets.setWorkspaceBudget(req.params.workspaceId, patch) });
+  } catch (e) { res.status(400).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/budgets/check", (req, res) => {
+  try {
+    const { orgId, workspaceId } = req.body || {};
+    res.json({ ok: true, ...orgBudgets.checkBudget({ orgId, workspaceId }) });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 12: AI Orchestrator
+// ══════════════════════════════════════════════════════════════════
+
+const orchestrator = require("../services/aiOrchestrator.cjs");
+
+router.get("/ai-ecosystem/orchestrator/health", async (req, res) => {
+  try { res.json({ ok: true, providers: await orchestrator.getProviderHealth() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/orchestrator/health/:providerId", async (req, res) => {
+  try { res.json({ ok: true, health: await orchestrator.getProviderHealth(req.params.providerId) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/orchestrator/chain", async (req, res) => {
+  try {
+    const { capability, task, intent, userPref, prefer, minQuality, maxCostPer1k, orgId } = req.body || {};
+    const chain = await orchestrator.buildFallbackChain({ capability, task, intent, userPref, prefer, minQuality, maxCostPer1k, orgId });
+    res.json({ ok: true, ...chain });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/orchestrator/recommend/:capability", async (req, res) => {
+  try {
+    const { prefer, minQuality, maxCostPer1k, top } = req.query || {};
+    const recommendations = await orchestrator.recommend(req.params.capability, {
+      prefer, minQuality: minQuality ? parseFloat(minQuality) : undefined,
+      maxCostPer1k: maxCostPer1k ? parseFloat(maxCostPer1k) : undefined,
+      top: top ? parseInt(top, 10) : undefined,
+    });
+    res.json({ ok: true, capability: req.params.capability, recommendations });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// requireUsageQuota bounds total spend per billing period but doesn't stop a
+// rapid burst within that budget — the rate limiter is complementary, not
+// redundant, protecting against short-window abuse instead of period totals.
+const _orchestratorRL = rateLimiter(30, 60_000, "ai-ecosystem-orchestrator");
+
+router.post("/ai-ecosystem/orchestrator/execute", billing.requireUsageQuota, _orchestratorRL, async (req, res) => {
+  try {
+    const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId, noCache } = req.body || {};
+    const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
+    if (!msgs) return res.status(400).json({ error: "messages array or prompt string required" });
+    const accountId = _accountId(req);
+    const result = await orchestrator.execute(msgs, {
+      capability, task, intent, userPref, prefer, model, maxTokens, temperature, noCache,
+      accountId, orgId, workspaceId, missionId,
+    });
+    res.json({ ok: true, ...result });
+  } catch (e) {
+    const status = e.status || 500;
+    res.status(status).json({ error: e.message, code: e.code });
+  }
+});
+
+// POST /ai-ecosystem/orchestrator/execute/stream — Server-Sent Events.
+// Each token delta arrives as its own `data: {...}` frame the moment
+// aiService.streamChat's onChunk fires; a final `event: done` frame carries
+// the same metadata /execute returns (provider, cost, latency) once the
+// stream completes, so a client can render tokens live and still get the
+// same accounting summary as the non-streaming endpoint.
+router.post("/ai-ecosystem/orchestrator/execute/stream", billing.requireUsageQuota, _orchestratorRL, async (req, res) => {
+  const { messages, prompt, capability, task, intent, userPref, prefer, model, maxTokens, temperature, orgId, workspaceId, missionId } = req.body || {};
+  const msgs = Array.isArray(messages) ? messages : (prompt ? [{ role: "user", content: prompt }] : null);
+  if (!msgs) return res.status(400).json({ error: "messages array or prompt string required" });
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders?.();
+
+  const accountId = _accountId(req);
+  try {
+    const result = await orchestrator.executeStream(
+      msgs,
+      { capability, task, intent, userPref, prefer, model, maxTokens, temperature, accountId, orgId, workspaceId, missionId },
+      (delta) => { res.write(`data: ${JSON.stringify({ delta })}\n\n`); }
+    );
+    res.write(`event: done\ndata: ${JSON.stringify(result)}\n\n`);
+    res.end();
+  } catch (e) {
+    res.write(`event: error\ndata: ${JSON.stringify({ error: e.message, code: e.code })}\n\n`);
+    res.end();
+  }
+});
+
+router.get("/ai-ecosystem/orchestrator/cache", (req, res) => {
+  try { res.json({ ok: true, ...orchestrator.getCacheStats() }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.post("/ai-ecosystem/orchestrator/cache/clear", (req, res) => {
+  try { orchestrator.clearCache(); res.json({ ok: true, cleared: true }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // ══════════════════════════════════════════════════════════════════
@@ -492,5 +710,66 @@ router.get("/ai-ecosystem/viability", (req, res) => {
 
 // Re-export creditEngine for module 10 reference
 const creditEngine = require("../services/creditEngine.cjs");
+
+// ══════════════════════════════════════════════════════════════════
+// MODULE 13: Usage Analytics + Prompt History
+// ══════════════════════════════════════════════════════════════════
+
+const promptHistory = require("../services/promptHistory.cjs");
+
+router.get("/ai-ecosystem/analytics/by-provider", (req, res) => {
+  try { res.json({ ok: true, breakdown: analytics.costByProvider(req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/analytics/by-workspace", (req, res) => {
+  try { res.json({ ok: true, breakdown: analytics.costByWorkspace(req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/analytics/by-org", (req, res) => {
+  try { res.json({ ok: true, breakdown: analytics.costByOrg(req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+router.get("/ai-ecosystem/analytics/me", (req, res) => {
+  try { res.json({ ok: true, report: analytics.perAccount(_accountId(req), req.query || {}) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Org report requires org membership — cost/budget data is org-sensitive,
+// same authorization bar as the budget routes in MODULE 11.
+router.get("/ai-ecosystem/analytics/org/:orgId",
+  (req, res, next) => { req.body = req.body || {}; if (req.params.orgId && !req.body.orgId) req.body.orgId = req.params.orgId; return attachOrg(req, res, next); },
+  requireOrgPermission("manage_billing"),
+  (req, res) => {
+    try { res.json({ ok: true, report: analytics.perOrg(req.params.orgId, req.query || {}) }); }
+    catch (e) { res.status(500).json({ error: e.message }); }
+  }
+);
+
+router.get("/ai-ecosystem/history/me", (req, res) => {
+  try {
+    const { limit, provider, capability, since, fromLedger } = req.query || {};
+    const opts = { accountId: _accountId(req), limit: limit ? parseInt(limit, 10) : 50, provider, capability, since };
+    const entries = fromLedger === "true" ? promptHistory.loadHistory(opts) : promptHistory.query(opts);
+    res.json({ ok: true, entries });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// Phase A.1 Recertification finding: no org check at all — any
+// authenticated user could read any other org's workspace AI prompt/
+// response history by guessing workspaceId. Fixed with the same
+// attachOrg + requireOrgPermission("manage_billing") pair used for the
+// workspace budget routes above — the caller must supply an orgId (header/
+// query/body) they actually hold billing/AI-usage visibility in, same
+// authorization bar as every other cost/usage-sensitive route in this file.
+router.get("/ai-ecosystem/history/workspace/:workspaceId", attachOrg, requireOrgPermission("manage_billing"), (req, res) => {
+  try {
+    const { limit, provider, capability, since } = req.query || {};
+    const entries = promptHistory.query({ workspaceId: req.params.workspaceId, limit: limit ? parseInt(limit, 10) : 50, provider, capability, since });
+    res.json({ ok: true, entries });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 
 module.exports = router;

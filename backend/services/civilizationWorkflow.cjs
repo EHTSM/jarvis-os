@@ -290,16 +290,26 @@ function subscribecivEvents() {
   try {
     const bus = _bus();
     if (!bus) return;
+    // Runtime Event Bus Reliability, Isolation & Backpressure Audit
+    // (2026-08-16): same fix as the other 5 workflow files — added a real
+    // evt.type check and moved destructuring to evt.payload.
+
     // Pipeline completion → reputation boost for member
-    bus.subscribe("civilization:pipeline:completed", data => {
+    bus.subscribe("civ_sub_civilization_pipeline_completed", evt => {
+      if (evt.type !== "civilization:pipeline:completed") return;
+      const data = evt.payload || {};
       try { if (data.memberId) _st().recordReputationEvent({ memberId: data.memberId, eventType: "pipeline_success", score: 3, detail: `pipeline health=${data.healthScore}` }); } catch {}
     });
     // Mission assigned → record
-    bus.subscribe("civilization:mission:assigned", data => {
+    bus.subscribe("civ_sub_civilization_mission_assigned", evt => {
+      if (evt.type !== "civilization:mission:assigned") return;
+      const data = evt.payload || {};
       try { _st().addCivMemory({ domainId: "civ_mission_network", type: "mission_assigned", title: `Mission assigned to ${data.toMemberId}`, detail: data.id }); } catch {}
     });
     // Treaty ratified → boost all parties
-    bus.subscribe("civilization:treaty:ratified", data => {
+    bus.subscribe("civ_sub_civilization_treaty_ratified", evt => {
+      if (evt.type !== "civilization:treaty:ratified") return;
+      const data = evt.payload || {};
       try { _st().addCivMemory({ domainId: "civ_diplomacy", type: "treaty_ratified", title: `Treaty ratified: ${data.title}` }); } catch {}
     });
   } catch {}

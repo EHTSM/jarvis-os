@@ -27,24 +27,24 @@ async function _post(path, body = {}) {
 
 // ── colour helpers ────────────────────────────────────────────────────
 
-const TIER_C  = { auto: "#52d68a", review: "#f0b429", block: "#f55b5b" };
-const RISK_C  = { low: "#52d68a", moderate: "#f0b429", high: "#f0a028", critical: "#f55b5b" };
-const OUT_C   = { applied: "#52d68a", verified: "#52d68a", deployed: "#44a2ff", planned: "#7c6fff",
-                  rolled_back: "#f55b5b", failed: "#f55b5b", pending: "#f0b429" };
-const LVLC    = { execution_ready: "#52d68a", mostly_ready: "#44a2ff", supervised: "#f0b429", manual: "#f55b5b" };
+const TIER_C  = { auto: "var(--success)", review: "var(--warning)", block: "var(--danger)" };
+const RISK_C  = { low: "var(--success)", moderate: "var(--warning)", high: "#f0a028", critical: "var(--danger)" };
+const OUT_C   = { applied: "var(--success)", verified: "var(--success)", deployed: "#44a2ff", planned: "var(--accent)",
+                  rolled_back: "var(--danger)", failed: "var(--danger)", pending: "var(--warning)" };
+const LVLC    = { execution_ready: "var(--success)", mostly_ready: "#44a2ff", supervised: "var(--warning)", manual: "var(--danger)" };
 
-function tc(t) { return TIER_C[t]  || "#8994b0"; }
-function rc(r) { return RISK_C[r]  || "#8994b0"; }
-function oc(o) { return OUT_C[o]   || "#8994b0"; }
-function lc(l) { return LVLC[l]    || "#8994b0"; }
+function tc(t) { return TIER_C[t]  || "var(--text-dim)"; }
+function rc(r) { return RISK_C[r]  || "var(--text-dim)"; }
+function oc(o) { return OUT_C[o]   || "var(--text-dim)"; }
+function lc(l) { return LVLC[l]    || "var(--text-dim)"; }
 
 const TYPE_ICON  = { patch_apply: "⬡", patch_deploy: "⇪", incident_fix: "⚡" };
-const TYPE_COLOR = { patch_apply: "#44a2ff", patch_deploy: "#52d68a", incident_fix: "#f0b429" };
+const TYPE_COLOR = { patch_apply: "#44a2ff", patch_deploy: "var(--success)", incident_fix: "var(--warning)" };
 
 // ── micro components ──────────────────────────────────────────────────
 
 function Chip({ label, color }) {
-  const c = color || "#8994b0";
+  const c = color || "var(--text-dim)";
   return <span style={{ fontSize: 9, fontWeight: 700, padding: "1px 6px", borderRadius: 3,
     color: c, background: c + "18", border: `1px solid ${c}30`, whiteSpace: "nowrap" }}>{label}</span>;
 }
@@ -58,8 +58,8 @@ function Section({ title, children, count }) {
   return (
     <div style={{ marginBottom: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 8 }}>
-        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "#8994b0" }}>{title}</span>
-        {count != null && <span style={{ fontSize: 9, color: "#8994b0", background: "rgba(255,255,255,0.07)", padding: "0 5px", borderRadius: 3 }}>{count}</span>}
+        <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--text-dim)" }}>{title}</span>
+        {count != null && <span style={{ fontSize: 9, color: "var(--text-dim)", background: "rgba(255,255,255,0.07)", padding: "0 5px", borderRadius: 3 }}>{count}</span>}
       </div>
       <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, overflow: "hidden" }}>
         {children}
@@ -75,9 +75,9 @@ function Row({ children, style }) {
 
 function Empty({ icon = "◌", title, sub }) {
   return (
-    <div style={{ textAlign: "center", padding: "32px 20px", color: "#8994b0" }}>
+    <div style={{ textAlign: "center", padding: "32px 20px", color: "var(--text-dim)" }}>
       <div style={{ fontSize: 26, marginBottom: 8 }}>{icon}</div>
-      <div style={{ fontSize: 12, fontWeight: 600, color: "#c8cdd8", marginBottom: 4 }}>{title}</div>
+      <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text)", marginBottom: 4 }}>{title}</div>
       {sub && <div style={{ fontSize: 10 }}>{sub}</div>}
     </div>
   );
@@ -85,7 +85,7 @@ function Empty({ icon = "◌", title, sub }) {
 
 function RefBtn({ onClick, loading }) {
   return <button onClick={onClick} disabled={loading}
-    style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "#8994b0" }}>
+    style={{ fontSize: 9, padding: "2px 8px", background: "none", border: "1px solid rgba(255,255,255,0.12)", borderRadius: 3, cursor: "pointer", color: "var(--text-dim)" }}>
     {loading ? "…" : "⟳"}
   </button>;
 }
@@ -93,9 +93,9 @@ function RefBtn({ onClick, loading }) {
 function StatCard({ label, value, color, sub }) {
   return (
     <div style={{ flex: "1 1 72px", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 6, padding: "9px 12px", textAlign: "center" }}>
-      <div style={{ fontSize: 19, fontWeight: 800, color: color || "#e6edf3" }}>{value ?? "—"}</div>
-      <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2 }}>{label}</div>
-      {sub != null && <div style={{ fontSize: 9, color: "#8994b0", marginTop: 2 }}>{sub}</div>}
+      <div style={{ fontSize: 19, fontWeight: 800, color: color || "var(--text)" }}>{value ?? "—"}</div>
+      <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2 }}>{label}</div>
+      {sub != null && <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 2 }}>{sub}</div>}
     </div>
   );
 }
@@ -115,19 +115,19 @@ function ScoreGauge({ score, level, size = 100 }) {
       <text x={size/2} y={size/2+1} textAnchor="middle" dominantBaseline="middle"
         style={{ fontSize: 18, fontWeight: 700, fill: col }}>{score}</text>
       <text x={size/2} y={size/2+14} textAnchor="middle" dominantBaseline="middle"
-        style={{ fontSize: 8, fill: "#8994b0" }}>/ 100</text>
+        style={{ fontSize: 8, fill: "var(--text-dim)" }}>/ 100</text>
     </svg>
   );
 }
 
 function SignalBar({ name, score, weight, rawValue }) {
-  const col = score >= 80 ? "#52d68a" : score >= 60 ? "#f0b429" : "#f55b5b";
+  const col = score >= 80 ? "var(--success)" : score >= 60 ? "var(--warning)" : "var(--danger)";
   return (
     <div style={{ padding: "8px 12px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
       <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 3 }}>
-        <span style={{ fontSize: 10, color: "#c8cdd8", flex: 1 }}>{name}</span>
+        <span style={{ fontSize: 10, color: "var(--text)", flex: 1 }}>{name}</span>
         <span style={{ fontSize: 10, fontWeight: 700, color: col }}>{score}%</span>
-        <span style={{ fontSize: 8, color: "#8994b0" }}>w={Math.round(weight * 100)}%</span>
+        <span style={{ fontSize: 8, color: "var(--text-dim)" }}>w={Math.round(weight * 100)}%</span>
       </div>
       <div style={{ height: 4, borderRadius: 2, background: "rgba(255,255,255,0.06)", overflow: "hidden" }}>
         <div style={{ width: `${score}%`, height: "100%", background: col, borderRadius: 2, transition: "width 0.5s ease" }} />
@@ -143,7 +143,7 @@ function RateBar({ label, value, color, total }) {
   return (
     <div style={{ marginBottom: 12 }}>
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-        <span style={{ fontSize: 10, color: "#c8cdd8" }}>{label}</span>
+        <span style={{ fontSize: 10, color: "var(--text)" }}>{label}</span>
         <span style={{ fontSize: 10, fontWeight: 700, color: col }}>{pct}%</span>
       </div>
       <div style={{ height: 5, borderRadius: 2, background: "rgba(255,255,255,0.06)" }}>
@@ -173,15 +173,15 @@ function ExecResult({ result, onClose }) {
     <div style={{ margin: "12px 0", padding: 16, background: col + "0d", border: `1px solid ${col}30`, borderRadius: 8 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
         <Chip label={result.outcome?.toUpperCase()} color={col} />
-        <span style={{ fontSize: 11, color: "#c8cdd8", flex: 1 }}>Exec ID: {result.execId?.slice(0, 16)}…</span>
-        {onClose && <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "#8994b0", fontSize: 14 }}>✕</button>}
+        <span style={{ fontSize: 11, color: "var(--text)", flex: 1 }}>Exec ID: {result.execId?.slice(0, 16)}…</span>
+        {onClose && <button onClick={onClose} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-dim)", fontSize: 14 }}>✕</button>}
       </div>
       {/* Timeline */}
       <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
         {(result.timeline || []).map((t, i) => (
           <div key={i} style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-            <span style={{ fontSize: 9, color: "#8994b0", width: 56, flexShrink: 0 }}>{t.step}</span>
-            <span style={{ fontSize: 9, color: t.ok === false ? "#f55b5b" : t.ok === true ? "#52d68a" : "#c8cdd8" }}>
+            <span style={{ fontSize: 9, color: "var(--text-dim)", width: 56, flexShrink: 0 }}>{t.step}</span>
+            <span style={{ fontSize: 9, color: t.ok === false ? "var(--danger)" : t.ok === true ? "var(--success)" : "var(--text)" }}>
               {t.detail || t.error || t.note || (t.ok === true ? "✓" : t.ok === false ? "✗" : "")}
               {t.pass != null ? ` (${t.pass}P ${t.fail}F)` : ""}
             </span>
@@ -227,7 +227,7 @@ function TabUnifiedQueue({ onSelectForExec }) {
             style={{ padding: "3px 10px", fontSize: 10, borderRadius: 3, cursor: "pointer", fontFamily: "inherit",
               background: filter === f.id ? "rgba(68,162,255,0.15)" : "rgba(255,255,255,0.04)",
               border: `1px solid ${filter === f.id ? "rgba(68,162,255,0.35)" : "rgba(255,255,255,0.08)"}`,
-              color: filter === f.id ? "#44a2ff" : "#8994b0" }}>
+              color: filter === f.id ? "#44a2ff" : "var(--text-dim)" }}>
             {f.label}
           </button>
         ))}
@@ -237,37 +237,37 @@ function TabUnifiedQueue({ onSelectForExec }) {
       {/* Summary bar */}
       {data?.summary && (
         <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
-          <StatCard label="Auto-tier"   value={data.summary.autoTier}   color="#52d68a" />
-          <StatCard label="Review"      value={data.summary.reviewTier}  color="#f0b429" />
-          <StatCard label="Blocked"     value={data.summary.blockTier}   color="#f55b5b" />
+          <StatCard label="Auto-tier"   value={data.summary.autoTier}   color="var(--success)" />
+          <StatCard label="Review"      value={data.summary.reviewTier}  color="var(--warning)" />
+          <StatCard label="Blocked"     value={data.summary.blockTier}   color="var(--danger)" />
           <StatCard label="Patch apply" value={data.summary.patchApply}  color="#44a2ff" />
-          <StatCard label="Deploy"      value={data.summary.patchDeploy} color="#52d68a" />
-          <StatCard label="Incidents"   value={data.summary.incidentFix} color="#f0b429" />
+          <StatCard label="Deploy"      value={data.summary.patchDeploy} color="var(--success)" />
+          <StatCard label="Incidents"   value={data.summary.incidentFix} color="var(--warning)" />
         </div>
       )}
 
       {loading && [0,1,2,3].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
       {!loading && items.length === 0 && <Empty icon="✓" title="Queue empty" sub="All items handled or no pending work." />}
 
       {items.map(item => (
         <div key={item.id} style={{ marginBottom: 8, border: "1px solid rgba(255,255,255,0.07)", borderRadius: 7, overflow: "hidden" }}>
           <div style={{ display: "flex", gap: 8, alignItems: "center", padding: "10px 14px",
             background: item.tier === "auto" ? "rgba(82,214,138,0.04)" : "rgba(255,255,255,0.01)" }}>
-            <span style={{ fontSize: 14, color: TYPE_COLOR[item.type] || "#8994b0" }}>{TYPE_ICON[item.type] || "•"}</span>
+            <span style={{ fontSize: 14, color: TYPE_COLOR[item.type] || "var(--text-dim)" }}>{TYPE_ICON[item.type] || "•"}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: "flex", gap: 5, alignItems: "center", marginBottom: 2, flexWrap: "wrap" }}>
                 <Chip label={item.type?.replace(/_/g," ")} color={TYPE_COLOR[item.type]} />
                 <Chip label={item.tierLabel || item.tier} color={tc(item.tier)} />
                 {item.riskLevel && <Chip label={item.riskLevel} color={rc(item.riskLevel)} />}
-                <span style={{ fontSize: 9, color: "#8994b0" }}>rank score {item.rankScore}</span>
+                <span style={{ fontSize: 9, color: "var(--text-dim)" }}>rank score {item.rankScore}</span>
               </div>
-              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+              <div style={{ fontSize: 10, fontFamily: "monospace", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                 {item.filePath || item.incidentType || item.id?.slice(0,16)}
               </div>
-              {item.reason && <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{item.reason.slice(0,80)}</div>}
-              {item.explanation?.length > 0 && <div style={{ fontSize: 8, color: "#f0b429", marginTop: 1 }}>{item.explanation[0]}</div>}
-              <div style={{ fontSize: 8, color: "#8994b0", marginTop: 2 }}>
+              {item.reason && <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{item.reason.slice(0,80)}</div>}
+              {item.explanation?.length > 0 && <div style={{ fontSize: 8, color: "var(--warning)", marginTop: 1 }}>{item.explanation[0]}</div>}
+              <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 2 }}>
                 {item.safetyScore != null ? `Safety ${item.safetyScore}/100 · Conf ${item.confidenceScore}%` : ""}
                 {item.detectedAt ? ` · detected ${_ago(item.detectedAt)}` : ""}
                 {item.proposedAt ? ` · proposed ${_ago(item.proposedAt)}` : ""}
@@ -280,7 +280,7 @@ function TabUnifiedQueue({ onSelectForExec }) {
                 {item.actionLabel || "Execute"}
               </button>
             )}
-            {item.tier === "block" && <Chip label="BLOCKED" color="#f55b5b" />}
+            {item.tier === "block" && <Chip label="BLOCKED" color="var(--danger)" />}
           </div>
         </div>
       ))}
@@ -331,15 +331,15 @@ function TabExecute({ selectedItem, onClearSelected }) {
     <div>
       {/* Form */}
       <div style={{ padding: 16, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 8, marginBottom: 16 }}>
-        <div style={{ fontSize: 12, fontWeight: 600, color: "#c8cdd8", marginBottom: 12 }}>One-Click Execution</div>
+        <div style={{ fontSize: 12, fontWeight: 600, color: "var(--text)", marginBottom: 12 }}>One-Click Execution</div>
 
         {selectedItem && (
           <div style={{ marginBottom: 12, padding: "8px 12px", background: "rgba(68,162,255,0.06)", border: "1px solid rgba(68,162,255,0.2)", borderRadius: 5 }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span style={{ fontSize: 10, color: "#44a2ff", fontWeight: 600 }}>From queue: {selectedItem.type?.replace(/_/g," ")}</span>
-              <button onClick={onClearSelected} style={{ background: "none", border: "none", cursor: "pointer", color: "#8994b0", fontSize: 11 }}>✕</button>
+              <button onClick={onClearSelected} style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-dim)", fontSize: 11 }}>✕</button>
             </div>
-            <div style={{ fontSize: 9, fontFamily: "monospace", color: "#8994b0", marginTop: 2 }}>
+            <div style={{ fontSize: 9, fontFamily: "monospace", color: "var(--text-dim)", marginTop: 2 }}>
               {selectedItem.filePath || selectedItem.incidentType || id}
             </div>
           </div>
@@ -348,32 +348,32 @@ function TabExecute({ selectedItem, onClearSelected }) {
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           <input value={id} onChange={e => setId(e.target.value)}
             placeholder="Item ID — patch ID or incident ID"
-            style={{ padding: "7px 10px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5, color: "#e6edf3", fontSize: 11, fontFamily: "monospace" }} />
+            style={{ padding: "7px 10px", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 5, color: "var(--text)", fontSize: 11, fontFamily: "monospace" }} />
 
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 9, color: "#8994b0", marginBottom: 4 }}>Type</div>
+              <div style={{ fontSize: 9, color: "var(--text-dim)", marginBottom: 4 }}>Type</div>
               <div style={{ display: "flex", gap: 4 }}>
                 {TYPES.map(t => (
                   <button key={t} onClick={() => setType(t)}
                     style={{ padding: "3px 8px", fontSize: 9, borderRadius: 3, cursor: "pointer", fontFamily: "inherit",
                       background: type === t ? "rgba(68,162,255,0.15)" : "rgba(255,255,255,0.04)",
                       border: `1px solid ${type === t ? "rgba(68,162,255,0.3)" : "rgba(255,255,255,0.08)"}`,
-                      color: type === t ? "#44a2ff" : "#8994b0" }}>
+                      color: type === t ? "#44a2ff" : "var(--text-dim)" }}>
                     {t.replace(/_/g," ")}
                   </button>
                 ))}
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 9, color: "#8994b0", marginBottom: 4 }}>Predicted tier</div>
+              <div style={{ fontSize: 9, color: "var(--text-dim)", marginBottom: 4 }}>Predicted tier</div>
               <div style={{ display: "flex", gap: 4 }}>
                 {TIERS.map(t => (
                   <button key={t} onClick={() => setTier(t)}
                     style={{ padding: "3px 8px", fontSize: 9, borderRadius: 3, cursor: "pointer", fontFamily: "inherit",
                       background: tier === t ? tc(t) + "18" : "rgba(255,255,255,0.04)",
                       border: `1px solid ${tier === t ? tc(t) + "40" : "rgba(255,255,255,0.08)"}`,
-                      color: tier === t ? tc(t) : "#8994b0" }}>
+                      color: tier === t ? tc(t) : "var(--text-dim)" }}>
                     {t}
                   </button>
                 ))}
@@ -383,7 +383,7 @@ function TabExecute({ selectedItem, onClearSelected }) {
 
           <label style={{ display: "flex", gap: 6, alignItems: "center", cursor: "pointer" }}>
             <input type="checkbox" checked={skipVerify} onChange={e => setSkipVerify(e.target.checked)} />
-            <span style={{ fontSize: 10, color: "#8994b0" }}>Skip verify step (apply only)</span>
+            <span style={{ fontSize: 10, color: "var(--text-dim)" }}>Skip verify step (apply only)</span>
           </label>
 
           <button onClick={execute} disabled={running || !id.trim()}
@@ -393,7 +393,7 @@ function TabExecute({ selectedItem, onClearSelected }) {
         </div>
       </div>
 
-      {result?.error && <div style={{ fontSize: 11, color: "#f55b5b", marginBottom: 12, padding: "8px 12px", background: "rgba(245,91,91,0.06)", borderRadius: 5 }}>Error: {result.error}</div>}
+      {result?.error && <div style={{ fontSize: 11, color: "var(--danger)", marginBottom: 12, padding: "8px 12px", background: "rgba(245,91,91,0.06)", borderRadius: 5 }}>Error: {result.error}</div>}
       {result && !result.error && <ExecResult result={result} onClose={() => setResult(null)} />}
 
       {/* Execution history */}
@@ -403,10 +403,10 @@ function TabExecute({ selectedItem, onClearSelected }) {
             <Row key={i} style={{ alignItems: "center" }}>
               <Chip label={h.outcome?.toUpperCase()} color={oc(h.outcome)} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontSize: 10, color: "#c8cdd8" }}>{h.type?.replace(/_/g," ")} — {h.itemId?.slice(0,16)}…</div>
-                <div style={{ fontSize: 8, color: "#8994b0", marginTop: 1 }}>{_ago(h.generatedAt)} · {h.timeline?.length} steps</div>
+                <div style={{ fontSize: 10, color: "var(--text)" }}>{h.type?.replace(/_/g," ")} — {h.itemId?.slice(0,16)}…</div>
+                <div style={{ fontSize: 8, color: "var(--text-dim)", marginTop: 1 }}>{_ago(h.generatedAt)} · {h.timeline?.length} steps</div>
               </div>
-              <Chip label={`${h.timeline?.length ?? 0} steps`} color="#8994b0" />
+              <Chip label={`${h.timeline?.length ?? 0} steps`} color="var(--text-dim)" />
             </Row>
           ))}
         </Section>
@@ -439,37 +439,37 @@ function TabAnalytics() {
       <div style={{ display: "flex", gap: 8, marginBottom: 8, justifyContent: "flex-end" }}><RefBtn onClick={load} loading={loading} /></div>
 
       {loading && [0,1,2,3,4].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {data && !data.error && !loading && (
         <>
           {/* Stat cards */}
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="Total decisions"      value={a.total}              color="#c8cdd8" />
-            <StatCard label="Approved"             value={a.approved}           color="#52d68a" />
-            <StatCard label="Rejected"             value={a.rejected}           color="#f55b5b" />
-            <StatCard label="Deferred"             value={a.deferred}           color="#f0b429" />
+            <StatCard label="Total decisions"      value={a.total}              color="var(--text)" />
+            <StatCard label="Approved"             value={a.approved}           color="var(--success)" />
+            <StatCard label="Rejected"             value={a.rejected}           color="var(--danger)" />
+            <StatCard label="Deferred"             value={a.deferred}           color="var(--warning)" />
             <StatCard label="Exec total"           value={a.execTotal}          color="#44a2ff" />
-            <StatCard label="Exec success"         value={a.execSuccess}        color="#52d68a" />
+            <StatCard label="Exec success"         value={a.execSuccess}        color="var(--success)" />
           </div>
 
           {/* Rate bars */}
           <Section title="Approval metrics">
             <div style={{ padding: "12px 14px" }}>
-              <RateBar label="Approval rate"                 value={a.approvalRate}             color="#52d68a" />
-              <RateBar label="Rejection rate"               value={a.rejectionRate}            color="#f55b5b" />
+              <RateBar label="Approval rate"                 value={a.approvalRate}             color="var(--success)" />
+              <RateBar label="Rejection rate"               value={a.rejectionRate}            color="var(--danger)" />
               <RateBar label="Rollback after approval"      value={a.rollbackAfterApprovalRate} color="#f0a028" />
               <RateBar label="Recommendation accuracy"      value={a.recommendationAccuracy}   color="#44a2ff" />
-              <RateBar label="Execution success rate"       value={a.execSuccessRate}           color="#7c6fff" />
+              <RateBar label="Execution success rate"       value={a.execSuccessRate}           color="var(--accent)" />
             </div>
           </Section>
 
           {/* 7d trend */}
           <Section title="Last 7 days">
             <Row>
-              <StatCard label="Approved"  value={t.approved}  color="#52d68a" />
-              <StatCard label="Succeeded" value={t.success}   color="#52d68a" />
-              <StatCard label="Accuracy"  value={t.accuracy != null ? `${t.accuracy}%` : "—"} color={t.accuracy >= 70 ? "#52d68a" : "#f0b429"} />
+              <StatCard label="Approved"  value={t.approved}  color="var(--success)" />
+              <StatCard label="Succeeded" value={t.success}   color="var(--success)" />
+              <StatCard label="Accuracy"  value={t.accuracy != null ? `${t.accuracy}%` : "—"} color={t.accuracy >= 70 ? "var(--success)" : "var(--warning)"} />
             </Row>
           </Section>
 
@@ -477,14 +477,14 @@ function TabAnalytics() {
           <Section title="Platform">
             <Row>
               <StatCard label="Total patches"  value={p.totalPatches}  />
-              <StatCard label="Rollback rate"  value={p.rollbackRate != null ? `${p.rollbackRate}%` : "—"} color={p.rollbackRate > 30 ? "#f55b5b" : "#52d68a"} />
+              <StatCard label="Rollback rate"  value={p.rollbackRate != null ? `${p.rollbackRate}%` : "—"} color={p.rollbackRate > 30 ? "var(--danger)" : "var(--success)"} />
               <StatCard label="Heal total"     value={p.healTotal}     color="#44a2ff" />
-              <StatCard label="Heal rate"      value={p.healRate != null ? `${p.healRate}%` : "—"} color={p.healRate > 70 ? "#52d68a" : "#f0b429"} />
+              <StatCard label="Heal rate"      value={p.healRate != null ? `${p.healRate}%` : "—"} color={p.healRate > 70 ? "var(--success)" : "var(--warning)"} />
             </Row>
           </Section>
 
           {a.total === 0 && (
-            <div style={{ fontSize: 11, color: "#8994b0", textAlign: "center", padding: 20 }}>
+            <div style={{ fontSize: 11, color: "var(--text-dim)", textAlign: "center", padding: 20 }}>
               No decisions recorded yet. Approve/reject items through the Unified Queue or Recommendation Center.
             </div>
           )}
@@ -512,12 +512,12 @@ function TabCalibration() {
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: "#8994b0" }}>Compares predicted confidence tier to actual outcomes — calibrates the prediction model.</span>
+        <span style={{ fontSize: 11, color: "var(--text-dim)" }}>Compares predicted confidence tier to actual outcomes — calibrates the prediction model.</span>
         <RefBtn onClick={load} loading={loading} />
       </div>
 
       {loading && [0,1,2].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {data && !data.error && !loading && (
         <>
@@ -525,17 +525,17 @@ function TabCalibration() {
           <div style={{ display: "flex", gap: 16, marginBottom: 20, padding: 16,
             background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 8 }}>
             <div style={{ textAlign: "center" }}>
-              <div style={{ fontSize: 28, fontWeight: 800, color: data.overallAccuracy >= 70 ? "#52d68a" : "#f0b429" }}>
+              <div style={{ fontSize: 28, fontWeight: 800, color: data.overallAccuracy >= 70 ? "var(--success)" : "var(--warning)" }}>
                 {data.overallAccuracy ?? "—"}%
               </div>
-              <div style={{ fontSize: 9, color: "#8994b0" }}>Overall accuracy</div>
+              <div style={{ fontSize: 9, color: "var(--text-dim)" }}>Overall accuracy</div>
             </div>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 11, color: "#c8cdd8", marginBottom: 4 }}>
+              <div style={{ fontSize: 11, color: "var(--text)", marginBottom: 4 }}>
                 {data.note || `Based on ${data.totalSamples} sample(s)`}
               </div>
-              <div style={{ fontSize: 10, color: "#8994b0" }}>
-                Drift: <span style={{ color: data.drift?.signal === "stable" ? "#52d68a" : "#f0b429" }}>{data.drift?.signal}</span>
+              <div style={{ fontSize: 10, color: "var(--text-dim)" }}>
+                Drift: <span style={{ color: data.drift?.signal === "stable" ? "var(--success)" : "var(--warning)" }}>{data.drift?.signal}</span>
                 {" · "}{data.drift?.window} recent samples
               </div>
             </div>
@@ -547,8 +547,8 @@ function TabCalibration() {
               <div key={c.tier} style={{ padding: "10px 14px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
                   <Chip label={c.tier.toUpperCase()} color={tc(c.tier)} />
-                  <span style={{ fontSize: 10, color: "#c8cdd8", flex: 1 }}>{c.samples} sample(s)</span>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: c.accuracy >= 70 ? "#52d68a" : c.accuracy >= 50 ? "#f0b429" : c.accuracy == null ? "#8994b0" : "#f55b5b" }}>
+                  <span style={{ fontSize: 10, color: "var(--text)", flex: 1 }}>{c.samples} sample(s)</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: c.accuracy >= 70 ? "var(--success)" : c.accuracy >= 50 ? "var(--warning)" : c.accuracy == null ? "var(--text-dim)" : "var(--danger)" }}>
                     {c.accuracy ?? "—"}%
                   </span>
                 </div>
@@ -561,19 +561,19 @@ function TabCalibration() {
                 {Object.keys(c.distribution || {}).length > 0 && (
                   <div style={{ marginTop: 6, display: "flex", gap: 5, flexWrap: "wrap" }}>
                     {Object.entries(c.distribution).map(([k, v]) => (
-                      <span key={k} style={{ fontSize: 8, color: "#8994b0", background: "rgba(255,255,255,0.05)", padding: "1px 5px", borderRadius: 2 }}>
+                      <span key={k} style={{ fontSize: 8, color: "var(--text-dim)", background: "rgba(255,255,255,0.05)", padding: "1px 5px", borderRadius: 2 }}>
                         {k}: {v}
                       </span>
                     ))}
                   </div>
                 )}
-                {c.samples === 0 && <div style={{ fontSize: 9, color: "#8994b0" }}>No samples yet for this tier</div>}
+                {c.samples === 0 && <div style={{ fontSize: 9, color: "var(--text-dim)" }}>No samples yet for this tier</div>}
               </div>
             ))}
           </Section>
 
           {data.totalSamples === 0 && (
-            <div style={{ fontSize: 11, color: "#8994b0", textAlign: "center", padding: 16 }}>
+            <div style={{ fontSize: 11, color: "var(--text-dim)", textAlign: "center", padding: 16 }}>
               Make decisions through the Execute tab with a predicted tier set — calibration builds over time.
             </div>
           )}
@@ -603,22 +603,22 @@ function TabRankedCandidates({ onSelectForExec }) {
   return (
     <div>
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>
-        <span style={{ fontSize: 11, color: "#8994b0" }}>Ranked by safety 35% + confidence 25% + historical success 25% + tier bonus 15%</span>
+        <span style={{ fontSize: 11, color: "var(--text-dim)" }}>Ranked by safety 35% + confidence 25% + historical success 25% + tier bonus 15%</span>
         <RefBtn onClick={load} loading={loading} />
       </div>
 
       {loading && [0,1,2,3].map(i => <div key={i} style={{ marginBottom: 8 }}><Skel /></div>)}
-      {data?.error && <div style={{ fontSize: 11, color: "#f55b5b" }}>Error: {data.error}</div>}
+      {data?.error && <div style={{ fontSize: 11, color: "var(--danger)" }}>Error: {data.error}</div>}
 
       {/* Top pick callout */}
       {data?.topPick && (
         <div style={{ marginBottom: 16, padding: 14, background: "rgba(82,214,138,0.06)", border: "1px solid rgba(82,214,138,0.25)", borderRadius: 8 }}>
-          <div style={{ fontSize: 10, fontWeight: 700, color: "#52d68a", marginBottom: 4 }}>★ TOP RECOMMENDATION</div>
-          <div style={{ fontSize: 11, color: "#c8cdd8", marginBottom: 4, fontFamily: "monospace" }}>{data.topPick.filePath}</div>
-          <div style={{ fontSize: 9, color: "#8994b0", marginBottom: 8 }}>{data.topPickReason}</div>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "var(--success)", marginBottom: 4 }}>★ TOP RECOMMENDATION</div>
+          <div style={{ fontSize: 11, color: "var(--text)", marginBottom: 4, fontFamily: "monospace" }}>{data.topPick.filePath}</div>
+          <div style={{ fontSize: 9, color: "var(--text-dim)", marginBottom: 8 }}>{data.topPickReason}</div>
           <button onClick={() => onSelectForExec?.({ ...data.topPick, type: "patch_apply", actionLabel: "Apply Patch" })}
             style={{ padding: "5px 14px", fontSize: 10, fontWeight: 700, borderRadius: 4, cursor: "pointer", fontFamily: "inherit",
-              background: "rgba(82,214,138,0.15)", border: "1px solid rgba(82,214,138,0.35)", color: "#52d68a" }}>
+              background: "rgba(82,214,138,0.15)", border: "1px solid rgba(82,214,138,0.35)", color: "var(--success)" }}>
             Execute Top Pick
           </button>
         </div>
@@ -631,20 +631,20 @@ function TabRankedCandidates({ onSelectForExec }) {
       <Section title={`All candidates (${candidates.length})`} count={candidates.length}>
         {candidates.map((c, i) => (
           <Row key={c.id} style={{ alignItems: "center" }}>
-            <span style={{ fontSize: 11, color: "#8994b0", width: 20, textAlign: "right", flexShrink: 0 }}>#{c.rank}</span>
+            <span style={{ fontSize: 11, color: "var(--text-dim)", width: 20, textAlign: "right", flexShrink: 0 }}>#{c.rank}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 10, fontFamily: "monospace", color: "#c8cdd8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.filePath}</div>
-              <div style={{ fontSize: 9, color: "#8994b0", marginTop: 1 }}>{c.reason?.slice(0, 70)}</div>
+              <div style={{ fontSize: 10, fontFamily: "monospace", color: "var(--text)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c.filePath}</div>
+              <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 1 }}>{c.reason?.slice(0, 70)}</div>
               <div style={{ marginTop: 3, display: "flex", gap: 5, flexWrap: "wrap" }}>
                 <Chip label={`Safety ${c.safetyScore}/100`} color={rc(c.riskLevel)} />
                 <Chip label={`Conf ${c.confidenceScore}%`}  color="#44a2ff" />
-                <Chip label={`Hist ${c.historicalRate}%`}   color={c.historicalRate >= 70 ? "#52d68a" : "#f0b429"} />
+                <Chip label={`Hist ${c.historicalRate}%`}   color={c.historicalRate >= 70 ? "var(--success)" : "var(--warning)"} />
                 <Chip label={c.tierLabel || c.tier}          color={tc(c.tier)} />
               </div>
             </div>
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4 }}>
-              <span style={{ fontSize: 13, fontWeight: 800, color: c.compositeScore >= 70 ? "#52d68a" : "#f0b429" }}>{c.compositeScore}</span>
-              <span style={{ fontSize: 8, color: "#8994b0" }}>composite</span>
+              <span style={{ fontSize: 13, fontWeight: 800, color: c.compositeScore >= 70 ? "var(--success)" : "var(--warning)" }}>{c.compositeScore}</span>
+              <span style={{ fontSize: 8, color: "var(--text-dim)" }}>composite</span>
               <button onClick={() => onSelectForExec?.({ ...c, type: "patch_apply", actionLabel: "Apply Patch" })}
                 style={{ padding: "3px 10px", fontSize: 9, borderRadius: 3, cursor: "pointer", fontFamily: "inherit",
                   background: "rgba(68,162,255,0.1)", border: "1px solid rgba(68,162,255,0.25)", color: "#44a2ff" }}>
@@ -687,12 +687,12 @@ function TabReadiness() {
         <ScoreGauge score={data.compositeScore} level={data.level} size={108} />
         <div style={{ flex: 1 }}>
           <div style={{ fontSize: 21, fontWeight: 800, color: col, marginBottom: 4 }}>{data.badge}</div>
-          <div style={{ fontSize: 12, color: "#8994b0", marginBottom: 8 }}>
+          <div style={{ fontSize: 12, color: "var(--text-dim)", marginBottom: 8 }}>
             {m.totalDecisions ?? 0} decisions · {m.totalExec ?? 0} executions · {m.totalPatches ?? 0} patches · {m.healTotal ?? 0} heals
           </div>
           {data.strengths?.length > 0 && (
             <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-              {data.strengths.map((s, i) => <Chip key={i} label={`✓ ${s}`} color="#52d68a" />)}
+              {data.strengths.map((s, i) => <Chip key={i} label={`✓ ${s}`} color="var(--success)" />)}
             </div>
           )}
         </div>
@@ -711,12 +711,12 @@ function TabReadiness() {
         <Section title="Gaps to improve" count={data.gaps.length}>
           {data.gaps.map((g, i) => (
             <Row key={i}>
-              <span style={{ fontSize: 11, color: "#f55b5b" }}>✗</span>
+              <span style={{ fontSize: 11, color: "var(--danger)" }}>✗</span>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 11, color: "#c8cdd8", fontWeight: 600 }}>{g.signal}</div>
-                <div style={{ fontSize: 9, color: "#8994b0", marginTop: 2 }}>{g.action}</div>
+                <div style={{ fontSize: 11, color: "var(--text)", fontWeight: 600 }}>{g.signal}</div>
+                <div style={{ fontSize: 9, color: "var(--text-dim)", marginTop: 2 }}>{g.action}</div>
               </div>
-              <Chip label={`${g.score}%`} color="#f55b5b" />
+              <Chip label={`${g.score}%`} color="var(--danger)" />
             </Row>
           ))}
         </Section>
@@ -725,11 +725,11 @@ function TabReadiness() {
       {/* Analytics summary */}
       <Section title="Approval analytics">
         <div style={{ padding: "12px 14px" }}>
-          <RateBar label="Approval rate"            value={a.approvalRate}             color="#52d68a" />
-          <RateBar label="Rejection rate"           value={a.rejectionRate}            color="#f55b5b" />
+          <RateBar label="Approval rate"            value={a.approvalRate}             color="var(--success)" />
+          <RateBar label="Rejection rate"           value={a.rejectionRate}            color="var(--danger)" />
           <RateBar label="Rollback after approval"  value={a.rollbackAfterApprovalRate} color="#f0a028" />
           <RateBar label="Recommendation accuracy"  value={a.recommendationAccuracy}   color="#44a2ff" />
-          <RateBar label="Execution success rate"   value={a.execSuccessRate}           color="#7c6fff" />
+          <RateBar label="Execution success rate"   value={a.execSuccessRate}           color="var(--accent)" />
         </div>
       </Section>
 
@@ -740,15 +740,15 @@ function TabReadiness() {
             <Row key={e.id || i} style={{ alignItems: "center" }}>
               <Chip label={e.outcome?.toUpperCase()} color={oc(e.outcome)} />
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 10, color: "#c8cdd8" }}>{e.type?.replace(/_/g," ")} — {e.id?.slice(5,21)}</div>
+                <div style={{ fontSize: 10, color: "var(--text)" }}>{e.type?.replace(/_/g," ")} — {e.id?.slice(5,21)}</div>
               </div>
-              <span style={{ fontSize: 9, color: "#8994b0" }}>{_ago(e.createdAt)}</span>
+              <span style={{ fontSize: 9, color: "var(--text-dim)" }}>{_ago(e.createdAt)}</span>
             </Row>
           ))}
         </Section>
       )}
 
-      <div style={{ fontSize: 9, color: "#8994b0", textAlign: "right", marginTop: 8 }}>Generated {_ago(data.generatedAt)}</div>
+      <div style={{ fontSize: 9, color: "var(--text-dim)", textAlign: "right", marginTop: 8 }}>Generated {_ago(data.generatedAt)}</div>
     </div>
   );
 }
@@ -775,7 +775,7 @@ export default function ExecutionCenter({ onNavigate }) {
   }
 
   return (
-    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1117", color: "#c8cdd8", fontFamily: "system-ui, -apple-system, sans-serif" }}>
+    <div style={{ display: "flex", minHeight: "100vh", background: "#0d1117", color: "var(--text)", fontFamily: "system-ui, -apple-system, sans-serif" }}>
       <style>{`@keyframes ec-pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }`}</style>
       <div style={{ flex: 1, minWidth: 0, overflow: "auto" }}>
       <PageHeader
@@ -801,7 +801,7 @@ export default function ExecutionCenter({ onNavigate }) {
               style={{ padding: "8px 14px", fontSize: 11, fontWeight: 600, cursor: "pointer",
                 background: "none", border: "none",
                 borderBottom: tab === t.id ? "2px solid #44a2ff" : "2px solid transparent",
-                color: tab === t.id ? "#44a2ff" : "#8994b0",
+                color: tab === t.id ? "#44a2ff" : "var(--text-dim)",
                 marginBottom: -1, whiteSpace: "nowrap", fontFamily: "inherit" }}>
               {t.label}
             </button>

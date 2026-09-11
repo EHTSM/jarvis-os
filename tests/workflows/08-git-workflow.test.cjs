@@ -28,7 +28,7 @@ test("git log returns commit hash and message", async () => {
 });
 
 test("git log with author shows committer name", async () => {
-    const r = await run("git log --oneline --format='%an' -3");
+    const r = await run("git log --oneline --format=%an -3");
     assert.equal(r.success, true);
     assert.ok(r.stdout?.trim().length > 0, "should have author names");
 });
@@ -55,7 +55,14 @@ test("git show HEAD returns commit info", async () => {
 });
 
 test("git log format consistency: timestamps are ISO-like", async () => {
-    const r = await run("git log --format='%aI' -3");
+    // terminalAgent.run() tokenizes by whitespace only and spawns with
+    // shell:false (no shell parsing) — a shell-style quoted format string
+    // like --format='%aI' is passed to git as a literal argv token
+    // including the quote characters, since there's no shell to strip
+    // them. Unquoted --format=%aI works correctly through this no-shell
+    // execution path (git itself needs no quoting for a single-word
+    // format string with no spaces).
+    const r = await run("git log --format=%aI -3");
     assert.equal(r.success, true);
     const lines = r.stdout.trim().split("\n").filter(Boolean);
     for (const line of lines) {

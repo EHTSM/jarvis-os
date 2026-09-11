@@ -117,12 +117,18 @@ async function synthesize({ text, voiceProfile = "male_professional", speed = 1.
     const config = _buildConfig(text, voiceProfile, speed, pitch);
 
     // Try ElevenLabs first, then OpenAI, then template
+    // Client Error Sanitization Deep Sweep (2026-08-21): both catch blocks
+    // below previously put the raw provider err.message into the config
+    // object returned to the client via /creative/audio/* — same leak class
+    // as imageGeneratorAgent.cjs's DALL-E path. Full detail logged
+    // server-side; client-facing fields are now fixed safe strings.
     if (process.env.ELEVENLABS_API_KEY) {
         try {
             const audio = await _elevenLabsTTS(text, voiceProfile, speed);
             return { ...config, generated: true, ...audio };
         } catch (err) {
-            config.elevenlabsError = err.message;
+            try { require("../../backend/utils/logger").warn(`[VoiceClone] ElevenLabs TTS failed: ${err.message}`); } catch { /* non-fatal */ }
+            config.elevenlabsError = "ElevenLabs synthesis failed";
         }
     }
 
@@ -131,7 +137,8 @@ async function synthesize({ text, voiceProfile = "male_professional", speed = 1.
             const audio = await _openAITTS(text, voiceProfile);
             return { ...config, generated: true, ...audio };
         } catch (err) {
-            config.openaiError = err.message;
+            try { require("../../backend/utils/logger").warn(`[VoiceClone] OpenAI TTS failed: ${err.message}`); } catch { /* non-fatal */ }
+            config.openaiError = "OpenAI synthesis failed";
         }
     }
 

@@ -149,16 +149,55 @@ const _PRODUCTION_ORIGINS = [
 const _envOrigins = (process.env.ALLOWED_ORIGINS || "")
     .split(",").map(s => s.trim()).filter(Boolean);
 const _allowedOrigins = [...new Set([..._PRODUCTION_ORIGINS, ..._envOrigins])];
+// Real Productivity & Operator Experience Certification: `npm run dev`
+// (this project's own documented local-dev workflow — frontend on :3000,
+// backend on :5050, wired via CRA's "proxy" field in frontend/package.json)
+// was completely broken for every state-changing request (signup, login,
+// any POST). Root cause, confirmed by reading the installed
+// react-dev-utils source directly: CRA's dev-server proxy
+// (frontend/node_modules/react-dev-utils/WebpackDevServerUtils.js)
+// rewrites the Origin header of every proxied request to the proxy
+// TARGET's own address — i.e. it sends `Origin: http://localhost:5050`
+// to this very server — specifically to *avoid* CORS issues, per that
+// file's own comment. This backend's strict origin allowlist then
+// rejected that self-referential origin, so every proxied POST failed
+// with a 500 before ever reaching its route handler. Reproduced directly:
+// curl straight to :5050 always succeeded; the identical request through
+// the :3000 proxy always failed with the exact
+// `CORS: origin 'http://localhost:5050' not allowed` error logged here.
+//
+// Fix does NOT key off NODE_ENV — this repo's own checked-in .env hardcodes
+// NODE_ENV=production even for local development (a separate, real finding:
+// dev-only behaviors like error-detail passthrough never activate locally
+// either), so a NODE_ENV-gated fix would have been dead code in this
+// project's actual configuration. Instead: accept an Origin that is
+// self-referential — http://<the Host header this exact request carries>
+// — which is only ever possible for traffic that already reached this
+// process on localhost (an external attacker cannot make a victim's
+// browser send a request whose Origin equals this server's own address
+// unless they already control this machine, at which point CORS is not
+// the relevant boundary). This is materially the same trust boundary as
+// the existing `!origin` same-origin allowance three lines below, just
+// covering the one extra hop CRA's proxy introduces.
 app.use(cors({
     origin: (origin, cb) => {
         // Allow same-origin requests (origin === undefined in server-to-server or
-        // same-origin fetches) and any listed origin.
+        // same-origin fetches), any listed origin, or an origin that is
+        // self-referential (see comment above — covers CRA's dev-proxy rewrite).
         if (!origin || _allowedOrigins.includes(origin)) return cb(null, true);
+        try {
+            const originHost = new URL(origin).host; // e.g. "localhost:5050"
+            if (req_isSelfOrigin(originHost)) return cb(null, true);
+        } catch { /* malformed Origin header — fall through to reject */ }
         cb(new Error(`CORS: origin '${origin}' not allowed`));
     },
     credentials: true,
     methods: ["GET","POST","PUT","PATCH","DELETE","OPTIONS"],
 }));
+function req_isSelfOrigin(originHost) {
+    const _selfPort = parseInt(process.env.PORT) || 5050;
+    return originHost === `localhost:${_selfPort}` || originHost === `127.0.0.1:${_selfPort}`;
+}
 
 // ── Response compression (gzip for JSON >= 1 KB) ─────────────────
 app.use(require("./middleware/compress"));
@@ -175,24 +214,161 @@ app.use(require("./middleware/requestLogger"));
 // means real asset requests resolve here and never reach those routers.
 const frontendBuild = path.join(__dirname, "../frontend/build");
 const hasFrontendBuild = require("fs").existsSync(frontendBuild);
+const indexHtmlPath = path.join(frontendBuild, "index.html");
+
+// index.html must be re-rendered per request (not served statically) in
+// production: the CSP header above sets a fresh 'nonce-...' on every response,
+// but CRA's build output has no templating step to stamp that nonce onto its
+// <script> tags. Without this, script-src's nonce never matches any script
+// tag in the HTML and the browser blocks every script — the entire SPA fails
+// to load (blank page) for every visitor. We inject the nonce as a `nonce`
+// attribute on every <script> tag at serve time instead.
+// C.1 (C1-D4): the template was cached for the process lifetime. CRA emits
+// content-hashed bundles, so after a redeploy the still-running server kept
+// serving the OLD index.html, which referenced main.<oldhash>.js — files that
+// no longer exist on disk. Every visitor got a blank page (the browser refuses
+// the 404 as a script) until someone remembered to restart the process.
+// Measured live during C.1: served main.ee3b42b3.js while disk had
+// main.51b4f711.js.
+//
+// Fixed by keying the cache on the file's mtime+size: still one read per
+// deploy rather than per request, but a rebuilt index.html is picked up
+// automatically. A stat() per request is negligible next to serving a blank app.
+let _indexHtmlTemplate = null;
+let _indexHtmlStamp = null;
+function _renderIndexHtml(req, res) {
+    let stamp = null;
+    try {
+        const st = require("fs").statSync(indexHtmlPath);
+        stamp = `${st.mtimeMs}:${st.size}`;
+    } catch { return res.status(500).send("Frontend build not found"); }
+
+    if (_indexHtmlTemplate === null || _indexHtmlStamp !== stamp) {
+        try {
+            _indexHtmlTemplate = require("fs").readFileSync(indexHtmlPath, "utf8");
+            _indexHtmlStamp = stamp;
+        } catch { return res.status(500).send("Frontend build not found"); }
+    }
+    const nonce = res.locals.cspNonce;
+    const html = nonce
+        ? _indexHtmlTemplate.replace(/<script(?![^>]*\bnonce=)/g, `<script nonce="${nonce}"`)
+        : _indexHtmlTemplate;
+    res.setHeader("Content-Type", "text/html; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache");
+    res.send(html);
+}
+
 if (hasFrontendBuild) {
-    app.use(express.static(frontendBuild));
+    // index: false — prevents express.static from auto-serving the raw,
+    // un-nonced index.html for "/"; the explicit GET "/" route below (and the
+    // SPA fallback further down) render it dynamically instead.
+    app.use(express.static(frontendBuild, { index: false }));
+    app.get("/", _renderIndexHtml);
+
+    // Phase C.1 (C1-D1). express.static calls next() when a build asset is
+    // missing, so the request continued into the API stack and came back as
+    // 401 {"error":"Unauthorized"} — a *missing file* reported as an *auth
+    // failure*. During a partial or stale deploy that sends an operator to
+    // debug authentication while the real cause is an absent bundle, and it
+    // is what blocked the C.1 accessibility scan: the SPA could not boot and
+    // every route measured as zero focusable elements.
+    //
+    // Build assets are public static files; they are never auth-gated when
+    // present, so they must not become auth-gated by being absent. Anything
+    // under a build asset directory that reaches this point does not exist.
+    app.use(["/static", "/assets"], (req, res) => {
+        res.status(404).json({
+            success: false,
+            error: `Not Found: ${req.method} ${req.baseUrl}${req.path}`,
+            hint: "Static build asset not found — the frontend build may be stale or incomplete.",
+        });
+    });
+
     logger.info("Serving frontend build from /frontend/build");
 }
 
 // ── Mount all API routes ────────────────────────────────────────────
 app.use(routes);
 
+// ── API 404 boundary ────────────────────────────────────────────────
+// Phase C.1.1 measurement-integrity fix. The SPA fallback below matches
+// ANY unmatched GET, so an authenticated request to a nonexistent API
+// path (e.g. GET /enterprise/orgs, which no route defines) fell through
+// to index.html and returned HTTP 200 + HTML. A client could not
+// distinguish "route missing" from "route working" by status code, and a
+// consumer failed at JSON.parse rather than on a clean 404.
+//
+// Measured impact: this corrupted the Phase C.1 audit twice — it made
+// three orphaned components (EnterpriseOS/DeveloperOS/PersonalOS, 22
+// endpoints) appear to have live backends, and it produced a false
+// cross-tenant "leak" signal when three nonexistent org paths returned
+// 200 to a foreign account (the owner received the same 200 HTML).
+//
+// The prefix list is derived from the live router tree at boot, not
+// hardcoded, so it stays correct as routes are added or removed.
+const _apiPrefixes = (() => {
+    const found = new Set();
+    (function walk(stack) {
+        for (const layer of stack || []) {
+            if (layer.route && typeof layer.route.path === "string") {
+                const seg = layer.route.path.split("/")[1];
+                if (seg && !seg.startsWith(":")) found.add(seg.split(":")[0]);
+            } else if (layer.handle && layer.handle.stack) {
+                walk(layer.handle.stack);
+            }
+        }
+    })(routes.stack);
+    return found;
+})();
+
+// Real client-side routes. App.jsx reads window.location.pathname and handles
+// exactly these; everything else it renders from local state, so no other
+// multi-segment path is a legitimate frontend destination.
+const _SPA_PATHS = new Set(["/", "/reset-password", "/verify-email", "/accept-invite"]);
+
+app.use((req, res, next) => {
+    const seg = req.path.split("/")[1];
+
+    // (a) Unknown path under a prefix that DOES serve routes.
+    if (seg && _apiPrefixes.has(seg)) {
+        return res.status(404).json({
+            success: false,
+            error: `Not Found: ${req.method} ${req.path}`,
+        });
+    }
+
+    // (b) Phase OS-2 gap fix. Keying only off mounted prefixes left a hole:
+    // a path whose prefix has NO routes at all (e.g. /dev/*, /personal/*) was
+    // absent from _apiPrefixes and fell through to the SPA, still answering
+    // 200 + HTML. Those are precisely the endpoints DeveloperOS.jsx and
+    // PersonalOS.jsx call — the dead prototypes this whole audit is trying to
+    // tell the truth about — so the masking survived exactly where it mattered.
+    //
+    // A multi-segment path that is not a known client-side route is an API
+    // call by any reasonable reading. Single-segment paths still fall through,
+    // so client-side routes added later keep working without touching this.
+    const isMultiSegment = req.path.split("/").filter(Boolean).length > 1;
+    if (isMultiSegment && !_SPA_PATHS.has(req.path)) {
+        return res.status(404).json({
+            success: false,
+            error: `Not Found: ${req.method} ${req.path}`,
+        });
+    }
+
+    return next();
+});
+
 // ── SPA fallback — any non-API path that reached here falls back to
 // index.html so React Router / hash routes resolve client-side. Must
-// run AFTER the API route barrel so unmatched API paths still 404/401
-// correctly instead of silently returning the SPA shell.
+// run AFTER the API route barrel and the API 404 boundary above so
+// unmatched API paths 404 correctly instead of silently returning the
+// SPA shell.
 if (hasFrontendBuild) {
     // Express 5 / path-to-regexp v6 rejects a bare "*" — wildcard segments
     // must be named (e.g. "/*splat"). This previously never executed because
     // `routes` always intercepted requests first; now it's reachable, so the
     // path string must be valid under the current router.
-    app.get("/*splat", (req, res) => res.sendFile(path.join(frontendBuild, "index.html")));
+    app.get("/*splat", _renderIndexHtml);
 }
 
 // ── Global error handler ───────────────────────────────────────────
@@ -204,6 +380,34 @@ app.use((err, req, res, _next) => {
         return res.status(413).json({ success: false, error: "Payload too large" });
     }
     logger.error("Unhandled error:", err.message);
+    // Zero Blind Spot / Continuous Autonomous Operations Certification:
+    // a raw uncaught route exception previously only reached plain
+    // logger.error() (console-only unless LOG_FILE is set, which it isn't
+    // in the real .env) — it never landed in data/logs/structured.ndjson,
+    // the one file continuousRuntimeObserver.cjs's logs source and
+    // errorAggregator.cjs actually read. That made a genuinely broken
+    // backend route invisible to the autonomous observe->decide->mission
+    // loop unless it also crashed the whole process (caught separately by
+    // the pm2 source). Reusing the existing structuredLog() writer here —
+    // no new logging system — closes that gap.
+    try {
+        require("./services/observabilityEngine.cjs").structuredLog("error", err.message, {
+            service: "http", path: req.originalUrl, method: req.method,
+        });
+    } catch { /* non-fatal — must never block the error response */ }
+    // MASTER FINAL GAP CLOSURE (2026-08-15, C10-028): sentryService.cjs
+    // exported real capture functions that nothing ever called. Wired here
+    // (and at the two process-level handlers below) — no new error-tracking
+    // system, reuses the existing HTTP-envelope service as-is. Honestly a
+    // no-op until SENTRY_DSN is set (captureException's own early return),
+    // so this introduces no fake success and requires no credential to be
+    // correct code — only to actually deliver anywhere.
+    try {
+        require("./services/sentryService.cjs").captureException(err, {
+            tags: { service: "http" },
+            extra: { path: req.originalUrl, method: req.method },
+        }).catch(() => {});
+    } catch { /* non-fatal — must never block the error response */ }
     const body = { success: false, error: "Internal server error" };
     if (process.env.NODE_ENV !== "production") body.details = err.message;
     res.status(500).json(body);
@@ -245,6 +449,99 @@ let _autoLoopRef    = null;  // set after startup
 let _httpServer     = null;  // set after listen()
 let _shuttingDown   = false;
 
+// ── JARVIS INCIDENT REPAIR (2026-09-03, P0-1): autonomous workforce boot gate
+//
+// Root cause context: the mission-creation incident (95% CPU, hanging HTTP,
+// continuous mission fan-out) was made worse on every restart because the
+// autonomous workforce (I1-I4 + all 10 org-department registrations, ~210
+// agent tick schedulers total) started unconditionally inside the SAME
+// app.listen() callback that just bound the HTTP port, with no health or
+// backlog check of any kind — a huge existing "planned" mission backlog
+// (8,393 real missions, confirmed live) was immediately re-exposed to every
+// planner/reviewer/verifier/etc. tick the instant the process came back up.
+//
+// This gate does NOT touch app.listen() (already first, already unconditional
+// — HTTP responsiveness must never depend on this check) and does NOT touch
+// the lighter-weight deferred startup work above it (learning engine,
+// self-heal probe loop, schedulers) — none of those create missions or spin
+// per-agent timers, so none of them were implicated in the incident. It gates
+// exactly the block that was: Phase I4 (autonomousExecutionRuntime), I3
+// (missionOrchestrator), I2 (autonomousDecisionEngine), I1
+// (continuousRuntimeObserver), and the 10 org-department register() calls
+// (engineeringOrg through platformOrg) — the first of which is what actually
+// boots agentRuntimeSupervisor (engineeringOrg.cjs/businessOrg.cjs call
+// sup.start() themselves on first registration).
+//
+// Configuration (env vars — no source change needed to operate this):
+//   AUTONOMOUS_BOOT_MODE=auto      (default) — start normally UNLESS the
+//                                    backlog check below trips; on trip,
+//                                    start in degraded mode and log why.
+//   AUTONOMOUS_BOOT_MODE=always    — always start immediately (pre-incident
+//                                    behavior) — for a deliberate override.
+//   AUTONOMOUS_BOOT_MODE=degraded  — emergency kill switch: never start the
+//                                    autonomous workforce this boot, no
+//                                    matter what the backlog looks like.
+//                                    HTTP, existing data, and every other
+//                                    deferred service above are unaffected —
+//                                    this is a read/write-safe degraded mode,
+//                                    not a shutdown.
+//   AUTONOMOUS_BACKLOG_LIMIT=<n>   (default 2000) — in "auto" mode, if
+//                                    missionMemory's planned+active+running
+//                                    mission count is at/above this, boot in
+//                                    degraded mode instead of starting
+//                                    immediately. 2000 is well above normal
+//                                    operating backlog (single/low-hundreds
+//                                    in healthy operation, per this repo's
+//                                    own retention/backlog history) and well
+//                                    below the 8,393 that was actually
+//                                    observed during the incident — it exists
+//                                    to catch "the backlog is clearly runaway
+//                                    again", not to police ordinary variance.
+//
+// A degraded boot is NOT permanent and NOT silent: it logs exactly why, and
+// the same env vars govern the NEXT restart — there is no separate
+// "permanently disabled" state to get stuck in, and nothing here prevents an
+// operator from setting AUTONOMOUS_BOOT_MODE=always and restarting once the
+// backlog is understood/addressed.
+function _resolveAutonomousBootDecision() {
+    const mode  = (process.env.AUTONOMOUS_BOOT_MODE || "auto").toLowerCase();
+    const limit = Number.isFinite(Number(process.env.AUTONOMOUS_BACKLOG_LIMIT))
+        ? Number(process.env.AUTONOMOUS_BACKLOG_LIMIT)
+        : 2000;
+
+    if (mode === "degraded") {
+        return { start: false, reason: "AUTONOMOUS_BOOT_MODE=degraded (explicit)", backlog: null, limit };
+    }
+    if (mode === "always") {
+        return { start: true, reason: "AUTONOMOUS_BOOT_MODE=always (explicit)", backlog: null, limit };
+    }
+
+    // "auto" (default): inspect the real backlog before deciding. Read-only —
+    // getMissionStats() only reads data/missions.json, never writes.
+    try {
+        const mm    = require("./services/missionMemory.cjs");
+        const stats = mm.getMissionStats();
+        const byStatus  = stats.byStatus || {};
+        const nonTerminal = (byStatus.planned || 0) + (byStatus.active || 0) + (byStatus.running || 0);
+        if (nonTerminal >= limit) {
+            return {
+                start: false,
+                reason: `non-terminal mission backlog ${nonTerminal} >= AUTONOMOUS_BACKLOG_LIMIT ${limit}`,
+                backlog: nonTerminal,
+                limit,
+            };
+        }
+        return { start: true, reason: `backlog ${nonTerminal} < limit ${limit}`, backlog: nonTerminal, limit };
+    } catch (err) {
+        // Backlog unreadable (e.g. missions.json missing/corrupt on a fresh
+        // install) is not itself evidence of a runaway backlog — fail open
+        // to "start", matching every other deferred-service block in this
+        // file's own established pattern (a missing/broken dependency logs a
+        // warning and moves on, it does not block the rest of startup).
+        return { start: true, reason: `backlog check unavailable (${err.message}) — starting normally`, backlog: null, limit };
+    }
+}
+
 function _gracefulShutdown(signal) {
     if (_shuttingDown) return;
     _shuttingDown = true;
@@ -273,13 +570,49 @@ function _gracefulShutdown(signal) {
     // 3a. Stop browser schedule executor
     try { require("../agents/browser/browserScheduler.cjs").stop(); } catch { /* ignore */ }
 
+    // 3a2. Stop content post scheduler (see the matching start() comment above)
+    try { require("../agents/content/contentScheduler.cjs").stop(); } catch { /* ignore */ }
+
+    // 3b. Stop org automation's real node-cron dispatcher — Scheduler
+    // Reliability & Recovery Audit (2026-08-16): orgAutomationScheduler.cjs
+    // has a working stop() (cronTask.stop() + clears the handle) but it was
+    // never called anywhere in this file, confirmed via grep — the same
+    // "real stop() exists but isn't wired into shutdown" gap already fixed
+    // once for closeDB() above. Not calling it left the cron task running
+    // (and its own dispatcher, in-flight fireRule calls) through the entire
+    // shutdown sequence instead of stopping cleanly alongside every other
+    // scheduler here.
+    try { require("./services/orgAutomationScheduler.cjs").stop(); } catch { /* ignore */ }
+
+    // 3c. Stop the founder identity sync 6h timer — same audit, same class
+    // of gap: this scheduler previously had no stop() at all (fixed
+    // separately in founderIdentitySyncScheduler.cjs) and consequently was
+    // never part of any shutdown sequence either.
+    try { require("./services/founderIdentitySyncScheduler.cjs").stopIdentitySyncSchedule(); } catch { /* ignore */ }
+
     // 4. Stop memory sampler
     try { memTracker.stop(); } catch { /* ignore */ }
 
     // 5a. Stop event bus (closes SSE connections cleanly)
     try { require("../agents/runtime/runtimeEventBus.cjs").stop(); } catch { /* ignore */ }
 
-    // 5. Give in-flight work 5 s to drain, then exit
+    // 5b. Close the SQLite shadow connection — checkpoints and truncates the
+    // WAL file. OOPLIX V1 MASTER AUDIT (2026-08-16, graceful-shutdown
+    // coverage audit): closeDB() was never called anywhere in this file,
+    // confirmed by direct grep. WAL mode is crash-safe by design (already
+    // live-verified this session under real SIGKILL — no data loss, no
+    // corruption), so this was never a correctness risk, but a real,
+    // measured consequence was found live: data/jarvis.db-wal had grown to
+    // 4.1 MB — LARGER than the main jarvis.db file itself (930 KB) —
+    // because nothing ever checkpoints it on a clean exit. A manual
+    // `PRAGMA wal_checkpoint(TRUNCATE)` was confirmed to shrink it to 0
+    // bytes. Left unaddressed, this grows unboundedly across a long-running
+    // production deployment's restarts. Calling the connection manager's
+    // own existing closeDB() (which better-sqlite3 checkpoints on close by
+    // default) fixes this with no new architecture.
+    try { require("./db/sqlite.cjs").closeDB(); } catch { /* ignore */ }
+
+    // 6. Give in-flight work 5 s to drain, then exit
     setTimeout(() => {
         logger.info("[Shutdown] Clean exit");
         process.exit(0);
@@ -356,6 +689,11 @@ process.on("uncaughtException", (err) => {
     errTracker.record("uncaughtException", err.message || String(err));
     logger.error("FATAL uncaughtException — exiting for clean restart:");
     logger.error(err.stack || err.message || String(err));
+    // C10-028: best-effort — the process is exiting in 200ms regardless, so
+    // this capture races the exit and may not complete delivery even with a
+    // real DSN configured. Still correct to attempt: honest best-effort, not
+    // a claim of guaranteed delivery.
+    try { require("./services/sentryService.cjs").captureException(err, { tags: { service: "process", handler: "uncaughtException" } }).catch(() => {}); } catch {}
     process.exitCode = 1;
     setTimeout(() => process.exit(1), 200);
 });
@@ -365,6 +703,10 @@ process.on("unhandledRejection", (reason) => {
     const msg = reason instanceof Error ? reason.stack : String(reason);
     errTracker.record("unhandledRejection", msg);
     logger.error(`Unhandled promise rejection: ${msg}`);
+    try {
+        const err = reason instanceof Error ? reason : new Error(String(reason));
+        require("./services/sentryService.cjs").captureException(err, { tags: { service: "process", handler: "unhandledRejection" } }).catch(() => {});
+    } catch {}
 });
 
 // SIGTERM: PM2/systemd graceful stop.
@@ -628,6 +970,54 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[SelfHeal] deferred start failed:", err.message);
     }
     try {
+        // V7 Phase 1 (Continuous Self Improvement): startWeeklySchedule() was
+        // fully built (real setInterval, real report generation/persistence)
+        // but never called anywhere in the repo — confirmed via grep before
+        // this change. Wiring it here, not rebuilding it.
+        require("./services/improvementLoop.cjs").startWeeklySchedule();
+    } catch (err) {
+        logger.warn("[ImprovementLoop] deferred start failed:", err.message);
+    }
+    try {
+        // V7 Phase 2 (Continuous Self Improvement): runEvolutionCycle() was
+        // real (8-stage pattern discovery -> rule promotion/retirement ->
+        // confidence update) but exclusively route-driven — confirmed via
+        // grep, only routes/selfImprovement.js ever called it.
+        require("./services/selfImprovementEngine.cjs").startEvolutionSchedule();
+    } catch (err) {
+        logger.warn("[SelfImprovement] deferred start failed:", err.message);
+    }
+    try {
+        // V7 Phase 3 (Real Connector Runtime): runFullScan() was real (13
+        // category scanners, live HTTP probes, persisted state) but only
+        // ever triggered by POST /integrations/scan — connector health had
+        // zero background monitoring.
+        require("./services/integrationConnectors.cjs").startHealthMonitor();
+    } catch (err) {
+        logger.warn("[ConnectorMonitor] deferred start failed:", err.message);
+    }
+    try {
+        // V7 Phase 4 (Autonomous Business Operations): composes 5 real,
+        // already-built batch functions (customerJourneyEngine.syncJourneys,
+        // customerHealthEngine.scoreAll, customerAutomationEngine.
+        // runAutomationScan, revenueAutomationEngine.runRevenuePipeline,
+        // businessIntelligenceEngine.scan) that were each exclusively
+        // route-driven — confirmed via survey, zero scheduling anywhere.
+        require("./services/businessOperationsScheduler.cjs").startOperationsSchedule();
+    } catch (err) {
+        logger.warn("[BusinessOps] deferred start failed:", err.message);
+    }
+    try {
+        // V7 Phase 5 (Founder Operating System): founderIdentityOS.cjs's
+        // runFullSystemScan() (identity graph + asset discovery +
+        // relationship graph + credential intelligence) and
+        // runSecretDiscovery() (bounded scan of known sensitive config
+        // locations) were both real but exclusively route-driven.
+        require("./services/founderIdentitySyncScheduler.cjs").startIdentitySyncSchedule();
+    } catch (err) {
+        logger.warn("[FounderIdentitySync] deferred start failed:", err.message);
+    }
+    try {
         const rot   = require("./services/secretRotationAutomation.cjs");
         const vault = require("./services/secretVault.cjs");
 
@@ -662,12 +1052,30 @@ _httpServer = app.listen(PORT, HOST, () => {
     }
 
     // ── Autonomous task loop ───────────────────────────────────────
-    try {
-        _autoLoopRef = require("../agents/autonomousLoop.cjs");
-        _autoLoopRef.start();
-        logger.info("[AutoLoop] autonomous task loop running");
-    } catch (err) {
-        logger.warn("[AutoLoop] failed to start:", err.message);
+    // Mission 65: this loop runs real, unattended writes for the server's
+    // entire lifetime — createMission()/organizationService writes via
+    // runFullPipeline(), delegateToMember(), publishCivMission(), etc.
+    // (agents/autonomousLoop.cjs's own runCycle()) — into the exact same
+    // data/missions.json / data/organizations.json files the regression
+    // and security test suites read/assert against. Live-reproduced as
+    // the root cause of a recurring cluster of CI-only failures
+    // (Tests 133/147/148/153/154's shared-store timing assertions, and
+    // security tests 36/39/43/44/45's org-creation races) — the test
+    // suites' own architecture has no way to account for a background
+    // writer neither they nor the CI workflow ever asked to run. This
+    // guard is opt-in and additive only: DISABLE_AUTONOMOUS_LOOP is unset
+    // everywhere except where a caller (e.g. CI) explicitly sets it, so
+    // every existing deployment's behavior is completely unchanged.
+    if (process.env.DISABLE_AUTONOMOUS_LOOP === "1") {
+        logger.info("[AutoLoop] autonomous task loop disabled (DISABLE_AUTONOMOUS_LOOP=1)");
+    } else {
+        try {
+            _autoLoopRef = require("../agents/autonomousLoop.cjs");
+            _autoLoopRef.start();
+            logger.info("[AutoLoop] autonomous task loop running");
+        } catch (err) {
+            logger.warn("[AutoLoop] failed to start:", err.message);
+        }
     }
 
     // ── n8n workflow registration ─────────────────────────────────
@@ -696,12 +1104,39 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[EventBus] failed to start:", err.message);
     }
 
+    // ── Automation OS: event-triggered rule execution ──────────────
+    // MASTER FINAL GAP CLOSURE (2026-08-15, C10-007): the only trigger type
+    // wired to actually fire is "event" — reuses the event bus started
+    // just above. schedule/threshold/webhook remain correctly unimplemented
+    // (see automationService.cjs's own header comment for why).
+    try {
+        const r = require("../backend/services/automationService.cjs").startEventLoop();
+        logger.info(`[Automation] event-triggered rule execution ${r.started ? "started" : "not started (" + r.reason + ")"}`);
+    } catch (err) {
+        logger.warn("[Automation] event loop failed to start:", err.message);
+    }
+
     // ── Browser schedule executor ─────────────────────────────────
     try {
         require("../agents/browser/browserScheduler.cjs").start();
         logger.info("[BrowserScheduler] schedule executor started — checks every 60s");
     } catch (err) {
         logger.warn("[BrowserScheduler] failed to start:", err.message);
+    }
+
+    // ── Content post scheduler ────────────────────────────────────
+    // Scheduler Reliability & Recovery Audit (2026-08-16): contentScheduler.
+    // cjs's processDue() was real and fully built (pending → ready → sent/
+    // failed, WhatsApp broadcast dispatch) but nothing anywhere ever called
+    // it automatically — confirmed via grep. A post scheduled for a future
+    // time sat at "pending" forever unless something explicitly dispatched
+    // a "process_due" task. Wires the same start()/stop() tick pattern
+    // browserScheduler.cjs already establishes, not a new mechanism.
+    try {
+        require("../agents/content/contentScheduler.cjs").start();
+        logger.info("[ContentScheduler] due-post executor started — checks every 60s");
+    } catch (err) {
+        logger.warn("[ContentScheduler] failed to start:", err.message);
     }
 
     // ── Long-session drift monitor ────────────────────────────────
@@ -773,7 +1208,8 @@ _httpServer = app.listen(PORT, HOST, () => {
 
     // ── Phase 31: startup reconciliation ─────────────────────────
     // 1. Stale queue tasks: any task stuck in "running" state (crash recovery)
-    //    is reset to "pending" by recoverStale() (called below in diagnostics).
+    //    is reset to "pending" by recoverStale() (called once, inside
+    //    autonomousLoop.start(), above).
     // 2. Crash snapshots: logged by runtimeOrchestrator at module load time.
     // 3. Pending task count: surface in startup log so operator knows queue state.
     try {
@@ -799,6 +1235,52 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn("[BackgroundRuntime] failed to start (non-fatal):", bgrErr.message);
     }
 
+    // ── V5 Module 7: Organization Automation Center — real cron dispatcher
+    // for automationService's existing "schedule" trigger type, plus the
+    // event-bus subscription that lets an automation rule trigger a real
+    // org-scoped AI call via orgAiBrain ────────────────────────────────
+    try {
+        const orgScheduler = require("./services/orgAutomationScheduler.cjs");
+        const schedResult = orgScheduler.start();
+        const orgAutoCenter = require("./services/orgAutomationCenter.cjs");
+        const aiWireResult = orgAutoCenter.startAiWiring();
+        logger.info(`[OrgAutomationCenter] scheduler=${schedResult.skipped ? "skipped(test mode)" : "started"} aiWiring=${aiWireResult.ok ? "started" : "failed"}`);
+    } catch (autoCenterErr) {
+        logger.warn("[OrgAutomationCenter] failed to start (non-fatal):", autoCenterErr.message);
+    }
+
+    // ── Phase I5: Engineering Capability Layer ────────────────────────────
+    // Registers capability HANDLERS only (functions the orchestrator can
+    // call) — creates no missions, starts no timers, so this stays
+    // ungated even though the orchestrator that would use it is gated below.
+    try {
+        const engCap = require("./services/engineeringCapabilities.cjs");
+        const regResult = engCap.register();
+        logger.info(`[EngCapabilities] I5 registered ${regResult.registered} production capability handlers`);
+    } catch (capErr) {
+        logger.warn("[EngCapabilities] failed to register (non-fatal):", capErr.message);
+    }
+
+    // ── Autonomous workforce boot gate (P0-1) — see _resolveAutonomousBootDecision()
+    // above for the full rationale and env var reference.
+    const _autoBoot = _resolveAutonomousBootDecision();
+    logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+    logger.info(` Autonomous Workforce Boot Decision`);
+    logger.info(`  mode        : ${(process.env.AUTONOMOUS_BOOT_MODE || "auto")}`);
+    logger.info(`  backlog     : ${_autoBoot.backlog === null ? "n/a" : _autoBoot.backlog} (limit: ${_autoBoot.limit})`);
+    logger.info(`  decision    : ${_autoBoot.start ? "START" : "DEGRADED (not starting this boot)"}`);
+    logger.info(`  reason      : ${_autoBoot.reason}`);
+    logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
+
+    if (!_autoBoot.start) {
+        logger.warn(
+            "[AutonomousWorkforce] NOT starting I1-I4 or the 10 org-department " +
+            "registries this boot — HTTP, existing missions, and every other " +
+            "service above are unaffected. To force a normal start, set " +
+            "AUTONOMOUS_BOOT_MODE=always (or raise AUTONOMOUS_BACKLOG_LIMIT) and restart."
+        );
+    } else {
+
     // ── Phase I4: Autonomous Execution Runtime ────────────────────────────
     try {
         const execRT = require("./services/autonomousExecutionRuntime.cjs");
@@ -815,6 +1297,24 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.info("[MissionOrchestrator] I3 started");
     } catch (orchErr) {
         logger.warn("[MissionOrchestrator] failed to start (non-fatal):", orchErr.message);
+    }
+
+    // ── Phase 3 (Workflow Autonomy, Missions 153-156): Orchestrator <->
+    // Approval bridge. Real, live gap: approving/rejecting an orchestrator
+    // Approval-node stage via the real POST /approval/approve|reject/:reqId
+    // route never actually unblocked the stage (approvalEngine's own resume
+    // path only knows founderWorkRegistry workflows) — the stage stayed
+    // stuck in awaiting_approval forever, and an expired approval had the
+    // same silent-hang effect. One event-bus subscription, same pattern as
+    // orgAutomationCenter.startAiWiring()/automationService.startEventLoop()
+    // just above — no new scheduler, no new store. See
+    // orchestratorApprovalBridge.cjs's header for the full trace.
+    try {
+        const orchBridge = require("./services/orchestratorApprovalBridge.cjs");
+        const bridgeResult = orchBridge.start();
+        logger.info(`[OrchestratorApprovalBridge] ${bridgeResult.started ? "started" : "not started (" + bridgeResult.reason + ")"}`);
+    } catch (bridgeErr) {
+        logger.warn("[OrchestratorApprovalBridge] failed to start (non-fatal):", bridgeErr.message);
     }
 
     // ── Phase I2: Autonomous Decision Engine ──────────────────────────────
@@ -836,15 +1336,6 @@ _httpServer = app.listen(PORT, HOST, () => {
         });
     } catch (obsErr) {
         logger.warn("[ContinuousRuntimeObserver] failed to load (non-fatal):", obsErr.message);
-    }
-
-    // ── Phase I5: Engineering Capability Layer ────────────────────────────
-    try {
-        const engCap = require("./services/engineeringCapabilities.cjs");
-        const regResult = engCap.register();
-        logger.info(`[EngCapabilities] I5 registered ${regResult.registered} production capability handlers`);
-    } catch (capErr) {
-        logger.warn("[EngCapabilities] failed to register (non-fatal):", capErr.message);
     }
 
     // ── Level 2: Engineering Organization (20 AI Engineer Personas) ───────
@@ -937,18 +1428,36 @@ _httpServer = app.listen(PORT, HOST, () => {
         logger.warn('[PLT] failed to register (non-fatal):', pltErr.message);
     }
 
+    } // end _autoBoot.start gate
+
     // ── Startup diagnostics ───────────────────────────────────────
     try {
         const envOk    = _missingRequired.length === 0;
         const leads    = crm.getLeads ? crm.getLeads().length : "?";
         let   queueLen = "?";
         try {
+            // A.5.3 runtime-stability finding: recoverStale() was called
+            // here AND inside autonomousLoop.start() (agents/autonomousLoop.cjs,
+            // invoked earlier in this same boot sequence, above). Both ran on
+            // every boot — harmless in effect (the second call is a no-op,
+            // since the first already reset every "running" task to
+            // "pending"), but it produced a duplicate "recovered N stale
+            // running task(s)" log line on every restart, confirmed live.
+            // autonomousLoop.start() already guarantees this runs once per
+            // boot; removed the redundant second call here.
             const tq = require("../agents/taskQueue.cjs");
-            tq.recoverStale();
             tq.pruneOldTasks(50);
             const all = tq.getAll();
             queueLen = `${all.filter(t => t.status === "pending").length} pending / ${all.length} total`;
         } catch { /* queue unavailable */ }
+        try {
+            // Same crash-recovery role as tq.recoverStale() above, for
+            // missions left "running" by a prior process instance that
+            // didn't reach a terminal state.
+            const missionRuntime = require("../agents/runtime/missionRuntime.cjs");
+            const { recovered } = missionRuntime.recoverStaleMissions();
+            if (recovered > 0) logger.info(`[Startup] Recovered ${recovered} stale running mission(s) → planned`);
+        } catch { /* mission runtime unavailable */ }
 
         logger.info(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`);
         logger.info(` Startup Diagnostics`);

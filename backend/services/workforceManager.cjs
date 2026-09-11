@@ -142,9 +142,39 @@ async function runMission({
     }));
     _step("execution", { workflowId: wfId, outcome: execution?.outcome || "dispatched" });
   } else {
-    // Simulate execution via engorg workflow
-    _try(() => _eow()?.claimAvailableWork?.(team.members[0]?.agentId || "engorg_backend", { domain }));
-    _step("execution", { mode: "engorg_dispatch", lead: team.members[0]?.agentId });
+    // Agent Civilization Unification (module 5): this fallback used to
+    // unconditionally call engineeringOrgWorkflow.claimAvailableWork()
+    // for ANY team, regardless of which org its lead agent actually
+    // belonged to. skillEngine.cjs's AGENT_CATALOGUE spans 5 orgs
+    // (engineering/business/knowledge/evolution/executive, e.g.
+    // "bizorg_sales", "ako_research", "aeo_learning", "eos_decision") —
+    // claimAvailableWork() only ever queries engineering work items
+    // (engineeringOrgState.listWorkItems), so a business/knowledge/
+    // evolution/executive-led team silently claimed nothing real: the
+    // call executed without error (wrong-org IDs just never match any
+    // engineering work item) and _step() logged "engorg_dispatch" as if
+    // dispatch had happened. Gate the real dispatch to when the lead
+    // agent is genuinely from the engineering org; for the other 4 orgs,
+    // report the honest state instead of a silently-wrong claim call —
+    // businessOrgState/akoState/aeoState/executiveState each expose
+    // claimTask(deptId, taskId) but (confirmed by reading all four) none
+    // exposes an equivalent "find the next ready task for this dept"
+    // convenience lookup the way engineeringOrgWorkflow.claimAvailableWork
+    // does internally, so an org-aware equivalent for the other 4 orgs is
+    // new engineering, not existing-handler reuse — see the unification
+    // report's classification for this exact gap.
+    const leadOrg = team.members[0]?.org;
+    if (leadOrg === "engineering") {
+      _try(() => _eow()?.claimAvailableWork?.(team.members[0]?.agentId || "engorg_backend", { domain }));
+      _step("execution", { mode: "engorg_dispatch", lead: team.members[0]?.agentId });
+    } else {
+      _step("execution", {
+        mode: "unclaimed",
+        lead: team.members[0]?.agentId,
+        leadOrg,
+        reason: `No claim-available-work equivalent exists for org "${leadOrg}" — see workforceManager.cjs Step 6 comment`,
+      });
+    }
   }
 
   // ── Step 7: Monitor + performance ────────────────────────────────────────────

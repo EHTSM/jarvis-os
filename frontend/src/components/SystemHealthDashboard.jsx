@@ -7,6 +7,7 @@ import { getHealStatus } from '../phase19Api';
 import { cycleStats, memoryStats } from '../phase18Api';
 import { getRuntimeStatus } from '../runtimeApi';
 import './SystemHealthDashboard.css';
+import { clickableProps } from "../hooks/useClickableProps";
 
 // ── Service catalogue ─────────────────────────────────────────────────────────
 const SERVICES = [
@@ -63,6 +64,7 @@ async function fetchAllHealth() {
     cycles,
     memory,
     runtimeStatus,
+    electronMetrics,
   ] = await Promise.allSettled([
     getLiveStatus(),
     getOAuthProviderStatus(),
@@ -78,6 +80,9 @@ async function fetchAllHealth() {
     cycleStats(),
     memoryStats(),
     getRuntimeStatus(),
+    typeof window !== 'undefined' && window.electronAPI
+      ? Promise.all([window.electronAPI.getProcessMetrics(), window.electronAPI.getStartupTiming()])
+      : Promise.resolve(null),
   ]);
 
   const val = r => r.status === 'fulfilled' ? r.value : null;
@@ -96,6 +101,8 @@ async function fetchAllHealth() {
   const cyc       = val(cycles);
   const mem       = val(memory);
   const rt        = val(runtimeStatus);
+  const elMetrics = val(electronMetrics);
+  const [procMetrics, startupTiming] = elMetrics || [null, null];
 
   // Active alerts count
   const activeAlerts = Array.isArray(alertList)
@@ -169,13 +176,18 @@ async function fetchAllHealth() {
       meta: rt ? `Queue: ${rt.queueSize ?? rt.pending ?? 0}` : 'No data',
     },
     electron: {
-      status: typeof window !== 'undefined' && window.electronAPI ? 'ok' : 'warn',
+      status: typeof window === 'undefined' || !window.electronAPI ? 'warn'
+             : procMetrics?.mainProcess?.heapUsed > 1.5 * 1024 * 1024 * 1024 ? 'warn' : 'ok',
       latency: null,
-      lastEvent: null,
+      lastEvent: startupTiming?.startTs ? new Date(startupTiming.startTs).toISOString() : null,
       uptime: null,
       activeJobs: null,
       warnings: null,
-      meta: typeof window !== 'undefined' && window.electronAPI ? 'IPC: connected' : 'IPC: web mode',
+      meta: typeof window !== 'undefined' && window.electronAPI
+        ? (procMetrics?.mainProcess
+            ? `RSS: ${Math.round(procMetrics.mainProcess.rss / 1024 / 1024)}MB · ${procMetrics.processes?.length ?? 0} processes · started ${startupTiming?.elapsed != null ? Math.round(startupTiming.elapsed / 1000) + 's ago' : '—'}`
+            : 'IPC: connected')
+        : 'IPC: web mode',
     },
     memory: {
       status: memStatus,
@@ -281,9 +293,7 @@ function ServiceCard({ svc, info, onNavigate }) {
   };
 
   return (
-    <div
-      className={`shd-card shd-card--${info?.status ?? 'unknown'}`}
-      onClick={() => onNavigate?.(TAB_MAP[svc.id] ?? 'devops')}
+    <div className={`shd-card shd-card--${info?.status ?? 'unknown'}`} {...clickableProps(() => onNavigate?.(TAB_MAP[svc.id] ?? 'devops'))}
       title={`Navigate to ${svc.label}`}
     >
       <div className="shd-card-head">

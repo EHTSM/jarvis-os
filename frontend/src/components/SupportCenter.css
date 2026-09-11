@@ -122,7 +122,16 @@
 
 /* ── AI draft button ────────────────────────── */
 .sc-td-reply-header  { display:flex; align-items:center; justify-content:space-between; margin-bottom:6px; }
-.sc-td-ai-btn        { font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid rgba(124,111,255,.4); background:rgba(124,111,255,.08); color:#7c6fff; cursor:pointer; transition:opacity .15s; }
+.sc-td-ai-btn        { font-size:11px; padding:4px 10px; border-radius:6px; border:1px solid rgba(124,111,255,.4); background:rgba(124,111,255,.08); color:var(--accent); cursor:pointer; transition:opacity .15s; }
 .sc-td-ai-btn:hover  { opacity:.8; }
 .sc-td-ai-btn:disabled { opacity:.4; cursor:default; }
+
+/* ── MASTER FINAL GAP CLOSURE (2026-08-15, C10-012) — real-data states ── */
+.kc-empty { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 36px 24px; text-align: center; }
+.kc-empty-icon  { font-size: 28px; color: var(--text-faint); opacity: 0.4; }
+.kc-empty-title { font-size: 15px; font-weight: 700; color: var(--text); margin: 0; }
+.kc-empty-sub   { font-size: 13px; color: var(--text-dim); margin: 0; max-width: 440px; }
+.kc-empty--error .kc-empty-icon,
+.kc-empty--error .kc-empty-title { color: var(--danger, var(--warning)); }
+.sc-suggested-steps { margin: 6px 0 0; padding-left: 18px; font-size: 13px; color: var(--text-dim); display: flex; flex-direction: column; gap: 4px; }
 

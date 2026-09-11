@@ -23,6 +23,57 @@ const BASE_BACKOFF   = 1_000;   // ms
 const MAX_BACKOFF    = 30_000;  // ms
 const DEFAULT_TIMEOUT = 30_000; // ms
 
+// Timeout, Cancellation & Long-Running Operation Safety Audit (2026-08-20):
+// _withTimeout() below is a Promise.race — when the timeout wins, the real
+// handler promise is NOT cancelled; it keeps running in the background,
+// fully disconnected from this function. Without this guard, the retry
+// loop's next iteration re-invokes the same handler for the same task
+// while the orphaned first invocation may still be running and could still
+// complete, mutating state a second time (duplicate CRM write, duplicate
+// payment call, duplicate mission execution). Threading a real
+// AbortController into every one of the ~14 files that register a handler
+// via agentRegistry.register() would be the new cancellation framework /
+// architecture redesign this mission explicitly prohibits, so instead: a
+// (taskId, task.type) pair that just timed out is marked here, and the
+// retry loop below refuses to start a NEW concurrent attempt for that same
+// pair while the mark is still set (bailing straight to dead-letter, same
+// as the existing nonRetriable short-circuit) — closing the
+// duplicate-execution risk without touching a single handler. Keyed by
+// BOTH taskId and task.type, not taskId alone, because
+// runtimeOrchestrator.dispatch() reuses one taskId across every task in a
+// multi-task batch (agents/runtime/runtimeOrchestrator.cjs:293-310) — a
+// taskId-only key would incorrectly block an unrelated sibling task in the
+// same batch. Cleared once the orphaned promise itself finally settles.
+const _orphanedAttempts = new Set();
+function _orphanKey(taskId, taskType) { return `${taskId}::${taskType}`; }
+
+async function _withTimeout(promise, ms, label, orphanKey) {
+    let timedOut = false;
+    try {
+        return await Promise.race([
+            promise,
+            new Promise((_, reject) =>
+                setTimeout(() => {
+                    timedOut = true;
+                    if (orphanKey) _orphanedAttempts.add(orphanKey);
+                    reject(new Error(`Timeout: ${label} exceeded ${ms}ms`));
+                }, ms).unref()
+            ),
+        ]);
+    } finally {
+        if (timedOut && orphanKey) {
+            // The orphaned promise is still running — whenever it finally
+            // settles (either way), clear the mark so a later, genuinely
+            // fresh dispatch of the same (taskId, type) is never blocked
+            // forever.
+            promise.then(
+                () => _orphanedAttempts.delete(orphanKey),
+                () => _orphanedAttempts.delete(orphanKey)
+            );
+        }
+    }
+}
+
 // Lazy-load the existing executor as the universal fallback
 let _legacyExecutor = null;
 function _getLegacy() {
@@ -32,6 +83,30 @@ function _getLegacy() {
     return _legacyExecutor;
 }
 
+// Lazy-load the agent instance registry (Universal Composition Engine
+// Phase 4). Additive only — when a task carries no orgId, or no instance
+// is registered for that org+capability, dispatch behaves exactly as
+// before this existed.
+let _instReg_ = null;
+function _instReg() {
+    if (!_instReg_) {
+        try { _instReg_ = require("../../backend/services/agentInstanceRegistry.cjs"); } catch { _instReg_ = null; }
+    }
+    return _instReg_;
+}
+
+// Universal Composition Engine Phase 11 — the remaining lookups in the
+// Goal->Plan->...->Execute->Verify->Telemetry->Memory/KPI chain. Every
+// accessor below follows the same lazy try/catch convention as _instReg()
+// and _getLegacy() above; every lookup is skip-safe (module unreachable
+// or task not org-scoped -> behaves exactly as pre-Phase-11 dispatch).
+function _skillReg()  { try { return require("../../backend/services/skillRegistry.cjs");       } catch { return null; } }
+function _toolFabric() { try { return require("../../backend/services/toolExecutionLayer.cjs");  } catch { return null; } }
+function _connReg()   { try { return require("../../backend/services/integrationConnectors.cjs"); } catch { return null; } }
+function _approvalQ() { try { return require("../../backend/services/approvalQueue.cjs");        } catch { return null; } }
+function _obsEngine()  { try { return require("../../backend/services/observabilityEngine.cjs"); } catch { return null; } }
+function _vault()      { try { return require("../../backend/services/secretVault.cjs");         } catch { return null; } }
+
 function _backoffMs(attempt) {
     return Math.min(BASE_BACKOFF * Math.pow(2, attempt), MAX_BACKOFF);
 }
@@ -40,13 +115,24 @@ function _sleep(ms) {
     return new Promise(r => setTimeout(r, ms).unref());
 }
 
-function _withTimeout(promise, ms, label) {
-    return Promise.race([
-        promise,
-        new Promise((_, reject) =>
-            setTimeout(() => reject(new Error(`Timeout: ${label} exceeded ${ms}ms`)), ms).unref()
-        ),
-    ]);
+// Universal Composition Engine Phase 11 — steps 8 (emit telemetry) and 9
+// (update memory/KPI). Called once per terminal outcome (success or final
+// failure), not per retry attempt. Non-fatal by design: telemetry/memory
+// recording must never be the reason a task's own success/failure result
+// changes.
+function _emitTelemetryAndMemory(task, { success, durationMs, error, agentInstanceId }) {
+    try {
+        _obsEngine()?.recordMetric?.("execution.task.completed", 1, {
+            taskType: task.type, success: !!success, orgId: task.orgId || null,
+        });
+    } catch { /* non-fatal */ }
+    if (task.orgId && agentInstanceId) {
+        try {
+            _instReg()?.recordObservation?.(agentInstanceId, {
+                success: !!success, durationMs: durationMs || 0, taskType: task.type, error: error || null,
+            });
+        } catch { /* non-fatal */ }
+    }
 }
 
 /**
@@ -66,9 +152,180 @@ async function executeTask(task, options = {}) {
 
     const capability = router.resolveCapability(task.type);
     let   lastError  = null;
+    // Phase B.18: which agent was actually attempted, carried out of the retry
+    // loop for the dead-letter record below. `const agent` is block-scoped
+    // inside the for-loop, so the DLQ push at the end of this function had no
+    // way to name it and passed a hardcoded agentId:null — see the comment
+    // there. Tracked next to lastError because it has exactly the same
+    // lifetime: the state of the final attempt.
+    let   lastAgentId = null;
+
+    // Agent Factory instance overlay (Universal Composition Engine Phase 4):
+    // if this task is scoped to an org, look up whether that org has a
+    // configured AgentInstance for this capability and merge its
+    // config/memoryScope/credentialRefs/permissions into ctx. No task.orgId
+    // or no matching instance -> ctx is unchanged, identical to pre-Phase-4
+    // behavior.
+    //
+    // 100-Company Missing Capability Build-Out: prefer an instance
+    // registered under the raw task.type (a skill's own id, e.g.
+    // "employment_action_review") over one registered under the
+    // resolved, often-collapsed capability (e.g. "ai") — otherwise every
+    // skill sharing the generic ai agent would collide onto ONE shared
+    // instance per org (an HR AgentInstance and a Legal AgentInstance for
+    // the same org would both resolve to archetypeId "ai" and the second
+    // registration would just be unreachable). Falls back to the
+    // capability-keyed lookup for skills whose id already IS their own
+    // dedicated capability (e.g. "crm") — fully backward compatible.
+    let instanceCtx = ctx;
+    if (task.orgId) {
+        const inst = _instReg()?.findForOrgAndArchetype?.(task.orgId, task.type)
+            || _instReg()?.findForOrgAndArchetype?.(task.orgId, capability);
+        if (inst) {
+            instanceCtx = {
+                ...ctx,
+                agentInstanceId: inst.id,
+                companyId: inst.companyId,
+                departmentId: inst.departmentId,
+                goals: inst.config.goals,
+                policies: inst.config.policies,
+                memoryScopeId: inst.config.memoryScopeId,
+                kpiTargets: inst.config.kpiTargets,
+                credentialRefs: inst.credentialRefs,
+                agentPermissions: inst.permissions,
+            };
+            // Vault Security Hardening — Agent -> Connector -> Vault
+            // Authorization: resolve each declared credentialRef into its
+            // actual value, scoped to THIS task's own orgId (never a
+            // caller-supplied org — task.orgId is the only org identity
+            // an agent handler's ctx is ever built from). The handler
+            // receives ctx.resolvedCredentials (a ref->value map for refs
+            // it was genuinely authorized for), never raw vault access —
+            // it cannot call secretVault.cjs itself to fetch anything
+            // else. A ref that fails org authorization or doesn't exist
+            // is simply absent from the map (fail closed, never throws).
+            if (Array.isArray(inst.credentialRefs) && inst.credentialRefs.length > 0) {
+                const vault = _vault();
+                instanceCtx.resolvedCredentials = vault?.resolveCredentialRefs?.(inst.credentialRefs, { orgId: task.orgId }) || {};
+            }
+        }
+    }
+
+    // Skill/Tool/Connector/Approval resolution (Universal Composition
+    // Engine Phase 11) — only meaningful for org-scoped tasks with a
+    // registered skill for this capability; a task with no orgId or no
+    // matching skill entry skips this entirely (identical to pre-Phase-11
+    // dispatch). Never blocks execution on a lookup failure — these are
+    // additive checks, not new hard gates, except the approval gate
+    // itself, which is the one genuine block this phase introduces.
+    // 100-Company Missing Capability Build-Out — real bug fixed here: many
+    // skills (strategy/executive_summary and every new HR/Legal/
+    // Procurement/Inventory/Logistics skill this mission adds) share the
+    // generic executionHandler:"ai" — resolveCapability() correctly maps
+    // their task.type to capability "ai" for AGENT dispatch (there is no
+    // dedicated agent per skill, by design — the whole point of reusing
+    // the generic ai agent). But getSkill(capability) using that SAME
+    // resolved "ai" string only ever finds the generic "ai" skill entry
+    // itself, never the specific skill actually being invoked — silently
+    // making every such skill's own riskLevel/requiredTools/
+    // optionalConnectors invisible to the tool-permission check, connector-
+    // health check, and (most importantly) the approval gate below. Fix:
+    // look up the skill by task.type FIRST (a skill's own id, e.g.
+    // "employment_action_review") since that's the caller's actual
+    // intent; fall back to the resolved capability only when no skill is
+    // registered under task.type directly (preserves existing behavior
+    // for every skill whose id already equals its own dedicated agent
+    // capability, e.g. "crm"/"seo"/"content_writer").
+    const skill = _skillReg()?.getSkill?.(task.type) || _skillReg()?.getSkill?.(capability) || null;
+    if (task.orgId && skill) {
+        // Tool permission check: if the skill declares required tools,
+        // confirm this org/instance is genuinely granted each one via the
+        // Tool Fabric's scoped permission resolver (Phase 6) — denies
+        // execution rather than silently proceeding when a tool is missing.
+        const fabric = _toolFabric();
+        if (fabric && Array.isArray(skill.requiredTools) && skill.requiredTools.length > 0) {
+            for (const toolId of skill.requiredTools) {
+                const allowed = fabric.resolvePermission?.(toolId, "run", { orgId: task.orgId, agentInstanceId: instanceCtx.agentInstanceId });
+                if (allowed === false) {
+                    const msg = `permission_denied: org ${task.orgId} is not granted tool "${toolId}" required by skill "${skill.id}"`;
+                    logger.warn(`[ExecEngine] ${msg}`);
+                    return { success: false, result: null, agentId: null, durationMs: 0, attempts: 1, error: msg };
+                }
+            }
+        }
+
+        // Connector health check: if the skill declares optional
+        // connectors, surface their real composition status into ctx so
+        // the handler can make an informed choice — never blocks
+        // execution (these are optional by declaration), only informs.
+        //
+        // integrationConnectors.cjs's own probe/health state
+        // (getCompositionStatus) is platform-wide by design (it answers
+        // "is this connector's API reachable", not "does THIS org have
+        // credentials for it") — redesigning it into a per-org probe
+        // system is out of this mission's scope. What genuinely matters
+        // for an org-scoped task is whether THIS org has its own vault
+        // credential configured (Vault Security Hardening): overridden to
+        // NEEDS_CREDENTIALS whenever the org has no org-scoped secret for
+        // that connector, even if the platform-wide probe elsewhere shows
+        // CONNECTED_VERIFIED for a DIFFERENT org's or the founder's own
+        // credential — an org must never be told a connector is ready
+        // because someone else's secret happens to exist.
+        const connReg = _connReg();
+        const vaultForConn = _vault();
+        if (connReg && Array.isArray(skill.optionalConnectors) && skill.optionalConnectors.length > 0) {
+            instanceCtx.connectorStatus = Object.fromEntries(
+                skill.optionalConnectors.map(id => {
+                    const platformStatus = connReg.getCompositionStatus?.(id)?.status || "NOT_CONFIGURED";
+                    const orgHasCredential = vaultForConn?.listSecrets?.({ connectorId: id, orgId: task.orgId })?.length > 0;
+                    return [id, orgHasCredential ? platformStatus : "NEEDS_CREDENTIALS"];
+                })
+            );
+        }
+
+        // Approval gate: a high-risk skill for an org-scoped task must be
+        // approved before executing (Phase 10's Approval/Safety wiring,
+        // reusing the same real approvalQueue as missionOrchestrator.cjs's
+        // Approval node — single source of truth, no duplicate gate logic).
+        // options.approved lets an already-approved re-dispatch (e.g. after
+        // an operator approves via the real queue) skip re-requesting.
+        if (skill.riskLevel === "high" && !options.approved) {
+            const approvalQ = _approvalQ();
+            if (approvalQ) {
+                try {
+                    const req = approvalQ.enqueue({
+                        workflowId: `skill_${skill.id}`,
+                        action: `Execute high-risk skill "${skill.id}" for org ${task.orgId}`,
+                        reason: `Capability "${capability}" is classified riskLevel:high`,
+                        risk: "high",
+                        context: { orgId: task.orgId, taskId, capability },
+                    });
+                    if (!req.autoApproved) {
+                        const msg = `approval_required: skill "${skill.id}" requires approval before execution (request ${req.reqId})`;
+                        logger.warn(`[ExecEngine] ${msg}`);
+                        return { success: false, result: null, agentId: null, durationMs: 0, attempts: 1, error: msg, approvalRequestId: req.reqId };
+                    }
+                } catch (err) {
+                    logger.warn(`[ExecEngine] approval request failed for skill ${skill.id}: ${err.message}`);
+                }
+            }
+        }
+    }
 
     for (let attempt = 0; attempt < maxRetries; attempt++) {
         if (attempt > 0) {
+            // A prior attempt for this exact (taskId, task.type) timed out
+            // and its underlying handler promise is still orphaned/in-flight
+            // (see _withTimeout above) — starting a second concurrent
+            // invocation risks a genuine duplicate side effect (double
+            // CRM write, double payment call, double mission execution).
+            // Bail straight to dead-letter instead, same as the existing
+            // nonRetriable short-circuit a few lines below.
+            if (_orphanedAttempts.has(_orphanKey(taskId, task.type))) {
+                lastError = new Error(`prior attempt for ${taskId}/${task.type} timed out and may still be running — refusing to start a duplicate concurrent attempt`);
+                logger.warn(`[ExecEngine] ${task.type} attempt ${attempt + 1} for ${taskId} blocked: orphaned prior attempt still in flight`);
+                break;
+            }
             await _sleep(_backoffMs(attempt - 1));
             // Audit lineage: record retry with parent taskId
             try {
@@ -79,20 +336,52 @@ async function executeTask(task, options = {}) {
         }
 
         const agent = registry.findForCapability(capability);
+        // Remember who we attempted, so a dead-letter entry can name the agent.
+        if (agent) lastAgentId = agent.id;
 
         // If we have a registered agent, use it
         if (agent) {
             agent.acquireSlot();
             // Provide a way for the handler to signal liveness
-            const extendedCtx = { ...ctx, heartbeat: () => agent.heartbeat() };
+            const extendedCtx = { ...instanceCtx, heartbeat: () => agent.heartbeat() };
             const t0 = Date.now();
             try {
                 const result = await _withTimeout(
                     agent.handler(task, extendedCtx),
                     timeoutMs,
-                    `${agent.id}/${task.type}`
+                    `${agent.id}/${task.type}`,
+                    _orphanKey(taskId, task.type)
                 );
                 const durationMs = Date.now() - t0;
+                // Runtime OS verification pass (2026-08-15) — RUNTIME-1: a registered
+                // agent's handler can report its own failure by RETURNING
+                // { success:false, error } instead of throwing (e.g. terminalAgent on
+                // an allowlist/blocked-command rejection, the "ai" agent when no
+                // provider credentials are configured). Not throwing isn't the same
+                // as succeeding — same reasoning already applied to the legacy-executor
+                // branch below (`softFailed`) and to autonomousLoop.cjs's own task-queue
+                // path; this branch was the one place that reasoning was missing,
+                // making runtimeOrchestrator.dispatch()'s aggregate `success` (and
+                // CommandCenter.jsx's dispatch bar, which reads it directly) report a
+                // false positive for a genuinely blocked/failed command.
+                const softFailed = result && result.success === false;
+                if (softFailed) {
+                    agent.recordFailure();
+                    lastError = new Error(result?.error || result?.result || `${agent.id} reported failure`);
+                    history.record({
+                        agentId: agent.id, taskType: task.type, taskId,
+                        success: false, durationMs,
+                        input:  task.input || task.label || "",
+                        error:  lastError.message,
+                    });
+                    logger.warn(`[ExecEngine] ${agent.id}/${task.type} attempt ${attempt + 1} soft-failed: ${lastError.message}`);
+                    // Deterministic rejections (allowlist blocks, missing credentials)
+                    // won't change on retry — bail immediately rather than burning
+                    // backoff time and inflating the circuit breaker's failure count
+                    // for something a retry can never fix. Mirrors the legacy
+                    // branch's own `nonRetriable` short-circuit below.
+                    return { success: false, result, agentId: agent.id, durationMs, attempts: attempt + 1, error: lastError.message };
+                }
                 agent.recordSuccess(durationMs);
                 history.record({
                     agentId: agent.id, taskType: task.type, taskId,
@@ -100,6 +389,7 @@ async function executeTask(task, options = {}) {
                     input:  task.input || task.label || "",
                     output: result?.message || result?.result || "",
                 });
+                _emitTelemetryAndMemory(task, { success: true, durationMs, agentInstanceId: instanceCtx.agentInstanceId });
                 return { success: true, result, agentId: agent.id, durationMs, attempts: attempt + 1, error: null };
             } catch (err) {
                 agent.recordFailure();
@@ -119,9 +409,10 @@ async function executeTask(task, options = {}) {
                 const t0 = Date.now();
                 try {
                     const result = await _withTimeout(
-                        legacy.execute(task, ctx),
+                        legacy.execute(task, instanceCtx),
                         timeoutMs,
-                        `legacy/${task.type}`
+                        `legacy/${task.type}`,
+                        _orphanKey(taskId, task.type)
                     );
                     const durationMs = Date.now() - t0;
                     // The legacy executor can return a soft failure
@@ -151,6 +442,7 @@ async function executeTask(task, options = {}) {
                     }
                 } catch (err) {
                     lastError = err;
+                    lastAgentId = "legacy";
                     history.record({
                         agentId: "legacy", taskType: task.type, taskId,
                         success: false, durationMs: Date.now() - t0,
@@ -171,11 +463,28 @@ async function executeTask(task, options = {}) {
 
     const finalError = lastError?.message || "unknown";
     logger.error(`[ExecEngine] ${task.type} FAILED after ${maxRetries} attempts: ${finalError}`);
-    // Push to dead-letter queue so the failure is not silently lost
+    // Push to dead-letter queue so the failure is not silently lost.
+    //
+    // Phase B.18: this passed a hardcoded `agentId: null`, so every dead-letter
+    // entry was anonymous. Measured on the live queue: 0 of 980 entries carried
+    // an agentId, while taskType and deadAt were present on 980/980. The DLQ is
+    // the record of work that permanently failed after all retries — 550 "cb
+    // trigger", 328 "permanent failure", 110 "Agent \"weather\" not found" —
+    // and without the agent it cannot answer which component is failing, so an
+    // operator triaging a 1000-entry backlog (at cap, evicting oldest) cannot
+    // tell one bad adapter from a systemic outage. deadLetterQueue.push()
+    // already documents and stores agentId; the caller simply never supplied it.
+    // agent.id is block-scoped inside the retry loop, so it is now tracked in
+    // lastAgentId alongside lastError.
     try {
-        dlq.push({ taskId, taskType: task.type, input: task.input || task.label || "", error: finalError, attempts: maxRetries, agentId: null });
+        dlq.push({ taskId, taskType: task.type, input: task.input || task.label || "", error: finalError, attempts: maxRetries, agentId: lastAgentId });
     } catch { /* non-critical */ }
-    return { success: false, result: null, agentId: null, durationMs: 0, attempts: maxRetries, error: finalError };
+    _emitTelemetryAndMemory(task, { success: false, error: finalError, agentInstanceId: instanceCtx.agentInstanceId });
+    // Same reasoning as the dlq.push above: an agent WAS attempted here (retries
+    // were exhausted), so report which one rather than null. The earlier
+    // `agentId: null` returns are different — those bail before any agent runs
+    // (no handler registered, or an approval gate), where null is correct.
+    return { success: false, result: null, agentId: lastAgentId, durationMs: 0, attempts: maxRetries, error: finalError };
 }
 
 module.exports = { executeTask };

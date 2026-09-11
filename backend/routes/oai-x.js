@@ -14,12 +14,16 @@
 
 const router = require("express").Router();
 
-const ere = () => require("../services/engineeringReasoningEngine.cjs");
-const eqe = () => require("../services/engineeringQualityEngine.cjs");
-const ebe = () => require("../services/engineeringBenchmarkEngine.cjs");
-const epe = () => require("../services/engineeringPredictionEngine.cjs");
-const dee = () => require("../services/engineeringEvolutionEngine.cjs");
-const eid = () => require("../services/engineeringIntelligenceDashboard.cjs");
+// Module Loader & Dynamic Module Resolution Security Sweep (2026-08-21):
+// unguarded hardcoded-path requires — see odi.js for the live-reproduced
+// finding this fix pattern closes; reused here verbatim.
+const _try = fn => { try { return fn(); } catch { return null; } };
+const ere = () => _try(() => require("../services/engineeringReasoningEngine.cjs"));
+const eqe = () => _try(() => require("../services/engineeringQualityEngine.cjs"));
+const ebe = () => _try(() => require("../services/engineeringBenchmarkEngine.cjs"));
+const epe = () => _try(() => require("../services/engineeringPredictionEngine.cjs"));
+const dee = () => _try(() => require("../services/engineeringEvolutionEngine.cjs"));
+const eid = () => _try(() => require("../services/engineeringIntelligenceDashboard.cjs"));
 
 // ── Engineering Reasoning Engine ──────────────────────────────────────────────
 

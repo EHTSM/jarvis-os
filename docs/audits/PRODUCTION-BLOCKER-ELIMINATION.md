@@ -1,0 +1,631 @@
+# Production Blocker Elimination — Fix Log
+
+Execution-only pass against the confirmed findings from the 2026-08-04 parallel
+audit (cross-tenant leaks, revenue leaks, auth/authz, billing, race conditions,
+data corruption, dead code). Each module below is: reproduce → verify exploit →
+fix → regression → security verification → telemetry → documentation, committed
+independently. No new architecture, no roadmap features. Findings that don't
+survive verification are documented, not "fixed."
+
+---
+
+## Module 1 — Cross-tenant IDOR in `/security/*` and `/admin/*` (CONFIRMED, FIXED)
+
+**Severity:** Critical — any authenticated user, regardless of workspace
+membership, could read and destructively mutate another organization's
+security-sensitive data with zero authorization check.
+
+### Reproduce / verify exploit
+
+Both `backend/routes/security.js` and `backend/routes/admin.js` mounted
+`attachWorkspace` (which is documented as **non-blocking by design** — see
+`backend/middleware/workspaceMiddleware.cjs`) but never followed it with
+`requireWorkspaceMember`. Each router additionally defined its own `_wsId(req)`
+helper that read `req.query.workspaceId || req.body?.workspaceId || req.workspace?.id`
+— i.e. it trusted the client-supplied `workspaceId` over the session's
+validated membership.
+
+Verified live against the real routers (Express app mounting the actual
+`security.js`/`admin.js` modules, real `signJWT`-issued session cookies, real
+`workspaceService`/`securityLayer` data):
+
+```
+GET /security/tokens?workspaceId=<victim-workspace-id>
+  → 200 OK, returns victim's service token list (names, scopes, ids)
+
+DELETE /security/tokens/:id?workspaceId=<victim-workspace-id>
+  → 200 { ok: true } — victim's real token is revoked by a non-member
+
+GET /admin/team?workspaceId=<victim-workspace-id>
+  → 200 OK, returns victim's full member directory (emails, roles, titles)
+```
+
+No role or membership check gated any of the above — an attacker only needed
+their own valid session and the victim's workspace id (workspace ids are not
+secret; they appear in invite links and URLs elsewhere in the app).
+
+### Fix
+
+- `backend/routes/security.js`: added `router.use(requireWorkspaceMember)`
+  after `attachWorkspace`; `_wsId(req)` now returns only `req.workspace.id`
+  (already membership-validated by `requireWorkspaceMember` before any handler
+  runs) — the client-supplied `workspaceId` is still used by `attachWorkspace`
+  to *select* which workspace to resolve, but the request is rejected before
+  any handler executes unless the authenticated account is actually a member
+  of that resolved workspace.
+- `backend/routes/admin.js`: identical fix.
+- No change to `attachWorkspace` itself or to any other router — it is used
+  correctly elsewhere (e.g. `myConnectors.js`, `workspace.js` resolve
+  workspace/org from the session, not raw client input).
+
+### Regression
+
+- Legitimate same-workspace access verified unaffected in both the
+  active-workspace-fallback path (no `workspaceId` param — the pattern every
+  real frontend caller uses: `WorkspaceSettingsK2.jsx`, `WorkspaceSettingsK3.jsx`)
+  and the explicit-own-`workspaceId` path.
+- Full legacy suite (`node --test tests/legacy/*.test.cjs`): 83 pass / 72 fail
+  both before and after this change — the 72 failures are pre-existing,
+  unrelated module-resolution issues (confirmed via `git stash` A/B compare),
+  not introduced by this fix.
+
+### Security verification
+
+New permanent regression test: `tests/security/09-workspace-isolation-security.cjs`
+(10/10 pass). Covers: cross-tenant read blocked, cross-tenant destructive
+revoke blocked, legitimate same-workspace read still works via both the
+fallback and explicit-own-id paths, for both route files.
+
+### Telemetry
+
+`requireWorkspaceMember` (`backend/middleware/workspaceMiddleware.cjs`) now
+emits a `workspace_access_denied` event (accountId, workspaceId, path, ts) via
+`runtimeEventBus` whenever a resolved workspace exists but the requester holds
+no membership in it — surfaces IDOR probing (repeated attempts against
+workspace ids that aren't the caller's) to ops rather than failing silently.
+This applies to any current or future route that adopts the correct
+`attachWorkspace` → `requireWorkspaceMember` pattern.
+
+### Notes
+
+`security.js`'s `PATCH /security/policies` and `admin.js`'s member/department
+mutation routes were already gated with `requireRole("Admin")` and were not
+independently exploitable pre-fix (role is resolved server-side against
+`req.workspace`, so an attacker without Admin in the target workspace was
+already rejected there) — but they benefit from the same
+`requireWorkspaceMember` gate now applying uniformly ahead of them.
+
+---
+
+## Module 2 — Billing bypass via "local mode" flag (CONFIRMED, FIXED)
+
+**Severity:** High — direct revenue leak. Any authenticated account, including
+a brand-new trial signup, could zero out billing for arbitrary AI capabilities
+while the system still executed real, paid provider calls.
+
+### Reproduce / verify exploit
+
+`POST /commercial/credits/local` (`backend/routes/commercial.js`) let any
+authenticated user set `local.enabled = true` on their credit record with no
+plan/feature gate (unlike the adjacent BYOK route, which correctly checks
+`gates.checkGate("ai.byok", ...)` first).
+
+`creditEngine.checkCredit()`/`consume()` then unconditionally treated
+`rec.local.enabled` as "this request is free" — but provider *selection* in
+`creativeRouter.cjs` (`creativeRegistry.getBestProvider`) and
+`capabilityRouter.cjs` (`aiRegistry.bestFor`) was entirely independent of that
+flag: it always picked the best-scoring provider by quality/cost/latency,
+which for most capabilities is a real paid one (DALL-E 3 / Stability, an
+OpenRouter video model, Claude/GPT for reasoning, etc.).
+
+Verified live against the real services (real `creditEngine` ledger, real
+`creativeRegistry`/`aiRegistry` provider tables):
+
+```
+account sets local.enabled = true
+creativeRouter.route({ capability: "image_generate", ... })
+  → provider: "stability" (real, paid)     cost: 0   canProceed: true
+
+creativeRouter.route({ capability: "text_to_video", ... })
+  → provider: "openrouter" (real, paid — this capability has NO free option)
+                                            cost: 0   canProceed: true
+
+capabilityRouter.route({ intent: "reasoning task", ... })
+  → primary: "nvidia" (real, paid — ollama has no reasoning capability)
+                                            cost: 0
+```
+
+The worst case: capabilities with **no free/local provider option at all**
+(video, reasoning, voice clone, music, animation, presentations, ads) were
+still fully zeroed out — there was no legitimate interpretation under which
+these could be free, this was a pure billing defeat.
+
+### Fix
+
+Root cause: `local.enabled` is meant to mean "route this request to a real
+local/free provider," not "waive billing regardless of what actually runs."
+The credit ledger cannot know on its own whether a local provider exists for
+a given capability — only the routers know that.
+
+- `backend/services/creditEngine.cjs` — `checkCredit()`/`consume()` now
+  require an explicit `opts.localProviderAvailable` confirmation from the
+  caller before honoring `local.enabled`; without it (e.g. the generic
+  `/commercial/credits/consume` route, which has no way to verify what
+  actually ran) local mode is ignored and real billing applies. BYOK is
+  unaffected — it remains a legitimate unconditional waiver (billed to the
+  user's own key).
+- `backend/services/creativeRouter.cjs` — when `local.enabled` is set, only
+  forces routing to the capability's real `"local"` provider entry
+  (`creativeRegistry`) if one exists for that capability; otherwise falls
+  through to normal paid routing and passes `localProviderAvailable: false`
+  to `checkCredit`, so real billing applies. `consumeCredits()` derives the
+  same fact from `routingDecision.provider === "local"`.
+- `backend/services/capabilityRouter.cjs` — same pattern, using `aiRegistry`'s
+  `type: "local"` providers (currently only `ollama`, which covers
+  `chat`/`code`/`embeddings`/`vision` — not `reasoning`, `image`, `video`,
+  `speech`, `voice`, `music`, `browser`, `animation`, `3d`).
+
+### Regression
+
+New permanent test (below) confirms: (a) capabilities with a genuine local
+provider still route free when local mode is on, (b) capabilities without one
+still bill full price even with local mode on, (c) accounts without local mode
+enabled are completely unaffected. Full legacy suite
+(`node --test tests/legacy/*.test.cjs`): 83 pass / 72 fail, identical to the
+pre-existing baseline (no new regressions).
+
+### Security verification
+
+New permanent regression test:
+`tests/security/10-credit-local-mode-bypass.cjs` (13/13 pass). Covers the
+exact three exploited paths (image/video/reasoning), the direct
+`creditEngine.checkCredit()` call with no `opts` (the shape the generic
+`/commercial/credits/consume` route uses), and non-local-account billing to
+guard against a fix that accidentally billed everyone.
+
+### Telemetry
+
+`creativeRouter.cjs` and `capabilityRouter.cjs` now emit a
+`credit_local_mode_denied` event (accountId, capability, reason, ts) via
+`runtimeEventBus` whenever an account has `local.enabled` set but the
+requested capability has no real local provider — surfaces to ops when users
+are hitting local mode's actual boundary (e.g. to prioritize which
+capabilities might be worth adding a genuine local/free option for), distinct
+from silent, unlogged billing.
+
+---
+
+## Module 3 — Credit check-then-act race condition (PARTIALLY CONFIRMED, FIXED; original report DOCUMENTED AS FALSE)
+
+**Severity:** Medium — real, reachable overspend allowing more paid provider
+work than an account's balance should permit, but narrower than originally
+reported.
+
+### Reproduce / verify exploit — the audit's original claim did NOT reproduce
+
+The original finding described `creditEngine.cjs`'s `_load()`/`_save()` full-file
+read-modify-write as racy under concurrent `checkCredit()`+`consume()` calls
+(e.g. "3 concurrent consume(cost=1) calls against balance=2 all read balance=2,
+all proceed"). This was tested directly — both with synchronous concurrent
+calls and with real concurrent HTTP requests to `/commercial/credits/consume`
+— and **did not reproduce**:
+
+```
+20 real concurrent HTTP POST /commercial/credits/consume requests
+against a starting balance of 20 (cost 1 each)
+  → all 20 succeeded, final balance = 0, all 20 transactions recorded.
+  No lost updates, no overspend.
+```
+
+Root cause of why the original claim was wrong: `checkCredit()` and
+`consume()` are each **fully synchronous** (plain `fs.readFileSync`/
+`writeFileSync`, no `await` anywhere in their bodies). Under Node's
+single-threaded event loop, a synchronous function can never be interrupted
+mid-execution by another request's handler — each call's full load→modify→save
+cycle completes atomically before the next queued callback runs, even though
+the underlying HTTP connections arrive concurrently. This is documented here
+rather than "fixed," per instructions — the file-level lock the original
+finding implied was needed does not apply to this code path as written, and
+adding one would be an unnecessary abstraction for a non-existent race.
+
+### Reproduce / verify exploit — the REAL, reachable race
+
+A genuine TOCTOU race does exist, but at a different call site:
+`backend/routes/creativeStudio.js`'s `_createCreativeJob()` (shared by all 15
+`/creative/*` generation endpoints) checked `decision.creditCheck.canProceed`
+early, then `await`ed a slow real paid-provider call (DALL-E 3 / Sora /
+ElevenLabs, seconds of latency), and only called `consumeCredits()` afterward.
+The `await` is the interleaving point the original finding was looking for —
+it just wasn't between `checkCredit`/`consume`'s own internals, it was between
+an early check and a much later consume, both in the calling route.
+
+Verified directly against `creditEngine` (simulated the exact
+check→await(slow)→consume pattern) and end-to-end against the real route:
+
+```
+25 concurrent check→await(20ms)→consume "jobs" against a balance of 20
+  → all 25 proceeded (should be at most 20) — real overspend.
+
+25 concurrent real HTTP POST /creative/image/generate requests against a
+balance of 20 (5 credits/request under default routing, headroom for 4)
+  → before fix: not bounded by the pre-slow-work check (each request's
+    check ran against the same stale starting balance).
+```
+
+### Fix
+
+- `backend/services/creditEngine.cjs` — added `reserve(accountId, requestType,
+  opts)`: checks and deducts in the same synchronous pass (still no `await`
+  inside, so it's atomic per call for the same reason plain `consume()`
+  already was) and returns the reservation result including the transaction,
+  so it can be `refund()`-ed later if the subsequent slow work fails.
+- `backend/services/creativeRouter.cjs` — added `reserveCredits()`, wrapping
+  `creditEngine.reserve()`.
+- `backend/routes/creativeStudio.js` — `_createCreativeJob()` now calls
+  `creativeRouter.reserveCredits()` immediately after routing (before
+  `jobQueue.createJob`/the slow provider `await`s) instead of calling
+  `consumeCredits()` afterward. Preserves exact prior billing semantics
+  (credits are still spent once per request regardless of whether generation
+  ultimately succeeds) — only the *timing* of the deduction moved earlier, to
+  close the race.
+
+### Regression
+
+New permanent test (below): the fixed `reserve()`-based flow allows exactly
+the number of concurrent requests the balance affords (verified at both the
+`creditEngine` layer and end-to-end via real HTTP against
+`/creative/image/generate`) and rejects the rest with `402
+insufficient_credits`, with the balance floor exactly 0 in both cases. Full
+legacy suite (`node --test tests/legacy/*.test.cjs`): 83 pass / 72 fail,
+identical to baseline.
+
+### Security verification
+
+New permanent regression test:
+`tests/security/11-credit-reservation-race.cjs` (7/7 pass). Covers the
+simulated concurrent-reservation case and the real end-to-end HTTP case
+against the actual creative-studio route.
+
+### Telemetry
+
+No new telemetry needed for this module — `402 insufficient_credits`
+responses are already visible to the client and the existing credit ledger
+(`getLedger`) already records every real transaction with its cost and
+timestamp, which is sufficient to audit reservation activity after the fact.
+
+---
+
+## Module 4 — Billing state lost-update race (DOCUMENTED AS FALSE — no code change)
+
+**Original claim:** concurrent Razorpay webhook deliveries for different
+accounts (e.g. account A activating, account B cancelling near-simultaneously)
+could race on `billingService.js`'s full-file `_load()`/`_save()`, with
+whichever `_save()` wins overwriting the other account's just-written state —
+silently reverting a paying customer's activation or undoing a cancellation.
+
+### Verification — did not reproduce under any tested interleaving
+
+Same root cause investigation as Module 3: `activatePlan()` and `cancelPlan()`
+are each fully synchronous (`fs.readFileSync`/`writeFileSync`, no `await`
+inside), so Node's single-threaded event loop cannot interleave two calls to
+either function — each call's full load→modify→save completes atomically
+before the next queued callback runs.
+
+Tested three interleavings directly against the real webhook controller and
+real billing service, all via genuine concurrent HTTP requests (not
+simulated):
+
+1. **Different accounts, alternating event types** — 30 concurrent
+   `subscription.activated` (account A) / `subscription.cancelled` (account B)
+   webhook deliveries interleaved. Result: both accounts ended in the
+   correct, expected final state every run.
+2. **Different accounts, with a real `await` in the handler path** — 40
+   concurrent `payment.captured` events (one per account; this event type
+   does have a genuine `await automation.triggerFulfillment(...)` before the
+   `activatePlan()` call, unlike the subscription events). Result: 40/40
+   accounts activated correctly.
+3. **Same account, duplicate delivery** (Razorpay explicitly retries
+   on non-2xx/timeout, so the same event can genuinely arrive twice
+   concurrently) — 15 concurrent duplicate `subscription.activated` events
+   for one account. Result: correct final state (`starter`/`active`) —
+   `activatePlan()` is naturally idempotent since it always writes the same
+   final shape regardless of the record's prior state.
+
+No interleaving tested produced a lost update. The `await` inside
+`handleRazorpayWebhook`'s `payment.captured` branch happens *before* the
+`billing.activatePlan()` call, not between a read and a write within
+`activatePlan()` itself, and `activatePlan()`/`cancelPlan()` always
+`_load()` a fresh on-disk snapshot rather than reusing any state captured
+before an await — so there is no stale-snapshot-across-a-yield-point gap for
+this pair of functions, unlike the real race found in Module 3.
+
+### Outcome
+
+Documented as a false finding, per instructions — no code change made.
+`billingService.js` is unchanged. If a genuine cross-account race is ever
+found here in the future (e.g. introduced by a refactor that adds an `await`
+inside `activatePlan`/`cancelPlan` themselves, or a route that checks
+`checkAccess()` and only calls `activatePlan()`/`cancelPlan()` after its own
+slow `await`), the same `reserve()`-style fix pattern from Module 3 would
+apply.
+
+---
+
+## Module 6 — Mission memory lost-update race (DOCUMENTED AS FALSE — no code change)
+
+**Original claim:** `missionMemory.cjs`'s own code comment (from an earlier
+mission's Blocker #6 fix) explicitly acknowledges "the underlying
+lost-update race for two writes based on the same stale read" as known and
+unfixed — only the separate file-corruption/ENOENT-crash class (two
+processes sharing a literal `.tmp` path) was fixed there. The audit read
+that comment as confirmation of a live, reachable production race: two
+concurrent requests calling `addSubtask`/`recordDecision`/etc. for the same
+mission could each read the same stale snapshot and one's write would
+silently overwrite the other's.
+
+### Verification — did not reproduce under any tested interleaving
+
+Same investigation as Modules 3 and 4: every mutation function in
+`missionMemory.cjs` (`addSubtask`, `updateMission`, `recordDecision`,
+`recordArtifact`, `recordFailure`, `recordApproval`, ...) is fully
+synchronous — no `await` inside their own bodies — and their callers (in
+`backend/routes/mission.js` and the ~75 other files across the codebase that
+import `missionMemory`, spot-checked via `agents/runtime/missionRuntime.cjs`)
+never insert an `await` between reading a mission and writing it back. Under
+Node's single-threaded event loop this makes each mutation atomic in
+practice, the same reason Module 3's `creditEngine.consume()` alone was
+never actually racy — the race there only existed because
+`creativeStudio.js` inserted a genuine `await` (a real paid provider call)
+between an earlier check and a later write; no `missionMemory.cjs` caller
+does that.
+
+Tested directly against the real `/mission/git/*` routes and the real
+`missionMemory` service via genuine concurrent HTTP requests targeting the
+**same mission**:
+
+1. **Same mutation type** — 30 concurrent `record-branch` requests (each
+   calling `recordDecision` for the same mission). Result: all 30 decisions
+   recorded, zero lost.
+2. **Mixed mutation types** — 40 concurrent requests split across
+   `record-commit` (→ artifact + decision), `record-branch` (→ decision),
+   `record-rollback` (→ failure + decision), and `record-review` (→ approval
+   + artifact), all against the same mission — the scenario the audit's
+   finding literally describes (different concurrent writes to the same
+   mission object). Result: exactly the expected counts in every category
+   (20 artifacts, 30 decisions, 10 failures, 10 approvals) — zero lost
+   writes.
+
+### Outcome
+
+Documented as a false finding, per instructions — no code change made.
+`missionMemory.cjs` is unchanged; its own comment about the theoretical race
+remains accurate as a statement of what the `.tmp`-path fix did *not*
+address, but the race it describes is not reachable given how every current
+caller in this codebase uses the API (always synchronous, no `await` gap
+between read and write). If a future caller introduces an `await` between
+reading a mission and writing it back (mirroring the real Module 3 pattern),
+the same lost-update risk would become real at that call site specifically —
+worth re-checking if `missionMemory.cjs` callers are ever refactored to do
+slow work mid-mutation.
+
+---
+
+## Module 7 — Org AI budget burst-overshoot (CONFIRMED, FIXED)
+
+**Severity:** Low — bounded cost overshoot, not corruption or a security
+boundary (the audit's own characterization; this module was addressed last
+per the mission's stated priority order).
+
+### Reproduce / verify exploit
+
+Unlike Modules 4 and 6, this claim DID reproduce. `orgBudgets.checkBudget()`
+derives spend by re-aggregating `usageMetering`'s ledger — which is only
+written to by `aiOrchestrator.execute()`/`executeStream()` AFTER their real
+(awaited) provider call completes. `checkBudget()` runs, then `await
+aiService.chat(...)` (a real, slow provider call), then `usageMetering.record()`
+— the same check-then-await-then-record shape as the real Module 3 race, just
+in a different service.
+
+Verified directly (deterministic cost per call, bypassing real provider
+routing/API-key requirements):
+
+```
+30 concurrent check→await(15ms)→record calls against a $0.01 cap
+($0.002/call, ~5 should be allowed under a correctly enforced cap)
+  → all 30 proceeded, final recorded spend = $0.06 (6x over cap).
+```
+
+And confirmed the actual enforcement gate in `aiOrchestrator.execute()`
+(via spies) calls `checkBudget()` before the slow provider call and
+`usageMetering.record()` only after — the exact vulnerable shape.
+
+### Fix
+
+- `backend/services/orgBudgets.cjs` — added `reserveInFlight()`/
+  `releaseInFlight()`: a process-local `Map` tracking estimated
+  (not-yet-recorded) spend per org/workspace. `checkBudget()` now adds this
+  in-flight total to the ledger-derived total, so a concurrent request sees
+  prior requests' reservations even before their real cost lands. Both
+  functions are synchronous Map operations (no I/O) — atomic per call under
+  Node's single-threaded event loop, same reasoning as `creditEngine.reserve()`
+  in Module 3. Single-process only (no cross-process lock) — matches this
+  app's `pm2` fork-mode, `instances: 1` deployment (see `ecosystem.config.cjs`),
+  the same constraint already documented for other in-memory-backed services.
+- `backend/services/aiOrchestrator.cjs` — added `_estimateRequestCostUsd()`
+  (a conservative worst-case estimate using the candidate provider's real
+  per-1k-token cost table and `opts.maxTokens`, or a safe default when
+  unset). `execute()` and `executeStream()` now call `reserveInFlight()`
+  immediately before each candidate's provider call and `releaseInFlight()`
+  once real cost is recorded (success) or the call fails (no real cost
+  incurred, so the reservation is freed rather than converted).
+- Read-only budget/usage reporting call sites (`enterpriseMonitoring.cjs`'s
+  `getAiUsageHealth`, `orgAiBrain.cjs`'s `getUsage`) call `checkBudget()` for
+  display purposes only, not as a spend gate — left unchanged, no reservation
+  needed there.
+
+### Regression
+
+New permanent test (below): the fixed reservation flow allows exactly the
+number of concurrent requests the cap affords (5 of 30 at $0.002/call
+against a $0.01 cap) with final spend landing exactly at the cap, and an org
+with no configured cap remains completely unaffected by in-flight
+reservations. Full legacy suite: 83 pass / 72 fail, identical to baseline.
+
+### Security verification
+
+New permanent regression test:
+`tests/security/14-orgbudgets-inflight-reservation.cjs` (6/6 pass). Covers
+the closed race at the `orgBudgets` layer, confirms `aiOrchestrator.execute()`
+actually wires `reserveInFlight`/`releaseInFlight` around its provider call
+(via spies, since this test environment has no real provider API keys to
+exercise an exact end-to-end dollar assertion), and confirms uncapped orgs
+are unaffected.
+
+### Telemetry
+
+No new telemetry added — `429 budget_exceeded` responses are already
+visible to the caller, and `checkBudget()`'s returned `spentUsd` already
+reflects the in-flight-inclusive total, which is sufficient for the existing
+`enterpriseMonitoring`/`orgAiBrain` dashboards to show accurate near-real-time
+spend without a new event stream.
+
+---
+
+## Module 8 — Orphaned frontend components (CLASSIFIED; 10 removed, 19 archived in place)
+
+**Severity:** Low — no runtime/security impact, but ~24 unreachable
+components misrepresented what functionality actually ships.
+
+### Reclassification mandate
+
+A follow-up instruction to this mission required re-classifying every
+orphaned component (rather than deleting on sight) into one of four buckets,
+with proof from a full cross-repo search (routes, services, agents,
+Electron, telemetry, docs) before any deletion — explicitly forbidding
+deletion of anything without proof, and requiring "archive, don't delete"
+for prototypes with no backend support. A classification pass was run
+against all 28 originally-flagged components plus 3 more discovered during
+that pass (`AgentCenter.jsx`, `useOperatorPrefs.js` hook, `LicenseManager.jsx`
+noted as orphaned but out of scope for this pass).
+
+**Key discovery**: `docs/project-manager/06_SCREEN_CATALOG.md` and
+`05_FEATURE_CATALOG.md` show that 14 of these components were **deliberately
+removed from all navigation surfaces on 2026-07-17** (`App.jsx` tabs,
+`GlobalSearch.jsx`, `CommandPalette.jsx`) specifically because they rendered
+fabricated/hardcoded data. This was not an accidental orphaning — it was a
+documented cleanup already in progress before this audit.
+
+### Classification results (28 components)
+
+**A. Hidden production feature (0 requiring action)** — `AgentCenter.jsx`'s
+backend (`/p18/*` in `backend/routes/phase18.js`) is real, but the same
+functions are already reached via the actively-wired `AgentOSV2.jsx` and
+`AgentRegistryCenter.jsx`. No capability is actually stranded; downgraded to
+B in practice.
+
+**B. Superseded by newer implementation (8 — REMOVED)**, each verified
+against a specific, actively-imported replacement in `App.jsx` or
+`OperatorConsole.jsx`:
+
+| Removed | Superseded by | Verification |
+|---|---|---|
+| `ToastSystem.jsx` | `Toast.jsx` (`App.jsx:13`) | Identical `ToastContainer({toasts, onRemove})` export signature — verbatim duplicate |
+| `ControlCenter.jsx` + `.css` | `CommandCenter.jsx` (`App.jsx:24`) | Strict superset: same runtime/telemetry calls plus approval queue, unified queue, health report, founderHomeApi |
+| `ExecutiveSummary.jsx` + `.css` | `Dashboard.jsx` (`App.jsx:1325`) | Same `{stats, opsData}` props shape, no fetch of its own |
+| `VisualIntelligence.jsx` + `.css` | `Dashboard.jsx` / `SystemHealthDashboard.jsx` (`App.jsx:111`) | Same props shape, no fetch of its own |
+| `RetentionSummary.jsx` + `.css` | `Dashboard.jsx` / `EndOfDayReview.jsx` (`App.jsx:132`) | Same props shape |
+| `operator/TaskQueuePanel.jsx` | `operator/widgets/QueueStatusCard.jsx` (`OperatorConsole.jsx:16`, confirmed imported+rendered) | QueueStatusCard reads live `ops.queue` state; TaskQueuePanel only accepted a static prop |
+| `operator/widgets/HelpPanel.jsx` | `HelpHub.jsx` (`App.jsx:53`) | Confirmed absent from `OperatorConsole.jsx`'s own widget import list |
+| `operator/widgets/PreferencesPanel.jsx` | `WorkspaceSettings.jsx` (`App.jsx:56`) | Confirmed absent from `OperatorConsole.jsx`'s import list; was the sole consumer of `hooks/useOperatorPrefs.js`, which is now also dead and was removed with it |
+
+**C. Prototype with no backend or runtime support (19 — ARCHIVED IN PLACE, not deleted per instruction)**:
+
+- **The three full "OS" pages** — `PersonalOS.jsx`, `DeveloperOS.jsx`,
+  `EnterpriseOS.jsx` — each calls a dedicated API module (`personalApi.js`,
+  `developerApi.js`, `enterpriseApi.js`) whose endpoints (`/personal/*`,
+  `/dev/*`, `/enterprise/orgs|depts|teams|roles` unscoped) do not exist
+  anywhere in `backend/routes/index.js`'s full mount list. Corroborated by
+  `docs/current/phase4-frontend-audit.md`. `docs/current/v1-final-reality-report.md`
+  documents the specific failure mode: the fetch helper receives the SPA's
+  200-status HTML shell, `res.json()` throws, and the component silently
+  renders a permanently empty page with no visible error.
+- **Fabricated-data cluster (7)**, all named in `05_FEATURE_CATALOG.md`'s
+  2026-07-17 removal record as containing hardcoded/seed data with no real
+  backend: `EnterpriseCRM.jsx`, `AutonomousCompanyCenter.jsx`,
+  `AutonomousMarketingCenter.jsx`, `AutonomousSupportCenter.jsx`,
+  `CommunityCenter.jsx`, `DataOwnershipCenter.jsx`, `DisasterRecoveryCenter.jsx`,
+  `MobilePlatformCenter.jsx`.
+- **Marketing/growth cluster (5)** — `EmailMarketingOS.jsx`,
+  `SeoCommandCenter.jsx`, `SocialHub.jsx`, `ContentEngine.jsx`,
+  `ExecutiveReports.jsx` — each uses `localStorage` and/or hardcoded seed
+  data (`ExecutiveReports.jsx` literally calls `Math.random()` to generate
+  revenue/churn numbers at module load) where a real, wired equivalent
+  already exists and is reachable (`GrowthOS.jsx`, `ContentSEO.jsx`,
+  `DistributionOS.jsx`, `ExecutiveDashboard.jsx` respectively).
+- `LaunchCommandCenter.jsx` — real launch-related backends exist
+  (`/launch/*`, `/op1/*`, `/rc1`-`/rc4`) but this component calls none of
+  them; `BetaChecklist.jsx` is the wired equivalent.
+
+These are intentionally left in place, not deleted — wiring them would
+surface fabricated data to real users (the exact regression the 2026-07-17
+nav cleanup and the `v1-final-reality-report.md` audit were chartered to
+prevent), and deleting a prototype without a proven zero-dependency chain
+would contradict the "archive, don't delete" instruction for this class. If
+any of this functionality is wanted, the correct path is extending the
+already-wired superseding component, not resurrecting the prototype.
+
+**D. Genuine dead code (2 — REMOVED, proof of zero dependency)**:
+
+- `PremiumGate.jsx` + `.css` — exports `PremiumGate`, `PremiumBadge`,
+  `UpgradeNudge`, `UsageBar`. The one apparent reference
+  (`LicenseManager.jsx`) was verified as a false positive: `LicenseManager.jsx:29`
+  declares its own private `function UsageBar(...)` and never imports from
+  `PremiumGate.jsx`. Gating is handled server-side by `featureGate.cjs` and
+  client-side by the actively-wired `UpgradeModal.jsx`/`TrialBanner.jsx`.
+  Zero docs/Electron/backend references confirmed via full-repo grep.
+- `WorkspaceLayout.jsx` + `.css` — a resizable panel-grid component. Zero
+  references anywhere (`frontend/src`, `docs/`, `electron/`, `backend/`,
+  `agents/`) confirmed via full-repo grep, including its own `localStorage`
+  key (`workspace-layout`) having no reader. Distinct from the actively-used
+  `WorkspaceSettings.jsx`/`TeamWorkspace.jsx`, which are unrelated concerns.
+
+### Regression
+
+- `npm run build` (frontend/) completed cleanly after removal — no broken
+  imports, no missing-module errors.
+- Full-repo grep swept for all 9 removed component/hook names post-deletion:
+  zero remaining references in `frontend/src`, `electron/`, or active
+  `docs/` (only historical `docs/archive/*` audit reports mention them,
+  which is expected — those are records of past state, not live
+  dependencies).
+- Backend legacy suite: 83 pass / 72 fail, identical to baseline (this
+  module made no backend changes).
+
+### Security verification
+
+N/A — no security-relevant code path touched. Verification for this module
+was the cross-repo reference sweep described above (routes, services,
+Electron, docs), which is the applicable diligence for a dead-code removal.
+
+### Telemetry
+
+N/A — no runtime behavior change for any reachable code path.
+
+### Disposition summary
+
+- **Removed (10 files + 1 hook, all proven B or D class)**: `ToastSystem.jsx`,
+  `ControlCenter.jsx`/`.css`, `ExecutiveSummary.jsx`/`.css`,
+  `VisualIntelligence.jsx`/`.css`, `RetentionSummary.jsx`/`.css`,
+  `PremiumGate.jsx`/`.css`, `WorkspaceLayout.jsx`/`.css`,
+  `operator/TaskQueuePanel.jsx`, `operator/widgets/HelpPanel.jsx`,
+  `operator/widgets/PreferencesPanel.jsx`, `hooks/useOperatorPrefs.js`.
+- **Archived in place, untouched (19 files, class C)**: all prototypes with
+  no real backend — see list above. Not deleted per instruction; each would
+  need either a real backend built for it or to stay retired.
+- **No action needed (class A)**: `AgentCenter.jsx` — its backend is real
+  but already reachable via other wired components.
+- **Noted but out of scope**: `LicenseManager.jsx` was discovered to be
+  itself unreferenced during this investigation but was not part of the
+  original 28-component list and was not independently verified to the same
+  standard — left untouched, flagged here for a future pass.
+

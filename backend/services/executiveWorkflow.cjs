@@ -580,8 +580,13 @@ function subscribeWorkflowEvents() {
   const bus = _bus();
   if (!bus) return;
 
+  // Runtime Event Bus Reliability, Isolation & Backpressure Audit (2026-08-16):
+  // same fix as akoWorkflow.cjs/aeoWorkflow.cjs's identical-shape defect —
+  // added a real evt.type check and moved destructuring to evt.payload.
+
   // When any org completes a mission → update goal progress + learn
-  bus.subscribe("mission:completed", async ({ missionId, objective }) => {
+  bus.subscribe("eos_sub_mission_completed", async (evt) => {
+    if (evt.type !== "mission:completed") return;
     try {
       const goals = _st().listGoals({ status: "active" });
       for (const g of goals) {
@@ -594,14 +599,18 @@ function subscribeWorkflowEvents() {
   });
 
   // When evolution kept → update executive KPIs
-  bus.subscribe("aeo:evolution:kept", async ({ evoId, impact }) => {
+  bus.subscribe("eos_sub_aeo_evolution_kept", async (evt) => {
+    if (evt.type !== "aeo:evolution:kept") return;
+    const { evoId, impact } = evt.payload || {};
     try {
       _st().addMemory({ deptId: "eos_orchestrator", type: "evolution_signal", title: `Evolution kept: ${evoId} — impact ${impact}%`, detail: "", tags: ["evolution","kept"] });
     } catch {}
   });
 
   // When business deal won → update executive context
-  bus.subscribe("bizorg:deal:won", async ({ value }) => {
+  bus.subscribe("eos_sub_bizorg_deal_won", async (evt) => {
+    if (evt.type !== "bizorg:deal:won") return;
+    const { value } = evt.payload || {};
     try {
       _st().updateKpi("eos_orchestrator", { lastDealValue: value });
       _st().addMemory({ deptId: "eos_business", type: "revenue_signal", title: `Deal won: $${value}`, detail: "", tags: ["business","deal","revenue"] });
@@ -609,7 +618,9 @@ function subscribeWorkflowEvents() {
   });
 
   // When engineering work completed → check for goal progress
-  bus.subscribe("engorg:work:completed", async ({ workItemId, domain }) => {
+  bus.subscribe("eos_sub_engorg_work_completed", async (evt) => {
+    if (evt.type !== "engorg:work:completed") return;
+    const { workItemId, domain } = evt.payload || {};
     try {
       const goals = _st().listGoals({ status: "active" });
       for (const g of goals) {
@@ -622,14 +633,18 @@ function subscribeWorkflowEvents() {
   });
 
   // When AKO validates knowledge → executive context updated
-  bus.subscribe("ako:knowledge:validated", async ({ itemId, type }) => {
+  bus.subscribe("eos_sub_ako_knowledge_validated", async (evt) => {
+    if (evt.type !== "ako:knowledge:validated") return;
+    const { itemId, type } = evt.payload || {};
     try {
       _st().addMemory({ deptId: "eos_context", type: "knowledge_signal", title: `AKO validated ${type}: ${itemId}`, detail: "", tags: ["knowledge","validated"] });
     } catch {}
   });
 
   // Recovery: when self-healing detects failure → trigger recovery
-  bus.subscribe("runtime:healed", async ({ strategy, taskId }) => {
+  bus.subscribe("eos_sub_runtime_healed", async (evt) => {
+    if (evt.type !== "runtime:healed") return;
+    const { strategy, taskId } = evt.payload || {};
     try {
       _st().addMemory({ deptId: "eos_recovery", type: "heal", title: `Runtime healed: ${taskId} via ${strategy}`, detail: "", tags: ["recovery","heal"] });
     } catch {}

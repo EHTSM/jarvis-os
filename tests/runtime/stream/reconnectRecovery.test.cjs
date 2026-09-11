@@ -73,6 +73,7 @@ function mockRes({ failAfter = Infinity } = {}) {
 function mockReq() {
     const listeners = {};
     return {
+        headers: {},
         on(event, fn) {
             if (!listeners[event]) listeners[event] = [];
             listeners[event].push(fn);
@@ -92,7 +93,13 @@ function parseFrames(writes) {
     const frames = [];
     for (const chunk of writes) {
         if (chunk.startsWith(": ")) continue;  // keep-alive comment
-        const match = chunk.match(/^event: ([^\n]+)\ndata: ([^\n]+)\n\n$/);
+        // Micro-Mission 41/42: runtimeStream.cjs's _write() legitimately prepends
+        // an optional "id: <seq>\n" line before "event:" for real replayed/live
+        // events (Last-Event-ID tracking) — only the seq-less "connected"/"error"
+        // acks omit it. Accept that optional leading id: line so real frames
+        // are no longer silently dropped; connected/error frames (no id: line)
+        // still match exactly as before.
+        const match = chunk.match(/^(?:id: [^\n]+\n)?event: ([^\n]+)\ndata: ([^\n]+)\n\n$/);
         if (!match) continue;
         frames.push({ type: match[1], data: JSON.parse(match[2]) });
     }
@@ -243,7 +250,12 @@ describe("runtimeStream — reconnect + recovery tests", () => {
 
             const dataWrites = res.written.filter(w => !w.startsWith(": "));
             for (const chunk of dataWrites) {
-                assert.match(chunk, /^event: [^\n]+\ndata: [^\n]+\n\n$/,
+                // Micro-Mission 43: same optional leading "id: <seq>\n" allowance
+                // already applied to parseFrames() in Micro-Mission 42 — real
+                // replayed/live events legitimately carry it (Last-Event-ID
+                // tracking); only the seq-less "connected"/"error" acks omit it,
+                // and those still match with no id: line, exactly as before.
+                assert.match(chunk, /^(?:id: [^\n]+\n)?event: [^\n]+\ndata: [^\n]+\n\n$/,
                     `malformed SSE frame: ${JSON.stringify(chunk)}`);
             }
         });
